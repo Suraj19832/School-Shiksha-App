@@ -6,9 +6,12 @@ import {
   SafeAreaView,
   ScrollView,
   StatusBar,
+  TouchableOpacity,
 } from "react-native";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+import Modal from "react-native-modal";
 import {
   FontAwesome,
   Ionicons,
@@ -23,6 +26,7 @@ import {
 import { Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Checkbox from "expo-checkbox";
+// import { TouchableOpacity } from "react-native-web";
 
 const Registration = () => {
   const [isChecked, setChecked] = useState(false);
@@ -44,8 +48,9 @@ const Registration = () => {
     pin: "",
   });
 
-  const [email, setEmail] = useState('');
-  const [emailError, setEmailError] = useState('');
+  const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [formValid, setFormValid] = useState(false);
 
   const [formErrors, setFormErrors] = useState({});
   const [fieldTouched, setFieldTouched] = useState({});
@@ -76,54 +81,101 @@ const Registration = () => {
   };
 
   const handleSubmit = () => {
-    if (validateForm()) {
+    if (formValid) {
       // Proceed with form submission
       console.log("Form submitted:", formData);
+      // You can add your logic for form submission here
+    } else {
+      console.log("Form is invalid. Please fill all required fields.");
+      // You can display an error message or take any other action here
     }
   };
-// email validation 
+  // email validation
   const validateEmail = () => {
     // Regular expression pattern to validate email format
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!email.trim()) {
-      setEmailError('Email is required');
+      setEmailError("Email is required");
     } else if (!emailPattern.test(email)) {
-      setEmailError('Invalid email format');
+      setEmailError("Invalid email format");
     } else {
-      setEmailError('');
+      setEmailError("");
     }
   };
 
   const handleEmailChange = (text) => {
     setEmail(text);
     if (text.trim()) {
-      setEmailError('');
+      setEmailError("");
     }
   };
 
-  // password validation 
+  // password validation
 
-  const [password, setPassword] = useState('');
-  const [passwordError, setPasswordError] = useState('');
+  const [password, setPassword] = useState("");
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [passwordError, setPasswordError] = useState("");
+
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
+  };
 
   const validatePassword = () => {
-    const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{5,}$/;
+    const passwordPattern =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{5,}$/;
 
     if (!password.trim()) {
-      setPasswordError('Password is required');
+      setPasswordError("Password is required");
     } else if (!passwordPattern.test(password)) {
-      setPasswordError('Password must contain a capital letter, a lowercase letter, a special symbol, and have a minimum length of 5 characters');
+      setPasswordError(
+        "Password must contain a capital letter, a lowercase letter, a special symbol, and have a minimum length of 5 characters"
+      );
     } else {
-      setPasswordError('');
+      setPasswordError("");
     }
   };
 
   const handlePasswordChange = (text) => {
     setPassword(text);
     if (text.trim()) {
-      setPasswordError('');
+      setPasswordError("");
     }
+  };
+
+  // date picker
+  const [userDetails, setUserDetails] = useState({
+    dob: "",
+  });
+
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleConfirm = (date) => {
+    setUserDetails({ ...userDetails, dob: date.toISOString().split("T")[0] });
+    hideDatePicker();
+  };
+  // Date picker end
+
+  // Gender selection
+  const [genderData, setGenderData] = useState("");
+
+  const [isModalVisible, setModalVisible] = useState(false);
+
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
+
+  const selectGender = (selectedGender) => {
+    setGenderData(selectedGender);
+    toggleModal();
   };
 
   return (
@@ -213,9 +265,8 @@ const Registration = () => {
                 {formErrors.fatherName &&
                   !formData.fatherName &&
                   fieldTouched.fatherName && (
-                  <Text style={{ color: "red" }}>father's name required</Text>
-                )}
-           
+                    <Text style={{ color: "red" }}>father's name required</Text>
+                  )}
               </View>
 
               {/* Mobile number  */}
@@ -250,9 +301,7 @@ const Registration = () => {
                   />
                 </View>
                 {formErrors.mobileNumber && fieldTouched.mobileNumber && (
-                  <Text style={{ color: "red" }}>
-                    Mobile Number required
-                  </Text>
+                  <Text style={{ color: "red" }}>Mobile Number required</Text>
                 )}
                 {!formErrors.mobileNumber &&
                   formData.mobileNumber &&
@@ -294,9 +343,7 @@ const Registration = () => {
                   />
                 </View>
                 {formErrors.whatsappNumber && fieldTouched.whatsappNumber && (
-                  <Text style={{ color: "red" }}>
-                    Whatsapp number Required 
-                  </Text>
+                  <Text style={{ color: "red" }}>Whatsapp number Required</Text>
                 )}
                 {!formErrors.whatsappNumber &&
                   formData.whatsappNumber &&
@@ -309,26 +356,35 @@ const Registration = () => {
 
               {/* email id  */}
               <View style={styles.inputbox_main_container}>
-        <View>
-          <Text style={{ color: "rgba(0, 54, 126, 1)", fontWeight: "500", fontSize: 18 }}>
-            Email Id
-          </Text>
-        </View>
-        <View style={styles.inputbox_container}>
-          <Feather name="mail" size={16} color="rgba(0, 54, 126, 1)" />
-          <TextInput
-            style={styles.input}
-            placeholder="Enter your email"
-            placeholderTextColor="rgba(166, 166, 166, 1)"
-            value={email}
-            onChangeText={handleEmailChange}
-            onBlur={validateEmail}
-          />
-        </View>
-        {emailError ? <Text style={{ color: 'red' }}>{emailError}</Text> : null}
-      </View>
+                <View>
+                  <Text
+                    style={{
+                      color: "rgba(0, 54, 126, 1)",
+                      fontWeight: "500",
+                      fontSize: 18,
+                    }}
+                  >
+                    Email Id
+                  </Text>
+                </View>
+                <View style={styles.inputbox_container}>
+                  <Feather name="mail" size={16} color="rgba(0, 54, 126, 1)" />
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Enter your email"
+                    placeholderTextColor="rgba(166, 166, 166, 1)"
+                    value={email}
+                    onChangeText={handleEmailChange}
+                    onBlur={validateEmail}
+                  />
+                </View>
+                {emailError ? (
+                  <Text style={{ color: "red" }}>{emailError}</Text>
+                ) : null}
+              </View>
 
               {/* date of birth  */}
+
               <View style={styles.inputbox_main_container}>
                 <View>
                   <Text
@@ -345,25 +401,28 @@ const Registration = () => {
                   <Feather
                     name="calendar"
                     size={16}
-                    color="
-                rgba(0, 54, 126, 1)"
+                    color="rgba(0, 54, 126, 1)"
+                    onPress={showDatePicker}
                   />
                   <TextInput
                     style={styles.input}
-                    placeholder="Date of birth"
+                    placeholder="YY/MM/DD"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
-                    value={formData.dob}
+                    value={userDetails.dob}
                     onChangeText={(text) =>
-                      handleInputChange("dob", text)
+                      setUserDetails({ ...userDetails, dob: text })
                     }
-                    onBlur={() => handleInputBlur("dob")}
+                    onFocus={showDatePicker} // Show date picker when input field is focused
+                    editable={true} // Make the input field editable
                   />
                 </View>
-                {formErrors.dob &&
-                  !formData.dob &&
-                  fieldTouched.dob && (
-                  <Text style={{ color: "red" }}>DOB required</Text>
-                )}
+
+                <DateTimePickerModal
+                  isVisible={isDatePickerVisible}
+                  mode="date"
+                  onConfirm={handleConfirm}
+                  onCancel={hideDatePicker}
+                />
               </View>
 
               {/* class  */}
@@ -404,9 +463,7 @@ const Registration = () => {
                       placeholder="Select"
                       placeholderTextColor="rgba(166, 166, 166, 1)"
                       value={formData.class}
-                      onChangeText={(text) =>
-                        handleInputChange("class", text)
-                      }
+                      onChangeText={(text) => handleInputChange("class", text)}
                       onBlur={() => handleInputBlur("class")}
                     />
                   </View>
@@ -418,14 +475,12 @@ const Registration = () => {
                     />
                   </View>
                 </View>
-                {formErrors.class &&
-                  !formData.class &&
-                  fieldTouched.class && (
+                {formErrors.class && !formData.class && fieldTouched.class && (
                   <Text style={{ color: "red" }}>Please select class</Text>
                 )}
               </View>
               {/* gender  */}
-              <View style={styles.inputbox_main_container}>
+              {/* <View style={styles.inputbox_main_container}>
                 <View>
                   <Text
                     style={{
@@ -461,9 +516,7 @@ const Registration = () => {
                       placeholder="Select"
                       placeholderTextColor="rgba(166, 166, 166, 1)"
                       value={formData.gender}
-                      onChangeText={(text) =>
-                        handleInputChange("gender", text)
-                      }
+                      onChangeText={(text) => handleInputChange("gender", text)}
                       onBlur={() => handleInputBlur("gender")}
                     />
                   </View>
@@ -478,8 +531,79 @@ const Registration = () => {
                 {formErrors.gender &&
                   !formData.gender &&
                   fieldTouched.gender && (
-                  <Text style={{ color: "red" }}>Please select your gender </Text>
-                )}
+                    <Text style={{ color: "red" }}>
+                      Please select your gender{" "}
+                    </Text>
+                  )}
+              </View> */}
+
+              <View style={styles.inputbox_main_container}>
+                <View>
+                  <Text
+                    style={{
+                      color: "rgba(0, 54, 126, 1)",
+                      fontWeight: "500",
+                      fontSize: 18,
+                    }}
+                  >
+                    Gender
+                  </Text>
+                </View>
+                <View
+                  style={[
+                    styles.inputbox_container,
+                    { justifyContent: "space-between" },
+                  ]}
+                >
+                  <View
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      gap: 8,
+                    }}
+                  >
+                    <MaterialCommunityIcons
+                      name="gender-male-female-variant"
+                      size={16}
+                      color="rgba(0, 54, 126, 1)"
+                    />
+                    <TextInput
+                      style={styles.input}
+                      placeholder="Gender"
+                      placeholderTextColor="rgba(166, 166, 166, 1)"
+                      value={genderData}
+                      editable={true}
+                    />
+                  </View>
+                  <TouchableOpacity onPress={toggleModal}>
+                    <AntDesign
+                      name="caretdown"
+                      size={16}
+                      color="rgba(0, 54, 126, 1)"
+                    />
+                  </TouchableOpacity>
+                  <Modal
+                    visible={isModalVisible}
+                    transparent={true}
+                    animationType="slide"
+                    onRequestClose={toggleModal}
+                  >
+                    <View style={styles.modalContainer}>
+                      <TouchableOpacity onPress={() => selectGender("Male")}>
+                        <Text style={styles.modalText}>Male</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity onPress={() => selectGender("Female")}>
+                        <Text style={styles.modalText}>Female</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </Modal>
+                </View>
+
+                {/* Modal */}
+                
+                 
+                
               </View>
               {/* full address  */}
               <View style={styles.inputbox_main_container}>
@@ -495,12 +619,7 @@ const Registration = () => {
                   </Text>
                 </View>
                 <View style={styles.inputbox_container}>
-                  <Feather
-                    name="map-pin"
-                    size={16}
-                    color="
-                rgba(0, 54, 126, 1)"
-                  />
+                <MaterialCommunityIcons name="home-map-marker" size={16} color="rgba(0, 54, 126, 1)" />
                   <TextInput
                     style={styles.input}
                     placeholder="Enter your full address"
@@ -515,8 +634,10 @@ const Registration = () => {
                 {formErrors.fullAddress &&
                   !formData.fullAddress &&
                   fieldTouched.fullAddress && (
-                  <Text style={{ color: "red" }}>Please enter full address </Text>
-                )}
+                    <Text style={{ color: "red" }}>
+                      Please enter full address{" "}
+                    </Text>
+                  )}
               </View>
               {/* district  */}
               <View style={styles.inputbox_main_container}>
@@ -532,28 +653,23 @@ const Registration = () => {
                   </Text>
                 </View>
                 <View style={styles.inputbox_container}>
-                  <Feather
-                    name="map"
-                    size={16}
-                    color="
-                rgba(0, 54, 126, 1)"
-                  />
+                <MaterialCommunityIcons name="map-marker-path" size={16} color="rgba(0, 54, 126, 1)" /> 
                   <TextInput
                     style={styles.input}
-                    placeholder="Enter your full address"
+                    placeholder="District"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
                     value={formData.district}
-                    onChangeText={(text) =>
-                      handleInputChange("district", text)
-                    }
+                    onChangeText={(text) => handleInputChange("district", text)}
                     onBlur={() => handleInputBlur("district")}
                   />
                 </View>
                 {formErrors.district &&
                   !formData.district &&
                   fieldTouched.district && (
-                  <Text style={{ color: "red" }}>Please enter your District</Text>
-                )}
+                    <Text style={{ color: "red" }}>
+                      Please enter your District
+                    </Text>
+                  )}
               </View>
               {/* police station  */}
               <View style={styles.inputbox_main_container}>
@@ -609,8 +725,10 @@ const Registration = () => {
                 {formErrors.policeStation &&
                   !formData.policeStation &&
                   fieldTouched.policeStation && (
-                  <Text style={{ color: "red" }}>Please enter your Police Station</Text>
-                )}
+                    <Text style={{ color: "red" }}>
+                      Please enter your Police Station
+                    </Text>
+                  )}
               </View>
               {/* pin  */}
               <View style={styles.inputbox_main_container}>
@@ -626,26 +744,17 @@ const Registration = () => {
                   </Text>
                 </View>
                 <View style={styles.inputbox_container}>
-                  <Feather
-                    name="map-pin"
-                    size={16}
-                    color="
-                rgba(0, 54, 126, 1)"
-                  />
+                <MaterialIcons name="password" size={16} color="rgba(0, 54, 126, 1)" />
                   <TextInput
                     style={styles.input}
                     placeholder="Enter pin code"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
                     value={formData.pin}
-                      onChangeText={(text) =>
-                        handleInputChange("pin", text)
-                      }
-                      onBlur={() => handleInputBlur("pin")}
+                    onChangeText={(text) => handleInputChange("pin", text)}
+                    onBlur={() => handleInputBlur("pin")}
                   />
                 </View>
-                {formErrors.pin &&
-                  !formData.pin &&
-                  fieldTouched.pin && (
+                {formErrors.pin && !formData.pin && fieldTouched.pin && (
                   <Text style={{ color: "red" }}>Please enter your Pin</Text>
                 )}
               </View>
@@ -682,7 +791,7 @@ const Registration = () => {
                       color="rgba(0, 54, 126, 1)"
                     />
                     <TextInput
-                      style={[styles.input,{}]}
+                      style={[styles.input, {}]}
                       placeholder="Select"
                       placeholderTextColor="rgba(166, 166, 166, 1)"
                     />
@@ -716,7 +825,7 @@ const Registration = () => {
                     color="rgba(0, 54, 126, 1)"
                   />
                   <TextInput
-                    style={[styles.input,{}]}
+                    style={[styles.input, {}]}
                     placeholder="Enter Your Referral Code (Optional)"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
                   />
@@ -771,34 +880,62 @@ const Registration = () => {
               </View>
               {/* password  */}
               <View style={styles.inputbox_main_container}>
-        <View>
-          <Text style={{ color: "rgba(0, 54, 126, 1)", fontWeight: "500", fontSize: 18 }}>
-            Password
-          </Text>
-        </View>
-        <View style={[styles.inputbox_container, { justifyContent: "space-between" }]}>
-          <View style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 8 }}>
-            <MaterialCommunityIcons name="lock" size={16} color="rgba(0, 54, 126, 1)" />
-            <TextInput
-              style={styles.input}
-              placeholder="Enter your password"
-              placeholderTextColor="rgba(166, 166, 166, 1)"
-              secureTextEntry={true}
-              value={password}
-              onChangeText={handlePasswordChange}
-              onBlur={validatePassword}
-            />
-          </View>
-          <View>
-            <MaterialIcons name="hide-source" size={16} color="rgba(0, 54, 126, 1)" />
-          </View>
-        </View>
-        {passwordError ? <Text style={{ color: 'red' }}>{passwordError}</Text> : null}
-      </View>
+                <View>
+                  <Text
+                    style={{
+                      color: "rgba(0, 54, 126, 1)",
+                      fontWeight: "500",
+                      fontSize: 18,
+                    }}
+                  >
+                    Password
+                  </Text>
+                </View>
+                <View
+                  style={[
+                    styles.inputbox_container,
+                    { justifyContent: "space-between" },
+                  ]}
+                >
+                  <View
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      gap: 8,
+                    }}
+                  >
+                    <MaterialCommunityIcons
+                      name="lock"
+                      size={16}
+                      color="rgba(0, 54, 126, 1)"
+                    />
+                    <TextInput
+                      style={styles.input}
+                      placeholder="Enter your password"
+                      placeholderTextColor="rgba(166, 166, 166, 1)"
+                      secureTextEntry={!passwordVisible}
+                      value={password}
+                      onChangeText={handlePasswordChange}
+                      onBlur={validatePassword}
+                    />
+                  </View>
+                  <View>
+                    <MaterialIcons
+                      name={passwordVisible ? "visibility" : "visibility-off"}
+                      size={16}
+                      color="rgba(0, 54, 126, 1)"
+                      onPress={togglePasswordVisibility}
+                    />
+                  </View>
+                </View>
+                {passwordError ? (
+                  <Text style={{ color: "red" }}>{passwordError}</Text>
+                ) : null}
+              </View>
             </View>
 
-            <View>
-
+            <View style={{ gap: 7 }}>
               <View style={styles.section}>
                 <Checkbox
                   style={styles.checkbox}
@@ -836,13 +973,63 @@ const Registration = () => {
                         alignItems: "center",
                         display: "flex",
                         justifyContent: "center",
-                        color:'white'
+                        color: "white",
                       }}
                     >
                       Sign Up
                     </Text>
                   </View>
                 </LinearGradient>
+
+                {/* <TouchableOpacity
+  onPress={handleSubmit}
+  disabled={
+    !(
+      formData.name.trim() &&
+      formData.fatherName.trim() &&
+      formData.mobileNumber.trim() &&
+      formData.whatsappNumber.trim() &&
+      formData.email.trim() &&
+      formData.dob.trim() &&
+      formData.class.trim() &&
+      formData.gender.trim() &&
+      formData.fullAddress.trim() &&
+      formData.district.trim() &&
+      formData.policeStation.trim() &&
+      formData.pin.trim() &&
+      password.trim() && // Assuming you have 'password' state
+      Object.keys(formErrors).length === 0 // Check if there are no form errors
+    )
+  }
+  style={[
+    styles.buttonbox,
+    {
+      backgroundColor: formValid ? "#03357D" : "rgba(0, 0, 0, 0.5)",
+      justifyContent: "center",
+    },
+  ]}
+>
+  <View
+    style={{
+      justifyContent: "center",
+      alignItems: "center",
+      display: "flex",
+    }}
+  >
+    <Text
+      style={{
+        fontSize: 16,
+        fontWeight: "500",
+        alignItems: "center",
+        display: "flex",
+        justifyContent: "center",
+        color: "white",
+      }}
+    >
+      Sign Up
+    </Text>
+  </View>
+</TouchableOpacity> */}
               </View>
               <View
                 style={{
@@ -940,16 +1127,33 @@ const styles = StyleSheet.create({
   section: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent:'center',
+    justifyContent: "center",
     gap: 8,
     marginBottom: 15,
-    marginTop:25
+    marginTop: 25,
   },
   buttonboxWrapper: {
     borderRadius: 30, // Retain the border radius from the buttonbox style
     overflow: "hidden", // Clip the linear gradient to the border radius
   },
-  input:{
-width:'82%'
-  }
+  input: {
+    width: "82%",
+  },
+
+  modalContainer: {
+    flex: 1,
+    backgroundColor: "#FDF1DD",
+    alignItems: "center",
+    width: 200,
+    height: 80,
+    justifyContent: "center",
+    position:"absolute",
+    left :"20%",
+    borderRadius:16
+  },
+
+  modalText: {
+    fontSize: 16,
+    paddingVertical: 10,
+  },
 });
