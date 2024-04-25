@@ -14,21 +14,23 @@ import { Feather } from "@expo/vector-icons";
 const VerifyEmail = () => {
   const [email, setEmail] = useState("");
   const [isEmailValid, setIsEmailValid] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [sendOtpPressed, setSendOtpPressed] = useState(false);
+
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
 
   useEffect(() => {
-    validateEmail();
+    setIsEmailValid(validateEmail(email));
   }, [email]);
 
-  const validateEmail = () => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const isValid = emailRegex.test(email);
-    setIsEmailValid(isValid);
-    if (!isValid) {
-      setErrorMessage("Please enter a valid email address");
-    } else {
-      setErrorMessage("");
+  const handleSendOtp = () => {
+    if (!isEmailValid) {
+      setSendOtpPressed(true);
+      return; // Do not proceed if email is invalid
     }
+    // Send OTP logic
   };
 
   return (
@@ -56,18 +58,18 @@ const VerifyEmail = () => {
                   onChangeText={(text) => setEmail(text)}
                 />
               </View>
-              {errorMessage ? (
-                <Text style={styles.error}>{errorMessage}</Text>
-              ) : null}
             </View>
+            {sendOtpPressed && !isEmailValid && (
+              <Text style={styles.error}>Invalid email address</Text>
+            )}
             <View style={styles.inputbox_main_container}>
               <TouchableOpacity
                 style={[
                   styles.inputbox_submit,
-                  { opacity: isEmailValid ? 1 : 0.6 },
+                  isEmailValid ? null : styles.disabled,
                 ]}
                 disabled={!isEmailValid}
-                onPress={() => console.log("Send OTP")}
+                onPress={handleSendOtp}
               >
                 <Text style={styles.submitText}>Send OTP</Text>
               </TouchableOpacity>
@@ -153,9 +155,8 @@ const styles = StyleSheet.create({
   },
   inputbox_submit: {
     marginTop: 10,
-    borderWidth: 2,
     borderColor: "rgba(3, 53, 125, 1)",
-    padding: 16,
+    padding: 18,
     paddingHorizontal: 20,
     borderRadius: 30,
     backgroundColor: "rgba(3, 53, 125, 1)",
@@ -209,5 +210,8 @@ const styles = StyleSheet.create({
   },
   error: {
     color: "red",
+  },
+  disabled: {
+    opacity: 0.5,
   },
 });

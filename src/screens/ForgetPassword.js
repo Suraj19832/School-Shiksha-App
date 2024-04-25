@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -6,22 +6,36 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
-  Alert,
   ScrollView,
   KeyboardAvoidingView,
 } from "react-native";
 import {
   Feather,
-  Fontisto,
-  FontAwesome5,
   MaterialCommunityIcons,
   EvilIcons,
+  FontAwesome5,
 } from "@expo/vector-icons";
 
 const Login_Page = () => {
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [newPassToggle, setNewPassToggle] = useState(false);
   const [confirmToggle, setConfirmToggle] = useState(false);
-  const [isFormValid, setIsFormValid] = useState(false);
+  const [isButtonActive, setIsButtonActive] = useState(false);
+
+  const handleNewPasswordChange = (text) => {
+    setNewPassword(text);
+    checkPasswordsMatch(text, confirmPassword);
+  };
+
+  const handleConfirmPasswordChange = (text) => {
+    setConfirmPassword(text);
+    checkPasswordsMatch(newPassword, text);
+  };
+
+  const checkPasswordsMatch = (newPassword, confirmPassword) => {
+    setIsButtonActive(newPassword === confirmPassword && newPassword !== "");
+  };
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
@@ -62,6 +76,7 @@ const Login_Page = () => {
                     placeholder="Enter Password"
                     secureTextEntry={!newPassToggle}
                     placeholderTextColor="rgba(166, 166, 166, 1)"
+                    onChangeText={handleNewPasswordChange}
                   />
                 </View>
                 <TouchableOpacity
@@ -78,9 +93,6 @@ const Login_Page = () => {
                   )}
                 </TouchableOpacity>
               </View>
-              {/* {errors.password !== "" && (
-                <Text style={styles.error}>{errors.password}</Text>
-              )} */}
             </View>
             <View style={styles.inputbox_main_container}>
               <View style={styles.labelContainer}>
@@ -99,6 +111,7 @@ const Login_Page = () => {
                     placeholder="Confirm Password"
                     secureTextEntry={!confirmToggle}
                     placeholderTextColor="rgba(166, 166, 166, 1)"
+                    onChangeText={handleConfirmPasswordChange}
                   />
                 </View>
                 <TouchableOpacity
@@ -115,18 +128,15 @@ const Login_Page = () => {
                   )}
                 </TouchableOpacity>
               </View>
-              {/* {errors.password !== "" && (
-                <Text style={styles.error}>{errors.password}</Text>
-              )} */}
             </View>
             <View style={styles.inputbox_main_container}>
               <TouchableOpacity
                 style={[
                   styles.inputbox_submit,
-                  { opacity: isFormValid ? 1 : 0.5 },
+                  isButtonActive ? null : styles.disabled,
                 ]}
-                disabled={!isFormValid}
-                // onPress={handleSubmit}
+                disabled={!isButtonActive}
+                onPress={() => console.log("Reset Password")}
               >
                 <Text style={styles.submitText}>Reset Password</Text>
               </TouchableOpacity>
@@ -144,7 +154,6 @@ export default Login_Page;
 const styles = StyleSheet.create({
   container: {
     top: 53,
-    // marginBottom: 100
   },
   main_content: {
     marginHorizontal: 20,
@@ -187,17 +196,6 @@ const styles = StyleSheet.create({
     top: 18,
     gap: 15,
   },
-  inputbox_container: {
-    flexDirection: "row",
-    textAlign: "center",
-    alignItems: "center",
-    borderWidth: 2,
-    borderColor: "rgba(3, 53, 125, 1)",
-    padding: 12,
-    paddingHorizontal: 20,
-    borderRadius: 30,
-    gap: 8,
-  },
   inputbox_password: {
     flexDirection: "row",
     alignItems: "center",
@@ -210,9 +208,9 @@ const styles = StyleSheet.create({
   },
   inputbox_submit: {
     marginTop: 10,
-    borderWidth: 2,
+    // borderWidth: 2,
     borderColor: "rgba(3, 53, 125, 1)",
-    padding: 16,
+    padding: 18,
     paddingHorizontal: 20,
     borderRadius: 30,
     backgroundColor: "rgba(3, 53, 125, 1)",
@@ -229,7 +227,6 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     backgroundColor: "red",
   },
-
   label: {
     color: "rgba(0, 54, 126, 1)",
     fontWeight: "500",
@@ -239,12 +236,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     flexDirection: "row",
     alignItems: "center",
-  },
-  forgotPassword: {
-    color: "rgba(166, 166, 166, 1)",
-    fontWeight: "500",
-    fontSize: 12,
-    lineHeight: 18,
   },
   passwordInputContainer: {
     flexDirection: "row",
@@ -266,5 +257,8 @@ const styles = StyleSheet.create({
   },
   error: {
     color: "red",
+  },
+  disabled: {
+    opacity: 0.5,
   },
 });

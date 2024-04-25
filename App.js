@@ -5,17 +5,29 @@ import ForgetPassword from "./src/screens/ForgetPassword";
 import VerifyEmail from "./src/screens/VerifyEmail";
 import VerifyOTP from "./src/screens/VerifyOTP";
 import Footer from "./components/Footer";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { NavigationContainer } from "@react-navigation/native";
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      {/* <Login_Page /> */}
-      {/* <ForgetPassword /> */}
-      {/* <VerifyOTP /> */}
-      <VerifyEmail />
-      {/* <Footer /> */}
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="login">
+        <Stack.Screen name="login" component={<Login_Page />} />
+        <Stack.Screen name="verifyemail" component={<VerifyEmail />} />
+        <Stack.Screen name="verifyOTP" component={<VerifyOTP />} />
+        <Stack.Screen name="forgetPassword" component={<ForgetPassword />} />
+      </Stack.Navigator>
+    </NavigationContainer>
+    // <View style={styles.container}>
+    //   {/* <Login_Page /> */}
+    //   {/* <ForgetPassword /> */}
+    //   <VerifyOTP />
+    //   {/* <VerifyEmail /> */}
+    //   {/* <Footer /> */}
+    //   <StatusBar style="auto" />
+    // </View>
   );
 }
 
