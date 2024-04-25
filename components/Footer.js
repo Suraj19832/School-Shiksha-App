@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: "rgba(0, 54, 126, 1)",
+    backgroundColor: "#FFFCCE",
     paddingVertical: 14,
     paddingHorizontal: 20,
     borderTopEndRadius: 20,
@@ -96,20 +96,22 @@ const styles = StyleSheet.create({
   },
   text: {
     marginTop: 5,
-    color: "#fff",
+    color: "#373737",
     fontSize: 13,
     lineHeight: 19.5,
     fontWeight: "500",
+  
   },
   img: {
-    height: 20,
-    width: 20,
+    height: 25,
+    width: 25,
+    tintColor:"#373737"
   },
   selectedIcon: {
-    tintColor: "rgba(255, 227, 128, 1)", 
+    tintColor: "rgba(0, 54, 126, 1)", 
   },
   selectedText: {
-    color: "rgba(255, 227, 128, 1)", 
+    color: "rgba(0, 54, 126, 1)", 
   },
 });
 
