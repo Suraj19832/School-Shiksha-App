@@ -452,12 +452,7 @@ const Registration = () => {
                       gap: 8,
                     }}
                   >
-                    <Feather
-                      name="book-open"
-                      size={16}
-                      color="
-                rgba(0, 54, 126, 1)"
-                    />
+                    <FontAwesome5 name="chalkboard-teacher" size={16} color="rgba(0, 54, 126, 1)" />
                     <TextInput
                       style={styles.input}
                       placeholder="Select"
@@ -563,11 +558,7 @@ const Registration = () => {
                       gap: 8,
                     }}
                   >
-                    <MaterialCommunityIcons
-                      name="gender-male-female-variant"
-                      size={16}
-                      color="rgba(0, 54, 126, 1)"
-                    />
+                    <MaterialCommunityIcons name="human-male-female" size={16} color="rgba(0, 54, 126, 1)" />
                     <TextInput
                       style={styles.input}
                       placeholder="Gender"
@@ -1083,7 +1074,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   image: {
-    height: 220,
+    height: 162,
     width: 220,
   },
 
