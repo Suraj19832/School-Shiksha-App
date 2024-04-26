@@ -1,3 +1,15 @@
+<<<<<<< HEAD
+import { StatusBar } from 'expo-status-bar';
+import { StyleSheet, Text, View } from 'react-native';
+import Dashboard from './src/screen/Dashboard';
+
+export default function App() {
+  return (
+    <View style={styles.container}>
+      <Dashboard/>
+      {/* <StatusBar style="auto" hidden={true} /> */}
+    </View>
+=======
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import Login_Page from "./src/screens/Login_Page";
@@ -28,14 +40,22 @@ export default function App() {
     //   {/* <Footer /> */}
     //   <StatusBar style="auto" />
     // </View>
+>>>>>>> 91750494a3fb19bfe91d7017c386da8a5d1bdc16
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+<<<<<<< HEAD
+    flex: 1,
+    // backgroundColor: '#fff',
+    // alignItems: 'center',
+    // justifyContent: 'center',
+=======
     // flex: 1,
     // backgroundColor: "#fff",
     // alignItems: "center",
     // justifyContent: "center",
+>>>>>>> 91750494a3fb19bfe91d7017c386da8a5d1bdc16
   },
 });
