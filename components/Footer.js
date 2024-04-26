@@ -81,11 +81,11 @@ const Footer = () => {
 
 const styles = StyleSheet.create({
   footerContainer: {
-
+    // marginTop: 200,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: "#FFFCCE",
+    backgroundColor: "rgba(0, 54, 126, 1)",
     paddingVertical: 14,
     paddingHorizontal: 20,
     borderTopEndRadius: 20,
@@ -96,22 +96,20 @@ const styles = StyleSheet.create({
   },
   text: {
     marginTop: 5,
-    color: "#373737",
+    color: "#fff",
     fontSize: 13,
     lineHeight: 19.5,
     fontWeight: "500",
-  
   },
   img: {
-    height: 25,
-    width: 25,
-    tintColor:"#373737"
+    height: 35,
+    width: 35,
   },
   selectedIcon: {
-    tintColor: "rgba(0, 54, 126, 1)", 
+    tintColor: "rgba(255, 227, 128, 1)",
   },
   selectedText: {
-    color: "rgba(0, 54, 126, 1)", 
+    color: "rgba(255, 227, 128, 1)",
   },
 });
 
