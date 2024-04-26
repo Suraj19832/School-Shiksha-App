@@ -6,9 +6,11 @@ import {
   SafeAreaView,
   ScrollView,
   StatusBar,
+  Modal,
   TouchableOpacity,
 } from "react-native";
 import React, { useState } from "react";
+import DropDownPicker from 'react-native-dropdown-picker';
 import {
   FontAwesome,
   Ionicons,
@@ -24,17 +26,14 @@ import { Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 const FreeCollegeList = () => {
 
-  const [showDropdown, setShowDropdown] = useState(false);
-  const [selectedValue, setSelectedValue] = useState('');
-  const [inputValue, setInputValue] = useState('');
+  const [selectedValue, setSelectedValue] = useState(null);
+  const [open, setOpen] = useState(false);
+  const items = [
+    { label: 'Option 1', value: 'option1' },
+    { label: 'Option 2', value: 'option2' },
+    { label: 'Option 3', value: 'option3' },
+  ];
 
-  const options = ['Option 1', 'Option 2', 'Option 3']; // Your dropdown options
-
-  const handleOptionSelect = (option) => {
-    setSelectedValue(option);
-    setInputValue(option);
-    setShowDropdown(false);
-  };
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView}>
@@ -63,7 +62,7 @@ const FreeCollegeList = () => {
             >
               Search Free College Admission{" "}
             </Text>
-            <View style={styles.inputbox_main_container}>
+            <View style={styles.inputbox_main_container1}>
               <View style={styles.inputbox_container}>
                 <TextInput
                   style={styles.input}
@@ -86,7 +85,7 @@ const FreeCollegeList = () => {
               >
                 Course Name
               </Text>
-              <View style={styles.inputbox_main_container}>
+              <View style={styles.inputbox_main_container1}>
                 <View
                   style={[
                     styles.inputbox_container,
@@ -120,54 +119,48 @@ const FreeCollegeList = () => {
                 </Text>
               </View>
 
-{/* <View style={styles.inputbox_main_container}>
-      <View style={[styles.inputbox_container, { borderRadius: 30, backgroundColor: "#FDF1DD" }]}>
-        <View style={{ flexDirection: "row", alignItems: 'center', gap: 4 }}>
-          <Image
-            style={styles.icon}
-            source={require("/home/desunub7/School Shiksharthi/school-shiksha-app/assets/img/online-course.png")}
-          />
-          <TextInput
-            style={styles.input}
-            value={inputValue}
-            placeholder="Select"
-            placeholderTextColor="rgba(166, 166, 166, 1)"
-            onFocus={() => setShowDropdown(true)}
-          />
-          <TouchableOpacity style={styles.dropdownArrow} onPress={() => setShowDropdown(!showDropdown)}>
-            <AntDesign name="caretdown" size={16} color="#03357D" />
-          </TouchableOpacity>
-        </View>
 
-        {showDropdown && (
-          <View style={styles.dropdown}>
-            {options.map((option) => (
-              <TouchableOpacity
-                key={option}
-                style={styles.option}
-                onPress={() => handleOptionSelect(option)}
-              >
-                <Text style={styles.optionText}>{option}</Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-        )}
-      </View>
-      <Text
-        style={{
-          alignSelf: "flex-end",
-          color: "#0567F5",
-          fontWeight: "500",
-          fontSize: 14,
-          textDecorationLine: "underline",
-        }}
-      >
-        Request Course
-      </Text>
-    </View> */}
 
 
             </View>
+
+
+{/* <View style={{ gap: 15, alignSelf: 'center' }}>
+      <Text
+        style={{
+          color: '#00367E',
+          fontWeight: '600',
+          fontSize: 20,
+        }}
+      >
+        Course Name
+      </Text>
+      <View style={styles.inputbox_main_container}>
+        <DropDownPicker
+          open={open}
+          value={selectedValue}
+          items={items}
+          setOpen={setOpen}
+          setValue={setSelectedValue}
+          setItems={items}
+          placeholder="Select"
+          style={{ borderWidth: 0 }} // Optional: if you want to customize the dropdown style
+        />
+        <Text
+          style={{
+            alignSelf: 'flex-end',
+            color: '#0567F5',
+            fontWeight: '500',
+            fontSize: 14,
+            textDecorationLine: 'underline',
+            marginTop: 10, // Adjust this value to your preference
+          }}
+        >
+          Request Course
+        </Text>
+      </View>
+    </View> */}
+
           </View>
         </View>
 
@@ -575,6 +568,11 @@ const styles = StyleSheet.create({
     height: 43,
   },
   inputbox_main_container: {
+    gap: 12,
+    alignItems: "center",
+    width: "89%",
+  },
+  inputbox_main_container1: {
     gap: 12,
     alignItems: "center",
     width: "100%",
