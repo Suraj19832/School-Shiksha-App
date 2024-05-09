@@ -517,7 +517,7 @@ const Registration = ({ navigation }) => {
       <ScrollView style={styles.scrollView}>
       <StatusBar
         animated={true}
-        backgroundColor="white"
+        // backgroundColor="white"
       
       />
         <View style={styles.mainView}>

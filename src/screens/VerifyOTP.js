@@ -72,6 +72,7 @@ const VerifyOTP = ({ navigation }) => {
 
     const formData = new FormData();
     formData.append("otp", otp.join(""));
+    formData.append("email", email);
 
     // Send POST request with FormData
     sendPostData("auth/forget-password/verify-otp", formData)

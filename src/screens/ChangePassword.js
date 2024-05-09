@@ -226,7 +226,7 @@ const ChangePassword = ({ navigation }) => {
 export default ChangePassword;
 const styles = StyleSheet.create({
   container: {
-    top: 53,
+    marginTop:10
   },
   main_content: {
     marginHorizontal: 20,
