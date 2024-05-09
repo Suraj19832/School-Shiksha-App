@@ -7,6 +7,7 @@ export const AuthProvider = ({children}) =>{
     const [test, setTest] = useState("Test Me")
     const [myLoading, setmyLoading] = useState(false)
     const [userToken, setuserToken] = useState(null)
+    const [phoneNumber ,setphoneNumber]= useState(null)
 
     const isLoggedIn = async()=>{
         try {
@@ -25,7 +26,7 @@ export const AuthProvider = ({children}) =>{
     },[])
 
     return (
-        <AuthContext.Provider value={{test,myLoading,userToken,setuserToken,setmyLoading}}>
+        <AuthContext.Provider value={{test,myLoading,userToken,setuserToken,setmyLoading,setphoneNumber}}>
             {children}
         </AuthContext.Provider>
     )

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -10,6 +10,7 @@ import {
   KeyboardAvoidingView,
   ActivityIndicator,
   ToastAndroid,
+  Alert,
 } from "react-native";
 import {
   Feather,
@@ -17,7 +18,14 @@ import {
   EvilIcons,
   FontAwesome5,
 } from "@expo/vector-icons";
-import { sendPostData } from "../../Helper/Helper";
+import {
+  getrequestwithtoken,
+  objectToFormData,
+  postDataWithFormData,
+  postDataWithFormDataWithToken,
+  sendPostData,
+} from "../../Helper/Helper";
+import { AuthContext } from "../../Utils/context/AuthContext";
 // import { useRoute } from "@react-navigation/native";
 const ChangePassword = ({ navigation }) => {
   // const route = useRoute();
@@ -25,6 +33,7 @@ const ChangePassword = ({ navigation }) => {
 
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [currentPassword, setcurrentPassword] = useState("");
   const [newPassToggle, setNewPassToggle] = useState(false);
   const [confirmToggle, setConfirmToggle] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -33,10 +42,13 @@ const ChangePassword = ({ navigation }) => {
     setNewPassword(text);
     checkPasswordsMatch(text, confirmPassword);
   };
-
+  const handleCurrentPassword = (text) => {
+    setcurrentPassword(text);
+  };
   const handleConfirmPasswordChange = (text) => {
     setConfirmPassword(text);
     checkPasswordsMatch(newPassword, text);
+    // console.log(confirmPassword)
   };
 
   const checkPasswordsMatch = (newPassword, confirmPassword) => {
@@ -70,6 +82,67 @@ const ChangePassword = ({ navigation }) => {
   //         console.error(err, "error message from login side");
   //       });
   //   };
+
+  const [changePasswordServerMessage, setchangePasswordServerMessage] = useState("")
+  const { userToken } = useContext(AuthContext);
+  const handleResetPassword = async() => {
+    console.log("reset password button was clicked");
+    setIsLoading(true);
+    const postData = {
+      mobile: LoginUserNumber,
+      current_password: currentPassword,
+      new_password: newPassword,
+      confirm_password: confirmPassword,
+    };
+    // Convert object data to FormData
+    const formDatablock = objectToFormData(postData);
+
+    postDataWithFormDataWithToken("auth/change-password", formDatablock ,userToken)
+      .then((res) => {
+        console.log("Response from API for block:", res);
+         setchangePasswordServerMessage(res?.message);
+        // Do something with the response data, if needed
+        if (res?.status) {
+          console.log("====================================",res?.message)
+          showToast("Password Reset Successfull");
+          setIsLoading(false)
+        }else{
+          console.log("jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj",res)
+          
+          console.log(res)
+          // showToast("Passord Not Match");
+          Alert.alert("Alert", "Password Not Match");
+          setIsLoading(false)
+        }
+       
+      })
+      .catch((error) => {
+        console.error("Error posting c:ss", error?.message);
+        
+        setIsLoading(false)
+      });
+  };
+
+  const [LoginUserNumber, setLoginUserNumber] = useState("")
+
+  useEffect(() => {
+    // Define the URL you want to fetch data from
+    const apiUrl = "/student/profile";
+
+    // Call the getstatedata function with the API URL
+    getrequestwithtoken(apiUrl ,userToken)
+      .then((res) => {
+        // console.log('Response from API:', res.data);
+        // setStateData(res?.data);
+        console.log(".................................................",res?.data?.mobile) 
+        setLoginUserNumber(res?.data?.mobile)
+        // Do something with the response data, e.g., update component state
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, []);
+
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
       <ScrollView>
@@ -83,19 +156,19 @@ const ChangePassword = ({ navigation }) => {
           />
           <View style={styles.loginImage}>
             <Image
-              source={require("../../assets/img/forgetPassImg.png")}
+              source={require("../../assets/img/changepasswordImage.png")}
               style={styles.img}
             />
           </View>
           <View style={styles.welcome_texts}>
-            <Text style={styles.welcome}>Reset Password</Text>
-            <Text style={styles.text}>Please Enter a strong new password</Text>
+            <Text style={styles.welcome}>Change Password</Text>
+            <Text style={styles.text}>Please enter a strong new password</Text>
           </View>
 
           <View style={styles.inputbox_container_parent}>
             <View style={styles.inputbox_main_container}>
               <View style={styles.labelContainer}>
-                <Text style={styles.label}>Enter Current Password</Text>
+                <Text style={styles.label}>Current Password</Text>
               </View>
               <View style={styles.inputbox_password}>
                 <View style={styles.passwordInputContainer}>
@@ -107,10 +180,10 @@ const ChangePassword = ({ navigation }) => {
                   />
                   <TextInput
                     style={styles.input}
-                    placeholder="Confirm Password"
+                    placeholder="Enter Current Password "
                     secureTextEntry={!confirmToggle}
                     placeholderTextColor="rgba(166, 166, 166, 1)"
-                    onChangeText={handleConfirmPasswordChange}
+                    onChangeText={handleCurrentPassword}
                   />
                 </View>
                 <TouchableOpacity
@@ -143,7 +216,7 @@ const ChangePassword = ({ navigation }) => {
                   />
                   <TextInput
                     style={styles.input}
-                    placeholder="Enter Password"
+                    placeholder="Enter New Password "
                     secureTextEntry={!newPassToggle}
                     placeholderTextColor="rgba(166, 166, 166, 1)"
                     onChangeText={handleNewPasswordChange}
@@ -178,10 +251,10 @@ const ChangePassword = ({ navigation }) => {
                   />
                   <TextInput
                     style={styles.input}
-                    placeholder="Enter Password"
+                    placeholder="Enter Confirm Password"
                     secureTextEntry={!newPassToggle}
                     placeholderTextColor="rgba(166, 166, 166, 1)"
-                    onChangeText={handleNewPasswordChange}
+                    onChangeText={handleConfirmPasswordChange}
                   />
                 </View>
                 <TouchableOpacity
@@ -206,12 +279,12 @@ const ChangePassword = ({ navigation }) => {
                   isButtonActive ? null : styles.disabled,
                 ]}
                 disabled={!isButtonActive || isLoading}
-                // onPress={() => handleConfirmPassword()}
+                onPress={() => handleResetPassword()}
               >
                 {isLoading ? (
                   <ActivityIndicator size="small" color="#ffffff" />
                 ) : (
-                  <Text style={styles.submitText}>Reset Password</Text>
+                  <Text style={styles.submitText}>Change Password</Text>
                 )}
               </TouchableOpacity>
             </View>
@@ -226,7 +299,7 @@ const ChangePassword = ({ navigation }) => {
 export default ChangePassword;
 const styles = StyleSheet.create({
   container: {
-    marginTop:10
+    marginTop: 10,
   },
   main_content: {
     marginHorizontal: 20,

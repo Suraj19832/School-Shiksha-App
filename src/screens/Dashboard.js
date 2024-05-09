@@ -451,7 +451,7 @@ const Dashboard = ({ navigation }) => {
                   )
                 }
               >
-                <Text style={styles.menuText}>Reset Password</Text>
+                <Text style={styles.menuText}>Change Password</Text>
               </TouchableOpacity>
             </View>
             <View style={styles.hairlineMenu} />

@@ -30,6 +30,28 @@ export const getstatedata = async (endpoint) => {
   }
 };
 
+export const getrequestwithtoken = async (endpoint, token) => {
+  const url = `${Configs.API_BASE_URL_V1}/${endpoint}`;
+  try {
+    const response = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (!response.ok) {
+      throw new Error('Failed to fetch data');
+    }
+    const data = await response.json();
+    console.log(data);
+    return data; // Return the data here
+  } catch (error) {
+    console.error('Error fetching dataa:', error);
+    return null;
+  }
+};
+
+
+
 // export async function authSendPostData(endpoint, obj) {
 //   const token = await readData("access_token");
 //   const url = `${Configs.API_BASE_URL_V1}/${endpoint}`;
@@ -69,6 +91,7 @@ export const postDataWithFormData = async (endpoint, formData) => {
     const response = await fetch(url, {
       method: 'POST',
       body: formData,
+
     });
     if (!response.ok) {
       throw new Error('Failed to post data');
@@ -80,6 +103,31 @@ export const postDataWithFormData = async (endpoint, formData) => {
     return null;
   }
 };
+
+
+export const postDataWithFormDataWithToken = async (endpoint, formData ,token) => {
+  const url = `${Configs.API_BASE_URL_V1}/${endpoint}`;
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      body: formData,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (!response.ok) {
+      throw new Error('Failed to post data');
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error posting data:', error);
+    return null;
+    
+  }
+};
+
+
 
 export const objectToFormData = (obj) => {
   const formData = new FormData();
