@@ -61,7 +61,7 @@ const GetInTouch = ({ navigation }) => {
         <View style={styles.details_box}>
           <View style={styles.details}>
             <View>
-              <Text style={styles.text}>Name</Text>
+              <Text style={styles.text}>Your Name</Text>
               <TextInput
                 style={styles.input}
                 value={name}

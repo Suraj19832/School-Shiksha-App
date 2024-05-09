@@ -93,7 +93,7 @@ const ForgetPassword = ({ navigation }) => {
             />
           </View>
           <View style={styles.welcome_texts}>
-            <Text style={styles.welcome}>Forget Password?</Text>
+            <Text style={styles.welcome}>Forgot Password?</Text>
             <Text style={styles.text}>Please Enter a strong new password</Text>
           </View>
 

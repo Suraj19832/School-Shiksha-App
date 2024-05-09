@@ -889,7 +889,7 @@ const EditProfile = ({ navigation }) => {
                       }}
                     >
                       <Image
-                        source={require("../../assets/img/presentation.png")}
+                        source={require("../../assets/icons/presentation.png")}
                         style={styles.iconImgStyle}
                         color="rgba(0, 54, 126, 1)"
                       />

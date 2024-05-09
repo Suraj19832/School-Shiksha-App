@@ -29,7 +29,7 @@ const NotificationContainer = (props) => {
           flexDirection: "row",
           justifyContent: "space-between",
           alignItems: "center",
-          marginTop: 15,
+          marginTop: 8,
           backgroundColor: "white",
           paddingVertical: 15,
         }}
@@ -75,7 +75,7 @@ const Notification = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <Header
-        title="Notification"
+        title="Notifications"
         navigateTo={() => navigation.navigate("Dashboard")}
       />
       <ScrollView>
@@ -145,6 +145,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: Dimensions.get("screen").height * 1.2,
     backgroundColor: "#FFFCCE",
+    paddingTop: 12,
   },
   innerView: {
     width: "90%",

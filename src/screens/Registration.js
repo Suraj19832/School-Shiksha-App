@@ -26,6 +26,7 @@ import {
   FontAwesome5,
   Feather,
   Octicons,
+  EvilIcons,
 } from "@expo/vector-icons";
 import { Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
@@ -515,11 +516,10 @@ const Registration = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView}>
-      <StatusBar
-        animated={true}
-        // backgroundColor="white"
-      
-      />
+        <StatusBar
+          animated={true}
+          // backgroundColor="white"
+        />
         <View style={styles.mainView}>
           <View style={styles.innerView}>
             <FontAwesome5
@@ -563,7 +563,7 @@ const Registration = ({ navigation }) => {
                   <Feather name="user" size={16} color="rgba(0, 54, 126, 1)" />
                   <TextInput
                     style={styles.input}
-                    placeholder="Enter Your Full Name"
+                    placeholder="Username"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
                     value={formData.name}
                     onChangeText={(text) => handleInputChange("name", text)}
@@ -663,7 +663,7 @@ const Registration = ({ navigation }) => {
                       fontSize: 18,
                     }}
                   >
-                    WhatsApp Number
+                    Whatsapp Number
                   </Text>
                 </View>
                 <View style={styles.inputbox_container}>
@@ -675,7 +675,7 @@ const Registration = ({ navigation }) => {
                   <TextInput
                     style={styles.input}
                     keyboardType="numeric"
-                    placeholder="Enter your WhatsApp number"
+                    placeholder="Phone"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
                     value={formData.whatsapp_number}
                     onChangeText={(text) =>
@@ -725,77 +725,7 @@ const Registration = ({ navigation }) => {
                   <Text style={{ color: "red" }}>{emailError}</Text>
                 ) : null}
               </View>
-              {/* Religion */}
-              <View style={styles.inputbox_main_container}>
-                <View>
-                  <Text
-                    style={{
-                      color: "rgba(0, 54, 126, 1)",
-                      fontWeight: "500",
-                      fontSize: 18,
-                    }}
-                  >
-                    Nationality
-                  </Text>
-                </View>
-                <View style={styles.inputbox_container}>
-                  <MaterialCommunityIcons
-                    name="home-map-marker"
-                    size={16}
-                    color="rgba(0, 54, 126, 1)"
-                  />
-                  <TextInput
-                    style={styles.input}
-                    placeholder="Enter Nationality"
-                    placeholderTextColor="rgba(166, 166, 166, 1)"
-                    value={formData.nationality}
-                    onChangeText={(text) =>
-                      handleInputChange("nationality", text)
-                    }
-                    onBlur={() => handleInputBlur("nationality")}
-                  />
-                </View>
-                {!formErrors.nationality &&
-                  !formData.nationality &&
-                  fieldTouched.nationality && (
-                    <Text style={{ color: "red" }}>
-                      Please enter Nationality{" "}
-                    </Text>
-                  )}
-              </View>
-              <View style={styles.inputbox_main_container}>
-                <View>
-                  <Text
-                    style={{
-                      color: "rgba(0, 54, 126, 1)",
-                      fontWeight: "500",
-                      fontSize: 18,
-                    }}
-                  >
-                    Religion
-                  </Text>
-                </View>
-                <View style={styles.inputbox_container}>
-                  <MaterialCommunityIcons
-                    name="home-map-marker"
-                    size={16}
-                    color="rgba(0, 54, 126, 1)"
-                  />
-                  <TextInput
-                    style={styles.input}
-                    placeholder="Enter Religion"
-                    placeholderTextColor="rgba(166, 166, 166, 1)"
-                    value={formData.religion}
-                    onChangeText={(text) => handleInputChange("religion", text)}
-                    onBlur={() => handleInputBlur("religion")}
-                  />
-                </View>
-                {formErrors.religion &&
-                  !formData.religion &&
-                  fieldTouched.religion && (
-                    <Text style={{ color: "red" }}>Please enter Religion </Text>
-                  )}
-              </View>
+
               {/* date of birth  */}
 
               <View style={styles.inputbox_main_container}>
@@ -811,15 +741,13 @@ const Registration = ({ navigation }) => {
                   </Text>
                 </View>
                 <View style={styles.inputbox_container}>
-                  <Feather
-                    name="calendar"
-                    size={16}
-                    color="rgba(0, 54, 126, 1)"
-                    onPress={showDatePicker}
+                  <Image
+                    style={styles.iconImage}
+                    source={require("../../assets/icons/calendar.png")}
                   />
                   <TextInput
                     style={styles.input}
-                    placeholder="YY/MM/DD"
+                    placeholder="Date of Birth"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
                     value={userDetails.date_of_birth}
                     onChangeText={(text) =>
@@ -839,37 +767,6 @@ const Registration = ({ navigation }) => {
               </View>
 
               {/* class  */}
-              {/* <View style={styles.inputbox_main_container}>
-      <View>
-        <Text style={{ color: "rgba(0, 54, 126, 1)", fontWeight: "500", fontSize: 18 }}>
-          Class
-        </Text>
-      </View>
-      <View style={[styles.inputbox_container, { justifyContent: "space-between" }]}>
-        <View style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 8 }}>
-          <FontAwesome5 name="chalkboard-teacher" size={16} color="rgba(0, 54, 126, 1)" />
-          <TextInput
-            style={styles.input}
-            placeholder="Select"
-            placeholderTextColor="rgba(166, 166, 166, 1)"
-            value={formData.class}
-            onChangeText={(text) => handleInputChange("class", text)}
-            onBlur={() => handleInputBlur("class")}
-          />
-        </View>
-        <TouchableOpacity onPress={handleArrowClick}>
-          <AntDesign name={showComponent ? "caretup" : "caretdown"} size={16} color="rgba(0, 54, 126, 1)" />
-        </TouchableOpacity>
-      </View>
-      {showComponent && (
-        <View>
-
-        </View>
-      )}
-      {formErrors.class && !formData.class && fieldTouched.class && (
-        <Text style={{ color: "red" }}>Please select class</Text>
-      )}
-    </View> */}
 
               <View style={styles.inputbox_main_container}>
                 <View>
@@ -898,14 +795,13 @@ const Registration = ({ navigation }) => {
                         gap: 8,
                       }}
                     >
-                      <MaterialCommunityIcons
-                        name="police-station"
-                        size={16}
-                        color="rgba(0, 54, 126, 1)"
+                      <Image
+                        style={styles.iconImage}
+                        source={require("../../assets/icons/presentation.png")}
                       />
                       <TextInput
                         style={styles.input}
-                        placeholder="Choose Option"
+                        placeholder="Select"
                         placeholderTextColor="rgba(166, 166, 166, 1)"
                         value={inputValueclass}
                         onChangeText={handleInputChangeclass}
@@ -1051,14 +947,13 @@ const Registration = ({ navigation }) => {
                         gap: 8,
                       }}
                     >
-                      <MaterialCommunityIcons
-                        name="police-station"
-                        size={16}
-                        color="rgba(0, 54, 126, 1)"
+                      <Image
+                        style={styles.iconImage}
+                        source={require("../../assets/icons/gender (1).png")}
                       />
                       <TextInput
                         style={styles.input}
-                        placeholder="Choose Option"
+                        placeholder="Select"
                         placeholderTextColor="rgba(166, 166, 166, 1)"
                         value={inputValuegender}
                         onChangeText={handleInputChangegender}
@@ -1093,6 +988,81 @@ const Registration = ({ navigation }) => {
                   </View>
                 )}
               </View>
+              {/* Nationality */}
+              <View style={styles.inputbox_main_container}>
+                <View>
+                  <Text
+                    style={{
+                      color: "rgba(0, 54, 126, 1)",
+                      fontWeight: "500",
+                      fontSize: 18,
+                    }}
+                  >
+                    Nationality
+                  </Text>
+                </View>
+                <View style={styles.inputbox_container}>
+                  {/* <MaterialCommunityIcons
+                    name="home-map-marker"
+                    size={16}
+                    color="rgba(0, 54, 126, 1)"
+                  /> */}
+                  <Image
+                    source={require("../../assets/icons/united-nations.png")}
+                    style={styles.iconImage}
+                  />
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Select"
+                    placeholderTextColor="rgba(166, 166, 166, 1)"
+                    value={formData.nationality}
+                    onChangeText={(text) =>
+                      handleInputChange("nationality", text)
+                    }
+                    onBlur={() => handleInputBlur("nationality")}
+                  />
+                </View>
+                {!formErrors.nationality &&
+                  !formData.nationality &&
+                  fieldTouched.nationality && (
+                    <Text style={{ color: "red" }}>
+                      Please enter Nationality{" "}
+                    </Text>
+                  )}
+              </View>
+              {/* Religion */}
+              <View style={styles.inputbox_main_container}>
+                <View>
+                  <Text
+                    style={{
+                      color: "rgba(0, 54, 126, 1)",
+                      fontWeight: "500",
+                      fontSize: 18,
+                    }}
+                  >
+                    Religion
+                  </Text>
+                </View>
+                <View style={styles.inputbox_container}>
+                  <Image
+                    source={require("../../assets/icons/religion.png")}
+                    style={styles.iconImage}
+                  />
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Select"
+                    placeholderTextColor="rgba(166, 166, 166, 1)"
+                    value={formData.religion}
+                    onChangeText={(text) => handleInputChange("religion", text)}
+                    onBlur={() => handleInputBlur("religion")}
+                  />
+                </View>
+                {formErrors.religion &&
+                  !formData.religion &&
+                  fieldTouched.religion && (
+                    <Text style={{ color: "red" }}>Please enter Religion </Text>
+                  )}
+              </View>
               {/* full address  */}
               <View style={styles.inputbox_main_container}>
                 <View>
@@ -1107,10 +1077,9 @@ const Registration = ({ navigation }) => {
                   </Text>
                 </View>
                 <View style={styles.inputbox_container}>
-                  <MaterialCommunityIcons
-                    name="home-map-marker"
-                    size={16}
-                    color="rgba(0, 54, 126, 1)"
+                  <Image
+                    source={require("../../assets/icons/home (1).png")}
+                    style={styles.iconImage}
                   />
                   <TextInput
                     style={styles.input}
@@ -1158,10 +1127,9 @@ const Registration = ({ navigation }) => {
                         gap: 8,
                       }}
                     >
-                      <MaterialCommunityIcons
-                        name="police-station"
-                        size={16}
-                        color="rgba(0, 54, 126, 1)"
+                      <Image
+                        style={styles.iconImage}
+                        source={require("../../assets/icons/map.png")}
                       />
                       <TextInput
                         style={styles.input}
@@ -1216,10 +1184,9 @@ const Registration = ({ navigation }) => {
                   </Text>
                 </View>
                 <View style={styles.inputbox_container}>
-                  <MaterialCommunityIcons
-                    name="map-marker-path"
-                    size={16}
-                    color="rgba(0, 54, 126, 1)"
+                  <Image
+                    style={styles.iconImage}
+                    source={require("../../assets/icons/police-station.png")}
                   />
                   <TextInput
                     style={styles.input}
@@ -1328,10 +1295,9 @@ const Registration = ({ navigation }) => {
                         gap: 8,
                       }}
                     >
-                      <MaterialCommunityIcons
-                        name="police-station"
-                        size={16}
-                        color="rgba(0, 54, 126, 1)"
+                      <Image
+                        style={styles.iconImage}
+                        source={require("../../assets/icons/district (1).png")}
                       />
                       <TextInput
                         style={styles.input}
@@ -1456,7 +1422,10 @@ const Registration = ({ navigation }) => {
                   </Text>
                 </View>
                 <View style={styles.inputbox_container}>
-                  <Feather name="list" size={16} color="rgba(0, 54, 126, 1)" />
+                  <Image
+                    style={styles.iconImage}
+                    source={require("../../assets/icons/identity.png")}
+                  />
                   <TextInput
                     style={styles.input}
                     keyboardType="numeric"
@@ -1495,14 +1464,13 @@ const Registration = ({ navigation }) => {
                   </Text>
                 </View>
                 <View style={styles.inputbox_container}>
-                  <MaterialIcons
-                    name="password"
-                    size={16}
-                    color="rgba(0, 54, 126, 1)"
+                  <Image
+                    style={styles.iconImage}
+                    source={require("../../assets/icons/pin-code.png")}
                   />
                   <TextInput
                     style={styles.input}
-                    placeholder="Enter pincode code"
+                    placeholder="Enter Pin Code"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
                     value={formData.pincode}
                     onChangeText={(text) => handleInputChange("pincode", text)}
@@ -1528,7 +1496,7 @@ const Registration = ({ navigation }) => {
                       fontSize: 18,
                     }}
                   >
-                    Member Plans
+                    Member Plan
                   </Text>
                 </View>
                 <View
@@ -1546,14 +1514,13 @@ const Registration = ({ navigation }) => {
                         gap: 8,
                       }}
                     >
-                      <MaterialCommunityIcons
-                        name="police-station"
-                        size={16}
-                        color="rgba(0, 54, 126, 1)"
+                      <Image
+                        style={styles.iconImage}
+                        source={require("../../assets/icons/premium.png")}
                       />
                       <TextInput
                         style={styles.input}
-                        placeholder="Choose Option"
+                        placeholder="Select"
                         placeholderTextColor="rgba(166, 166, 166, 1)"
                         value={inputValueplan}
                         onChangeText={handleInputChangeplan}
@@ -1597,10 +1564,9 @@ const Registration = ({ navigation }) => {
                   </Text>
                 </View>
                 <View style={styles.inputbox_container}>
-                  <FontAwesome5
-                    name="ticket-alt"
-                    size={16}
-                    color="rgba(0, 54, 126, 1)"
+                  <Image
+                    style={styles.iconImage}
+                    source={require("../../assets/icons/referral-code.png")}
                   />
                   <TextInput
                     style={[styles.input, {}]}
@@ -1637,14 +1603,13 @@ const Registration = ({ navigation }) => {
                         gap: 8,
                       }}
                     >
-                      <MaterialCommunityIcons
-                        name="police-station"
-                        size={16}
-                        color="rgba(0, 54, 126, 1)"
+                      <Image
+                        style={styles.iconImage}
+                        source={require("../../assets/icons/premium.png")}
                       />
                       <TextInput
                         style={styles.input}
-                        placeholder="Choose Option"
+                        placeholder="Select"
                         placeholderTextColor="rgba(166, 166, 166, 1)"
                         value={inputValuePayment}
                         onChangeText={handleInputChangePayment}
@@ -1710,14 +1675,13 @@ const Registration = ({ navigation }) => {
                       gap: 8,
                     }}
                   >
-                    <MaterialCommunityIcons
-                      name="lock"
-                      size={16}
-                      color="rgba(0, 54, 126, 1)"
+                    <Image
+                      style={styles.iconImage}
+                      source={require("../../assets/icons/padlock.png")}
                     />
                     <TextInput
                       style={styles.input}
-                      placeholder="Enter your password"
+                      placeholder="Password"
                       placeholderTextColor="rgba(166, 166, 166, 1)"
                       secureTextEntry={!passwordVisible}
                       value={password}
@@ -1862,7 +1826,7 @@ const styles = StyleSheet.create({
   },
   inputbox_container: {
     flexDirection: "row",
-    textAlign: "center",
+    // textAlign: "center",
     alignItems: "center",
     borderWidth: 1,
     borderColor: "#03357D",
@@ -1872,7 +1836,10 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     gap: 8,
   },
-
+  lockIcon: {
+    top: 1.5,
+    left: -6,
+  },
   buttonbox: {
     flexDirection: "row",
     textAlign: "center",
@@ -1908,6 +1875,11 @@ const styles = StyleSheet.create({
   input: {
     width: "82%",
     color: "black",
+  },
+  iconImage: {
+    height: 17,
+    width: 17,
+    // right: 3,
   },
 
   modalContainer: {

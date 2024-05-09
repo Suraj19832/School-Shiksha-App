@@ -87,7 +87,13 @@ const VerifyEmail = ({ navigation }) => {
           </View>
 
           <View style={styles.welcome_texts}>
-            <Text style={styles.welcome}>Enter Your Email Id</Text>
+            <View>
+              <Text style={styles.welcome}>Enter Your Email Id</Text>
+              <Text style={styles.text}>
+                We Will send You one time password on this
+                <Text style={styles.emailText}> Email Id</Text>
+              </Text>
+            </View>
           </View>
 
           <View style={styles.inputbox_container_parent}>
@@ -141,10 +147,10 @@ export default VerifyEmail;
 const styles = StyleSheet.create({
   container: {
     // top: 53,
+    marginTop: 10,
   },
   main_content: {
     marginHorizontal: 20,
-    marginTop: 10,
   },
   loginImage: {
     alignItems: "center",
@@ -159,13 +165,27 @@ const styles = StyleSheet.create({
     left: 0,
   },
   welcome_texts: {
-    marginVertical: 4,
+    marginVertical: 10,
+    marginHorizontal: 20,
   },
   welcome: {
+    textAlign: "center",
     fontSize: 30,
     fontWeight: "600",
     color: "rgba(55, 55, 55, 1)",
     lineHeight: 45,
+  },
+  text: {
+    fontWeight: "400",
+    fontSize: 12,
+    lineHeight: 18,
+    textAlign: "center",
+    color: "rgba(55, 55, 55, 1)",
+    margin: 8,
+  },
+  emailText: {
+    fontWeight: "600",
+    color: "rgba(55, 55, 55, 1)",
   },
   input: {
     fontWeight: "400",

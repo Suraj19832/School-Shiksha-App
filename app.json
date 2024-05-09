@@ -9,7 +9,7 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#FFFCCE"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -22,14 +22,22 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.desun55.schoolshikshaapp"
+      "package": "com.desun.schoolshikshaapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
+    "plugins": [
+      [
+        "expo-document-picker",
+        {
+          "iCloudContainerEnvironment": "Production"
+        }
+      ]
+    ],
     "extra": {
       "eas": {
-        "projectId": "a21d2596-41cf-4a93-8b7a-263de09fc710"
+        "projectId": "e3835013-2df0-458a-a666-f50f6b98d503"
       }
     }
   }

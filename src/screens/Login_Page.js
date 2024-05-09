@@ -18,7 +18,7 @@ import { writeData } from "../../Utils/utils";
 import { AuthContext } from "../../Utils/context/AuthContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 const Login_Page = ({ navigation }) => {
-  const {setuserToken, setmyLoading} = useContext(AuthContext)
+  const { setuserToken, setmyLoading } = useContext(AuthContext);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [validationError, setValidationError] = useState({});
   const [password, setPassword] = useState("");
@@ -82,9 +82,9 @@ const Login_Page = ({ navigation }) => {
           if (res?.status) {
             showToast(res.message);
             // navigation.navigate("Dashboard");
-            setuserToken(res?.data?.access_token)
-            AsyncStorage.setItem('userToken',res?.data?.access_token)
-            setmyLoading(false)
+            setuserToken(res?.data?.access_token);
+            AsyncStorage.setItem("userToken", res?.data?.access_token);
+            setmyLoading(false);
           } else {
             showToast(res.errors?.password || res.errors?.username);
           }
@@ -116,7 +116,7 @@ const Login_Page = ({ navigation }) => {
           </View>
           <View style={styles.welcome_texts}>
             <Text style={styles.welcome}>Welcome Back!</Text>
-            <Text style={styles.text}>Log in to your existing account</Text>
+            <Text style={styles.text}>Log In to your existing account</Text>
           </View>
 
           <View style={styles.inputbox_container_parent}>
@@ -125,11 +125,16 @@ const Login_Page = ({ navigation }) => {
                 <Text style={styles.label}>Phone</Text>
               </View>
               <View style={styles.inputbox_container}>
-                <Feather name="mail" size={16} color="rgba(0, 54, 126, 1)" />
+                <Feather
+                  name="phone-call"
+                  size={16}
+                  color="rgba(0, 54, 126, 1)"
+                />
                 <TextInput
                   placeholder={"Enter Mobile Number"}
                   onChangeText={(value) => setPhoneNumber(value)}
-                  style={styles.input}r
+                  style={styles.input}
+                  r
                 />
               </View>
               {validationError.phoneNumber && (
@@ -150,7 +155,7 @@ const Login_Page = ({ navigation }) => {
                 <TouchableOpacity
                   onPress={() => navigation.navigate("VerifyEmail")}
                 >
-                  <Text style={styles.forgotPassword}>Forget Password?</Text>
+                  <Text style={styles.forgotPassword}>Forgot Password?</Text>
                 </TouchableOpacity>
               </View>
               <View style={styles.inputbox_password}>
@@ -231,7 +236,8 @@ export default Login_Page;
 
 const styles = StyleSheet.create({
   container: {
-    top: 53,
+    // top: 53,
+    marginTop: 10,
     paddingBottom: 500,
   },
   main_content: {

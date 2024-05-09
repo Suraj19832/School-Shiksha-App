@@ -19,6 +19,7 @@ export default function HowtoApply({ navigation }) {
               Free College admission form fill up tutorial
             </Text>
             <WebView
+              containerStyle={{ borderRadius: 15 }}
               style={styles.video}
               javaScriptEnabled={true}
               domStorageEnabled={true}
@@ -33,6 +34,7 @@ export default function HowtoApply({ navigation }) {
               Free College admission form fill up tutorial
             </Text>
             <WebView
+              containerStyle={{ borderRadius: 15 }}
               style={styles.video}
               javaScriptEnabled={true}
               domStorageEnabled={true}
@@ -44,23 +46,25 @@ export default function HowtoApply({ navigation }) {
           </View>
           <View style={styles.box}>
             <Text style={styles.text}>
-              Paid College admission form fill up tutorial
+              Free College admission form fill up tutorial
             </Text>
             <WebView
+              containerStyle={{ borderRadius: 15 }}
               style={styles.video}
               javaScriptEnabled={true}
               domStorageEnabled={true}
               allowsFullscreenVideo={true}
               source={{
-                uri: "https://www.youtube.com/embed/90OC4TQ7uHc?rel=0",
+                uri: "https://www.youtube.com/embed/OMBEtL6-mnU?rel=0",
               }}
             />
           </View>
           <View style={styles.box}>
             <Text style={styles.text}>
-              Online Course admission form fill up tutorial
+              Free College admission form fill up tutorial
             </Text>
             <WebView
+              containerStyle={{ borderRadius: 15 }}
               style={styles.video}
               javaScriptEnabled={true}
               domStorageEnabled={true}
@@ -102,9 +106,10 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 196,
     width: "100%",
-    borderRadius: 60,
+    borderRadius: 10,
     marginTop: 8,
-    zIndex: 100,
+    // zIndex: 100,
+    marginTop: -1,
   },
   box: {
     marginTop: 15,
@@ -114,6 +119,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 21,
     color: "#00367E",
+    marginBottom: 10,
   },
   button: {
     backgroundColor: "#FFFAE7",

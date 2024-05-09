@@ -82,7 +82,7 @@ const VerifyOTP = ({ navigation }) => {
           showToast(res.message);
           navigation.navigate("ForgetPassword", { email });
         } else {
-          showToast(res.errors?.otp);
+          showToast("Please enter the correct OTP");
         }
       })
       .catch((err) => {
@@ -135,17 +135,18 @@ const VerifyOTP = ({ navigation }) => {
           <View style={styles.welcome_texts}>
             <View>
               <Text style={styles.welcome}>OTP Verification</Text>
-              <Text style={styles.text}>
-                We Will send You one time password on {"     "}this
-                <Text style={styles.emailText}> Email Id</Text>
-              </Text>
             </View>
             <View>
               <View style={styles.editEmail}>
-                <Text style={styles.email}>abc@gmail.com</Text>
+                <Text style={styles.email}>{email}</Text>
                 <TouchableOpacity style={styles.editBtn}>
                   <MaterialIcons name="edit" size={9} color="white" />
-                  <Text style={styles.edittext}>Edit</Text>
+                  <Text
+                    style={styles.edittext}
+                    onPress={() => navigation.navigate("VerifyEmail")}
+                  >
+                    Edit
+                  </Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -240,6 +241,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: "rgba(55, 55, 55, 1)",
     lineHeight: 45,
+    marginBottom: 10,
   },
   text: {
     fontWeight: "400",
