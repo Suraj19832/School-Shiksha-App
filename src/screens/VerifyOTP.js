@@ -9,12 +9,40 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Platform,
+  ActivityIndicator,
+  ToastAndroid,
 } from "react-native";
 import { MaterialIcons, FontAwesome5 } from "@expo/vector-icons";
+import { sendPostData } from "../../Helper/Helper";
+import { useRoute } from "@react-navigation/native";
+import Header from "../../components/Header";
 
-const VerifyOTP = () => {
+const VerifyOTP = ({ navigation }) => {
+  const route = useRoute();
+  const { email } = route.params;
+
   const [otp, setOTP] = useState(["", "", "", ""]);
   const otpFields = [useRef(), useRef(), useRef(), useRef()];
+  const [timer, setTimer] = useState(30);
+  const [isLoading, setIsLoading] = useState(false);
+  const [resendOff, setResendOff] = useState(true);
+  function showToast(message) {
+    ToastAndroid.show(message, ToastAndroid.SHORT);
+  }
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTimer((prevTimer) => {
+        if (prevTimer === 0) {
+          clearInterval(interval);
+          setResendOff(false);
+        }
+        return prevTimer === 0 ? 0 : prevTimer - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [resendOff]);
 
   const handleOTPChange = (index, value) => {
     const newOTP = [...otp];
@@ -32,11 +60,61 @@ const VerifyOTP = () => {
     return otp.every((digit) => digit !== "");
   };
 
+  const resendOTP = () => {
+    // Logic to resend OTP
+    setTimer(30);
+    setResendOff(true);
+    handleResendOtp();
+  };
+
+  const handleForgetPassword = () => {
+    setIsLoading(true);
+
+    const formData = new FormData();
+    formData.append("otp", otp.join(""));
+
+    // Send POST request with FormData
+    sendPostData("auth/forget-password/verify-otp", formData)
+      .then((res) => {
+        setIsLoading(false);
+        if (res?.status) {
+          showToast(res.message);
+          navigation.navigate("ForgetPassword", { email });
+        } else {
+          showToast(res.errors?.otp);
+        }
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        console.error(err, "error message from login side");
+      });
+  };
+
+  const handleResendOtp = () => {
+    // Send OTP logic
+    const formData = new FormData();
+    formData.append("email", email);
+
+    // Send POST request with FormData
+    sendPostData("auth/forget-password", formData)
+      .then((res) => {
+        setIsLoading(false);
+        if (res?.status) {
+          showToast(res?.message);
+        } else {
+          showToast(res.errors?.email);
+        }
+      })
+      .catch((err) => {
+        console.error(err, "error message from login side");
+      });
+  };
+
   return (
     <KeyboardAvoidingView
-      // style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
+      {/* <Header navigateTo={navigation.goBack} /> */}
       <ScrollView style={styles.container}>
         <View style={styles.main_content}>
           <FontAwesome5
@@ -44,6 +122,7 @@ const VerifyOTP = () => {
             size={24}
             color="rgba(0, 54, 126, 1)"
             style={styles.arrowleft}
+            onPress={() => navigation.navigate("VerifyEmail")}
           />
           <View style={styles.loginImage}>
             <Image
@@ -83,13 +162,21 @@ const VerifyOTP = () => {
               ))}
             </View>
             <View>
-              <Text style={styles.timer}>00:30</Text>
+              <Text style={styles.timer}>
+                00:{timer < 10 ? `0${timer}` : timer}
+              </Text>
             </View>
             <View style={styles.resendview}>
-              <Text style={styles.sendotp}>
-                Didn't receive OTP?
-                <Text style={styles.resend}> Resend OTP</Text>
-              </Text>
+              <Text>Didn't receive OTP?</Text>
+              {resendOff ? (
+                <Text style={[styles.resend, { color: "grey" }]}>
+                  Resend OTP
+                </Text>
+              ) : (
+                <TouchableOpacity onPress={resendOTP}>
+                  <Text style={styles.resend}>Resend OTP</Text>
+                </TouchableOpacity>
+              )}
             </View>
           </View>
           <View style={styles.buttonBox}>
@@ -99,13 +186,17 @@ const VerifyOTP = () => {
                 isOTPComplete() ? styles.activeButton : styles.disabledButton,
               ]}
               onPress={() => {
-                if (isOTPComplete()) {
-                  // Handle submit action
+                if (isOTPComplete() && !isLoading) {
+                  handleForgetPassword();
                 }
               }}
-              disabled={!isOTPComplete()}
+              disabled={!isOTPComplete() || isLoading}
             >
-              <Text style={styles.submit}>Submit</Text>
+              {isLoading ? (
+                <ActivityIndicator size={"small"} color={"#ffffff"} />
+              ) : (
+                <Text style={styles.submit}>Submit</Text>
+              )}
             </TouchableOpacity>
           </View>
         </View>
@@ -118,12 +209,13 @@ export default VerifyOTP;
 
 const styles = StyleSheet.create({
   container: {
-    top: 53,
+    // top: 53,
   },
   main_content: {
     marginHorizontal: 20,
     justifyContent: "center",
     alignItems: "center",
+    marginTop: 10,
   },
   arrowleft: {
     position: "absolute",
@@ -139,7 +231,6 @@ const styles = StyleSheet.create({
   },
   welcome_texts: {
     marginVertical: 10,
-
     width: 250,
   },
   welcome: {
@@ -197,6 +288,8 @@ const styles = StyleSheet.create({
   },
   resendview: {
     marginVertical: 20,
+    flexDirection: "row",
+    justifyContent: "space-around",
   },
   sendotp: {
     fontWeight: "400",
@@ -209,25 +302,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     lineHeight: 21.09,
     color: "rgba(0, 54, 126, 1)",
-  },
-  container: {
-    top: 53,
-  },
-  main_content: {
-    marginHorizontal: 20,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  loginImage: {
-    alignItems: "center",
-  },
-  img: {
-    height: 220,
-    width: 250,
-  },
-  welcome_texts: {
-    marginVertical: 8,
-    width: 250,
   },
   otp: {
     flexDirection: "row",
@@ -244,37 +318,6 @@ const styles = StyleSheet.create({
     height: 50,
     textAlign: "center",
     fontSize: 20,
-  },
-  inputbox_container_parent: {
-    top: 18,
-    gap: 15,
-  },
-  inputbox_main_container: {
-    gap: 12,
-  },
-  inputbox_submit: {
-    marginTop: 10,
-    borderWidth: 2,
-    borderColor: "rgba(3, 53, 125, 1)",
-    padding: 16,
-    paddingHorizontal: 20,
-    borderRadius: 30,
-    backgroundColor: "rgba(3, 53, 125, 1)",
-    shadowColor: "rgba(3, 53, 125, 0.25)",
-  },
-  createSignup: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 12,
-    marginBottom: 20,
-  },
-  submitText: {
-    textAlign: "center",
-    color: "rgba(255, 255, 255, 1)",
-    fontWeight: "500",
-    fontSize: 16,
-    lineHeight: 18.75,
   },
   buttonBox: {
     width: "100%",

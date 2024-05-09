@@ -8,6 +8,8 @@ import {
   TouchableOpacity,
   ScrollView,
   KeyboardAvoidingView,
+  ActivityIndicator,
+  ToastAndroid,
 } from "react-native";
 import {
   Feather,
@@ -15,12 +17,19 @@ import {
   EvilIcons,
   FontAwesome5,
 } from "@expo/vector-icons";
+import { sendPostData } from "../../Helper/Helper";
+import { useRoute } from "@react-navigation/native";
+import Header from "../../components/Header";
 
-const Login_Page = () => {
+const ForgetPassword = ({ navigation }) => {
+  const route = useRoute();
+  const { email } = route.params;
+
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [newPassToggle, setNewPassToggle] = useState(false);
   const [confirmToggle, setConfirmToggle] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [isButtonActive, setIsButtonActive] = useState(false);
 
   const handleNewPasswordChange = (text) => {
@@ -37,8 +46,37 @@ const Login_Page = () => {
     setIsButtonActive(newPassword === confirmPassword && newPassword !== "");
   };
 
+  function showToast(message) {
+    ToastAndroid.show(message, ToastAndroid.SHORT);
+  }
+
+  const handleConfirmPassword = () => {
+    setIsLoading(true);
+
+    const formData = new FormData();
+    formData.append("new_password", newPassword);
+    formData.append("confirm_password", confirmPassword);
+    formData.append("email", email);
+
+    sendPostData("auth/reset-password", formData)
+      .then((res) => {
+        setIsLoading(false);
+        if (res?.status) {
+          showToast(res.message);
+          navigation.navigate("Login");
+        } else {
+          showToast(res.errors?.confirm_password);
+        }
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        console.error(err, "error message from login side");
+      });
+  };
+
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
+      {/* <Header navigateTo={navigation.goBack} /> */}
       <ScrollView>
         <View style={styles.main_content}>
           <FontAwesome5
@@ -46,6 +84,7 @@ const Login_Page = () => {
             size={24}
             color="rgba(0, 54, 126, 1)"
             style={styles.arrowleft}
+            onPress={navigation.goBack}
           />
           <View style={styles.loginImage}>
             <Image
@@ -135,10 +174,14 @@ const Login_Page = () => {
                   styles.inputbox_submit,
                   isButtonActive ? null : styles.disabled,
                 ]}
-                disabled={!isButtonActive}
-                onPress={() => console.log("Reset Password")}
+                disabled={!isButtonActive || isLoading}
+                onPress={() => handleConfirmPassword()}
               >
-                <Text style={styles.submitText}>Reset Password</Text>
+                {isLoading ? (
+                  <ActivityIndicator size="small" color="#ffffff" />
+                ) : (
+                  <Text style={styles.submitText}>Reset Password</Text>
+                )}
               </TouchableOpacity>
             </View>
             <View style={styles.createSignup}></View>
@@ -149,14 +192,15 @@ const Login_Page = () => {
   );
 };
 
-export default Login_Page;
+export default ForgetPassword;
 
 const styles = StyleSheet.create({
   container: {
-    top: 53,
+    // top: 53,
   },
   main_content: {
     marginHorizontal: 20,
+    marginTop: 10,
   },
   loginImage: {
     alignItems: "center",

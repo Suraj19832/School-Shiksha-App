@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   Text,
@@ -9,67 +9,100 @@ import {
   Alert,
   ScrollView,
   KeyboardAvoidingView,
+  ActivityIndicator,
+  ToastAndroid,
 } from "react-native";
 import { Feather, EvilIcons, MaterialCommunityIcons } from "@expo/vector-icons";
-
-const Login_Page = () => {
-  const [email, setEmail] = useState("");
+import { sendPostData } from "../../Helper/Helper";
+import { writeData } from "../../Utils/utils";
+import { AuthContext } from "../../Utils/context/AuthContext";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+const Login_Page = ({ navigation }) => {
+  const {setuserToken, setmyLoading} = useContext(AuthContext)
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [validationError, setValidationError] = useState({});
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [errors, setErrors] = useState({ email: "", password: "" });
-  const [isFormValid, setIsFormValid] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [buttonDisabled, setButtonDisabled] = useState(true);
 
-  const validateEmail = (email) => {
-    if (!email) {
-      return "Email is required.";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      return "Invalid email format.";
+  const errors = {};
+  function validateData() {
+    if (phoneNumber == null) {
+      errors.phoneNumber = "Mobile number is required";
     }
-    return "";
-  };
-
-  const validatePassword = (password) => {
-    if (!password) {
-      return "Password is required.";
-    } else if (password.length < 8) {
-      return "Password must be at least 8 characters long.";
-    } else if (
-      !/(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/.test(password)
-    ) {
-      return "Password must contain at least one capital letter, one special character, and one number.";
+    if (phoneNumber == "") {
+      errors.phoneNumber = "Mobile number is required";
     }
-    return "";
-  };
+    if (phoneNumber != "") {
+      if (phoneNumber?.length < 5) {
+        errors.phoneNumber = "Phone number should be 10 digit";
+      }
+    }
+    if (password == null) {
+      errors.password = "Password is required";
+    }
+    if (password == "") {
+      errors.password = "Password is required";
+    }
+    if (password != "") {
+      if (password?.length < 4) {
+        errors.password = "Password should be more than 6";
+      }
+    }
 
-  const handleChangeEmail = (text) => {
-    const errorMessage = validateEmail(text);
-    setEmail(text);
-    setErrors((prevErrors) => ({ ...prevErrors, email: errorMessage }));
-  };
+    setValidationError({});
 
-  const handleChangePassword = (text) => {
-    const errorMessage = validatePassword(text);
-    setPassword(text);
-    setErrors((prevErrors) => ({ ...prevErrors, password: errorMessage }));
-  };
+    if (Object.keys(errors)?.length > 0) {
+      setValidationError(errors);
 
-  useEffect(() => {
-    setIsFormValid(!errors.email && !errors.password && email && password);
-  }, [errors, email, password]);
-
-  const handleSubmit = () => {
-    if (isFormValid) {
-      // Perform form submission logic here
-      alert("Form Submitted Successfully!");
-      console.log("Form submitted successfully!");
+      return false;
+    }
+    return true;
+  }
+  function showToast(message) {
+    ToastAndroid.show(message, ToastAndroid.SHORT);
+  }
+  const handleLogin = () => {
+    if (validateData() === false) {
+      return;
     } else {
-      // Display error messages
-      Alert.alert(
-        "Form has errors",
-        "Please correct the errors before submitting."
-      );
+      setIsLoading(true);
+      setButtonDisabled(true);
+      // Create FormData object
+      const formData = new FormData();
+      formData.append("username", phoneNumber);
+      formData.append("password", password);
+
+      // Send POST request with FormData
+      sendPostData("login", formData)
+        .then((res) => {
+          setIsLoading(false);
+          setButtonDisabled(false);
+          if (res?.status) {
+            showToast(res.message);
+            // navigation.navigate("Dashboard");
+            setuserToken(res?.data?.access_token)
+            AsyncStorage.setItem('userToken',res?.data?.access_token)
+            setmyLoading(false)
+          } else {
+            showToast(res.errors?.password || res.errors?.username);
+          }
+        })
+        .catch((err) => {
+          setIsLoading(false);
+          setButtonDisabled(false);
+          console.log(err, "error message from login side");
+        });
     }
   };
+  useEffect(() => {
+    if (phoneNumber && password) {
+      setButtonDisabled(false);
+    } else {
+      setButtonDisabled(true);
+    }
+  }, [phoneNumber, password]);
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
@@ -89,27 +122,33 @@ const Login_Page = () => {
           <View style={styles.inputbox_container_parent}>
             <View style={styles.inputbox_main_container}>
               <View>
-                <Text style={styles.label}>Email</Text>
+                <Text style={styles.label}>Phone</Text>
               </View>
               <View style={styles.inputbox_container}>
                 <Feather name="mail" size={16} color="rgba(0, 54, 126, 1)" />
                 <TextInput
-                  style={styles.input}
-                  placeholder="Enter Your Email"
-                  placeholderTextColor="rgba(166, 166, 166, 1)"
-                  value={email}
-                  onChangeText={handleChangeEmail}
+                  placeholder={"Enter Mobile Number"}
+                  onChangeText={(value) => setPhoneNumber(value)}
+                  style={styles.input}r
                 />
               </View>
-              {errors.email !== "" && (
-                <Text style={styles.error}>{errors.email}</Text>
+              {validationError.phoneNumber && (
+                <Text
+                  style={{
+                    color: "red",
+                    fontSize: 12,
+                    fontWeight: "500",
+                  }}
+                >
+                  {validationError.phoneNumber}
+                </Text>
               )}
             </View>
             <View style={styles.inputbox_main_container}>
               <View style={styles.labelContainer}>
                 <Text style={styles.label}>Password</Text>
                 <TouchableOpacity
-                  onPress={() => console.log("Forgot Password?")}
+                  onPress={() => navigation.navigate("VerifyEmail")}
                 >
                   <Text style={styles.forgotPassword}>Forget Password?</Text>
                 </TouchableOpacity>
@@ -123,12 +162,10 @@ const Login_Page = () => {
                     style={styles.lockIcon}
                   />
                   <TextInput
-                    style={styles.inputPass}
-                    placeholder="Enter Password"
+                    placeholder={"Enter Password"}
+                    onChangeText={(value) => setPassword(value)}
                     secureTextEntry={!showPassword}
-                    placeholderTextColor="rgba(166, 166, 166, 1)"
-                    value={password}
-                    onChangeText={handleChangePassword}
+                    style={styles.inputPass}
                   />
                 </View>
                 <TouchableOpacity
@@ -145,25 +182,39 @@ const Login_Page = () => {
                   )}
                 </TouchableOpacity>
               </View>
-              {errors.password !== "" && (
-                <Text style={styles.error}>{errors.password}</Text>
+              {validationError.password && (
+                <Text
+                  style={{
+                    color: "red",
+                    fontSize: 12,
+                    fontWeight: "500",
+                  }}
+                >
+                  {validationError.password}
+                </Text>
               )}
             </View>
             <View style={styles.inputbox_main_container}>
               <TouchableOpacity
                 style={[
                   styles.inputbox_submit,
-                  { opacity: isFormValid ? 1 : 0.5 },
+                  { opacity: buttonDisabled ? 0.5 : 1 },
                 ]}
-                disabled={!isFormValid}
-                onPress={handleSubmit}
+                disabled={buttonDisabled}
+                onPress={handleLogin}
               >
-                <Text style={styles.submitText}>Sign In</Text>
+                {isLoading ? (
+                  <ActivityIndicator size={"small"} color={"#ffffff"} />
+                ) : (
+                  <Text style={styles.submitText}>Sign In</Text>
+                )}
               </TouchableOpacity>
             </View>
             <View style={styles.createSignup}>
               <Text style={styles.signupText}>Don't have an account?</Text>
-              <TouchableOpacity onPress={() => console.log("Sign Up")}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("Registration")}
+              >
                 <Text style={[styles.signupText, styles.signupLink]}>
                   Sign Up
                 </Text>
@@ -181,6 +232,7 @@ export default Login_Page;
 const styles = StyleSheet.create({
   container: {
     top: 53,
+    paddingBottom: 500,
   },
   main_content: {
     marginHorizontal: 20,
@@ -252,9 +304,8 @@ const styles = StyleSheet.create({
   },
   inputbox_submit: {
     marginTop: 10,
-    borderWidth: 2,
     borderColor: "rgba(3, 53, 125, 1)",
-    padding: 16,
+    padding: 18,
     paddingHorizontal: 20,
     borderRadius: 30,
     backgroundColor: "rgba(3, 53, 125, 1)",

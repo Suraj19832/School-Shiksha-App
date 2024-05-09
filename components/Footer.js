@@ -6,12 +6,24 @@ import {
   MaterialIcons,
   FontAwesome6,
 } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
 const Footer = () => {
+  const navigation = useNavigation();
   const [selectedTab, setSelectedTab] = useState("Home");
 
   const handleTabPress = (tabName) => {
     setSelectedTab(tabName);
+    // Navigate to different screens based on the selected tab
+    if (tabName === "Home") {
+      // navigation.navigate("Home");
+    } else if (tabName === "Refer") {
+      // navigation.navigate("refer");
+    } else if (tabName === "Query") {
+      navigation.navigate("getInTouch");
+    } else if (tabName === "Contact") {
+      navigation.navigate("contactUs");
+    }
   };
 
   return (
@@ -21,7 +33,7 @@ const Footer = () => {
         onPress={() => handleTabPress("Home")}
       >
         <Image
-          source={require("./../assets/img/home.png")}
+          source={require("./../assets/icons/home (2).png")}
           style={[styles.img, selectedTab === "Home" && styles.selectedIcon]}
         />
         <Text
@@ -35,7 +47,7 @@ const Footer = () => {
         onPress={() => handleTabPress("Refer")}
       >
         <Image
-          source={require("./../assets/img/refer.png")}
+          source={require("./../assets/icons/refer (1).png")}
           style={[styles.img, selectedTab === "Refer" && styles.selectedIcon]}
         />
         <Text
@@ -49,7 +61,7 @@ const Footer = () => {
         onPress={() => handleTabPress("Query")}
       >
         <Image
-          source={require("./../assets/img/question.png")}
+          source={require("./../assets/icons/question (1).png")}
           style={[styles.img, selectedTab === "Query" && styles.selectedIcon]}
         />
         <Text
@@ -63,7 +75,7 @@ const Footer = () => {
         onPress={() => handleTabPress("Contact")}
       >
         <Image
-          source={require("./../assets/img/Contack_Icon.png")}
+          source={require("./../assets/icons/customer-service.png")}
           style={[styles.img, selectedTab === "Contact" && styles.selectedIcon]}
         />
         <Text
@@ -81,11 +93,10 @@ const Footer = () => {
 
 const styles = StyleSheet.create({
   footerContainer: {
-    // marginTop: 200,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: "rgba(0, 54, 126, 1)",
+    backgroundColor: "#FFFCCE",
     paddingVertical: 14,
     paddingHorizontal: 20,
     borderTopEndRadius: 20,
@@ -96,20 +107,21 @@ const styles = StyleSheet.create({
   },
   text: {
     marginTop: 5,
-    color: "#fff",
-    fontSize: 13,
+    color: "#03357D",
+    fontSize: 12,
     lineHeight: 19.5,
     fontWeight: "500",
   },
   img: {
-    height: 35,
-    width: 35,
+    height: 24,
+    width: 24,
   },
   selectedIcon: {
-    tintColor: "rgba(255, 227, 128, 1)",
+    tintColor: "#373737",
   },
   selectedText: {
-    color: "rgba(255, 227, 128, 1)",
+    color: "#373737",
+    fontWeight: "500",
   },
 });
 

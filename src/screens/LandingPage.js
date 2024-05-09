@@ -5,7 +5,7 @@ const LandingPage = () => {
   return (
     <View style={styles.container}>
 
-  <Image style={styles.logo} source={require('/home/desunub7/School Shiksharthi/school-shiksha-app/assets/img/applogo.png')}/>
+  <Image style={styles.logo} source={require('../../assets/img/applogo.png')}/>
     
     </View>
    

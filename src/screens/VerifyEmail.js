@@ -8,18 +8,28 @@ import {
   TouchableOpacity,
   ScrollView,
   KeyboardAvoidingView,
+  ActivityIndicator,
+  ToastAndroid,
 } from "react-native";
-import { Feather } from "@expo/vector-icons";
+import { Feather, FontAwesome5 } from "@expo/vector-icons";
+import { sendPostData } from "../../Helper/Helper";
+import Header from "../../components/Header";
 
-const VerifyEmail = () => {
+const VerifyEmail = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [isEmailValid, setIsEmailValid] = useState(false);
   const [sendOtpPressed, setSendOtpPressed] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [buttonDisabled, setButtonDisabled] = useState(false);
 
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
+
+  function showToast(message) {
+    ToastAndroid.show(message, ToastAndroid.SHORT);
+  }
 
   useEffect(() => {
     setIsEmailValid(validateEmail(email));
@@ -28,21 +38,54 @@ const VerifyEmail = () => {
   const handleSendOtp = () => {
     if (!isEmailValid) {
       setSendOtpPressed(true);
-      return; // Do not proceed if email is invalid
+      return;
     }
+
+    setIsLoading(true);
+    setButtonDisabled(true);
+
     // Send OTP logic
+    const formData = new FormData();
+    formData.append("email", email);
+
+    // Send POST request with FormData
+    sendPostData("auth/forget-password", formData)
+      .then((res) => {
+        setIsLoading(false);
+        setButtonDisabled(false);
+        if (res?.status) {
+          showToast(res?.message);
+          navigation.navigate("VerifyOtp", { email });
+        } else {
+          showToast(res.errors?.email);
+        }
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        setButtonDisabled(false);
+        console.error(err, "error message from login side");
+      });
   };
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
+      {/* <Header navigateTo={navigation.goBack} /> */}
       <ScrollView>
         <View style={styles.main_content}>
+          <FontAwesome5
+            name="arrow-left"
+            size={24}
+            color="rgba(0, 54, 126, 1)"
+            style={styles.arrowleft}
+            onPress={() => navigation.navigate("Login")}
+          />
           <View style={styles.loginImage}>
             <Image
               source={require("../../assets/img/VerifyEmail_Img.png")}
               style={styles.img}
             />
           </View>
+
           <View style={styles.welcome_texts}>
             <Text style={styles.welcome}>Enter Your Email Id</Text>
           </View>
@@ -68,17 +111,19 @@ const VerifyEmail = () => {
                   styles.inputbox_submit,
                   isEmailValid ? null : styles.disabled,
                 ]}
-                disabled={!isEmailValid}
+                disabled={!isEmailValid || isLoading || buttonDisabled} // Disable button when loading or already clicked
                 onPress={handleSendOtp}
               >
-                <Text style={styles.submitText}>Send OTP</Text>
+                {isLoading ? (
+                  <ActivityIndicator size="small" color="#ffffff" />
+                ) : (
+                  <Text style={styles.submitText}>Send OTP</Text>
+                )}
               </TouchableOpacity>
             </View>
             <View style={styles.createSignup}>
               <Text style={styles.signupText}>Already a Member?</Text>
-              <TouchableOpacity
-                onPress={() => console.log("check member or not?")}
-              >
+              <TouchableOpacity onPress={() => navigation.navigate("Login")}>
                 <Text style={[styles.signupText, styles.signupLink]}>
                   Sign In
                 </Text>
@@ -95,10 +140,11 @@ export default VerifyEmail;
 
 const styles = StyleSheet.create({
   container: {
-    top: 53,
+    // top: 53,
   },
   main_content: {
     marginHorizontal: 20,
+    marginTop: 10,
   },
   loginImage: {
     alignItems: "center",
@@ -106,6 +152,11 @@ const styles = StyleSheet.create({
   img: {
     height: 220,
     width: 220,
+  },
+  arrowleft: {
+    position: "absolute",
+    top: 0,
+    left: 0,
   },
   welcome_texts: {
     marginVertical: 4,

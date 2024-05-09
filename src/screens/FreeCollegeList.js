@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React, { useState } from "react";
-import DropDownPicker from 'react-native-dropdown-picker';
+import DropDownPicker from "react-native-dropdown-picker";
 import {
   FontAwesome,
   Ionicons,
@@ -24,29 +24,36 @@ import {
 } from "@expo/vector-icons";
 import { Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-const FreeCollegeList = () => {
-
+import Header from "../../components/Header";
+const FreeCollegeList = ({ navigation }) => {
   const [selectedValue, setSelectedValue] = useState(null);
   const [open, setOpen] = useState(false);
   const items = [
-    { label: 'Option 1', value: 'option1' },
-    { label: 'Option 2', value: 'option2' },
-    { label: 'Option 3', value: 'option3' },
+    { label: "Option 1", value: "option1" },
+    { label: "Option 2", value: "option2" },
+    { label: "Option 3", value: "option3" },
   ];
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.scrollView}>
-        <View style={styles.mainheadercontainer}>
+      {/* <ScrollView style={styles.scrollView}>/ */}
+      {/* <View style={styles.mainheadercontainer}>
           <View style={styles.headercontainer}>
-            <MaterialIcons name="arrow-back" size={30} color={"#00367E"} />
+            <MaterialIcons
+              name="arrow-back"
+              size={30}
+              color={"#00367E"}
+              onPress={navigation.goBack}
+            />
             <Text style={styles.heading}>FreeCollegeList</Text>
           </View>
-        </View>
+        </View> */}
+      <Header title="Free College List" navigateTo={navigation.goBack} />
+      <ScrollView style={{ backgroundColor: "#FFFCCE" }}>
         <View>
           <Image
             style={styles.image}
-            source={require("/home/desunub7/School Shiksharthi/school-shiksha-app/assets/img/freeCollege.png")}
+            source={require("../../assets/img/freeCollege.png")}
           />
         </View>
 
@@ -95,7 +102,7 @@ const FreeCollegeList = () => {
                   <View style={{ flexDirection: "row", gap: 4 }}>
                     <Image
                       style={{}}
-                      source={require("/home/desunub7/School Shiksharthi/school-shiksha-app/assets/img/online-course.png")}
+                      source={require("../../assets/img/online-course.png")}
                     />
                     <TextInput
                       style={styles.input}
@@ -118,14 +125,9 @@ const FreeCollegeList = () => {
                   Request Course
                 </Text>
               </View>
-
-
-
-
             </View>
 
-
-{/* <View style={{ gap: 15, alignSelf: 'center' }}>
+            {/* <View style={{ gap: 15, alignSelf: 'center' }}>
       <Text
         style={{
           color: '#00367E',
@@ -160,7 +162,6 @@ const FreeCollegeList = () => {
         </Text>
       </View>
     </View> */}
-
           </View>
         </View>
 
@@ -180,7 +181,7 @@ const FreeCollegeList = () => {
               >
                 <Image
                   style={{}}
-                  source={require("/home/desunub7/School Shiksharthi/school-shiksha-app/assets/img/college.png")}
+                  source={require("../../assets/img/college.png")}
                 />
               </View>
 
@@ -225,32 +226,47 @@ const FreeCollegeList = () => {
                   Last Submission Date{" "}
                 </Text>
               </View>
-              <View style={{flexDirection:'row' ,justifyContent:'space-between'}}>
-                <Text style={{color:'#595959' ,fontWeight:'700' ,fontSize:12}}>4 Months</Text>
-                <Text  style={{color:'#595959' ,fontWeight:'700' ,fontSize:12}}>22.04.2024</Text>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text
+                  style={{ color: "#595959", fontWeight: "700", fontSize: 12 }}
+                >
+                  4 Months
+                </Text>
+                <Text
+                  style={{ color: "#595959", fontWeight: "700", fontSize: 12 }}
+                >
+                  22.04.2024
+                </Text>
               </View>
             </View>
 
             <View style={styles.cardButtons}>
-
-          
-            <TouchableOpacity style={styles.buttonbox}>
-              <Text
-                style={{
-                  textAlign: "center",
-                  color: "#0567F5",
-                  fontWeight: "500",
-                  fontSize: 16,
-                  lineHeight: 18.75,
-                }}
+              <TouchableOpacity
+                style={styles.buttonbox}
+                onPress={() => navigation.navigate("details")}
               >
-              View All Details
-              </Text>
-            </TouchableOpacity>
-        
-          
+                <Text
+                  style={{
+                    textAlign: "center",
+                    color: "#0567F5",
+                    fontWeight: "500",
+                    fontSize: 16,
+                    lineHeight: 18.75,
+                  }}
+                >
+                  View All Details
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("freeAdmissionForm")}
+              >
                 <LinearGradient
-                  colors={["#03357D", "#0569FA"]} // Define your gradient colors here 
+                  colors={["#03357D", "#0569FA"]} // Define your gradient colors here
                   start={{ x: 0, y: 0.5 }}
                   end={{ x: 1, y: 0.5 }}
                   style={[styles.buttonbox, { justifyContent: "center" }]}
@@ -272,14 +288,16 @@ const FreeCollegeList = () => {
                         color: "white",
                       }}
                     >
-                     Apply Link
+                      Apply Link
                     </Text>
                   </View>
-                </LinearGradient></View>
+                </LinearGradient>
+              </TouchableOpacity>
             </View>
+          </View>
 
-            {/* second college   */}
-            <View style={styles.listCart}>
+          {/* second college   */}
+          <View style={styles.listCart}>
             <View style={styles.cardTop}>
               <View
                 style={{
@@ -293,7 +311,7 @@ const FreeCollegeList = () => {
               >
                 <Image
                   style={{}}
-                  source={require("/home/desunub7/School Shiksharthi/school-shiksha-app/assets/img/college.png")}
+                  source={require("../../assets/img/college.png")}
                 />
               </View>
 
@@ -338,61 +356,76 @@ const FreeCollegeList = () => {
                   Last Submission Date{" "}
                 </Text>
               </View>
-              <View style={{flexDirection:'row' ,justifyContent:'space-between'}}>
-                <Text style={{color:'#595959' ,fontWeight:'700' ,fontSize:12}}>4 Months</Text>
-                <Text  style={{color:'#595959' ,fontWeight:'700' ,fontSize:12}}>22.04.2024</Text>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text
+                  style={{ color: "#595959", fontWeight: "700", fontSize: 12 }}
+                >
+                  4 Months
+                </Text>
+                <Text
+                  style={{ color: "#595959", fontWeight: "700", fontSize: 12 }}
+                >
+                  22.04.2024
+                </Text>
               </View>
             </View>
 
             <View style={styles.cardButtons}>
-
-          
-            <TouchableOpacity style={styles.buttonbox}>
-              <Text
-                style={{
-                  textAlign: "center",
-                  color: "#0567F5",
-                  fontWeight: "500",
-                  fontSize: 16,
-                  lineHeight: 18.75,
-                }}
+              <TouchableOpacity
+                style={styles.buttonbox}
+                onPress={() => navigation.navigate("details")}
               >
-              View All Details
-              </Text>
-            </TouchableOpacity>
-        
-          
-                <LinearGradient
-                  colors={["#03357D", "#0569FA"]} // Define your gradient colors here
-                  start={{ x: 0, y: 0.5 }}
-                  end={{ x: 1, y: 0.5 }}
-                  style={[styles.buttonbox, { justifyContent: "center" }]}
+                <Text
+                  style={{
+                    textAlign: "center",
+                    color: "#0567F5",
+                    fontWeight: "500",
+                    fontSize: 16,
+                    lineHeight: 18.75,
+                  }}
                 >
-                  <View
+                  View All Details
+                </Text>
+              </TouchableOpacity>
+
+              <LinearGradient
+                colors={["#03357D", "#0569FA"]} // Define your gradient colors here
+                start={{ x: 0, y: 0.5 }}
+                end={{ x: 1, y: 0.5 }}
+                style={[styles.buttonbox, { justifyContent: "center" }]}
+              >
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("freeAdmissionForm")}
+                  style={{
+                    justifyContent: "center",
+                    alignItems: "center",
+                    display: "flex",
+                  }}
+                >
+                  <Text
                     style={{
-                      justifyContent: "center",
+                      fontSize: 16,
+                      fontWeight: "500",
                       alignItems: "center",
                       display: "flex",
+                      justifyContent: "center",
+                      color: "white",
                     }}
                   >
-                    <Text
-                      style={{
-                        fontSize: 16,
-                        fontWeight: "500",
-                        alignItems: "center",
-                        display: "flex",
-                        justifyContent: "center",
-                        color: "white",
-                      }}
-                    >
-                     Apply Link
-                    </Text>
-                  </View>
-                </LinearGradient></View>
+                    Apply Link
+                  </Text>
+                </TouchableOpacity>
+              </LinearGradient>
             </View>
+          </View>
 
-            {/* third college */}
-            <View style={styles.listCart}>
+          {/* third college */}
+          <View style={styles.listCart}>
             <View style={styles.cardTop}>
               <View
                 style={{
@@ -406,7 +439,7 @@ const FreeCollegeList = () => {
               >
                 <Image
                   style={{}}
-                  source={require("/home/desunub7/School Shiksharthi/school-shiksha-app/assets/img/college.png")}
+                  source={require("../../assets/img/college.png")}
                 />
               </View>
 
@@ -451,64 +484,88 @@ const FreeCollegeList = () => {
                   Last Submission Date{" "}
                 </Text>
               </View>
-              <View style={{flexDirection:'row' ,justifyContent:'space-between'}}>
-                <Text style={{color:'#595959' ,fontWeight:'700' ,fontSize:12}}>4 Months</Text>
-                <Text  style={{color:'#595959' ,fontWeight:'700' ,fontSize:12}}>22.04.2024</Text>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text
+                  style={{ color: "#595959", fontWeight: "700", fontSize: 12 }}
+                >
+                  4 Months
+                </Text>
+                <Text
+                  style={{ color: "#595959", fontWeight: "700", fontSize: 12 }}
+                >
+                  22.04.2024
+                </Text>
               </View>
             </View>
 
             <View style={styles.cardButtons}>
-
-          
-            <TouchableOpacity style={styles.buttonbox}>
-              <Text
-                style={{
-                  textAlign: "center",
-                  color: "#0567F5",
-                  fontWeight: "500",
-                  fontSize: 16,
-                  lineHeight: 18.75,
-                }}
+              <TouchableOpacity
+                style={styles.buttonbox}
+                onPress={() => navigation.navigate("details")}
               >
-              View All Details
-              </Text>
-            </TouchableOpacity>
-        
-          
-                <LinearGradient
-                  colors={["#03357D", "#0569FA"]} // Define your gradient colors here
-                  start={{ x: 0, y: 0.5 }}
-                  end={{ x: 1, y: 0.5 }}
-                  style={[styles.buttonbox, { justifyContent: "center" }]}
+                <Text
+                  style={{
+                    textAlign: "center",
+                    color: "#0567F5",
+                    fontWeight: "500",
+                    fontSize: 16,
+                    lineHeight: 18.75,
+                  }}
                 >
-                  <View
+                  View All Details
+                </Text>
+              </TouchableOpacity>
+
+              <LinearGradient
+                colors={["#03357D", "#0569FA"]} // Define your gradient colors here
+                start={{ x: 0, y: 0.5 }}
+                end={{ x: 1, y: 0.5 }}
+                style={[styles.buttonbox, { justifyContent: "center" }]}
+              >
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("freeAdmissionForm")}
+                  style={{
+                    justifyContent: "center",
+                    alignItems: "center",
+                    display: "flex",
+                  }}
+                >
+                  <Text
                     style={{
-                      justifyContent: "center",
+                      fontSize: 16,
+                      fontWeight: "500",
                       alignItems: "center",
                       display: "flex",
+                      justifyContent: "center",
+                      color: "white",
                     }}
                   >
-                    <Text
-                      style={{
-                        fontSize: 16,
-                        fontWeight: "500",
-                        alignItems: "center",
-                        display: "flex",
-                        justifyContent: "center",
-                        color: "white",
-                      }}
-                    >
-                     Apply Link
-                    </Text>
-                  </View>
-                </LinearGradient></View>
+                    Apply Link
+                  </Text>
+                </TouchableOpacity>
+              </LinearGradient>
             </View>
-<View style={{flexDirection:'row',alignItems:'center' ,gap:4, height:27, backgroundColor:'#FFFFFF' ,marginBottom:10,padding:5}}>
-  <Text style={{color:'#435354'}}>Load More</Text>
-  <AntDesign name="down" size={15} color="#435354" />
-</View>
           </View>
-     
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 4,
+              height: 27,
+              backgroundColor: "#FFFFFF",
+              marginBottom: 90,
+              padding: 5,
+            }}
+          >
+            <Text style={{ color: "#435354" }}>Load More</Text>
+            <AntDesign name="down" size={15} color="#435354" />
+          </View>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -517,14 +574,15 @@ const FreeCollegeList = () => {
 export default FreeCollegeList;
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#FFFCCE",
+    // backgroundColor: "#FFFCCE",
+    // top: 53,
   },
   heading: {
     fontWeight: "500",
     fontSize: 16,
   },
   mainheadercontainer: {
-    backgroundColor: "white",
+    // backgroundColor: "white",
     height: 50,
     justifyContent: "center",
 
@@ -600,7 +658,7 @@ const styles = StyleSheet.create({
     gap: 10,
     // padding: 12,
     paddingHorizontal: 20,
-    marginTop:10
+    marginTop: 10,
   },
   course: {
     flexDirection: "row",
@@ -611,16 +669,16 @@ const styles = StyleSheet.create({
   aboutCourse: {
     backgroundColor: "#E2FDFF",
     width: "100%",
-    justifyContent:'space-between',
-    paddingHorizontal:20,
-    gap:10,
-    padding:12
+    justifyContent: "space-between",
+    paddingHorizontal: 20,
+    gap: 10,
+    padding: 12,
     // position:'absolute'
   },
-  cardButtons:{
-    paddingHorizontal:20,
-    flexDirection:'row',
-    justifyContent:'space-between'
+  cardButtons: {
+    paddingHorizontal: 20,
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   buttonbox: {
     flexDirection: "row",
@@ -629,33 +687,33 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#0567F5",
     padding: 12,
-    paddingHorizontal: 20,
+    paddingHorizontal: 15,
     borderRadius: 30,
     gap: 8,
-    width:'auto',
-    marginBottom:10
+    width: "auto",
+    marginBottom: 10,
   },
-  input:{
-    width:'80%'
+  input: {
+    width: "80%",
   },
   dropdown: {
-    position: 'absolute',
-    top: '100%',
+    position: "absolute",
+    top: "100%",
     left: 0,
-    width: '100%',
-    backgroundColor: 'white',
+    width: "100%",
+    backgroundColor: "white",
     borderWidth: 1,
-    borderColor: 'gray',
+    borderColor: "gray",
     borderRadius: 5,
     maxHeight: 150,
-    overflow: 'auto',
+    overflow: "auto",
   },
   option: {
     paddingVertical: 10,
     paddingHorizontal: 10,
-    alignItems: 'center',
+    alignItems: "center",
   },
   optionText: {
-    textAlign: 'center',
+    textAlign: "center",
   },
 });
