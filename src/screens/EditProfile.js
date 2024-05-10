@@ -291,6 +291,15 @@ const EditProfile = ({ navigation }) => {
   };
   const toggleDropdownstate = () => {
     setDropdownOpenstate(!isDropdownOpenstate);
+    if(!isDropdownOpenstate){
+      setDropdownOpenplan(false)
+      setDropdownOpengender(false)
+      setDropdownOpenblock(false)
+      setDropdownOpen(false)
+      setDropdownOpenPayment(false)
+      setDropdownOpenclass(false)
+    }
+
   };
 
   const handleSelectOption = (districtName, id) => {
@@ -367,6 +376,14 @@ const EditProfile = ({ navigation }) => {
 
   const toggleDropdowngender = () => {
     setDropdownOpengender(!isDropdownOpengender);
+    if(!isDropdownOpengender){
+      setDropdownOpenplan(false)
+      setDropdownOpenstate(false)
+      setDropdownOpenblock(false)
+      setDropdownOpen(false)
+      setDropdownOpenPayment(false)
+      setDropdownOpenclass(false)
+    }
   };
 
   const handleSelectOptiongender = (option) => {
@@ -384,6 +401,16 @@ const EditProfile = ({ navigation }) => {
   //handle togle for class
   const toggleDropdownclass = () => {
     setDropdownOpenclass(!isDropdownOpenclass);
+    if(!isDropdownOpenclass){
+      setDropdownOpengender(false)
+      setDropdownOpenstate(false)
+      setDropdownOpenblock(false)
+      setDropdownOpen(false)
+      setDropdownOpenPayment(false)
+      setDropdownOpenplan(false)
+    }
+ 
+
   };
 
   const handleSelectOptionclass = (option) => {
@@ -593,11 +620,20 @@ const EditProfile = ({ navigation }) => {
               {/* Mobile number  */}
               <View style={styles.inputbox_main_container}>
                 <View>
-                  <Text
+                  {/* <Text
                     style={{
                       color: mobileInActivity
                         ? "#A6A6A6"
                         : "rgba(0, 54, 126, 1)",
+                      fontWeight: "500",
+                      fontSize: 18,
+                    }}
+                  >
+                    Mobile Number
+                  </Text> */}
+                   <Text
+                    style={{
+                      color: "rgba(0, 54, 126, 1)",
                       fontWeight: "500",
                       fontSize: 18,
                     }}
@@ -643,7 +679,7 @@ const EditProfile = ({ navigation }) => {
                   )}
               </View>
               {/* whatsapp number  */}
-              {/* <View style={styles.inputbox_main_container}>
+              <View style={styles.inputbox_main_container}>
                                 <View>
                                     <Text
                                         style={{
@@ -685,7 +721,7 @@ const EditProfile = ({ navigation }) => {
                                         </Text>
                                     )}
                             </View>
-   */}
+  
               {/* email id  */}
               <View style={styles.inputbox_main_container}>
                 <View>
@@ -809,7 +845,7 @@ const EditProfile = ({ navigation }) => {
                   />
                   <TextInput
                     style={styles.input}
-                    placeholder="YY/MM/DD"
+                    placeholder="Date of Birth"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
                     value={userDetails.date_of_birth}
                     onChangeText={(text) =>
@@ -895,7 +931,7 @@ const EditProfile = ({ navigation }) => {
                       />
                       <TextInput
                         style={styles.input}
-                        placeholder="Choose Option"
+                        placeholder="Select"
                         placeholderTextColor="rgba(166, 166, 166, 1)"
                         value={inputValueclass}
                         onChangeText={handleInputChangeclass}
@@ -1048,7 +1084,7 @@ const EditProfile = ({ navigation }) => {
                       />
                       <TextInput
                         style={styles.input}
-                        placeholder="Choose Option"
+                        placeholder="Select"
                         placeholderTextColor="rgba(166, 166, 166, 1)"
                         value={inputValuegender}
                         onChangeText={handleInputChangegender}
@@ -1083,6 +1119,86 @@ const EditProfile = ({ navigation }) => {
                   </View>
                 )}
               </View>
+
+              {/* Nationality  */}
+              <View style={styles.inputbox_main_container}>
+                <View style={{flexDirection:'row' ,gap:1}}>
+                  <Text
+                    style={{
+                      color: "rgba(0, 54, 126, 1)",
+                      fontWeight: "500",
+                      fontSize: 18,
+                    }}
+                  >
+                    Nationality
+                  </Text>
+                  {/* <Text style={{color:'red' ,fontSize:18}}>*</Text> */}
+                </View>
+                <View style={styles.inputbox_container}>
+                  {/* <MaterialCommunityIcons
+                    name="home-map-marker"
+                    size={16}
+                    color="rgba(0, 54, 126, 1)"
+                  /> */}
+                  <Image
+                    source={require("../../assets/icons/united-nations.png")}
+                    style={styles.iconImage}
+                  />
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Select"
+                    placeholderTextColor="rgba(166, 166, 166, 1)"
+                    value={formData.nationality}
+                    onChangeText={(text) =>
+                      handleInputChange("nationality", text)
+                    }
+                    onBlur={() => handleInputBlur("nationality")}
+                  />
+                </View>
+                {!formErrors.nationality &&
+                  !formData.nationality &&
+                  fieldTouched.nationality && (
+                    <Text style={{ color: "red" }}>
+                      Please enter Nationality{" "}
+                    </Text>
+                  )}
+              </View>
+
+              {/* Religion  */}
+
+              <View style={styles.inputbox_main_container}>
+                <View style={{flexDirection:'row' ,gap:1}}>
+                  <Text
+                    style={{
+                      color: "rgba(0, 54, 126, 1)",
+                      fontWeight: "500",
+                      fontSize: 18,
+                    }}
+                  >
+                    Religion
+                  </Text>
+                  {/* <Text style={{color:'red' ,fontSize:18}}>*</Text> */}
+                </View>
+                <View style={styles.inputbox_container}>
+                  <Image
+                    source={require("../../assets/icons/religion.png")}
+                    style={styles.iconImage}
+                  />
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Select"
+                    placeholderTextColor="rgba(166, 166, 166, 1)"
+                    value={formData.religion}
+                    onChangeText={(text) => handleInputChange("religion", text)}
+                    onBlur={() => handleInputBlur("religion")}
+                  />
+                </View>
+                {formErrors.religion &&
+                  !formData.religion &&
+                  fieldTouched.religion && (
+                    <Text style={{ color: "red" }}>Please enter Religion </Text>
+                  )}
+              </View>
               {/* full address  */}
               <View style={styles.inputbox_main_container}>
                 <View>
@@ -1104,7 +1220,7 @@ const EditProfile = ({ navigation }) => {
                   />
                   <TextInput
                     style={styles.input}
-                    placeholder="Enter your full address"
+                    placeholder="Enter your address"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
                     value={formData.address}
                     onChangeText={(text) => handleInputChange("address", text)}
@@ -1160,7 +1276,7 @@ const EditProfile = ({ navigation }) => {
                         value={inputValuestate}
                         onChangeText={handleInputChangestate}
                         onBlur={() => handleSelectOptionstate(inputValuestate)}
-                        editable={false} // Allow editing only when dropdown is closed
+                        editable={false} 
                       />
                       <AntDesign
                         name="caretdown"
@@ -1170,7 +1286,8 @@ const EditProfile = ({ navigation }) => {
                     </View>
                   </TouchableOpacity>
                 </View>
-                {/* Dropdown menu*/}
+              
+
                 {isDropdownOpenstate && (
                   <View style={styles.dropdownContainer}>
                     {stateData.map((state, index) => {
@@ -1273,7 +1390,7 @@ const EditProfile = ({ navigation }) => {
                       fontSize: 18,
                     }}
                   >
-                    Police Station
+                    PS
                   </Text>
                 </View>
                 <View style={styles.inputbox_container}>
@@ -1453,7 +1570,7 @@ const EditProfile = ({ navigation }) => {
                       fontSize: 18,
                     }}
                   >
-                    Pincode
+                    Pin
                   </Text>
                 </View>
                 <View style={styles.inputbox_container}>
@@ -1463,7 +1580,7 @@ const EditProfile = ({ navigation }) => {
                   />
                   <TextInput
                     style={styles.input}
-                    placeholder="Enter pincode code"
+                    placeholder="Enter Pin code"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
                     value={formData.pincode}
                     onChangeText={(text) => handleInputChange("pincode", text)}
@@ -1480,7 +1597,7 @@ const EditProfile = ({ navigation }) => {
                   )}
               </View>
               {/* member plan  */}
-              <View style={styles.inputbox_main_container}>
+              {/* <View style={styles.inputbox_main_container}>
                 <View>
                   <Text
                     style={{
@@ -1543,9 +1660,9 @@ const EditProfile = ({ navigation }) => {
                     ))}
                   </View>
                 )}
-              </View>
+              </View> */}
               {/* refereal code  */}
-              <View style={styles.inputbox_main_container}>
+              {/* <View style={styles.inputbox_main_container}>
                 <View>
                   <Text
                     style={{
@@ -1569,9 +1686,9 @@ const EditProfile = ({ navigation }) => {
                     placeholderTextColor="rgba(166, 166, 166, 1)"
                   />
                 </View>
-              </View>
+              </View> */}
               {/* Payment fee  */}
-              <View style={styles.inputbox_main_container}>
+              {/* <View style={styles.inputbox_main_container}>
                 <View>
                   <Text
                     style={{
@@ -1612,7 +1729,7 @@ const EditProfile = ({ navigation }) => {
                         onBlur={() =>
                           handleSelectOptionPayment(inputValuePayment)
                         }
-                        editable={false} // Allow editing only when dropdown is closed
+                        editable={false} 
                       />
                       <AntDesign
                         name="caretdown"
@@ -1637,15 +1754,13 @@ const EditProfile = ({ navigation }) => {
                     >
                       <Text>Payment</Text>
                     </TouchableOpacity>
-                    {/* <TouchableOpacity style={styles.dropdownOption} onPress={() => handleSelectOptionPayment("3")}>
-                                            <Text>3</Text>
-                                        </TouchableOpacity> */}
+              
                   </View>
                 )}
-              </View>
+              </View> */}
 
               {/* password  */}
-              <View style={styles.inputbox_main_container}>
+              {/* <View style={styles.inputbox_main_container}>
                 <View>
                   <Text
                     style={{
@@ -1698,7 +1813,7 @@ const EditProfile = ({ navigation }) => {
                 {passwordError ? (
                   <Text style={{ color: "red" }}>{passwordError}</Text>
                 ) : null}
-              </View>
+              </View> */}
             </View>
 
             <View style={{ gap: 7 }}>
@@ -1936,4 +2051,9 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   iconImgStyle: { height: 15, width: 15, tintColor: "#00367E" },
+  iconImage: {
+    height: 17,
+    width: 17,
+    // right: 3,
+  },
 });

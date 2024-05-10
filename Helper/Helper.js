@@ -15,7 +15,7 @@ export async function sendPostData(endpoint, formData) {
 
 
 
-export const getstatedata = async (endpoint) => {
+export const getdata = async (endpoint) => {
   const url = `${Configs.API_BASE_URL_V1}/${endpoint}`;
   try {
     const response = await fetch(url);
@@ -29,6 +29,7 @@ export const getstatedata = async (endpoint) => {
     return null;
   }
 };
+
 
 export const getrequestwithtoken = async (endpoint, token) => {
   const url = `${Configs.API_BASE_URL_V1}/${endpoint}`;

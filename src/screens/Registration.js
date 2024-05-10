@@ -32,11 +32,12 @@ import { Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Checkbox from "expo-checkbox";
 import {
+  getdata,
   objectToFormData,
   postDataWithFormData,
   sendPostData,
 } from "../../Helper/Helper";
-import { getstatedata } from "../../Helper/Helper";
+// import { getstatedata } from "../../Helper/Helper";
 import Header from "../../components/Header";
 // import { TouchableOpacity } from "react-native-web";
 
@@ -53,7 +54,7 @@ const Registration = ({ navigation }) => {
   };
   const [formData, setFormData] = useState({
     name: "",
-    // fatherName: "",
+    fatherName: "",
     mobile: "",
     whatsapp_number: "",
     address: "",
@@ -66,7 +67,7 @@ const Registration = ({ navigation }) => {
     password: "",
     referral_code: "",
   });
-
+// console.log(formData.fatherName)
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
   const [formValid, setFormValid] = useState(false);
@@ -112,11 +113,12 @@ const Registration = ({ navigation }) => {
       formData.address &&
       formData.whatsapp_number
     ) {
-      formsData.append("name", formData.name);
+      formsData.append("name", formData.name); 
+      formsData.append("father_name",formData.fatherName)
       formsData.append("email", email);
       formsData.append("mobile", formData.mobile);
       formsData.append("date_of_birth", userDetails.date_of_birth);
-      formsData.append("aadhar_number", formData.aadhar_number);
+      // formsData.append("aadhar_number", formData.aadhar_number);
       formsData.append("gender", genderData);
       formsData.append("pincode", formData.pincode);
       formsData.append("police_station", formData.police_station);
@@ -127,10 +129,12 @@ const Registration = ({ navigation }) => {
       formsData.append("referral_code", formData.referral_code);
       formsData.append("nationality", formData.nationality);
       formsData.append("religion", formData.religion);
-      formsData.append("block", blockId);
-      formsData.append("class", inputValueclass);
+      // formsData.append("block", blockId);
+      formsData.append("class_id", classid);
+      formsData.append("plan_id", planid);
+
       console.log("6565655", formsData);
-      sendPostData("register", formsData)
+      sendPostData("/register", formsData)
         .then((res) => {
           if (res?.status) {
             showToast("Registration Successfull");
@@ -288,9 +292,25 @@ const Registration = ({ navigation }) => {
   const [blockId, setBlockId] = useState();
   const toggleDropdownpolice = () => {
     setDropdownOpen(!isDropdownOpen);
+    if (!isDropdownOpen) {
+      setDropdownOpenplan(false);
+      setDropdownOpengender(false);
+      setDropdownOpenblock(false);
+      setDropdownOpenstate(false);
+      setDropdownOpenPayment(false);
+      setDropdownOpenclass(false);
+    }
   };
   const toggleDropdownstate = () => {
     setDropdownOpenstate(!isDropdownOpenstate);
+    if (!isDropdownOpenstate) {
+      setDropdownOpenplan(false);
+      setDropdownOpengender(false);
+      setDropdownOpenblock(false);
+      setDropdownOpen(false);
+      setDropdownOpenPayment(false);
+      setDropdownOpenclass(false);
+    }
   };
 
   const handleSelectOption = (districtName, id) => {
@@ -350,6 +370,14 @@ const Registration = ({ navigation }) => {
 
   const toggleDropdownPayment = () => {
     setDropdownOpenPayment(!isDropdownOpenPayment);
+    if (!isDropdownOpenPayment) {
+      setDropdownOpenplan(false);
+      setDropdownOpenstate(false);
+      setDropdownOpenblock(false);
+      setDropdownOpen(false);
+      setDropdownOpengender(false);
+      setDropdownOpenclass(false);
+    }
   };
 
   const handleSelectOptionPayment = (option) => {
@@ -367,6 +395,14 @@ const Registration = ({ navigation }) => {
 
   const toggleDropdowngender = () => {
     setDropdownOpengender(!isDropdownOpengender);
+    if (!isDropdownOpengender) {
+      setDropdownOpenplan(false);
+      setDropdownOpenstate(false);
+      setDropdownOpenblock(false);
+      setDropdownOpen(false);
+      setDropdownOpenPayment(false);
+      setDropdownOpenclass(false);
+    }
   };
 
   const handleSelectOptiongender = (option) => {
@@ -384,12 +420,21 @@ const Registration = ({ navigation }) => {
   //handle togle for class
   const toggleDropdownclass = () => {
     setDropdownOpenclass(!isDropdownOpenclass);
+    if (!isDropdownOpenclass) {
+      setDropdownOpengender(false);
+      setDropdownOpenstate(false);
+      setDropdownOpenblock(false);
+      setDropdownOpen(false);
+      setDropdownOpenPayment(false);
+      setDropdownOpenplan(false);
+    }
   };
-
-  const handleSelectOptionclass = (option) => {
+  const [classid, setclassid] = useState("");
+  const handleSelectOptionclass = (option, classidd) => {
     setSelectedOptionclass(option);
     setInputValueclass(option);
     setDropdownOpenclass(false);
+    setclassid(classidd);
   };
 
   const handleInputChangeclass = (text) => {
@@ -400,12 +445,21 @@ const Registration = ({ navigation }) => {
   // handle toggle of plan
   const toggleDropdownplan = () => {
     setDropdownOpenplan(!isDropdownOpenplan);
+    if (!isDropdownOpenplan) {
+      setDropdownOpengender(false);
+      setDropdownOpenstate(false);
+      setDropdownOpenblock(false);
+      setDropdownOpen(false);
+      setDropdownOpenPayment(false);
+      setDropdownOpenclass(false);
+    }
   };
-
-  const handleSelectOptionplan = (option) => {
+const [planid, setplanid] = useState("")
+  const handleSelectOptionplan = (option,plannnid) => {
     setSelectedOptionplan(option);
     setInputValueplan(option);
     setDropdownOpenplan(false);
+    setplanid(plannnid)
   };
 
   const handleInputChangeplan = (text) => {
@@ -415,6 +469,14 @@ const Registration = ({ navigation }) => {
 
   const toggleDropdownblock = () => {
     setDropdownOpenblock(!isDropdownOpenblock);
+    if (!isDropdownOpenblock) {
+      setDropdownOpengender(false);
+      setDropdownOpenstate(false);
+      setDropdownOpenplan(false);
+      setDropdownOpen(false);
+      setDropdownOpenPayment(false);
+      setDropdownOpenclass(false);
+    }
   };
 
   const handleSelectOptionblock = (option, id) => {
@@ -436,7 +498,7 @@ const Registration = ({ navigation }) => {
     const apiUrl = "master/state";
 
     // Call the getstatedata function with the API URL
-    getstatedata(apiUrl)
+    getdata(apiUrl)
       .then((res) => {
         // console.log('Response from API:', res.data);
         setStateData(res?.data);
@@ -491,27 +553,48 @@ const Registration = ({ navigation }) => {
       });
   }, [districtId]);
   const [plan, setplan] = useState("");
+
   // for plan
   useEffect(() => {
     // Define the URL you want to fetch data from
     const apiUrl = "master/plan";
 
     // Call the getstatedata function with the API URL
-    getstatedata(apiUrl)
+    getdata(apiUrl)
       .then((res) => {
         console.log("Response from API:", res?.message);
-        const planNames = res.data.map((item) => item.plan_name);
+        const planNames = res.data.map((item) => item);
         setplan(planNames);
-        console.log("Plan Names:", planNames);
+        // console.log("Plan Names:", planNames);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
   }, []);
 
-  console.log("88", blockdata);
+  // console.log("----------------------------------------------------------------------------------------")
+  // get data for class
+  const [classname, setclassname] = useState("");
+  useEffect(() => {
+    // Define the URL you want to fetch data from
+    const apiUrl = "master/class";
 
-  console.log("789", formData);
+    // Call the getstatedata function with the API URL
+    getdata(apiUrl)
+      .then((res) => {
+        // console.log("Response from API of classs ----------------------------->:", res?.data );
+        const classeshere = res.data.map((item) => item);
+
+        setclassname(classeshere);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, []);
+
+  // console.log("88", blockdata);
+
+  // console.log("789", formData);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -548,7 +631,7 @@ const Registration = ({ navigation }) => {
             <View style={{ left: 0, marginTop: 20 }}>
               {/* Name  */}
               <View style={styles.inputbox_main_container}>
-                <View>
+                <View style={{ flexDirection: "row", gap: 1 }}>
                   <Text
                     style={{
                       color: "rgba(0, 54, 126, 1)",
@@ -558,6 +641,7 @@ const Registration = ({ navigation }) => {
                   >
                     Full Name
                   </Text>
+                  <Text style={{ color: "red", fontSize: 18 }}>*</Text>
                 </View>
                 <View style={styles.inputbox_container}>
                   <Feather name="user" size={16} color="rgba(0, 54, 126, 1)" />
@@ -580,8 +664,8 @@ const Registration = ({ navigation }) => {
 
               {/* Father name  */}
 
-              {/* <View style={styles.inputbox_main_container}>
-                <View>
+              <View style={styles.inputbox_main_container}>
+                <View style={{ flexDirection: "row", gap: 1 }}>
                   <Text
                     style={{
                       color: "rgba(0, 54, 126, 1)",
@@ -591,6 +675,7 @@ const Registration = ({ navigation }) => {
                   >
                     Father's Name
                   </Text>
+                  <Text style={{ color: "red", fontSize: 18 }}>*</Text>
                 </View>
                 <View style={styles.inputbox_container}>
                   <Feather name="user" size={16} color="rgba(0, 54, 126, 1)" />
@@ -610,11 +695,11 @@ const Registration = ({ navigation }) => {
                   fieldTouched.fatherName && (
                     <Text style={{ color: "red" }}>father's name required</Text>
                   )}
-              </View> */}
+              </View>
 
               {/* Mobile number  */}
               <View style={styles.inputbox_main_container}>
-                <View>
+                <View style={{ flexDirection: "row", gap: 1 }}>
                   <Text
                     style={{
                       color: "rgba(0, 54, 126, 1)",
@@ -624,6 +709,7 @@ const Registration = ({ navigation }) => {
                   >
                     Mobile Number
                   </Text>
+                  <Text style={{ color: "red", fontSize: 18 }}>*</Text>
                 </View>
                 <View style={styles.inputbox_container}>
                   <Feather
@@ -655,7 +741,7 @@ const Registration = ({ navigation }) => {
               </View>
               {/* whatsapp number  */}
               <View style={styles.inputbox_main_container}>
-                <View>
+                <View style={{ flexDirection: "row", gap: 1 }}>
                   <Text
                     style={{
                       color: "rgba(0, 54, 126, 1)",
@@ -665,6 +751,7 @@ const Registration = ({ navigation }) => {
                   >
                     Whatsapp Number
                   </Text>
+                  <Text style={{ color: "red", fontSize: 18 }}>*</Text>
                 </View>
                 <View style={styles.inputbox_container}>
                   <FontAwesome5
@@ -699,7 +786,7 @@ const Registration = ({ navigation }) => {
 
               {/* email id  */}
               <View style={styles.inputbox_main_container}>
-                <View>
+                <View style={{ flexDirection: "row", gap: 1 }}>
                   <Text
                     style={{
                       color: "rgba(0, 54, 126, 1)",
@@ -709,6 +796,7 @@ const Registration = ({ navigation }) => {
                   >
                     Email Id
                   </Text>
+                  <Text style={{ color: "red", fontSize: 18 }}>*</Text>
                 </View>
                 <View style={styles.inputbox_container}>
                   <Feather name="mail" size={16} color="rgba(0, 54, 126, 1)" />
@@ -728,8 +816,8 @@ const Registration = ({ navigation }) => {
 
               {/* date of birth  */}
 
-              <View style={styles.inputbox_main_container}>
-                <View>
+              {/* <View style={styles.inputbox_main_container}>
+                <View style={{ flexDirection: "row", gap: 1 }}>
                   <Text
                     style={{
                       color: "rgba(0, 54, 126, 1)",
@@ -739,6 +827,7 @@ const Registration = ({ navigation }) => {
                   >
                     D.O.B
                   </Text>
+                  <Text style={{ color: "red", fontSize: 18 }}>*</Text>
                 </View>
                 <View style={styles.inputbox_container}>
                   <Image
@@ -754,7 +843,52 @@ const Registration = ({ navigation }) => {
                       setUserDetails({ ...userDetails, date_of_birth: text })
                     }
                     onFocus={showDatePicker} // Show date picker when input field is focused
-                    editable={true} // Make the input field editable
+                    editable={false} // Make the input field editable
+                  />
+                </View>
+
+                <DateTimePickerModal
+                  isVisible={isDatePickerVisible}
+                  mode="date"
+                  onConfirm={handleConfirm}
+                  onCancel={hideDatePicker}
+                />
+              </View> */}
+                           <View style={styles.inputbox_main_container}>
+                <View>
+                  <Text
+                    style={{
+                      color: "rgba(0, 54, 126, 1)",
+                      fontWeight: "500",
+                      fontSize: 18,
+                    }}
+                  >
+                    D.O.B
+                  </Text>
+                </View>
+                <View style={styles.inputbox_container}>
+                  {/* <Feather
+                    name="calendar"
+                    size={16}
+                    color="rgba(0, 54, 126, 1)"
+                    onPress={showDatePicker}
+                  /> */}
+                  <TouchableOpacity  onPress={showDatePicker} >
+                  <Image
+                    style={styles.iconImage}
+                    source={require("../../assets/icons/calendar.png")}
+                  />
+                  </TouchableOpacity>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="YY/MM/DD"
+                    placeholderTextColor="rgba(166, 166, 166, 1)"
+                    value={userDetails.date_of_birth}
+                    onChangeText={(text) =>
+                      setUserDetails({ ...userDetails, date_of_birth: text })
+                    }
+                    onFocus={showDatePicker} // Show date picker when input field is focused
+                    editable={false} // Make the input field editable
                   />
                 </View>
 
@@ -769,7 +903,7 @@ const Registration = ({ navigation }) => {
               {/* class  */}
 
               <View style={styles.inputbox_main_container}>
-                <View>
+                <View style={{ flexDirection: "row", gap: 1 }}>
                   <Text
                     style={{
                       color: "rgba(0, 54, 126, 1)",
@@ -779,6 +913,7 @@ const Registration = ({ navigation }) => {
                   >
                     Class
                   </Text>
+                  <Text style={{ color: "red", fontSize: 18 }}>*</Text>
                 </View>
                 <View
                   style={[
@@ -818,46 +953,128 @@ const Registration = ({ navigation }) => {
                 </View>
 
                 {isDropdownOpenclass && (
+                  // this is old dropdown
+                  // <View style={styles.dropdownContainer}>
+                  //   <TouchableOpacity
+                  //     style={styles.dropdownOption}
+                  //     onPress={() => handleSelectOptionclass("1")}
+                  //   >
+                  //     <View
+                  //       style={{
+                  //         width: Dimensions.get("window").width * 0.7,
+                  //         alignItems: "center",
+                  //       }}
+                  //     >
+                  //       <Text>1</Text>
+                  //     </View>
+                  //   </TouchableOpacity>
+
+                  //   <TouchableOpacity
+                  //     style={styles.dropdownOption}
+                  //     onPress={() => handleSelectOptionclass("1")}
+                  //   >
+                  //     <View
+                  //       style={{
+                  //         width: Dimensions.get("window").width * 0.7,
+                  //         alignItems: "center",
+                  //       }}
+                  //     >
+                  //       <Text>1</Text>
+                  //     </View>
+                  //   </TouchableOpacity>
+                  //   <TouchableOpacity
+                  //     style={styles.dropdownOption}
+                  //     onPress={() => handleSelectOptionclass("1")}
+                  //   >
+                  //     <View
+                  //       style={{
+                  //         width: Dimensions.get("window").width * 0.7,
+                  //         alignItems: "center",
+                  //       }}
+                  //     >
+                  //       <Text>1</Text>
+                  //     </View>
+                  //   </TouchableOpacity>
+                  //   <TouchableOpacity
+                  //     style={styles.dropdownOption}
+                  //     onPress={() => handleSelectOptionclass("1")}
+                  //   >
+                  //     <View
+                  //       style={{
+                  //         width: Dimensions.get("window").width * 0.7,
+                  //         alignItems: "center",
+                  //       }}
+                  //     >
+                  //       <Text>1</Text>
+                  //     </View>
+                  //   </TouchableOpacity>
+
+                  //   <TouchableOpacity
+                  //     style={styles.dropdownOption}
+                  //     onPress={() => handleSelectOptionclass("2")}
+                  //   >
+                  //     <View
+                  //       style={{
+                  //         width: Dimensions.get("window").width * 0.7,
+                  //         alignItems: "center",
+                  //       }}
+                  //     >
+                  //       <Text>2</Text>
+                  //     </View>
+                  //   </TouchableOpacity>
+                  //   <TouchableOpacity
+                  //     style={styles.dropdownOption}
+                  //     onPress={() => handleSelectOptionclass("3")}
+                  //   >
+                  //     <View
+                  //       style={{
+                  //         width: Dimensions.get("window").width * 0.7,
+                  //         alignItems: "center",
+                  //       }}
+                  //     >
+                  //       <Text>3</Text>
+                  //     </View>
+                  //   </TouchableOpacity>
+                  // </View>
+
                   <View style={styles.dropdownContainer}>
-                    <TouchableOpacity
-                      style={styles.dropdownOption}
-                      onPress={() => handleSelectOptionclass("1")}
+                    <ScrollView
+                      nestedScrollEnabled={true}
+                      style={{ maxHeight: 100 }}
                     >
-                      <View
-                        style={{
-                          width: Dimensions.get("window").width * 0.7,
-                          alignItems: "center",
-                        }}
-                      >
-                        <Text>1</Text>
-                      </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={styles.dropdownOption}
-                      onPress={() => handleSelectOptionclass("2")}
-                    >
-                      <View
-                        style={{
-                          width: Dimensions.get("window").width * 0.7,
-                          alignItems: "center",
-                        }}
-                      >
-                        <Text>2</Text>
-                      </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={styles.dropdownOption}
-                      onPress={() => handleSelectOptionclass("3")}
-                    >
-                      <View
-                        style={{
-                          width: Dimensions.get("window").width * 0.7,
-                          alignItems: "center",
-                        }}
-                      >
-                        <Text>3</Text>
-                      </View>
-                    </TouchableOpacity>
+                      {/* <TouchableOpacity
+          style={styles.dropdownOption}
+          onPress={() => handleSelectOptionclass("1")}
+        >
+          <View
+            style={{
+              width: Dimensions.get("window").width * 0.7,
+              alignItems: "center",
+            }}
+          >
+            <Text>1</Text>
+          </View>
+        </TouchableOpacity> */}
+
+                      {classname.map((option, index) => (
+                        <TouchableOpacity
+                          key={index}
+                          style={styles.dropdownOption}
+                          onPress={() =>
+                            handleSelectOptionclass(option?.name, option?.id)
+                          }
+                        >
+                          <View
+                            style={{
+                              width: Dimensions.get("window").width * 0.7,
+                              alignItems: "center",
+                            }}
+                          >
+                            <Text>{option?.name}</Text>
+                          </View>
+                        </TouchableOpacity>
+                      ))}
+                    </ScrollView>
                   </View>
                 )}
               </View>
@@ -921,7 +1138,7 @@ const Registration = ({ navigation }) => {
               </View> */}
 
               <View style={styles.inputbox_main_container}>
-                <View>
+                <View style={{ flexDirection: "row", gap: 1 }}>
                   <Text
                     style={{
                       color: "rgba(0, 54, 126, 1)",
@@ -931,6 +1148,7 @@ const Registration = ({ navigation }) => {
                   >
                     Gender
                   </Text>
+                  <Text style={{ color: "red", fontSize: 18 }}>*</Text>
                 </View>
                 <View
                   style={[
@@ -990,7 +1208,7 @@ const Registration = ({ navigation }) => {
               </View>
               {/* Nationality */}
               <View style={styles.inputbox_main_container}>
-                <View>
+                <View style={{ flexDirection: "row", gap: 1 }}>
                   <Text
                     style={{
                       color: "rgba(0, 54, 126, 1)",
@@ -1000,6 +1218,7 @@ const Registration = ({ navigation }) => {
                   >
                     Nationality
                   </Text>
+                  <Text style={{ color: "red", fontSize: 18 }}>*</Text>
                 </View>
                 <View style={styles.inputbox_container}>
                   {/* <MaterialCommunityIcons
@@ -1032,7 +1251,7 @@ const Registration = ({ navigation }) => {
               </View>
               {/* Religion */}
               <View style={styles.inputbox_main_container}>
-                <View>
+                <View style={{ flexDirection: "row", gap: 1 }}>
                   <Text
                     style={{
                       color: "rgba(0, 54, 126, 1)",
@@ -1042,6 +1261,7 @@ const Registration = ({ navigation }) => {
                   >
                     Religion
                   </Text>
+                  <Text style={{ color: "red", fontSize: 18 }}>*</Text>
                 </View>
                 <View style={styles.inputbox_container}>
                   <Image
@@ -1065,7 +1285,7 @@ const Registration = ({ navigation }) => {
               </View>
               {/* full address  */}
               <View style={styles.inputbox_main_container}>
-                <View>
+                <View style={{ flexDirection: "row", gap: 1 }}>
                   <Text
                     style={{
                       color: "rgba(0, 54, 126, 1)",
@@ -1075,6 +1295,7 @@ const Registration = ({ navigation }) => {
                   >
                     Full Address
                   </Text>
+                  <Text style={{ color: "red", fontSize: 18 }}>*</Text>
                 </View>
                 <View style={styles.inputbox_container}>
                   <Image
@@ -1101,7 +1322,7 @@ const Registration = ({ navigation }) => {
 
               {/* state  */}
               <View style={styles.inputbox_main_container}>
-                <View>
+                <View style={{ flexDirection: "row", gap: 1 }}>
                   <Text
                     style={{
                       color: "rgba(0, 54, 126, 1)",
@@ -1111,6 +1332,7 @@ const Registration = ({ navigation }) => {
                   >
                     State
                   </Text>
+                  <Text style={{ color: "red", fontSize: 18 }}>*</Text>
                 </View>
                 <View
                   style={[
@@ -1172,7 +1394,7 @@ const Registration = ({ navigation }) => {
 
               {/* Police  */}
               <View style={styles.inputbox_main_container}>
-                <View>
+                <View style={{ flexDirection: "row", gap: 1 }}>
                   <Text
                     style={{
                       color: "rgba(0, 54, 126, 1)",
@@ -1182,6 +1404,7 @@ const Registration = ({ navigation }) => {
                   >
                     Police Station
                   </Text>
+                  <Text style={{ color: "red", fontSize: 18 }}>*</Text>
                 </View>
                 <View style={styles.inputbox_container}>
                   <Image
@@ -1269,7 +1492,7 @@ const Registration = ({ navigation }) => {
               </View> */}
 
               <View style={styles.inputbox_main_container}>
-                <View>
+                <View style={{ flexDirection: "row", gap: 1 }}>
                   <Text
                     style={{
                       color: "rgba(0, 54, 126, 1)",
@@ -1279,6 +1502,7 @@ const Registration = ({ navigation }) => {
                   >
                     District
                   </Text>
+                  <Text style={{ color: "red", fontSize: 18 }}>*</Text>
                 </View>
                 <View
                   style={[
@@ -1341,7 +1565,7 @@ const Registration = ({ navigation }) => {
               </View>
               {/* Block */}
               <View style={styles.inputbox_main_container}>
-                <View>
+                <View style={{ flexDirection: "row", gap: 1 }}>
                   <Text
                     style={{
                       color: "rgba(0, 54, 126, 1)",
@@ -1351,6 +1575,7 @@ const Registration = ({ navigation }) => {
                   >
                     Block
                   </Text>
+                  <Text style={{ color: "red", fontSize: 18 }}>*</Text>
                 </View>
                 <View
                   style={[
@@ -1409,8 +1634,8 @@ const Registration = ({ navigation }) => {
                 )}
               </View>
               {/* Aadhar  */}
-              <View style={styles.inputbox_main_container}>
-                <View>
+              {/* <View style={styles.inputbox_main_container}>
+                <View style={{ flexDirection: "row", gap: 1 }}>
                   <Text
                     style={{
                       color: "rgba(0, 54, 126, 1)",
@@ -1420,6 +1645,7 @@ const Registration = ({ navigation }) => {
                   >
                     Aadhar Number
                   </Text>
+                  <Text style={{ color: "red", fontSize: 18 }}>*</Text>
                 </View>
                 <View style={styles.inputbox_container}>
                   <Image
@@ -1449,10 +1675,10 @@ const Registration = ({ navigation }) => {
                       Aadhar number must be 12 digits
                     </Text>
                   )}
-              </View>
+              </View> */}
               {/* pincode  */}
               <View style={styles.inputbox_main_container}>
-                <View>
+                <View style={{ flexDirection: "row", gap: 1 }}>
                   <Text
                     style={{
                       color: "rgba(0, 54, 126, 1)",
@@ -1462,6 +1688,7 @@ const Registration = ({ navigation }) => {
                   >
                     Pincode
                   </Text>
+                  <Text style={{ color: "red", fontSize: 18 }}>*</Text>
                 </View>
                 <View style={styles.inputbox_container}>
                   <Image
@@ -1488,7 +1715,7 @@ const Registration = ({ navigation }) => {
               </View>
               {/* member plan  */}
               <View style={styles.inputbox_main_container}>
-                <View>
+                <View style={{ flexDirection: "row", gap: 1 }}>
                   <Text
                     style={{
                       color: "rgba(0, 54, 126, 1)",
@@ -1498,6 +1725,7 @@ const Registration = ({ navigation }) => {
                   >
                     Member Plan
                   </Text>
+                  <Text style={{ color: "red", fontSize: 18 }}>*</Text>
                 </View>
                 <View
                   style={[
@@ -1542,9 +1770,9 @@ const Registration = ({ navigation }) => {
                       <TouchableOpacity
                         key={index}
                         style={styles.dropdownOption}
-                        onPress={() => handleSelectOptionplan(option)}
+                        onPress={() => handleSelectOptionplan(option?.plan_name ,option?.id)}
                       >
-                        <Text>{option}</Text>
+                        <Text>{option?.plan_name}</Text>
                       </TouchableOpacity>
                     ))}
                   </View>
@@ -1568,16 +1796,25 @@ const Registration = ({ navigation }) => {
                     style={styles.iconImage}
                     source={require("../../assets/icons/referral-code.png")}
                   />
-                  <TextInput
+                  {/* <TextInput
                     style={[styles.input, {}]}
                     placeholder="Enter Your Referral Code (Optional)"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
+                    
+                  /> */}
+                   <TextInput
+                    style={styles.input}
+                    placeholder="Username"
+                    placeholderTextColor="rgba(166, 166, 166, 1)"
+                    value={formData.referral_code}
+                    onChangeText={(text) => handleInputChange("referral_code", text)}
+                    onBlur={() => handleInputBlur("referral_code")}
                   />
                 </View>
               </View>
               {/* Payment fee  */}
               <View style={styles.inputbox_main_container}>
-                <View>
+                <View style={{ flexDirection: "row", gap: 1 }}>
                   <Text
                     style={{
                       color: "rgba(0, 54, 126, 1)",
@@ -1587,6 +1824,7 @@ const Registration = ({ navigation }) => {
                   >
                     Payment/Free
                   </Text>
+                  <Text style={{ color: "red", fontSize: 18 }}>*</Text>
                 </View>
                 <View
                   style={[
@@ -1650,7 +1888,7 @@ const Registration = ({ navigation }) => {
 
               {/* password  */}
               <View style={styles.inputbox_main_container}>
-                <View>
+                <View style={{ flexDirection: "row", gap: 1 }}>
                   <Text
                     style={{
                       color: "rgba(0, 54, 126, 1)",
@@ -1660,6 +1898,7 @@ const Registration = ({ navigation }) => {
                   >
                     Password
                   </Text>
+                  <Text style={{ color: "red", fontSize: 18 }}>*</Text>
                 </View>
                 <View
                   style={[
@@ -1899,10 +2138,27 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
 
+  // dropdownContainer: {
+  //   position: "absolute",
+  //   top: "100%",
+  //   // left: 0,
+  //   marginTop: 10,
+  //   width: "89%",
+  //   backgroundColor: "#fff",
+  //   borderWidth: 1,
+  //   borderColor: "#ccc",
+  //   borderRadius: 4,
+  //   padding: 8,
+  //   zIndex: 1,
+  //   left: 17,
+
+  //   alignSelf: "center",
+  //   // justifyContent:'center'
+  // },
+
   dropdownContainer: {
     position: "absolute",
     top: "100%",
-    // left: 0,
     marginTop: 10,
     width: "89%",
     backgroundColor: "#fff",
@@ -1913,7 +2169,6 @@ const styles = StyleSheet.create({
     zIndex: 1,
     left: 17,
     alignSelf: "center",
-    // justifyContent:'center'
   },
   dropdownOption: {
     paddingVertical: 8,
