@@ -1,7 +1,9 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { useNavigation } from "@react-navigation/native";
 export const BorderGradient = (props) => {
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <LinearGradient
@@ -10,7 +12,10 @@ export const BorderGradient = (props) => {
         end={{ x: 1.0, y: 1.0 }}
         style={styles.grediant}
       >
-        <TouchableOpacity style={styles.buttonContainer}>
+        <TouchableOpacity
+          style={styles.buttonContainer}
+          onPress={() => navigation.navigate("paymentQR")}
+        >
           <Text style={styles.buttonText}>{props.text}</Text>
         </TouchableOpacity>
       </LinearGradient>

@@ -326,7 +326,10 @@ const PaidCertificationList = ({ navigation }) => {
             </View>
 
             <View style={styles.cardButtons}>
-              <TouchableOpacity style={styles.buttonbox}>
+              <TouchableOpacity
+                style={styles.buttonbox}
+                onPress={() => navigation.navigate("paidCertificateDetails")}
+              >
                 <Text
                   style={{
                     textAlign: "center",
@@ -451,7 +454,10 @@ const PaidCertificationList = ({ navigation }) => {
             </View>
 
             <View style={styles.cardButtons}>
-              <TouchableOpacity style={styles.buttonbox}>
+              <TouchableOpacity
+                style={styles.buttonbox}
+                onPress={() => navigation.navigate("paidCertificateDetails")}
+              >
                 <Text
                   style={{
                     textAlign: "center",
@@ -576,7 +582,10 @@ const PaidCertificationList = ({ navigation }) => {
             </View>
 
             <View style={styles.cardButtons}>
-              <TouchableOpacity style={styles.buttonbox}>
+              <TouchableOpacity
+                style={styles.buttonbox}
+                onPress={() => navigation.navigate("paidCertificateDetails")}
+              >
                 <Text
                   style={{
                     textAlign: "center",
