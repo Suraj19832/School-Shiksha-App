@@ -84,7 +84,7 @@ const MPBenefits = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <Header
-        title="M.P Pass Student’s Benefits"
+        title="Secondary Pass Student’s Benefits"
         titleColor="#00367E"
         navigateTo={navigation.goBack}
       />

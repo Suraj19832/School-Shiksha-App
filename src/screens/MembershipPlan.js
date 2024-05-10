@@ -62,7 +62,7 @@ const MembershipPlan = ({ navigation }) => {
           <View style={{ justifyContent: "center", paddingVertical: 12 }}>
             <GradientText
               style={{ fontSize: 30, fontWeight: "700" }}
-              text="Choose Your Plan"
+              text="Choose your plan"
             />
           </View>
           <View>

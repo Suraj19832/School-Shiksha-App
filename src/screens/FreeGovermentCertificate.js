@@ -81,7 +81,7 @@ const FreeGovermentCertificate = ({ navigation }) => {
                 marginHorizontal: 10,
               }}
             >
-              Free Govt. Certificate List{" "}
+              Free Govt. Course Admission{" "}
             </Text>
             <View style={styles.inputbox_main_container1}>
               <View style={styles.inputbox_container}>
@@ -130,7 +130,7 @@ const FreeGovermentCertificate = ({ navigation }) => {
                     />
                     <TextInput
                       style={styles.input}
-                      placeholder="Choose Option"
+                      placeholder="Select"
                       placeholderTextColor="rgba(166, 166, 166, 1)"
                       value={inputValueclass}
                       onChangeText={handleInputChangeclass}
@@ -216,7 +216,7 @@ const FreeGovermentCertificate = ({ navigation }) => {
                 alignSelf: "center",
               }}
             >
-              Free Govt. Certificate Admission
+              Free Course with Updated Link
             </Text>
 
             <View
@@ -377,178 +377,63 @@ const FreeGovermentCertificate = ({ navigation }) => {
                 <Text
                   style={{ color: "#595959", fontWeight: "700", fontSize: 12 }}
                 >
-                  40000/-
+                  30000/-
                 </Text>
               </View>
             </View>
 
             <View style={styles.cardButtons}>
-              <TouchableOpacity style={styles.buttonbox}>
+              <TouchableOpacity
+                style={styles.buttonbox}
+                onPress={() => navigation.navigate("freeGovtDetails")}
+              >
                 <Text
                   style={{
                     textAlign: "center",
                     color: "#0567F5",
                     fontWeight: "500",
-                    fontSize: 16,
-                    lineHeight: 18.75,
+                    fontSize: 14,
+                    lineHeight: 16.41,
                   }}
                 >
                   View All Details
                 </Text>
               </TouchableOpacity>
-
-              <LinearGradient
-                colors={["#03357D", "#0569FA"]} // Define your gradient colors here
-                start={{ x: 0, y: 0.5 }}
-                end={{ x: 1, y: 0.5 }}
-                style={[styles.buttonbox, { justifyContent: "center" }]}
+              <TouchableOpacity
+                onPress={() => navigation.navigate("freeGovAdmissionForm")}
               >
-                <TouchableOpacity
-                  onPress={() => navigation.navigate("freeGovAdmissionForm")}
-                  style={{
-                    justifyContent: "center",
-                    alignItems: "center",
-                    display: "flex",
-                  }}
+                <LinearGradient
+                  colors={["#03357D", "#0569FA"]} // Define your gradient colors here
+                  start={{ x: 0, y: 0.5 }}
+                  end={{ x: 1, y: 0.5 }}
+                  style={[
+                    styles.buttonbox,
+                    { justifyContent: "center", paddingHorizontal: 30 },
+                  ]}
                 >
-                  <Text
+                  <View
                     style={{
-                      fontSize: 16,
-                      fontWeight: "500",
+                      justifyContent: "center",
                       alignItems: "center",
                       display: "flex",
-                      justifyContent: "center",
-                      color: "white",
                     }}
                   >
-                    Apply Link
-                  </Text>
-                </TouchableOpacity>
-              </LinearGradient>
-            </View>
-          </View>
-
-          <View style={styles.listCart}>
-            <View style={styles.cardTop}>
-              <View
-                style={{
-                  backgroundColor: "rgba(255, 199, 0, 0.5)",
-                  width: 55,
-                  height: 55,
-                  borderRadius: 50,
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <Image
-                  style={{}}
-                  source={require("../../assets/img/college.png")}
-                />
-              </View>
-
-              <Text
-                style={{
-                  color: "rgba(55, 55, 55, 1)",
-                  fontWeight: "600",
-                  fontSize: 18,
-                }}
-              >
-                A.J.C College
-              </Text>
-            </View>
-            <View style={styles.course}>
-              <Text
-                style={{ color: "#01265B", fontWeight: "600", fontSize: 14 }}
-              >
-                Course Name -
-              </Text>
-              <Text
-                style={{ color: "#595959", fontWeight: "600", fontSize: 14 }}
-              >
-                B.C.A
-              </Text>
-            </View>
-
-            <View style={styles.aboutCourse}>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Text
-                  style={{ color: "#01265B", fontWeight: "600", fontSize: 14 }}
-                >
-                  Course Duration
-                </Text>
-                <Text
-                  style={{ color: "#01265B", fontWeight: "600", fontSize: 14 }}
-                >
-                  Course Fees{" "}
-                </Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Text
-                  style={{ color: "#595959", fontWeight: "700", fontSize: 12 }}
-                >
-                  4 Months
-                </Text>
-                <Text
-                  style={{ color: "#595959", fontWeight: "700", fontSize: 12 }}
-                >
-                  40000/-
-                </Text>
-              </View>
-            </View>
-
-            <View style={styles.cardButtons}>
-              <TouchableOpacity style={styles.buttonbox}>
-                <Text
-                  style={{
-                    textAlign: "center",
-                    color: "#0567F5",
-                    fontWeight: "500",
-                    fontSize: 16,
-                    lineHeight: 18.75,
-                  }}
-                >
-                  View All Details
-                </Text>
+                    <Text
+                      style={{
+                        fontSize: 14,
+                        fontWeight: "500",
+                        alignItems: "center",
+                        display: "flex",
+                        justifyContent: "center",
+                        color: "white",
+                        lineHeight: 16.41,
+                      }}
+                    >
+                      Apply Link
+                    </Text>
+                  </View>
+                </LinearGradient>
               </TouchableOpacity>
-
-              <LinearGradient
-                colors={["#03357D", "#0569FA"]} // Define your gradient colors here
-                start={{ x: 0, y: 0.5 }}
-                end={{ x: 1, y: 0.5 }}
-                style={[styles.buttonbox, { justifyContent: "center" }]}
-              >
-                <TouchableOpacity
-                  onPress={() => navigation.navigate("freeGovAdmissionForm")}
-                  style={{
-                    justifyContent: "center",
-                    alignItems: "center",
-                    display: "flex",
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontSize: 16,
-                      fontWeight: "500",
-                      alignItems: "center",
-                      display: "flex",
-                      justifyContent: "center",
-                      color: "white",
-                    }}
-                  >
-                    Apply Link
-                  </Text>
-                </TouchableOpacity>
-              </LinearGradient>
             </View>
           </View>
 
@@ -631,48 +516,190 @@ const FreeGovermentCertificate = ({ navigation }) => {
             </View>
 
             <View style={styles.cardButtons}>
-              <TouchableOpacity style={styles.buttonbox}>
+              <TouchableOpacity
+                style={styles.buttonbox}
+                onPress={() => navigation.navigate("freeGovtDetails")}
+              >
                 <Text
                   style={{
                     textAlign: "center",
                     color: "#0567F5",
                     fontWeight: "500",
-                    fontSize: 16,
-                    lineHeight: 18.75,
+                    fontSize: 14,
+                    lineHeight: 16.41,
                   }}
                 >
                   View All Details
                 </Text>
               </TouchableOpacity>
-
-              <LinearGradient
-                colors={["#03357D", "#0569FA"]} // Define your gradient colors here
-                start={{ x: 0, y: 0.5 }}
-                end={{ x: 1, y: 0.5 }}
-                style={[styles.buttonbox, { justifyContent: "center" }]}
+              <TouchableOpacity
+                onPress={() => navigation.navigate("freeGovAdmissionForm")}
               >
-                <TouchableOpacity
-                  onPress={() => navigation.navigate("freeGovAdmissionForm")}
-                  style={{
-                    justifyContent: "center",
-                    alignItems: "center",
-                    display: "flex",
-                  }}
+                <LinearGradient
+                  colors={["#03357D", "#0569FA"]} // Define your gradient colors here
+                  start={{ x: 0, y: 0.5 }}
+                  end={{ x: 1, y: 0.5 }}
+                  style={[
+                    styles.buttonbox,
+                    { justifyContent: "center", paddingHorizontal: 30 },
+                  ]}
                 >
-                  <Text
+                  <View
                     style={{
-                      fontSize: 16,
-                      fontWeight: "500",
+                      justifyContent: "center",
                       alignItems: "center",
                       display: "flex",
-                      justifyContent: "center",
-                      color: "white",
                     }}
                   >
-                    Apply Link
-                  </Text>
-                </TouchableOpacity>
-              </LinearGradient>
+                    <Text
+                      style={{
+                        fontSize: 14,
+                        fontWeight: "500",
+                        alignItems: "center",
+                        display: "flex",
+                        justifyContent: "center",
+                        color: "white",
+                        lineHeight: 16.41,
+                      }}
+                    >
+                      Apply Link
+                    </Text>
+                  </View>
+                </LinearGradient>
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          <View style={styles.listCart}>
+            <View style={styles.cardTop}>
+              <View
+                style={{
+                  backgroundColor: "rgba(255, 199, 0, 0.5)",
+                  width: 55,
+                  height: 55,
+                  borderRadius: 50,
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Image
+                  style={{}}
+                  source={require("../../assets/img/college.png")}
+                />
+              </View>
+
+              <Text
+                style={{
+                  color: "rgba(55, 55, 55, 1)",
+                  fontWeight: "600",
+                  fontSize: 18,
+                }}
+              >
+                A.J.C College
+              </Text>
+            </View>
+            <View style={styles.course}>
+              <Text
+                style={{ color: "#01265B", fontWeight: "600", fontSize: 14 }}
+              >
+                Course Name -
+              </Text>
+              <Text
+                style={{ color: "#595959", fontWeight: "600", fontSize: 14 }}
+              >
+                B.C.A
+              </Text>
+            </View>
+
+            <View style={styles.aboutCourse}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text
+                  style={{ color: "#01265B", fontWeight: "600", fontSize: 14 }}
+                >
+                  Course Duration
+                </Text>
+                <Text
+                  style={{ color: "#01265B", fontWeight: "600", fontSize: 14 }}
+                >
+                  Course Fees{" "}
+                </Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text
+                  style={{ color: "#595959", fontWeight: "700", fontSize: 12 }}
+                >
+                  4 Months
+                </Text>
+                <Text
+                  style={{ color: "#595959", fontWeight: "700", fontSize: 12 }}
+                >
+                  30000/-
+                </Text>
+              </View>
+            </View>
+
+            <View style={styles.cardButtons}>
+              <TouchableOpacity
+                style={styles.buttonbox}
+                onPress={() => navigation.navigate("freeGovtDetails")}
+              >
+                <Text
+                  style={{
+                    textAlign: "center",
+                    color: "#0567F5",
+                    fontWeight: "500",
+                    fontSize: 14,
+                    lineHeight: 16.41,
+                  }}
+                >
+                  View All Details
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("freeGovAdmissionForm")}
+              >
+                <LinearGradient
+                  colors={["#03357D", "#0569FA"]} // Define your gradient colors here
+                  start={{ x: 0, y: 0.5 }}
+                  end={{ x: 1, y: 0.5 }}
+                  style={[
+                    styles.buttonbox,
+                    { justifyContent: "center", paddingHorizontal: 30 },
+                  ]}
+                >
+                  <View
+                    style={{
+                      justifyContent: "center",
+                      alignItems: "center",
+                      display: "flex",
+                    }}
+                  >
+                    <Text
+                      style={{
+                        fontSize: 14,
+                        fontWeight: "500",
+                        alignItems: "center",
+                        display: "flex",
+                        justifyContent: "center",
+                        color: "white",
+                        lineHeight: 16.41,
+                      }}
+                    >
+                      Apply Link
+                    </Text>
+                  </View>
+                </LinearGradient>
+              </TouchableOpacity>
             </View>
           </View>
           <View
@@ -682,7 +709,7 @@ const FreeGovermentCertificate = ({ navigation }) => {
               gap: 4,
               height: 27,
               backgroundColor: "#FFFFFF",
-              marginBottom: 10,
+              marginBottom: 20,
               padding: 5,
             }}
           >
@@ -833,6 +860,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     flexDirection: "row",
     justifyContent: "space-between",
+    marginVertical: 2,
   },
   buttonbox: {
     flexDirection: "row",
@@ -840,7 +868,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderWidth: 1,
     borderColor: "#0567F5",
-    padding: 12,
+    padding: 14,
     paddingHorizontal: 15,
     borderRadius: 30,
     gap: 8,

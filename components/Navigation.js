@@ -37,6 +37,11 @@ import ChangePassword from "../src/screens/ChangePassword";
 import { AuthContext, AuthProvider } from "../Utils/context/AuthContext";
 import { ActivityIndicator } from "react-native";
 import { View } from "react-native";
+import OnlineCourseDetails from "../src/screens/OnlineCourseDetails";
+import FreeGovtCertiDetails from "../src/screens/FreeGovtCertiDetails";
+import PaidCollegeDetails from "../src/screens/PaidCollegeDetails";
+import PaymentQR from "../src/screens/PaymentQR";
+import ComputerCourseDetails from "../src/screens/ComputerCourseDetails";
 
 const Stack = createNativeStackNavigator();
 
@@ -112,6 +117,11 @@ const Navigation = () => {
               options={{ headerShown: false }}
             />
             <Stack.Screen
+              name="paidCollegeDetails"
+              component={PaidCollegeDetails}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
               name="paidCollgeAdmForm"
               component={paidCollegeRegForm}
               options={{ headerShown: false }}
@@ -124,6 +134,11 @@ const Navigation = () => {
             <Stack.Screen
               name="freeGovAdmissionForm"
               component={FreeGovCertiAdmissionForm}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="freeGovtDetails"
+              component={FreeGovtCertiDetails}
               options={{ headerShown: false }}
             />
             <Stack.Screen
@@ -149,6 +164,11 @@ const Navigation = () => {
             <Stack.Screen
               name="computerCollegeList"
               component={ComputerCollegeList}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="computerCourseDetails"
+              component={ComputerCourseDetails}
               options={{ headerShown: false }}
             />
             <Stack.Screen
@@ -187,11 +207,20 @@ const Navigation = () => {
               options={{ headerShown: false }}
             />
             <Stack.Screen
+              name="paymentQR"
+              component={PaymentQR}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="onlineCourseDetails"
+              component={OnlineCourseDetails}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
               name="resetPassword"
               component={ChangePassword}
               options={{ headerShown: false }}
             />
-          
           </Stack.Navigator>
         </NavigationContainer>
       ) : (
@@ -208,7 +237,7 @@ const Navigation = () => {
               component={Registration}
               options={{ headerShown: false }}
             />
-              <Stack.Screen
+            <Stack.Screen
               name="VerifyEmail"
               component={VerifyEmail}
               options={{ headerShown: false }}
@@ -223,8 +252,6 @@ const Navigation = () => {
               component={ForgetPassword}
               options={{ headerShown: false }}
             />
-
-            
           </Stack.Navigator>
         </NavigationContainer>
       )}

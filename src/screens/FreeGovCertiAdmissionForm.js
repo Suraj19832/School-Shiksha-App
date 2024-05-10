@@ -12,8 +12,10 @@ import { TextInput } from "react-native";
 import { FontAwesome5, Fontisto, Feather, AntDesign } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import Checkbox from "expo-checkbox";
 
 const FreeGovCertiAdmissionForm = ({ navigation }) => {
+  const [isChecked, setChecked] = useState(false);
   //For gender
   const [genderData, setGenderData] = useState("");
   const [isDropdownOpengender, setDropdownOpengender] = useState(false);
@@ -95,7 +97,7 @@ const FreeGovCertiAdmissionForm = ({ navigation }) => {
             </View>
             <View style={{ width: "80%" }}>
               <Text style={styles.profileText}>
-                Free Govt. Certrificate Course{" "}
+                Free Govt. Certificate Course{" "}
               </Text>
             </View>
           </View>
@@ -104,7 +106,7 @@ const FreeGovCertiAdmissionForm = ({ navigation }) => {
               <Text style={styles.college_details_text}>College name</Text>
               <TextInput
                 style={styles.college_details_input}
-                placeholder="Brainware Univesity"
+                placeholder="The University of Calcutta"
                 placeholderTextColor={"rgba(166, 166, 166, 1)"}
               />
             </View>
@@ -119,8 +121,9 @@ const FreeGovCertiAdmissionForm = ({ navigation }) => {
           </View>
           <View style={styles.personal_details}>
             <View style={styles.heading}>
-              <Text style={styles.text}>Student Details</Text>
+              <Text style={styles.text}>Student Personal Details</Text>
             </View>
+
             <View style={styles.input_fields}>
               <View style={styles.fields_main}>
                 <Text style={styles.inputHeading}>Name</Text>
@@ -138,13 +141,27 @@ const FreeGovCertiAdmissionForm = ({ navigation }) => {
                 </View>
               </View>
               <View style={styles.fields_main}>
-                <Text style={styles.inputHeading}>Date of Birth</Text>
+                <Text style={styles.inputHeading}>Father’s Name</Text>
                 <View style={styles.input_box}>
-                  <Fontisto
-                    name="date"
+                  <FontAwesome5
+                    name="user"
                     size={14}
                     color="rgba(0, 54, 126, 1)"
-                    onPress={showDatePicker}
+                  />
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Enter Your Father’s name"
+                    placeholderTextColor={"rgba(166, 166, 166, 1)"}
+                  />
+                </View>
+              </View>
+
+              <View style={styles.fields_main}>
+                <Text style={styles.inputHeading}>Date of Birth</Text>
+                <View style={styles.input_box}>
+                  <Image
+                    style={styles.iconImage}
+                    source={require("../../assets/icons/calendar.png")}
                   />
                   <TextInput
                     style={styles.input}
@@ -165,18 +182,32 @@ const FreeGovCertiAdmissionForm = ({ navigation }) => {
                   onCancel={hideDatePicker}
                 />
               </View>
+              <View style={styles.fields_main}>
+                <Text style={styles.inputHeading}>Aadhar Number</Text>
+                <View style={styles.input_box}>
+                  <Image
+                    style={styles.iconImage}
+                    source={require("../../assets/icons/identity.png")}
+                  />
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Enter aadhar number"
+                    placeholderTextColor={"rgba(166, 166, 166, 1)"}
+                  />
+                </View>
+              </View>
 
               <View style={styles.fields_main}>
                 <Text style={styles.inputHeading}>Gender</Text>
                 <TouchableOpacity onPress={toggleDropdowngender}>
                   <View style={styles.input_box}>
                     <Image
-                      source={require("../../assets/icons/gender.png")}
                       style={styles.iconImage}
+                      source={require("../../assets/icons/gender (1).png")}
                     />
                     <TextInput
                       style={styles.input}
-                      placeholder="Choose Option"
+                      placeholder="Select"
                       placeholderTextColor="rgba(166, 166, 166, 1)"
                       value={inputValuegender}
                       onChangeText={handleInputChangegender}
@@ -241,6 +272,48 @@ const FreeGovCertiAdmissionForm = ({ navigation }) => {
               </View>
 
               <View style={styles.fields_main}>
+                <Text style={styles.inputHeading}>Nationality</Text>
+                <View style={styles.input_box}>
+                  <Image
+                    source={require("../../assets/icons/united-nations.png")}
+                    style={styles.iconImage}
+                  />
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Select"
+                    placeholderTextColor={"rgba(166, 166, 166, 1)"}
+                  />
+                  <AntDesign
+                    name="caretdown"
+                    style={styles.arrowdown}
+                    size={15}
+                    color="rgba(0, 54, 126, 1)"
+                  />
+                </View>
+              </View>
+
+              <View style={styles.fields_main}>
+                <Text style={styles.inputHeading}>Religion</Text>
+                <View style={styles.input_box}>
+                  <Image
+                    source={require("../../assets/icons/religion.png")}
+                    style={styles.iconImage}
+                  />
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Select"
+                    placeholderTextColor={"rgba(166, 166, 166, 1)"}
+                  />
+                  <AntDesign
+                    name="caretdown"
+                    style={styles.arrowdown}
+                    size={15}
+                    color="rgba(0, 54, 126, 1)"
+                  />
+                </View>
+              </View>
+
+              <View style={styles.fields_main}>
                 <Text style={styles.inputHeading}>Full Address</Text>
                 <View style={styles.input_box}>
                   <Image
@@ -254,8 +327,9 @@ const FreeGovCertiAdmissionForm = ({ navigation }) => {
                   />
                 </View>
               </View>
-              <View style={styles.fields_main}>
-                <Text style={styles.inputHeading}>Qualification</Text>
+
+              {/* <View style={styles.fields_main}>
+                <Text style={styles.inputHeading}>Whatsapp Number</Text>
                 <TouchableOpacity onPress={toggleDropdownQualification}>
                   <View style={styles.input_box}>
                     <Image
@@ -297,7 +371,7 @@ const FreeGovCertiAdmissionForm = ({ navigation }) => {
                     </TouchableOpacity>
                   </View>
                 )}
-              </View>
+              </View> */}
               <View style={styles.fields_main}>
                 <Text style={styles.inputHeading}>Whatsapp Number</Text>
                 <View style={styles.input_box}>
@@ -311,6 +385,81 @@ const FreeGovCertiAdmissionForm = ({ navigation }) => {
                     placeholder="Phone"
                     placeholderTextColor={"rgba(166, 166, 166, 1)"}
                   />
+                </View>
+              </View>
+              <View style={{ marginTop: 25 }}>
+                <View style={styles.heading}>
+                  <Text style={styles.text}>Student Personal Details</Text>
+                </View>
+                <View style={styles.fields_main}>
+                  <Text style={styles.inputHeading}>Last Qualification</Text>
+                  <View style={styles.input_box}>
+                    <Image
+                      source={require("../../assets/icons/qualification.png")}
+                      style={styles.iconImage}
+                    />
+                    <TextInput
+                      style={styles.input}
+                      placeholder="Select"
+                      placeholderTextColor={"rgba(166, 166, 166, 1)"}
+                    />
+                    <AntDesign
+                      name="caretdown"
+                      style={styles.arrowdown}
+                      size={15}
+                      color="rgba(0, 54, 126, 1)"
+                    />
+                  </View>
+                </View>
+                <View style={styles.fields_main}>
+                  <Text style={styles.inputHeading}>H.S Pass Out Year</Text>
+                  <View style={styles.input_box}>
+                    <Image
+                      source={require("../../assets/icons/school.png")}
+                      style={styles.iconImage}
+                    />
+                    <TextInput
+                      style={styles.input}
+                      placeholder="Select"
+                      placeholderTextColor={"rgba(166, 166, 166, 1)"}
+                    />
+                    <AntDesign
+                      name="caretdown"
+                      style={styles.arrowdown}
+                      size={15}
+                      color="rgba(0, 54, 126, 1)"
+                    />
+                  </View>
+                </View>
+                <View style={styles.fields_main}>
+                  <Text style={styles.inputHeading}>Total Number</Text>
+                  <View style={styles.input_box}>
+                    <Image
+                      source={require("../../assets/icons/exam-results.png")}
+                      style={styles.iconImage}
+                    />
+                    <TextInput
+                      style={styles.input}
+                      placeholder="Marks"
+                      placeholderTextColor={"rgba(166, 166, 166, 1)"}
+                    />
+                  </View>
+                </View>
+              </View>
+              <View style={styles.condition_box_main}>
+                <View style={styles.conditions_box}>
+                  <Checkbox
+                    style={styles.checkbox}
+                    value={isChecked}
+                    onValueChange={setChecked}
+                    color={isChecked ? "rgba(0, 54, 126, 1)" : undefined}
+                  />
+                  <Text style={styles.text_condition}>
+                    I agree with the{" "}
+                    <Text style={styles.text_condition1}>
+                      Terms & Conditions
+                    </Text>
+                  </Text>
                 </View>
               </View>
             </View>
@@ -422,6 +571,39 @@ const styles = StyleSheet.create({
     color: "black",
     width: "120%",
   },
+  conditions: {
+    marginTop: 40,
+  },
+  conditiontext: {
+    fontSize: 13,
+    lineHeight: 15.23,
+    fontWeight: "400",
+    color: "rgba(0, 0, 0, 1)",
+  },
+  condition_box_main: {
+    marginTop: 30,
+  },
+  conditions_box: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  checkbox: {
+    marginRight: 15,
+    borderColor: "rgba(0, 54, 126, 1)",
+    borderWidth: 1,
+  },
+  text_condition: {
+    fontSize: 14,
+    lineHeight: 16.41,
+    fontWeight: "400",
+    color: "rgba(34, 34, 34, 1)",
+  },
+  text_condition1: {
+    fontSize: 14,
+    lineHeight: 16.41,
+    fontWeight: "600",
+    color: "rgba(34, 34, 34, 1)",
+  },
   iconImage: {
     height: 17,
     width: 17,
@@ -443,7 +625,7 @@ const styles = StyleSheet.create({
     borderColor: "rgba(3, 53, 125, 1)",
   },
   submitButton: {
-    marginTop: 16,
+    marginTop: 15,
     marginBottom: 90,
   },
   inputbox_submit: {

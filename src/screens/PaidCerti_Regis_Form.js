@@ -13,7 +13,7 @@ import { FontAwesome5, Fontisto, Feather, AntDesign } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 
-const PaidCerti_Regis_Form = () => {
+const PaidCerti_Regis_Form = ({ navigation }) => {
   //For gender
   const [genderData, setGenderData] = useState("");
   const [isDropdownOpengender, setDropdownOpengender] = useState(false);
@@ -80,7 +80,10 @@ const PaidCerti_Regis_Form = () => {
 
   return (
     <View style={styles.container}>
-      <Header title="Paid College Admission Form" />
+      <Header
+        title="Paid College Admission Form"
+        navigateTo={navigation?.goBack}
+      />
       <ScrollView>
         <View style={styles.main_content}>
           <View style={styles.profile}>

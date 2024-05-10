@@ -21,11 +21,14 @@ import Header from "../../components/Header";
 import Checkbox from "expo-checkbox";
 import { LinearGradient } from "expo-linear-gradient";
 
-const PaidCollegeRegForm = () => {
+const PaidCollegeRegForm = ({ navigation }) => {
   const [isChecked, setChecked] = useState(false);
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
-      <Header title="Paid College Admission Form" />
+      <Header
+        title="Paid College Admission Form"
+        navigateTo={navigation?.goBack}
+      />
       <ScrollView>
         <View style={styles.main_content}>
           <View style={styles.profile}>
@@ -97,7 +100,10 @@ const PaidCollegeRegForm = () => {
               <View style={styles.fields_main}>
                 <Text style={styles.inputHeading}>Date of Birth</Text>
                 <View style={styles.input_box}>
-                  <Fontisto name="date" size={14} color="rgba(0, 54, 126, 1)" />
+                  <Image
+                    style={styles.iconImage}
+                    source={require("../../assets/icons/calendar.png")}
+                  />
                   <TextInput
                     style={styles.input}
                     placeholder="Date of Birth"

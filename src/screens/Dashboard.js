@@ -22,7 +22,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const Dashboard = ({ navigation }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const {userToken, setuserToken, setmyLoading} = useContext(AuthContext)
+  const { userToken, setuserToken, setmyLoading } = useContext(AuthContext);
   const menuWidth = Dimensions.get("window").width * 0.8;
 
   const menuTranslateX = useRef(new Animated.Value(-menuWidth)).current;
@@ -147,11 +147,11 @@ const Dashboard = ({ navigation }) => {
       useNativeDriver: true,
     }).start();
   }, [isMenuOpen]);
-  const handlelogout = ()=>{
-    setuserToken(null)
-    AsyncStorage.removeItem('userToken')
-    setmyLoading(false)
-  }
+  const handlelogout = () => {
+    setuserToken(null);
+    AsyncStorage.removeItem("userToken");
+    setmyLoading(false);
+  };
 
   const renderPagination = () => {
     return (
@@ -498,7 +498,7 @@ const Dashboard = ({ navigation }) => {
 
         <View>
           <TitleDash
-            title="M.P Pass Student’s Benefits"
+            title="Secondary Pass Student’s Benefits"
             primaryColor="#C83000"
           />
           <View style={{ alignItems: "center" }}>

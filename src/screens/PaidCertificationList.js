@@ -627,10 +627,10 @@ const PaidCertificationList = ({ navigation }) => {
               flexDirection: "row",
               alignItems: "center",
               gap: 4,
-              height: 27,
+              height: 32,
               backgroundColor: "#FFFFFF",
-              marginBottom: 10,
-              padding: 5,
+              marginBottom: 80,
+              paddingHorizontal: 10,
             }}
           >
             <Text style={{ color: "#435354" }}>Load More</Text>

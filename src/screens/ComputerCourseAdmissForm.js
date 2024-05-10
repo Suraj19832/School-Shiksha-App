@@ -269,7 +269,7 @@ const ComputerCourseAdmissForm = ({ navigation }) => {
           </View>
           <View style={styles.personal_details}>
             <View style={styles.heading}>
-              <Text style={styles.text}>Student Personal Details</Text>
+              <Text style={styles.text}>Student Details</Text>
             </View>
             <View style={styles.input_fields}>
               <View style={styles.fields_main}>
@@ -296,11 +296,9 @@ const ComputerCourseAdmissForm = ({ navigation }) => {
               <View style={styles.fields_main}>
                 <Text style={styles.inputHeading}>Date of Birth</Text>
                 <View style={styles.input_box}>
-                  <Fontisto
-                    name="date"
-                    size={14}
-                    color="rgba(0, 54, 126, 1)"
-                    onPress={showDatePicker}
+                  <Image
+                    style={styles.iconImage}
+                    source={require("../../assets/icons/calendar.png")}
                   />
                   <TextInput
                     style={styles.input}
@@ -330,8 +328,8 @@ const ComputerCourseAdmissForm = ({ navigation }) => {
                 <TouchableOpacity onPress={toggleDropdowngender}>
                   <View style={styles.input_box}>
                     <Image
-                      source={require("../../assets/icons/gender.png")}
                       style={styles.iconImage}
+                      source={require("../../assets/icons/gender (1).png")}
                     />
                     <TextInput
                       style={styles.input}

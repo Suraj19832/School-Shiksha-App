@@ -84,7 +84,7 @@ const ContactUs = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header title="Contact Us" navigateTo={navigation.goBack} />
+      <Header title="Contact Us" navigateTo={() => navigation.goBack("Home")} />
       <ScrollView>
         <View style={styles.mainView}>
           <View style={styles.innerView}></View>

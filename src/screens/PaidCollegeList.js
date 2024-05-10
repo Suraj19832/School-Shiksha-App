@@ -8,7 +8,6 @@ import {
   StatusBar,
   Modal,
   TouchableOpacity,
-  Dimensions,
 } from "react-native";
 import React, { useState } from "react";
 import DropDownPicker from "react-native-dropdown-picker";
@@ -34,28 +33,10 @@ const FreeCollegeList = ({ navigation }) => {
     { label: "Option 2", value: "option2" },
     { label: "Option 3", value: "option3" },
   ];
-  const [isDropdownOpenclass, setDropdownOpenclass] = useState(false);
-  const [selectedOptionclass, setSelectedOptionclass] = useState(null);
-  const [inputValueclass, setInputValueclass] = useState("");
-
-  const toggleDropdownclass = () => {
-    setDropdownOpenclass(!isDropdownOpenclass);
-  };
-
-  const handleSelectOptionclass = (option) => {
-    setSelectedOptionclass(option);
-    setInputValueclass(option);
-    setDropdownOpenclass(false);
-  };
-
-  const handleInputChangeclass = (text) => {
-    setInputValueclass(text);
-    setDropdownOpenclass(null); // Clear selected option when user edits input
-  };
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* <ScrollView style={styles.scrollView}> */}
+      {/* <ScrollView style={styles.scrollView}>/ */}
       {/* <View style={styles.mainheadercontainer}>
           <View style={styles.headercontainer}>
             <MaterialIcons
@@ -64,7 +45,7 @@ const FreeCollegeList = ({ navigation }) => {
               color={"#00367E"}
               onPress={navigation.goBack}
             />
-            <Text style={styles.heading}>Paid College List</Text>
+            <Text style={styles.heading}>FreeCollegeList</Text>
           </View>
         </View> */}
       <Header title="Paid College List" navigateTo={navigation.goBack} />
@@ -86,7 +67,7 @@ const FreeCollegeList = ({ navigation }) => {
                 alignSelf: "center",
               }}
             >
-              Search Free College Admission{" "}
+              Search Paid College Admission{" "}
             </Text>
             <View style={styles.inputbox_main_container1}>
               <View style={styles.inputbox_container}>
@@ -100,136 +81,87 @@ const FreeCollegeList = ({ navigation }) => {
               </View>
             </View>
 
-            <View style={styles.inputbox_main_container}>
-              <View>
-                <Text
-                  style={{
-                    color: "rgba(0, 54, 126, 1)",
-                    fontWeight: "500",
-                    fontSize: 18,
-                    alignSelf: "flex-start",
-                  }}
-                >
-                  Course Name
-                </Text>
-              </View>
-              <View
-                style={[
-                  styles.inputbox_container,
-                  { justifyContent: "space-between", width: "91%" },
-                ]}
+            <View style={{ gap: 15, alignSelf: "center" }}>
+              <Text
+                style={{
+                  color: "#00367E",
+                  fontWeight: "600",
+                  fontSize: 20,
+                  // left: 17,
+                }}
               >
-                <TouchableOpacity onPress={toggleDropdownclass}>
-                  <View
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
-                      gap: 8,
-                    }}
-                  >
+                Course Name
+              </Text>
+              <View style={styles.inputbox_main_container1}>
+                <View
+                  style={[
+                    styles.inputbox_container,
+                    { borderRadius: 30, backgroundColor: "#FDF1DD" },
+                  ]}
+                >
+                  <View style={{ flexDirection: "row", gap: 4 }}>
                     <Image
                       style={{}}
                       source={require("../../assets/img/online-course.png")}
                     />
                     <TextInput
                       style={styles.input}
-                      placeholder="Choose Option"
+                      placeholder="Select"
                       placeholderTextColor="rgba(166, 166, 166, 1)"
-                      value={inputValueclass}
-                      onChangeText={handleInputChangeclass}
-                      onBlur={() => handleSelectOptionclass(inputValueclass)}
-                      editable={false} // Allow editing only when dropdown is closed
-                    />
-                    <AntDesign
-                      name="caretdown"
-                      size={16}
-                      color="rgba(0, 54, 126, 1)"
                     />
                   </View>
-                </TouchableOpacity>
-              </View>
 
-              {isDropdownOpenclass && (
-                <View style={styles.dropdownContainer}>
-                  <TouchableOpacity
-                    style={styles.dropdownOption}
-                    onPress={() => handleSelectOptionclass("1")}
-                  >
-                    <View
-                      style={{
-                        width: Dimensions.get("window").width * 0.7,
-                        alignItems: "center",
-                      }}
-                    >
-                      <Text>1</Text>
-                    </View>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={styles.dropdownOption}
-                    onPress={() => handleSelectOptionclass("2")}
-                  >
-                    <View
-                      style={{
-                        width: Dimensions.get("window").width * 0.7,
-                        alignItems: "center",
-                      }}
-                    >
-                      <Text>2</Text>
-                    </View>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={styles.dropdownOption}
-                    onPress={() => handleSelectOptionclass("3")}
-                  >
-                    <View
-                      style={{
-                        width: Dimensions.get("window").width * 0.7,
-                        alignItems: "center",
-                      }}
-                    >
-                      <Text>3</Text>
-                    </View>
-                  </TouchableOpacity>
+                  <AntDesign name="caretdown" size={16} color="#03357D" />
                 </View>
-              )}
+                <Text
+                  style={{
+                    alignSelf: "flex-end",
+                    color: "#0567F5",
+                    fontWeight: "500",
+                    fontSize: 14,
+                    textDecorationLine: "underline",
+                  }}
+                >
+                  Request Course
+                </Text>
+              </View>
             </View>
 
             {/* <View style={{ gap: 15, alignSelf: 'center' }}>
+      <Text
+        style={{
+          color: '#00367E',
+          fontWeight: '600',
+          fontSize: 20,
+        }}
+      >
+        Course Name
+      </Text>
+      <View style={styles.inputbox_main_container}>
+        <DropDownPicker
+          open={open}
+          value={selectedValue}
+          items={items}
+          setOpen={setOpen}
+          setValue={setSelectedValue}
+          setItems={items}
+          placeholder="Select"
+          style={{ borderWidth: 0 }} // Optional: if you want to customize the dropdown style
+        />
         <Text
           style={{
-            color: '#00367E',
-            fontWeight: '600',
-            fontSize: 20,
+            alignSelf: 'flex-end',
+            color: '#0567F5',
+            fontWeight: '500',
+            fontSize: 14,
+            textDecorationLine: 'underline',
+            marginTop: 10, // Adjust this value to your preference
           }}
         >
-          Course Name
+          Request Course
         </Text>
-        <View style={styles.inputbox_main_container}>
-          <DropDownPicker
-            open={open}
-            value={selectedValue}
-            items={items}
-            setOpen={setOpen}
-            setValue={setSelectedValue}
-            setItems={items}
-            placeholder="Select"
-            style={{ borderWidth: 0 }} // Optional: if you want to customize the dropdown style
-          />
-          <Text
-            style={{
-              alignSelf: 'flex-end',
-              color: '#0567F5',
-              fontWeight: '500',
-              fontSize: 14,
-              textDecorationLine: 'underline',
-              marginTop: 10, // Adjust this value to your preference
-            }}
-          >
-            Request Course
-          </Text>
-        </View>
-      </View> */}
+      </View>
+    </View> */}
           </View>
         </View>
 
@@ -316,15 +248,15 @@ const FreeCollegeList = ({ navigation }) => {
             <View style={styles.cardButtons}>
               <TouchableOpacity
                 style={styles.buttonbox}
-                onPress={() => navigation.navigate("details")}
+                onPress={() => navigation.navigate("paidCollegeDetails")}
               >
                 <Text
                   style={{
                     textAlign: "center",
                     color: "#0567F5",
                     fontWeight: "500",
-                    fontSize: 16,
-                    lineHeight: 18.75,
+                    fontSize: 14,
+                    lineHeight: 16.41,
                   }}
                 >
                   View All Details
@@ -337,7 +269,10 @@ const FreeCollegeList = ({ navigation }) => {
                   colors={["#03357D", "#0569FA"]} // Define your gradient colors here
                   start={{ x: 0, y: 0.5 }}
                   end={{ x: 1, y: 0.5 }}
-                  style={[styles.buttonbox, { justifyContent: "center" }]}
+                  style={[
+                    styles.buttonbox,
+                    { justifyContent: "center", paddingHorizontal: 30 },
+                  ]}
                 >
                   <View
                     style={{
@@ -348,12 +283,13 @@ const FreeCollegeList = ({ navigation }) => {
                   >
                     <Text
                       style={{
-                        fontSize: 16,
+                        fontSize: 14,
                         fontWeight: "500",
                         alignItems: "center",
                         display: "flex",
                         justifyContent: "center",
                         color: "white",
+                        lineHeight: 16.41,
                       }}
                     >
                       Apply Link
@@ -444,47 +380,57 @@ const FreeCollegeList = ({ navigation }) => {
             </View>
 
             <View style={styles.cardButtons}>
-              <TouchableOpacity style={styles.buttonbox}>
+              <TouchableOpacity
+                style={styles.buttonbox}
+                onPress={() => navigation.navigate("paidCollegeDetails")}
+              >
                 <Text
                   style={{
                     textAlign: "center",
                     color: "#0567F5",
                     fontWeight: "500",
-                    fontSize: 16,
-                    lineHeight: 18.75,
+                    fontSize: 14,
+                    lineHeight: 16.41,
                   }}
                 >
                   View All Details
                 </Text>
               </TouchableOpacity>
-
-              <LinearGradient
-                colors={["#03357D", "#0569FA"]} // Define your gradient colors here
-                start={{ x: 0, y: 0.5 }}
-                end={{ x: 1, y: 0.5 }}
-                style={[styles.buttonbox, { justifyContent: "center" }]}
+              <TouchableOpacity
+                onPress={() => navigation.navigate("paidCollgeAdmForm")}
               >
-                <View
-                  style={{
-                    justifyContent: "center",
-                    alignItems: "center",
-                    display: "flex",
-                  }}
+                <LinearGradient
+                  colors={["#03357D", "#0569FA"]} // Define your gradient colors here
+                  start={{ x: 0, y: 0.5 }}
+                  end={{ x: 1, y: 0.5 }}
+                  style={[
+                    styles.buttonbox,
+                    { justifyContent: "center", paddingHorizontal: 30 },
+                  ]}
                 >
-                  <Text
+                  <View
                     style={{
-                      fontSize: 16,
-                      fontWeight: "500",
+                      justifyContent: "center",
                       alignItems: "center",
                       display: "flex",
-                      justifyContent: "center",
-                      color: "white",
                     }}
                   >
-                    Apply Link
-                  </Text>
-                </View>
-              </LinearGradient>
+                    <Text
+                      style={{
+                        fontSize: 14,
+                        fontWeight: "500",
+                        alignItems: "center",
+                        display: "flex",
+                        justifyContent: "center",
+                        color: "white",
+                        lineHeight: 16.41,
+                      }}
+                    >
+                      Apply Link
+                    </Text>
+                  </View>
+                </LinearGradient>
+              </TouchableOpacity>
             </View>
           </View>
 
@@ -568,26 +514,33 @@ const FreeCollegeList = ({ navigation }) => {
             </View>
 
             <View style={styles.cardButtons}>
-              <TouchableOpacity style={styles.buttonbox}>
+              <TouchableOpacity
+                style={styles.buttonbox}
+                onPress={() => navigation.navigate("paidCollegeDetails")}
+              >
                 <Text
                   style={{
                     textAlign: "center",
                     color: "#0567F5",
                     fontWeight: "500",
-                    fontSize: 16,
-                    lineHeight: 18.75,
+                    fontSize: 14,
+                    lineHeight: 16.41,
                   }}
                 >
                   View All Details
                 </Text>
               </TouchableOpacity>
-
-              <TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("paidCollgeAdmForm")}
+              >
                 <LinearGradient
                   colors={["#03357D", "#0569FA"]} // Define your gradient colors here
                   start={{ x: 0, y: 0.5 }}
                   end={{ x: 1, y: 0.5 }}
-                  style={[styles.buttonbox, { justifyContent: "center" }]}
+                  style={[
+                    styles.buttonbox,
+                    { justifyContent: "center", paddingHorizontal: 30 },
+                  ]}
                 >
                   <View
                     style={{
@@ -598,12 +551,13 @@ const FreeCollegeList = ({ navigation }) => {
                   >
                     <Text
                       style={{
-                        fontSize: 16,
+                        fontSize: 14,
                         fontWeight: "500",
                         alignItems: "center",
                         display: "flex",
                         justifyContent: "center",
                         color: "white",
+                        lineHeight: 16.41,
                       }}
                     >
                       Apply Link
@@ -618,10 +572,10 @@ const FreeCollegeList = ({ navigation }) => {
               flexDirection: "row",
               alignItems: "center",
               gap: 4,
-              height: 27,
+              height: 32,
               backgroundColor: "#FFFFFF",
-              marginBottom: 10,
-              padding: 5,
+              marginBottom: 80,
+              paddingHorizontal: 10,
             }}
           >
             <Text style={{ color: "#435354" }}>Load More</Text>
@@ -637,16 +591,14 @@ export default FreeCollegeList;
 const styles = StyleSheet.create({
   container: {
     // backgroundColor: "#FFFCCE",
-    // marginTop: 28,
     // top: 53,
-    marginBottom: 48,
   },
   heading: {
     fontWeight: "500",
     fontSize: 16,
   },
   mainheadercontainer: {
-    backgroundColor: "white",
+    // backgroundColor: "white",
     height: 50,
     justifyContent: "center",
 
@@ -660,7 +612,7 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   image: {
-    height: 200,
+    height: 220,
     width: "100%",
   },
   listContainer: {
@@ -691,8 +643,8 @@ const styles = StyleSheet.create({
   },
   inputbox_main_container: {
     gap: 12,
-    // alignItems: "center",
-    width: "100%",
+    alignItems: "center",
+    width: "89%",
   },
   inputbox_main_container1: {
     gap: 12,
@@ -740,7 +692,8 @@ const styles = StyleSheet.create({
     // position:'absolute'
   },
   cardButtons: {
-    paddingHorizontal: 20,
+    paddingHorizontal: 15,
+    marginVertical: 2,
     flexDirection: "row",
     justifyContent: "space-between",
   },
@@ -750,7 +703,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderWidth: 1,
     borderColor: "#0567F5",
-    padding: 12,
+    padding: 15,
     paddingHorizontal: 15,
     borderRadius: 30,
     gap: 8,
@@ -759,7 +712,6 @@ const styles = StyleSheet.create({
   },
   input: {
     width: "80%",
-    color: "black",
   },
   dropdown: {
     position: "absolute",
@@ -780,28 +732,5 @@ const styles = StyleSheet.create({
   },
   optionText: {
     textAlign: "center",
-  },
-
-  dropdownContainer: {
-    position: "absolute",
-    top: "100%",
-    left: 0,
-    // zIndex:1,
-    backgroundColor: "yellow",
-    marginTop: 10,
-    width: "85%",
-    backgroundColor: "#fff",
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 4,
-    padding: 8,
-    zIndex: 1,
-    left: 17,
-    alignSelf: "center",
-    // justifyContent:'center'
-  },
-  dropdownOption: {
-    paddingVertical: 8,
-    alignSelf: "center",
   },
 });

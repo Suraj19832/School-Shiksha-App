@@ -202,42 +202,6 @@ const OnlineCourseList = ({ navigation }) => {
               )}
             </View>
 
-            {/* <View style={{ gap: 15, alignSelf: 'center' }}>
-        <Text
-          style={{
-            color: '#00367E',
-            fontWeight: '600',
-            fontSize: 20,
-          }}
-        >
-          Course Name
-        </Text>
-        <View style={styles.inputbox_main_container}>
-          <DropDownPicker
-            open={open}
-            value={selectedValue}
-            items={items}
-            setOpen={setOpen}
-            setValue={setSelectedValue}
-            setItems={items}
-            placeholder="Select"
-            style={{ borderWidth: 0 }} // Optional: if you want to customize the dropdown style
-          />
-          <Text
-            style={{
-              alignSelf: 'flex-end',
-              color: '#0567F5',
-              fontWeight: '500',
-              fontSize: 14,
-              textDecorationLine: 'underline',
-              marginTop: 10, // Adjust this value to your preference
-            }}
-          >
-            Request Course
-          </Text>
-        </View>
-      </View> */}
-
             <View>
               <Text
                 style={{
@@ -334,7 +298,10 @@ const OnlineCourseList = ({ navigation }) => {
             </View>
 
             <View style={styles.cardButtons}>
-              <TouchableOpacity style={styles.buttonbox}>
+              <TouchableOpacity
+                style={styles.buttonbox}
+                onPress={() => navigation.navigate("onlineCourseDetails")}
+              >
                 <Text
                   style={{
                     textAlign: "center",
@@ -461,7 +428,7 @@ const OnlineCourseList = ({ navigation }) => {
             <View style={styles.cardButtons}>
               <TouchableOpacity
                 style={styles.buttonbox}
-                onPress={() => navigation.navigate("collegedetails")}
+                onPress={() => navigation.navigate("onlineCourseDetails")}
               >
                 <Text
                   style={{
@@ -587,7 +554,10 @@ const OnlineCourseList = ({ navigation }) => {
             </View>
 
             <View style={styles.cardButtons}>
-              <TouchableOpacity style={styles.buttonbox}>
+              <TouchableOpacity
+                style={styles.buttonbox}
+                onPress={() => navigation.navigate("onlineCourseDetails")}
+              >
                 <Text
                   style={{
                     textAlign: "center",
@@ -639,10 +609,10 @@ const OnlineCourseList = ({ navigation }) => {
               flexDirection: "row",
               alignItems: "center",
               gap: 4,
-              height: 27,
+              height: 32,
               backgroundColor: "#FFFFFF",
-              marginBottom: 10,
-              padding: 5,
+              marginBottom: 80,
+              paddingHorizontal: 10,
             }}
           >
             <Text style={{ color: "#435354" }}>Load More</Text>
