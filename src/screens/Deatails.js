@@ -60,26 +60,8 @@ const Details = ({ navigation }) => {
   };
   return (
     <SafeAreaView style={styles.container}>
-      {/* <ScrollView style={styles.scrollView}> */}
-      {/* <View style={styles.mainheadercontainer}>
-          <View style={styles.headercontainer}>
-            <MaterialIcons
-              name="arrow-back"
-              size={30}
-              color={"#00367E"}
-              onPress={navigation.goBack}
-            />
-            <Text style={styles.heading}>FreeCollegeList</Text>
-          </View>
-        </View> */}
       <Header title="Free College List" navigateTo={navigation.goBack} />
       <ScrollView style={{ backgroundColor: "#FFFCCE" }}>
-        {/* <View>
-          <Image
-            style={styles.image}
-            source={require("../../assets/img/freeCollege.png")}
-          />
-        </View> */}
         <View style={{ position: "relative" }}>
           <FlatList
             ref={flatListRef}

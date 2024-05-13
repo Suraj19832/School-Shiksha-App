@@ -27,7 +27,7 @@ const PaidCollegeRegForm = ({ navigation }) => {
     <KeyboardAvoidingView style={styles.container} behavior="padding">
       <Header
         title="Paid College Admission Form"
-        navigateTo={navigation?.goBack}
+        navigateTo={navigation.goBack}
       />
       <ScrollView>
         <View style={styles.main_content}>

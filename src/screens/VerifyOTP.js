@@ -11,6 +11,8 @@ import {
   Platform,
   ActivityIndicator,
   ToastAndroid,
+  useColorScheme,
+  StatusBar,
 } from "react-native";
 import { MaterialIcons, FontAwesome5 } from "@expo/vector-icons";
 import { sendPostData } from "../../Helper/Helper";
@@ -90,6 +92,8 @@ const VerifyOTP = ({ navigation }) => {
         console.error(err, "error message from login side");
       });
   };
+  const colorScheme = useColorScheme();
+  const statusBarColor = colorScheme === "dark" ? "black" : "white";
 
   const handleResendOtp = () => {
     // Send OTP logic
@@ -115,7 +119,11 @@ const VerifyOTP = ({ navigation }) => {
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      {/* <Header navigateTo={navigation.goBack} /> */}
+      <StatusBar
+        animated={true}
+        backgroundColor={statusBarColor}
+        barStyle={colorScheme === "dark" ? "light-content" : "dark-content"}
+      />
       <ScrollView style={styles.container}>
         <View style={styles.main_content}>
           <FontAwesome5

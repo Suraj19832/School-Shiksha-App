@@ -26,18 +26,6 @@ import Header from "../../components/Header";
 const PaymentHistory = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
-      {/* <ScrollView style={styles.scrollView}> */}
-      {/* <View style={styles.mainheadercontainer}>
-          <View style={styles.headercontainer}>
-            <MaterialIcons
-              name="arrow-back"
-              size={30}
-              color={"#00367E"}
-              onPress={navigation.goBack}
-            />
-            <Text style={styles.heading}>Payment History</Text>
-          </View>
-        </View> */}
       <Header title="Payment History" navigateTo={navigation.goBack} />
       <ScrollView>
         <View style={{ alignItems: "center", marginTop: 20 }}>

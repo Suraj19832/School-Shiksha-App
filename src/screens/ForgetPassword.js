@@ -10,6 +10,8 @@ import {
   KeyboardAvoidingView,
   ActivityIndicator,
   ToastAndroid,
+  StatusBar,
+  useColorScheme,
 } from "react-native";
 import {
   Feather,
@@ -49,6 +51,8 @@ const ForgetPassword = ({ navigation }) => {
   function showToast(message) {
     ToastAndroid.show(message, ToastAndroid.SHORT);
   }
+  const colorScheme = useColorScheme();
+  const statusBarColor = colorScheme === "dark" ? "black" : "white";
 
   const handleConfirmPassword = () => {
     setIsLoading(true);
@@ -76,7 +80,11 @@ const ForgetPassword = ({ navigation }) => {
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
-      {/* <Header navigateTo={navigation.goBack} /> */}
+      <StatusBar
+        animated={true}
+        backgroundColor={statusBarColor}
+        barStyle={colorScheme === "dark" ? "light-content" : "dark-content"}
+      />
       <ScrollView>
         <View style={styles.main_content}>
           <FontAwesome5

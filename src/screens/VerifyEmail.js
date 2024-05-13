@@ -10,6 +10,8 @@ import {
   KeyboardAvoidingView,
   ActivityIndicator,
   ToastAndroid,
+  StatusBar,
+  useColorScheme,
 } from "react-native";
 import { Feather, FontAwesome5 } from "@expo/vector-icons";
 import { sendPostData } from "../../Helper/Helper";
@@ -30,6 +32,8 @@ const VerifyEmail = ({ navigation }) => {
   function showToast(message) {
     ToastAndroid.show(message, ToastAndroid.SHORT);
   }
+  const colorScheme = useColorScheme();
+  const statusBarColor = colorScheme === "dark" ? "black" : "white";
 
   useEffect(() => {
     setIsEmailValid(validateEmail(email));
@@ -69,7 +73,11 @@ const VerifyEmail = ({ navigation }) => {
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
-      {/* <Header navigateTo={navigation.goBack} /> */}
+      <StatusBar
+        animated={true}
+        backgroundColor={statusBarColor}
+        barStyle={colorScheme === "dark" ? "light-content" : "dark-content"}
+      />
       <ScrollView>
         <View style={styles.main_content}>
           <FontAwesome5

@@ -11,6 +11,7 @@ import {
   Alert,
   Platform,
   Dimensions,
+  useColorScheme,
 } from "react-native";
 import DropDownComponent from "../../components/Dropdown";
 import React, { useEffect, useState } from "react";
@@ -67,7 +68,7 @@ const Registration = ({ navigation }) => {
     password: "",
     referral_code: "",
   });
-// console.log(formData.fatherName)
+  // console.log(formData.fatherName)
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
   const [formValid, setFormValid] = useState(false);
@@ -113,8 +114,8 @@ const Registration = ({ navigation }) => {
       formData.address &&
       formData.whatsapp_number
     ) {
-      formsData.append("name", formData.name); 
-      formsData.append("father_name",formData.fatherName)
+      formsData.append("name", formData.name);
+      formsData.append("father_name", formData.fatherName);
       formsData.append("email", email);
       formsData.append("mobile", formData.mobile);
       formsData.append("date_of_birth", userDetails.date_of_birth);
@@ -454,12 +455,12 @@ const Registration = ({ navigation }) => {
       setDropdownOpenclass(false);
     }
   };
-const [planid, setplanid] = useState("")
-  const handleSelectOptionplan = (option,plannnid) => {
+  const [planid, setplanid] = useState("");
+  const handleSelectOptionplan = (option, plannnid) => {
     setSelectedOptionplan(option);
     setInputValueplan(option);
     setDropdownOpenplan(false);
-    setplanid(plannnid)
+    setplanid(plannnid);
   };
 
   const handleInputChangeplan = (text) => {
@@ -572,6 +573,9 @@ const [planid, setplanid] = useState("")
       });
   }, []);
 
+  const colorScheme = useColorScheme();
+  const statusBarColor = colorScheme === "dark" ? "black" : "white";
+
   // console.log("----------------------------------------------------------------------------------------")
   // get data for class
   const [classname, setclassname] = useState("");
@@ -601,7 +605,8 @@ const [planid, setplanid] = useState("")
       <ScrollView style={styles.scrollView}>
         <StatusBar
           animated={true}
-          // backgroundColor="white"
+          backgroundColor={statusBarColor}
+          barStyle={colorScheme === "dark" ? "light-content" : "dark-content"}
         />
         <View style={styles.mainView}>
           <View style={styles.innerView}>
@@ -854,7 +859,7 @@ const [planid, setplanid] = useState("")
                   onCancel={hideDatePicker}
                 />
               </View> */}
-                           <View style={styles.inputbox_main_container}>
+              <View style={styles.inputbox_main_container}>
                 <View>
                   <Text
                     style={{
@@ -873,11 +878,11 @@ const [planid, setplanid] = useState("")
                     color="rgba(0, 54, 126, 1)"
                     onPress={showDatePicker}
                   /> */}
-                  <TouchableOpacity  onPress={showDatePicker} >
-                  <Image
-                    style={styles.iconImage}
-                    source={require("../../assets/icons/calendar.png")}
-                  />
+                  <TouchableOpacity onPress={showDatePicker}>
+                    <Image
+                      style={styles.iconImage}
+                      source={require("../../assets/icons/calendar.png")}
+                    />
                   </TouchableOpacity>
                   <TextInput
                     style={styles.input}
@@ -1770,7 +1775,9 @@ const [planid, setplanid] = useState("")
                       <TouchableOpacity
                         key={index}
                         style={styles.dropdownOption}
-                        onPress={() => handleSelectOptionplan(option?.plan_name ,option?.id)}
+                        onPress={() =>
+                          handleSelectOptionplan(option?.plan_name, option?.id)
+                        }
                       >
                         <Text>{option?.plan_name}</Text>
                       </TouchableOpacity>
@@ -1802,12 +1809,14 @@ const [planid, setplanid] = useState("")
                     placeholderTextColor="rgba(166, 166, 166, 1)"
                     
                   /> */}
-                   <TextInput
+                  <TextInput
                     style={styles.input}
                     placeholder="Username"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
                     value={formData.referral_code}
-                    onChangeText={(text) => handleInputChange("referral_code", text)}
+                    onChangeText={(text) =>
+                      handleInputChange("referral_code", text)
+                    }
                     onBlur={() => handleInputBlur("referral_code")}
                   />
                 </View>

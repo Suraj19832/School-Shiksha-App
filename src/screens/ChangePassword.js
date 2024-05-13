@@ -11,6 +11,8 @@ import {
   ActivityIndicator,
   ToastAndroid,
   Alert,
+  StatusBar,
+  useColorScheme,
 } from "react-native";
 import {
   Feather,
@@ -83,9 +85,10 @@ const ChangePassword = ({ navigation }) => {
   //       });
   //   };
 
-  const [changePasswordServerMessage, setchangePasswordServerMessage] = useState("")
+  const [changePasswordServerMessage, setchangePasswordServerMessage] =
+    useState("");
   const { userToken } = useContext(AuthContext);
-  const handleResetPassword = async() => {
+  const handleResetPassword = async () => {
     console.log("reset password button was clicked");
     setIsLoading(true);
     const postData = {
@@ -97,45 +100,57 @@ const ChangePassword = ({ navigation }) => {
     // Convert object data to FormData
     const formDatablock = objectToFormData(postData);
 
-    postDataWithFormDataWithToken("auth/change-password", formDatablock ,userToken)
+    postDataWithFormDataWithToken(
+      "auth/change-password",
+      formDatablock,
+      userToken
+    )
       .then((res) => {
         console.log("Response from API for block:", res);
-         setchangePasswordServerMessage(res?.message);
+        setchangePasswordServerMessage(res?.message);
         // Do something with the response data, if needed
         if (res?.status) {
-          console.log("====================================",res?.message)
+          console.log("====================================", res?.message);
           showToast("Password Reset Successfull");
-          setIsLoading(false)
-        }else{
-          console.log("jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj",res)
-          
-          console.log(res)
+          setIsLoading(false);
+        } else {
+          console.log(
+            "jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj",
+            res
+          );
+
+          console.log(res);
           // showToast("Passord Not Match");
           Alert.alert("Alert", "Password Not Match");
-          setIsLoading(false)
+          setIsLoading(false);
         }
-       
       })
       .catch((error) => {
         console.error("Error posting c:ss", error?.message);
-        
-        setIsLoading(false)
+
+        setIsLoading(false);
       });
   };
 
-  const [LoginUserNumber, setLoginUserNumber] = useState("")
+  const [LoginUserNumber, setLoginUserNumber] = useState("");
+
+  const colorScheme = useColorScheme();
+  const statusBarColor = colorScheme === "dark" ? "black" : "white";
 
   useEffect(() => {
     // Define the URL you want to fetch data from
     const apiUrl = "/student/profile";
 
     // Call the getstatedata function with the API URL
-    getrequestwithtoken(apiUrl ,userToken)
+    getrequestwithtoken(apiUrl, userToken)
       .then((res) => {
         // console.log('Response from API:', res.data);
         // setStateData(res?.data);
-        console.log(".................................................",res?.data?.mobile) 
-        setLoginUserNumber(res?.data?.mobile)
+        console.log(
+          ".................................................",
+          res?.data?.mobile
+        );
+        setLoginUserNumber(res?.data?.mobile);
         // Do something with the response data, e.g., update component state
       })
       .catch((error) => {
@@ -145,6 +160,11 @@ const ChangePassword = ({ navigation }) => {
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
+      <StatusBar
+        animated={true}
+        backgroundColor={statusBarColor}
+        barStyle={colorScheme === "dark" ? "light-content" : "dark-content"}
+      />
       <ScrollView>
         <View style={styles.main_content}>
           <FontAwesome5

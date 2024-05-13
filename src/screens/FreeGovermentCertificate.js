@@ -47,18 +47,6 @@ const FreeGovermentCertificate = ({ navigation }) => {
   };
   return (
     <SafeAreaView style={styles.container}>
-      {/* <ScrollView style={styles.scrollView}> */}
-      {/* <View style={styles.mainheadercontainer}>
-          <View style={styles.headercontainer}>
-            <MaterialIcons
-              name="arrow-back"
-              size={30}
-              color={"#00367E"}
-              onPress={navigation.goBack}
-            />
-            <Text style={styles.heading}>Free Govt. Certificate List</Text>
-          </View>
-        </View> */}
       <Header
         title="Free Govt. Certificate List"
         navigateTo={navigation.goBack}

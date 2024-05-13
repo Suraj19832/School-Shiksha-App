@@ -50,10 +50,7 @@ const GetInTouch = ({ navigation }) => {
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
-      <Header
-        navigateTo={() => navigation.navigate("Dashboard")}
-        title="Query"
-      />
+      <Header navigateTo={navigation.goBack} title="Query" />
       <View style={styles.main_container}>
         <View>
           <Text style={styles.heading}>Get In Touch</Text>

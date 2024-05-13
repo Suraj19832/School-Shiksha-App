@@ -11,6 +11,8 @@ import {
   KeyboardAvoidingView,
   ActivityIndicator,
   ToastAndroid,
+  useColorScheme,
+  StatusBar,
 } from "react-native";
 import { Feather, EvilIcons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { sendPostData } from "../../Helper/Helper";
@@ -96,6 +98,8 @@ const Login_Page = ({ navigation }) => {
         });
     }
   };
+  const colorScheme = useColorScheme();
+  const statusBarColor = colorScheme === "dark" ? "black" : "white";
   useEffect(() => {
     if (phoneNumber && password) {
       setButtonDisabled(false);
@@ -106,6 +110,11 @@ const Login_Page = ({ navigation }) => {
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
+      <StatusBar
+        animated={true}
+        backgroundColor={statusBarColor}
+        barStyle={colorScheme === "dark" ? "light-content" : "dark-content"}
+      />
       <ScrollView>
         <View style={styles.main_content}>
           <View style={styles.loginImage}>

@@ -11,6 +11,8 @@ import {
   Animated,
   Easing,
   SafeAreaView,
+  useColorScheme,
+  StatusBar,
 } from "react-native";
 import {
   Ionicons,
@@ -42,8 +44,15 @@ const SpanText = (props) => {
 };
 
 const MembershipPlan = ({ navigation }) => {
+  const colorScheme = useColorScheme();
+  const statusBarColor = colorScheme === "dark" ? "black" : "white";
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar
+        animated={true}
+        backgroundColor={statusBarColor}
+        barStyle={colorScheme === "dark" ? "light-content" : "dark-content"}
+      />
       <ScrollView>
         <View style={styles.mainView}>
           <View style={styles.innerView}>
