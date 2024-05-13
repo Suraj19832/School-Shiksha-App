@@ -655,7 +655,11 @@ const AdmissionForm = ({ navigation }) => {
       <ScrollView>
         <View style={styles.main_content}>
           <View style={styles.profile}>
-            <View style={styles.imageContainer}>
+            <View style={{
+    width: 70,
+    height: 70,
+    backgroundColor: "#03357D",
+    borderRadius: 50,}}>
               <Image
                 style={styles.img}
                 source={require("../../assets/img/student.png")}
@@ -1997,10 +2001,6 @@ const styles = StyleSheet.create({
   imageContainer: {
     alignItems: "center",
     marginTop: 10,
-    width: 70,
-    height: 70,
-    backgroundColor: "#03357D",
-    borderRadius: 50,
   },
   uploadedImage: {
     width: 100,

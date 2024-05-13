@@ -316,7 +316,6 @@ const Dashboard = ({ navigation }) => {
             </View>
             <View style={styles.hairlineMenu} />
 
-            <View style={styles.hairlineMenu} />
             <View
               style={[
                 { flexDirection: "row", alignItems: "center", gap: 20 },

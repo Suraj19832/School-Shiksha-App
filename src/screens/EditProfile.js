@@ -32,11 +32,12 @@ import { Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Checkbox from "expo-checkbox";
 import {
+  getdata,
   objectToFormData,
   postDataWithFormData,
   sendPostData,
 } from "../../Helper/Helper";
-import { getstatedata } from "../../Helper/Helper";
+// import { getstatedata } from "../../Helper/Helper";
 import Header from "../../components/Header";
 
 // import { TouchableOpacity } from "react-native-web";
@@ -463,7 +464,7 @@ const EditProfile = ({ navigation }) => {
     const apiUrl = "master/state";
 
     // Call the getstatedata function with the API URL
-    getstatedata(apiUrl)
+    getdata(apiUrl)
       .then((res) => {
         // console.log('Response from API:', res.data);
         setStateData(res?.data);
@@ -524,7 +525,7 @@ const EditProfile = ({ navigation }) => {
     const apiUrl = "master/plan";
 
     // Call the getstatedata function with the API URL
-    getstatedata(apiUrl)
+    getdata(apiUrl)
       .then((res) => {
         console.log("Response from API:", res?.message);
         const planNames = res.data.map((item) => item.plan_name);
