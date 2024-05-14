@@ -13,7 +13,8 @@ import {
   Dimensions,
 } from "react-native";
 import DropDownComponent from "../../components/Dropdown";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { useFocusEffect } from "@react-navigation/native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import Modal from "react-native-modal";
 import {
@@ -30,22 +31,19 @@ import {
 } from "@expo/vector-icons";
 import { Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import Checkbox from "expo-checkbox";
 import {
   getdata,
+  getrequestwithtoken,
   objectToFormData,
   postDataWithFormData,
+  postDataWithFormDataWithToken,
   sendPostData,
 } from "../../Helper/Helper";
-// import { getstatedata } from "../../Helper/Helper";
 import Header from "../../components/Header";
-
-// import { TouchableOpacity } from "react-native-web";
-
+import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
+import { AuthContext } from "../../Utils/context/AuthContext";
 const EditProfile = ({ navigation }) => {
-  const [isChecked, setChecked] = useState(false);
-  // const [name, setname] = useState("");
-  // const [nameError, setnameError] = useState("");
+  const { userToken } = useContext(AuthContext);
   const showToast = (message) => {
     if (Platform.OS === "android") {
       ToastAndroid.show(message, ToastAndroid.SHORT);
@@ -101,55 +99,6 @@ const EditProfile = ({ navigation }) => {
     validateForm();
   };
 
-  const handleSubmission = () => {
-    if (formData.name && formData.mobile) {
-    }
-    const formsData = new FormData();
-    if (
-      formData.name &&
-      formData.mobile &&
-      formData.pincode &&
-      formData.police_station &&
-      formData.address &&
-      formData.whatsapp_number
-    ) {
-      // formsData.append("name", formData.name);
-      // formsData.append("email", email);
-      // formsData.append("mobile", formData.mobile);
-      // formsData.append("date_of_birth", userDetails.date_of_birth);
-      // formsData.append("aadhar_number", formData.aadhar_number);
-      // formsData.append("gender", genderData);
-      // formsData.append("pincode", formData.pincode);
-      // formsData.append("police_station", formData.police_station);
-      // formsData.append("district_id", districtId);
-      // formsData.append("address", formData.address);
-      // formsData.append("whatsapp_number", formData.whatsapp_number);
-      // formsData.append("password", password);
-      // formsData.append("referral_code", formData.referral_code);
-      // formsData.append("nationality", formData.nationality);
-      // formsData.append("religion", formData.religion);
-      // formsData.append("block", blockId);
-      // formsData.append("class", inputValueclass);
-      // console.log("6565655", formsData);
-      // sendPostData("register", formsData)
-      //   .then((res) => {
-      //     if (res?.status) {
-      //       showToast("Registration Successfull");
-      //       console.log("11111111", res?.status);
-      //       navigation.navigate("Dashboard");
-      //     } else {
-      //       console.log("00", res);
-      //       console.log("888", formsData);
-      //     }
-      //   })
-      //   .catch((err) => {
-      //     console.log(err, "--err");
-      //   });
-    } else {
-      // console.log("Registration failed: Required fields are missing");
-      Alert.alert("Alert", "Please Fill up All Fields");
-    }
-  };
   // email validation
   const validateEmail = () => {
     // Regular expression pattern to validate email format
@@ -219,8 +168,8 @@ const EditProfile = ({ navigation }) => {
   };
 
   const handleConfirm = (date) => {
-    setUserDetails({
-      ...userDetails,
+    setProfileData({
+      ...profileData,
       date_of_birth: date.toISOString().split("T")[0],
     });
     hideDatePicker();
@@ -292,15 +241,14 @@ const EditProfile = ({ navigation }) => {
   };
   const toggleDropdownstate = () => {
     setDropdownOpenstate(!isDropdownOpenstate);
-    if(!isDropdownOpenstate){
-      setDropdownOpenplan(false)
-      setDropdownOpengender(false)
-      setDropdownOpenblock(false)
-      setDropdownOpen(false)
-      setDropdownOpenPayment(false)
-      setDropdownOpenclass(false)
+    if (!isDropdownOpenstate) {
+      setDropdownOpenplan(false);
+      setDropdownOpengender(false);
+      setDropdownOpenblock(false);
+      setDropdownOpen(false);
+      setDropdownOpenPayment(false);
+      setDropdownOpenclass(false);
     }
-
   };
 
   const handleSelectOption = (districtName, id) => {
@@ -319,7 +267,7 @@ const EditProfile = ({ navigation }) => {
     setDistrictId();
     setDropdownOpenstate(false);
   };
-  console.log("[][]", stateInfo);
+  // console.log("[][]", stateInfo);
   const handleInputChangedistrict = (text) => {
     setInputValue(text);
     setSelectedOption(null); // Clear selected option when user edits input
@@ -377,13 +325,13 @@ const EditProfile = ({ navigation }) => {
 
   const toggleDropdowngender = () => {
     setDropdownOpengender(!isDropdownOpengender);
-    if(!isDropdownOpengender){
-      setDropdownOpenplan(false)
-      setDropdownOpenstate(false)
-      setDropdownOpenblock(false)
-      setDropdownOpen(false)
-      setDropdownOpenPayment(false)
-      setDropdownOpenclass(false)
+    if (!isDropdownOpengender) {
+      setDropdownOpenplan(false);
+      setDropdownOpenstate(false);
+      setDropdownOpenblock(false);
+      setDropdownOpen(false);
+      setDropdownOpenPayment(false);
+      setDropdownOpenclass(false);
     }
   };
 
@@ -402,16 +350,14 @@ const EditProfile = ({ navigation }) => {
   //handle togle for class
   const toggleDropdownclass = () => {
     setDropdownOpenclass(!isDropdownOpenclass);
-    if(!isDropdownOpenclass){
-      setDropdownOpengender(false)
-      setDropdownOpenstate(false)
-      setDropdownOpenblock(false)
-      setDropdownOpen(false)
-      setDropdownOpenPayment(false)
-      setDropdownOpenplan(false)
+    if (!isDropdownOpenclass) {
+      setDropdownOpengender(false);
+      setDropdownOpenstate(false);
+      setDropdownOpenblock(false);
+      setDropdownOpen(false);
+      setDropdownOpenPayment(false);
+      setDropdownOpenplan(false);
     }
- 
-
   };
 
   const handleSelectOptionclass = (option) => {
@@ -454,92 +400,103 @@ const EditProfile = ({ navigation }) => {
 
   const handleInputChangeblock = (text) => {
     setInputValueblock(text);
-    setDropdownOpenblock(null); // Clear selected option when user edits input
+    setDropdownOpenblock(null);
   };
 
-  // get state data here
-
   useEffect(() => {
-    // Define the URL you want to fetch data from
     const apiUrl = "master/state";
 
-    // Call the getstatedata function with the API URL
     getdata(apiUrl)
       .then((res) => {
-        // console.log('Response from API:', res.data);
         setStateData(res?.data);
-        // Do something with the response data, e.g., update component state
       })
       .catch((error) => {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching data: from master/state", error);
       });
   }, []);
 
-  console.log("00", stateData);
   useEffect(() => {
-    // Define the object data you want to convert to FormData and send
     const postData = {
       state_id: stateInfo,
     };
 
-    // Convert object data to FormData
     const formData = objectToFormData(postData);
 
-    // Call the postDataWithFormData function with the API URL and FormData
     postDataWithFormData("master/district", formData)
       .then((res) => {
-        console.log("Response from API for district:", res?.data);
         setDistrictData(res?.data);
-        // Do something with the response data, if needed
       })
       .catch((error) => {
         console.error("Error posting data:", error);
       });
-  }, [stateInfo]); // Run once on component mount
+  }, [stateInfo]);
 
   useEffect(() => {
-    //post request for block
-
     const postData = {
       district_id: districtId,
     };
 
-    // Convert object data to FormData
     const formDatablock = objectToFormData(postData);
 
-    // Call the postDataWithFormData function with the API URL and FormData
     postDataWithFormData("master/block", formDatablock)
       .then((res) => {
-        console.log("Response from API for block:", res?.data);
         setBlockData(res?.data);
-        // Do something with the response data, if needed
       })
       .catch((error) => {
         console.error("Error posting data:", error);
       });
   }, [districtId]);
   const [plan, setplan] = useState("");
-  // for plan
-  useEffect(() => {
-    // Define the URL you want to fetch data from
-    const apiUrl = "master/plan";
 
-    // Call the getstatedata function with the API URL
+  useEffect(() => {
+    const apiUrl = "master/plan";
     getdata(apiUrl)
       .then((res) => {
-        console.log("Response from API:", res?.message);
         const planNames = res.data.map((item) => item.plan_name);
         setplan(planNames);
-        console.log("Plan Names:", planNames);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
   }, []);
 
-  console.log("88", blockdata);
+  const [classData, setClassData] = useState([]);
 
-  console.log("789", formData);
+  useEffect(() => {
+    getdata("master/class")
+      .then((res) => {
+        const classValues = res.data.map((item) => item);
+        setClassData(classValues);
+      })
+      .catch((err) => {
+        console.log("error side ", err?.status);
+      });
+  }, []);
+
+  // code for api implementation
+
+  const [profileData, setProfileData] = useState({
+    name: "",
+    father_name: "",
+    date_of_birth: "",
+    gender: "",
+    state_name: "",
+    class_name: "",
+  });
+  useFocusEffect(
+    React.useCallback(() => {
+      getrequestwithtoken("student/profile", userToken)
+        .then((res) => {
+          setProfileData(res.data);
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err, "issue in edit profilefetch");
+        });
+    }, [userToken])
+  );
+
+  const handleSubmission = () => {};
 
   return (
     <SafeAreaView style={styles.container}>
@@ -571,21 +528,22 @@ const EditProfile = ({ navigation }) => {
                     style={styles.input}
                     placeholder="Username"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
-                    value={formData.name}
-                    onChangeText={(text) => handleInputChange("name", text)}
+                    value={profileData.name || ""}
+                    onChangeText={(text) =>
+                      setProfileData({ ...profileData, name: text })
+                    }
                     onBlur={() => handleInputBlur("name")}
                   />
                 </View>
                 {formErrors.name && fieldTouched.name && (
                   <Text style={{ color: "red" }}>{formErrors.name}</Text>
                 )}
-                {!formErrors.name && !formData.name && fieldTouched.name && (
+                {/* {!formErrors.name && !formData.name && fieldTouched.name && (
                   <Text style={{ color: "red" }}>Full Name is required</Text>
-                )}
+                )} */}
               </View>
 
               {/* Father name  */}
-
               <View style={styles.inputbox_main_container}>
                 <View>
                   <Text
@@ -604,9 +562,9 @@ const EditProfile = ({ navigation }) => {
                     style={styles.input}
                     placeholder="Enter Your Father's name"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
-                    value={formData.fatherName}
+                    value={profileData.father_name || ""}
                     onChangeText={(text) =>
-                      handleInputChange("fatherName", text)
+                      setProfileData({ ...profileData, father_name: text })
                     }
                     onBlur={() => handleInputBlur("fatherName")}
                   />
@@ -621,18 +579,7 @@ const EditProfile = ({ navigation }) => {
               {/* Mobile number  */}
               <View style={styles.inputbox_main_container}>
                 <View>
-                  {/* <Text
-                    style={{
-                      color: mobileInActivity
-                        ? "#A6A6A6"
-                        : "rgba(0, 54, 126, 1)",
-                      fontWeight: "500",
-                      fontSize: 18,
-                    }}
-                  >
-                    Mobile Number
-                  </Text> */}
-                   <Text
+                  <Text
                     style={{
                       color: "rgba(0, 54, 126, 1)",
                       fontWeight: "500",
@@ -661,8 +608,11 @@ const EditProfile = ({ navigation }) => {
                     keyboardType="numeric"
                     placeholder="9874561230"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
-                    value={formData.mobile}
-                    onChangeText={(text) => handleInputChange("mobile", text)}
+                    // value={formData.mobile}
+                    value={profileData.mobile || ""}
+                    onChangeText={(text) =>
+                      setProfileData({ ...profileData, mobile: text })
+                    }
                     onBlur={() => handleInputBlur("mobile")}
                     maxLength={10}
                     editable={mobileInActivity ? false : true}
@@ -679,50 +629,52 @@ const EditProfile = ({ navigation }) => {
                     </Text>
                   )}
               </View>
+
               {/* whatsapp number  */}
               <View style={styles.inputbox_main_container}>
-                                <View>
-                                    <Text
-                                        style={{
-                                            color: "rgba(0, 54, 126, 1)",
-                                            fontWeight: "500",
-                                            fontSize: 18,
-                                        }}
-                                    >
-                                        WhatsApp Number
-                                    </Text>
-                                </View>
-                                <View style={styles.inputbox_container}>
-                                    <FontAwesome5
-                                        name="whatsapp"
-                                        size={16}
-                                        color="rgba(0, 54, 126, 1)"
-                                    />
-                                    <TextInput
-                                        style={styles.input}
-                                        keyboardType="numeric"
-                                        placeholder="Enter your WhatsApp number"
-                                        placeholderTextColor="rgba(166, 166, 166, 1)"
-                                        value={formData.whatsapp_number}
-                                        onChangeText={(text) =>
-                                            handleInputChange("whatsapp_number", text)
-                                        }
-                                        onBlur={() => handleInputBlur("whatsapp_number")}
-                                        maxLength={10}
-                                    />
-                                </View>
-                                {formErrors.whatsapp_number && fieldTouched.whatsapp_number && (
-                                    <Text style={{ color: "red" }}>Whatsapp number Required</Text>
-                                )}
-                                {!formErrors.whatsapp_number &&
-                                    formData.whatsapp_number &&
-                                    formData.whatsapp_number.trim().length !== 10 && (
-                                        <Text style={{ color: "red" }}>
-                                            Mobile number must be 10 digits
-                                        </Text>
-                                    )}
-                            </View>
-  
+                <View>
+                  <Text
+                    style={{
+                      color: "rgba(0, 54, 126, 1)",
+                      fontWeight: "500",
+                      fontSize: 18,
+                    }}
+                  >
+                    WhatsApp Number
+                  </Text>
+                </View>
+                <View style={styles.inputbox_container}>
+                  <FontAwesome5
+                    name="whatsapp"
+                    size={16}
+                    color="rgba(0, 54, 126, 1)"
+                  />
+                  <TextInput
+                    style={styles.input}
+                    keyboardType="numeric"
+                    placeholder="Enter your WhatsApp number"
+                    placeholderTextColor="rgba(166, 166, 166, 1)"
+                    // value={formData.whatsapp_number}
+                    value={profileData.whatsapp_number || ""}
+                    onChangeText={(text) =>
+                      setProfileData({ ...profileData, whatsapp_number: text })
+                    }
+                    onBlur={() => handleInputBlur("whatsapp_number")}
+                    maxLength={10}
+                  />
+                </View>
+                {formErrors.whatsapp_number && fieldTouched.whatsapp_number && (
+                  <Text style={{ color: "red" }}>Whatsapp number Required</Text>
+                )}
+                {!formErrors.whatsapp_number &&
+                  formData.whatsapp_number &&
+                  formData.whatsapp_number.trim().length !== 10 && (
+                    <Text style={{ color: "red" }}>
+                      Mobile number must be 10 digits
+                    </Text>
+                  )}
+              </View>
+
               {/* email id  */}
               <View style={styles.inputbox_main_container}>
                 <View>
@@ -742,87 +694,17 @@ const EditProfile = ({ navigation }) => {
                     style={styles.input}
                     placeholder="Enter your email"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
-                    value={email}
-                    onChangeText={handleEmailChange}
+                    value={profileData.email || ""}
+                    onChangeText={(text) =>
+                      setProfileData({ ...profileData, email: text })
+                    }
                     onBlur={validateEmail}
                   />
                 </View>
-                {emailError ? (
+                {/* {emailError ? (
                   <Text style={{ color: "red" }}>{emailError}</Text>
-                ) : null}
+                ) : null} */}
               </View>
-              {/* Nationality */}
-              {/* <View style={styles.inputbox_main_container}>
-                                <View>
-                                    <Text
-                                        style={{
-                                            color: "rgba(0, 54, 126, 1)",
-                                            fontWeight: "500",
-                                            fontSize: 18,
-                                        }}
-                                    >
-                                        Nationality
-                                    </Text>
-                                </View>
-                                <View style={styles.inputbox_container}>
-                                    <MaterialCommunityIcons
-                                        name="home-map-marker"
-                                        size={16}
-                                        color="rgba(0, 54, 126, 1)"
-                                    />
-                                    <TextInput
-                                        style={styles.input}
-                                        placeholder="Enter Nationality"
-                                        placeholderTextColor="rgba(166, 166, 166, 1)"
-                                        value={formData.nationality}
-                                        onChangeText={(text) => handleInputChange("nationality", text)}
-                                        onBlur={() => handleInputBlur("nationality")}
-                                    />
-                                </View>
-                                {formErrors.nationality &&
-                                    !formData.nationality &&
-                                    fieldTouched.nationality && (
-                                        <Text style={{ color: "red" }}>
-                                            Please enter Nationality{" "}
-                                        </Text>
-                                    )}
-                            </View> */}
-              {/* Religion */}
-              {/* <View style={styles.inputbox_main_container}>
-                                <View>
-                                    <Text
-                                        style={{
-                                            color: "rgba(0, 54, 126, 1)",
-                                            fontWeight: "500",
-                                            fontSize: 18,
-                                        }}
-                                    >
-                                        Religion
-                                    </Text>
-                                </View>
-                                <View style={styles.inputbox_container}>
-                                    <MaterialCommunityIcons
-                                        name="home-map-marker"
-                                        size={16}
-                                        color="rgba(0, 54, 126, 1)"
-                                    />
-                                    <TextInput
-                                        style={styles.input}
-                                        placeholder="Enter Religion"
-                                        placeholderTextColor="rgba(166, 166, 166, 1)"
-                                        value={formData.religion}
-                                        onChangeText={(text) => handleInputChange("religion", text)}
-                                        onBlur={() => handleInputBlur("religion")}
-                                    />
-                                </View>
-                                {formErrors.religion &&
-                                    !formData.religion &&
-                                    fieldTouched.religion && (
-                                        <Text style={{ color: "red" }}>
-                                            Please enter Religion{" "}
-                                        </Text>
-                                    )}
-                            </View> */}
               {/* date of birth  */}
 
               <View style={styles.inputbox_main_container}>
@@ -848,9 +730,9 @@ const EditProfile = ({ navigation }) => {
                     style={styles.input}
                     placeholder="Date of Birth"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
-                    value={userDetails.date_of_birth}
+                    value={profileData.date_of_birth || ""}
                     onChangeText={(text) =>
-                      setUserDetails({ ...userDetails, date_of_birth: text })
+                      setProfileData({ ...profileData, date_of_birth: text })
                     }
                     onFocus={showDatePicker} // Show date picker when input field is focused
                     editable={true} // Make the input field editable
@@ -865,39 +747,7 @@ const EditProfile = ({ navigation }) => {
                 />
               </View>
 
-              {/* class  */}
-              {/* <View style={styles.inputbox_main_container}>
-        <View>
-          <Text style={{ color: "rgba(0, 54, 126, 1)", fontWeight: "500", fontSize: 18 }}>
-            Class
-          </Text>
-        </View>
-        <View style={[styles.inputbox_container, { justifyContent: "space-between" }]}>
-          <View style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 8 }}>
-            <FontAwesome5 name="chalkboard-teacher" size={16} color="rgba(0, 54, 126, 1)" />
-            <TextInput
-              style={styles.input}
-              placeholder="Select"
-              placeholderTextColor="rgba(166, 166, 166, 1)"
-              value={formData.class}
-              onChangeText={(text) => handleInputChange("class", text)}
-              onBlur={() => handleInputBlur("class")}
-            />
-          </View>
-          <TouchableOpacity onPress={handleArrowClick}>
-            <AntDesign name={showComponent ? "caretup" : "caretdown"} size={16} color="rgba(0, 54, 126, 1)" />
-          </TouchableOpacity>
-        </View>
-        {showComponent && (
-          <View>
-  
-          </View>
-        )}
-        {formErrors.class && !formData.class && fieldTouched.class && (
-          <Text style={{ color: "red" }}>Please select class</Text>
-        )}
-      </View> */}
-
+              {/* for class */}
               <View style={styles.inputbox_main_container}>
                 <View>
                   <Text
@@ -934,10 +784,8 @@ const EditProfile = ({ navigation }) => {
                         style={styles.input}
                         placeholder="Select"
                         placeholderTextColor="rgba(166, 166, 166, 1)"
-                        value={inputValueclass}
-                        onChangeText={handleInputChangeclass}
-                        onBlur={() => handleSelectOptionclass(inputValueclass)}
-                        editable={false} // Allow editing only when dropdown is closed
+                        value={profileData.class_name || ""}
+                        editable={false}
                       />
                       <AntDesign
                         name="caretdown"
@@ -949,108 +797,37 @@ const EditProfile = ({ navigation }) => {
                 </View>
 
                 {isDropdownOpenclass && (
-                  <View style={styles.dropdownContainer}>
-                    <TouchableOpacity
-                      style={styles.dropdownOption}
-                      onPress={() => handleSelectOptionclass("1")}
-                    >
-                      <View
-                        style={{
-                          width: Dimensions.get("window").width * 0.7,
-                          alignItems: "center",
-                        }}
-                      >
-                        <Text>1</Text>
-                      </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={styles.dropdownOption}
-                      onPress={() => handleSelectOptionclass("2")}
-                    >
-                      <View
-                        style={{
-                          width: Dimensions.get("window").width * 0.7,
-                          alignItems: "center",
-                        }}
-                      >
-                        <Text>2</Text>
-                      </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={styles.dropdownOption}
-                      onPress={() => handleSelectOptionclass("3")}
-                    >
-                      <View
-                        style={{
-                          width: Dimensions.get("window").width * 0.7,
-                          alignItems: "center",
-                        }}
-                      >
-                        <Text>3</Text>
-                      </View>
-                    </TouchableOpacity>
+                  <View style={{ backgroundColor: "red" }}>
+                    {classData.map((values, index) => {
+                      return (
+                        <TouchableOpacity
+                          key={index}
+                          style={styles.dropdownOption}
+                          onPress={() => {
+                            setProfileData({
+                              ...profileData,
+                              class_name: values.name,
+                              class_id: values.id,
+                            });
+                            toggleDropdownclass(); // Close the dropdown after selection
+                          }}
+                        >
+                          <View
+                            style={{
+                              width: Dimensions.get("window").width * 0.7,
+                              alignItems: "center",
+                            }}
+                          >
+                            <Text>{values.name}</Text>
+                          </View>
+                        </TouchableOpacity>
+                      );
+                    })}
                   </View>
                 )}
               </View>
 
-              {/* gender  */}
-              {/* <View style={styles.inputbox_main_container}>
-                  <View>
-                    <Text
-                      style={{
-                        color: "rgba(0, 54, 126, 1)",
-                        fontWeight: "500",
-                        fontSize: 18,
-                      }}
-                    >
-                      Gender
-                    </Text>
-                  </View>
-                  <View
-                    style={[
-                      styles.inputbox_container,
-                      { justifyContent: "space-between" },
-                    ]}
-                  >
-                    <View
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        alignItems: "center",
-                        gap: 8,
-                      }}
-                    >
-                      <MaterialCommunityIcons
-                        name="gender-male-female-variant"
-                        size={16}
-                        color="rgba(0, 54, 126, 1)"
-                      />
-                      <TextInput
-                        style={styles.input}
-                        placeholder="Select"
-                        placeholderTextColor="rgba(166, 166, 166, 1)"
-                        value={formData.gender}
-                        onChangeText={(text) => handleInputChange("gender", text)}
-                        onBlur={() => handleInputBlur("gender")}
-                      />
-                    </View>
-                    <View>
-                      <AntDesign
-                        name="caretdown"
-                        size={16}
-                        color="rgba(0, 54, 126, 1)"
-                      />
-                    </View>
-                  </View>
-                  {formErrors.gender &&
-                    !formData.gender &&
-                    fieldTouched.gender && (
-                      <Text style={{ color: "red" }}>
-                        Please select your gender{" "}
-                      </Text>
-                    )}
-                </View> */}
-
+              {/* for gender */}
               <View style={styles.inputbox_main_container}>
                 <View>
                   <Text
@@ -1087,12 +864,8 @@ const EditProfile = ({ navigation }) => {
                         style={styles.input}
                         placeholder="Select"
                         placeholderTextColor="rgba(166, 166, 166, 1)"
-                        value={inputValuegender}
-                        onChangeText={handleInputChangegender}
-                        onBlur={() =>
-                          handleSelectOptiongender(inputValuegender)
-                        }
-                        editable={false} // Allow editing only when dropdown is closed
+                        value={profileData.gender || ""}
+                        editable={false}
                       />
                       <AntDesign
                         name="caretdown"
@@ -1107,13 +880,19 @@ const EditProfile = ({ navigation }) => {
                   <View style={styles.dropdownContainer}>
                     <TouchableOpacity
                       style={styles.dropdownOption}
-                      onPress={() => handleSelectOptiongender("male")}
+                      onPress={() => {
+                        setProfileData({ ...profileData, gender: "Male" });
+                        toggleDropdowngender(); // Close the dropdown after selection
+                      }}
                     >
                       <Text>Male</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                       style={styles.dropdownOption}
-                      onPress={() => handleSelectOptiongender("female")}
+                      onPress={() => {
+                        setProfileData({ ...profileData, gender: "Female" });
+                        toggleDropdowngender(); // Close the dropdown after selection
+                      }}
                     >
                       <Text>Female</Text>
                     </TouchableOpacity>
@@ -1123,7 +902,7 @@ const EditProfile = ({ navigation }) => {
 
               {/* Nationality  */}
               <View style={styles.inputbox_main_container}>
-                <View style={{flexDirection:'row' ,gap:1}}>
+                <View style={{ flexDirection: "row", gap: 1 }}>
                   <Text
                     style={{
                       color: "rgba(0, 54, 126, 1)",
@@ -1133,14 +912,8 @@ const EditProfile = ({ navigation }) => {
                   >
                     Nationality
                   </Text>
-                  {/* <Text style={{color:'red' ,fontSize:18}}>*</Text> */}
                 </View>
                 <View style={styles.inputbox_container}>
-                  {/* <MaterialCommunityIcons
-                    name="home-map-marker"
-                    size={16}
-                    color="rgba(0, 54, 126, 1)"
-                  /> */}
                   <Image
                     source={require("../../assets/icons/united-nations.png")}
                     style={styles.iconImage}
@@ -1149,26 +922,26 @@ const EditProfile = ({ navigation }) => {
                     style={styles.input}
                     placeholder="Select"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
-                    value={formData.nationality}
+                    value={profileData.nationality || ""}
                     onChangeText={(text) =>
-                      handleInputChange("nationality", text)
+                      setProfileData({ ...profileData, nationality: text })
                     }
                     onBlur={() => handleInputBlur("nationality")}
                   />
                 </View>
-                {!formErrors.nationality &&
+                {/* {!formErrors.nationality &&
                   !formData.nationality &&
                   fieldTouched.nationality && (
                     <Text style={{ color: "red" }}>
                       Please enter Nationality{" "}
                     </Text>
-                  )}
+                  )} */}
               </View>
 
               {/* Religion  */}
 
               <View style={styles.inputbox_main_container}>
-                <View style={{flexDirection:'row' ,gap:1}}>
+                <View style={{ flexDirection: "row", gap: 1 }}>
                   <Text
                     style={{
                       color: "rgba(0, 54, 126, 1)",
@@ -1189,8 +962,10 @@ const EditProfile = ({ navigation }) => {
                     style={styles.input}
                     placeholder="Select"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
-                    value={formData.religion}
-                    onChangeText={(text) => handleInputChange("religion", text)}
+                    value={profileData.religion || ""}
+                    onChangeText={(text) =>
+                      setProfileData({ ...profileData, religion: text })
+                    }
                     onBlur={() => handleInputBlur("religion")}
                   />
                 </View>
@@ -1223,8 +998,10 @@ const EditProfile = ({ navigation }) => {
                     style={styles.input}
                     placeholder="Enter your address"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
-                    value={formData.address}
-                    onChangeText={(text) => handleInputChange("address", text)}
+                    value={profileData.address || ""}
+                    onChangeText={(text) =>
+                      setProfileData({ ...profileData, address: text })
+                    }
                     onBlur={() => handleInputBlur("address")}
                   />
                 </View>
@@ -1274,10 +1051,8 @@ const EditProfile = ({ navigation }) => {
                         style={styles.input}
                         placeholder="Choose Option"
                         placeholderTextColor="rgba(166, 166, 166, 1)"
-                        value={inputValuestate}
-                        onChangeText={handleInputChangestate}
-                        onBlur={() => handleSelectOptionstate(inputValuestate)}
-                        editable={false} 
+                        value={profileData.state_name || ""}
+                        editable={false}
                       />
                       <AntDesign
                         name="caretdown"
@@ -1287,8 +1062,7 @@ const EditProfile = ({ navigation }) => {
                     </View>
                   </TouchableOpacity>
                 </View>
-              
-
+                {/* Dropdown menu */}
                 {isDropdownOpenstate && (
                   <View style={styles.dropdownContainer}>
                     {stateData.map((state, index) => {
@@ -1296,9 +1070,14 @@ const EditProfile = ({ navigation }) => {
                         <TouchableOpacity
                           key={index}
                           style={styles.dropdownOption}
-                          onPress={() =>
-                            handleSelectOptionstate(state.name, state.id)
-                          }
+                          onPress={() => {
+                            setProfileData({
+                              ...profileData,
+                              state_name: state.name,
+                              state_id: state.id,
+                            });
+                            toggleDropdownstate(); // Close the dropdown after selection
+                          }}
                         >
                           <Text>{state.name}</Text>
                         </TouchableOpacity>
@@ -1344,12 +1123,8 @@ const EditProfile = ({ navigation }) => {
                         style={styles.input}
                         placeholder="Choose Option"
                         placeholderTextColor="rgba(166, 166, 166, 1)"
-                        value={inputValue}
-                        onChangeText={(text) =>
-                          handleInputChangedistrict("district_id", text)
-                        }
-                        onBlur={() => handleSelectOption(inputValue)}
-                        editable={false} // Allow editing only when dropdown is closed
+                        value={profileData.district_name || ""}
+                        editable={false}
                       />
                       <AntDesign
                         name="caretdown"
@@ -1367,15 +1142,19 @@ const EditProfile = ({ navigation }) => {
                         <TouchableOpacity
                           style={styles.dropdownOption}
                           key={index}
-                          onPress={() =>
-                            handleSelectOption(district?.name, district?.id)
-                          }
+                          onPress={() => {
+                            setProfileData({
+                              ...profileData,
+                              district_name: district?.name,
+                              district_id: district?.id,
+                            });
+                            toggleDropdownpolice(); // Close the dropdown after selection
+                          }}
                         >
                           <Text>{district?.name}</Text>
                         </TouchableOpacity>
                       );
                     })}
-
                     {/* Add more options as needed */}
                   </View>
                 )}
@@ -1403,9 +1182,9 @@ const EditProfile = ({ navigation }) => {
                     style={styles.input}
                     placeholder="Police Station"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
-                    value={formData.police_station}
+                    value={profileData.police_station || ""}
                     onChangeText={(text) =>
-                      handleInputChange("police_station", text)
+                      setProfileData({ ...profileData, police_station: text })
                     }
                     onBlur={() => handleInputBlur("police_station")}
                     // editable={false}
@@ -1419,148 +1198,6 @@ const EditProfile = ({ navigation }) => {
                     </Text>
                   )}
               </View>
-              {/* District  */}
-              {/* <View style={styles.inputbox_main_container}>
-                  <View>
-                    <Text
-                      style={{
-                        color: "rgba(0, 54, 126, 1)",
-                        fontWeight: "500",
-                        fontSize: 18,
-                      }}
-                    >
-                      Police Station
-                    </Text>
-                  </View>
-                  <View
-                    style={[
-                      styles.inputbox_container,
-                      { justifyContent: "space-between" },
-                    ]}
-                  >
-                    <View
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        alignItems: "center",
-                        gap: 8,
-                      }}
-                    >
-                      <MaterialCommunityIcons
-                        name="police-station"
-                        size={16}
-                        color="rgba(0, 54, 126, 1)"
-                      />
-                      <TextInput
-                        style={styles.input}
-                        placeholder="Choose Option"
-                        placeholderTextColor="rgba(166, 166, 166, 1)"
-                        value={formData.police_station}
-                        onChangeText={(text) =>
-                          handleInputChange("police_station", text)
-                        }
-                        onBlur={() => handleInputBlur("police_station")}
-                      />
-                    </View>
-                    <View>
-                      <AntDesign
-                        name="caretdown"
-                        size={16}
-                        color="rgba(0, 54, 126, 1)"
-                      />
-                    </View>
-                  </View>
-                  {formErrors.police_station &&
-                    !formData.police_station &&
-                    fieldTouched.police_station && (
-                      <Text style={{ color: "red" }}>
-                        Please enter your Police Station
-                      </Text>
-                    )}
-                </View> */}
-
-              {/* Block */}
-              {/* <View style={styles.inputbox_main_container}>
-                                <View>
-                                    <Text style={{ color: "rgba(0, 54, 126, 1)", fontWeight: "500", fontSize: 18 }}>
-                                        Block
-                                    </Text>
-                                </View>
-                                <View style={[styles.inputbox_container, { justifyContent: "space-between" }]}>
-                                    <TouchableOpacity onPress={toggleDropdownblock}>
-                                        <View style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 8 }}>
-                                            <MaterialCommunityIcons name="police-station" size={16} color="rgba(0, 54, 126, 1)" />
-                                            <TextInput
-                                                style={styles.input}
-                                                placeholder="Choose Option"
-                                                placeholderTextColor="rgba(166, 166, 166, 1)"
-                                                value={inputValueblock}
-                                                onChangeText={handleInputChangeblock}
-                                                onBlur={() => handleSelectOptionblock(inputValueblock)}
-                                                editable={false} // Allow editing only when dropdown is closed
-                                            />
-                                            <AntDesign name="caretdown" size={16} color="rgba(0, 54, 126, 1)" />
-                                        </View>
-                                    </TouchableOpacity>
-                                </View>
-  
-                                {isDropdownOpenblock && (
-                                    <View style={styles.dropdownContainer}>
-                                        {
-                                            blockdata.map((block, index) => {
-                                                return (
-                                                    <TouchableOpacity style={styles.dropdownOption} key={index} onPress={() => handleSelectOptionblock(block?.name, block?.id)}>
-                                                        <Text>{block?.name}</Text>
-                                                    </TouchableOpacity>
-                                                )
-                                            })
-                                        }
-  
-  
-                                    </View>
-                                )}
-                            </View> */}
-              {/* Aadhar  */}
-              {/* <View style={styles.inputbox_main_container}>
-                                <View>
-                                    <Text
-                                        style={{
-                                            color: "rgba(0, 54, 126, 1)",
-                                            fontWeight: "500",
-                                            fontSize: 18,
-                                        }}
-                                    >
-                                        Aadhar Number
-                                    </Text>
-                                </View>
-                                <View style={styles.inputbox_container}>
-                                    <Feather
-                                        name="list"
-                                        size={16}
-                                        color="rgba(0, 54, 126, 1)"
-                                    />
-                                    <TextInput
-                                        style={styles.input}
-                                        keyboardType="numeric"
-                                        placeholder="Enter your Aadhar number"
-                                        placeholderTextColor="rgba(166, 166, 166, 1)"
-                                        value={formData.aadhar_number}
-                                        onChangeText={(text) => handleInputChange("aadhar_number", text)}
-                                        onBlur={() => handleInputBlur("aadhar_number")}
-                                        maxLength={12}
-                                    />
-                                </View>
-                                {formErrors.mobile && fieldTouched.mobile && (
-                                    <Text style={{ color: "red" }}>Mobile Number required</Text>
-                                )}
-                                {!formErrors.mobile &&
-                                    formData.mobile &&
-                                    formData.mobile.trim().length !== 10 && (
-                                        <Text style={{ color: "red" }}>
-                                            Mobile number must be 10 digits
-                                        </Text>
-                                    )}
-                            </View> */}
               {/* pincode  */}
               <View style={styles.inputbox_main_container}>
                 <View>
@@ -1583,8 +1220,10 @@ const EditProfile = ({ navigation }) => {
                     style={styles.input}
                     placeholder="Enter Pin code"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
-                    value={formData.pincode}
-                    onChangeText={(text) => handleInputChange("pincode", text)}
+                    value={profileData.pincode || ""}
+                    onChangeText={(text) =>
+                      setProfileData({ ...profileData, pincode: text })
+                    }
                     onBlur={() => handleInputBlur("pincode")}
                     keyboardType="numeric"
                   />
@@ -1903,31 +1542,6 @@ const EditProfile = ({ navigation }) => {
                   </LinearGradient>
                 </TouchableOpacity>
               </View>
-              {/* <View
-                style={{
-                  display: "flex ",
-                  flexDirection: "row",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Text
-                  style={{ color: "#424242", fontWeight: "400", fontSize: 16 }}
-                >
-                  Already have an account?{" "}
-                </Text>
-                <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-                  <Text
-                    style={{
-                      color: "#03357D",
-                      fontWeight: "700",
-                      fontSize: 18,
-                    }}
-                  >
-                    Sign in
-                  </Text>
-                </TouchableOpacity>
-              </View> */}
             </View>
           </View>
         </View>
@@ -2034,7 +1648,6 @@ const styles = StyleSheet.create({
   dropdownContainer: {
     position: "absolute",
     top: "100%",
-    // left: 0,
     marginTop: 10,
     width: "89%",
     backgroundColor: "#fff",
