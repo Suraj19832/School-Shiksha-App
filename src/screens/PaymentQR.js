@@ -173,9 +173,10 @@ const PaymentQR = ({ navigation }) => {
       console.log("Response from API for district:", res?.data?.status);
       if (res?.data?.status === 'SUCCESS') {
         setPaymentStatus(res?.data?.status);
-        alert("Payment completed successfully.");
+        // alert("Payment completed successfully.");
         setPaymentCompleted(true);
         setTimerEnded(true);
+        showToast("Payment Successfull");
       } else if (res?.data?.status === "PENDING") {
         setPaymentStatus("pending");
         console.log("Payment is pending. Making another API call.");
@@ -185,13 +186,19 @@ const PaymentQR = ({ navigation }) => {
     }
   };
   
-  
+  const showToast = (message) => {
+    if (Platform.OS === "android") {
+      ToastAndroid.show(message, ToastAndroid.SHORT);
+    } else {
+      alert(message);
+    }
+  };
   // const qrValue="upi://pay?cu=INR&pa=paytmqr2810050501011c7hdlw291fz@paytm&pn=Paytm Merchant&am=1&mam=1&tr=k8I63nh0Zf1715601118&tn=UPI Payment"
   // console.log("fffffffffffffffffffffffffffffffff", UpiLink);
  
   return (
     <View style={styles.container}>
-      {/* <Header title="Payment QR code" navigateTo={navigation.goBack} /> */}
+      <Header title="Payment QR code" navigateTo={navigation.goBack} /> 
       <View style={styles.main_container}>
         <View style={styles.heading}>
           <Text style={styles.headingText}>
@@ -244,7 +251,6 @@ const PaymentQR = ({ navigation }) => {
               .toString()
               .padStart(2, "0")}`}
             {/* {timerEnded && <p>QR code has expired.</p>} */}
-            <Text>Payment Status: {paymentStatus}</Text>
       {timerEnded && <Text>QR code has expired.</Text>}
           </Text>
         </View>
