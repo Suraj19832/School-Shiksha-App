@@ -11,6 +11,7 @@ import {
   Alert,
   Platform,
   Dimensions,
+  ActivityIndicator,
 } from "react-native";
 import DropDownComponent from "../../components/Dropdown";
 import React, { useContext, useEffect, useState } from "react";
@@ -53,7 +54,7 @@ const EditProfile = ({ navigation }) => {
   };
   const [formData, setFormData] = useState({
     name: "",
-    // fatherName: "",
+    fatherName: "",
     mobile: "",
     whatsapp_number: "",
     address: "",
@@ -261,7 +262,7 @@ const EditProfile = ({ navigation }) => {
   const handleSelectOptionstate = (stateName, stateId) => {
     setSelectedOptionstate(stateName);
     setInputValuestate(stateName);
-    setStateInfo(stateId);
+    // setStateInfo(stateId);
     setInputValue("");
     setInputValueblock("");
     setDistrictId();
@@ -409,6 +410,8 @@ const EditProfile = ({ navigation }) => {
     getdata(apiUrl)
       .then((res) => {
         setStateData(res?.data);
+        const stateid = res.data.map((item) => item.id);
+        setStateInfo(stateid);
       })
       .catch((error) => {
         console.error("Error fetching data: from master/state", error);
@@ -424,6 +427,7 @@ const EditProfile = ({ navigation }) => {
 
     postDataWithFormData("master/district", formData)
       .then((res) => {
+        console.log("==============>district api intgera", res);
         setDistrictData(res?.data);
       })
       .catch((error) => {
@@ -446,8 +450,8 @@ const EditProfile = ({ navigation }) => {
         console.error("Error posting data:", error);
       });
   }, [districtId]);
-  const [plan, setplan] = useState("");
 
+  const [plan, setplan] = useState("");
   useEffect(() => {
     const apiUrl = "master/plan";
     getdata(apiUrl)
@@ -460,6 +464,7 @@ const EditProfile = ({ navigation }) => {
       });
   }, []);
 
+  // code for class api
   const [classData, setClassData] = useState([]);
 
   useEffect(() => {
@@ -474,37 +479,110 @@ const EditProfile = ({ navigation }) => {
   }, []);
 
   // code for api implementation
-
+  const [id, setId] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [updateLoading, setUpdateLoading] = useState(false);
   const [profileData, setProfileData] = useState({
     name: "",
     father_name: "",
+    mobile: "",
+    whatsapp_number: "",
+    email: "",
     date_of_birth: "",
-    gender: "",
-    state_name: "",
     class_name: "",
+    gender: "",
+    nationality: "",
+    religion: "",
+    address: "",
+    state_name: "",
+    district_name: "",
+    police_station: "",
+    pincode: "",
+    district_id: "",
+    class_id: "",
   });
   useFocusEffect(
     React.useCallback(() => {
+      setLoading(true);
       getrequestwithtoken("student/profile", userToken)
         .then((res) => {
+          setLoading(false);
           setProfileData(res.data);
-          console.log(res.data);
+          setId(res.data.user_id);
         })
         .catch((err) => {
+          setLoading(false);
           console.log(err, "issue in edit profilefetch");
         });
     }, [userToken])
   );
 
-  const handleSubmission = () => {};
+  const handleSubmission = () => {
+    const {
+      name,
+      father_name,
+      mobile,
+      whatsapp_number,
+      email,
+      date_of_birth,
+      class_name,
+      gender,
+      nationality,
+      religion,
+      address,
+      state_name,
+      district_name,
+      police_station,
+      pincode,
+      district_id,
+      class_id,
+    } = profileData;
+
+    const postData = {
+      id,
+      name,
+      father_name,
+      mobile,
+      whatsapp_number,
+      email,
+      date_of_birth,
+      class_name,
+      gender,
+      nationality,
+      religion,
+      address,
+      state_name,
+      district_name,
+      police_station,
+      pincode,
+      district_id,
+      class_id,
+    };
+
+    const formDataa = objectToFormData(postData);
+    setUpdateLoading(true);
+    postDataWithFormDataWithToken("student/edit-profile", formDataa, userToken)
+      .then((res) => {
+        setUpdateLoading(false);
+        showToast(res?.message);
+      })
+      .catch((err) => {
+        setUpdateLoading(false);
+        showToast("Failed to update profile");
+      });
+  };
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header
-        title="Edit Profile"
-        navigateTo={() => navigation.navigate("Dashboard")}
-      />
+      <Header title="Edit Profile" navigateTo={navigation.goBack} />
       <ScrollView style={styles.scrollView}>
+        {loading && (
+          <ActivityIndicator
+            size="small"
+            color="rgba(0, 54, 126, 1)"
+            style={{ top: 6, position: "absolute", left: "50%" }}
+          />
+        )}
         <View style={styles.mainView}>
           <View style={styles.innerView}>
             {/* Input fields  */}
@@ -797,7 +875,16 @@ const EditProfile = ({ navigation }) => {
                 </View>
 
                 {isDropdownOpenclass && (
-                  <View style={{ backgroundColor: "red" }}>
+                  <ScrollView
+                    scrollEnabled={true}
+                    nestedScrollEnabled={true}
+                    style={{
+                      maxHeight: 150,
+                      borderWidth: 1,
+                      borderColor: "#ccc",
+                      borderRadius: 4,
+                    }}
+                  >
                     {classData.map((values, index) => {
                       return (
                         <TouchableOpacity
@@ -823,7 +910,7 @@ const EditProfile = ({ navigation }) => {
                         </TouchableOpacity>
                       );
                     })}
-                  </View>
+                  </ScrollView>
                 )}
               </View>
 
@@ -864,7 +951,10 @@ const EditProfile = ({ navigation }) => {
                         style={styles.input}
                         placeholder="Select"
                         placeholderTextColor="rgba(166, 166, 166, 1)"
-                        value={profileData.gender || ""}
+                        value={
+                          profileData.gender.charAt(0).toUpperCase() +
+                          profileData.gender.slice(1)
+                        }
                         editable={false}
                       />
                       <AntDesign
@@ -1123,7 +1213,10 @@ const EditProfile = ({ navigation }) => {
                         style={styles.input}
                         placeholder="Choose Option"
                         placeholderTextColor="rgba(166, 166, 166, 1)"
-                        value={profileData.district_name || ""}
+                        value={
+                          profileData.district_name.charAt(0).toUpperCase() +
+                          profileData.district_name.slice(1)
+                        }
                         editable={false}
                       />
                       <AntDesign
@@ -1170,7 +1263,7 @@ const EditProfile = ({ navigation }) => {
                       fontSize: 18,
                     }}
                   >
-                    PS
+                    P.S
                   </Text>
                 </View>
                 <View style={styles.inputbox_container}>
@@ -1525,19 +1618,23 @@ const EditProfile = ({ navigation }) => {
                         display: "flex",
                       }}
                     >
-                      <Text
-                        style={{
-                          fontSize: 16,
-                          fontWeight: "500",
-                          alignItems: "center",
-                          display: "flex",
-                          justifyContent: "center",
-                          color: "white",
-                          paddingVertical: 5,
-                        }}
-                      >
-                        Update Profile
-                      </Text>
+                      {updateLoading ? (
+                        <ActivityIndicator size={"small"} color={"#ffffff"} />
+                      ) : (
+                        <Text
+                          style={{
+                            fontSize: 16,
+                            fontWeight: "500",
+                            alignItems: "center",
+                            display: "flex",
+                            justifyContent: "center",
+                            color: "white",
+                            paddingVertical: 5,
+                          }}
+                        >
+                          Update Profile
+                        </Text>
+                      )}
                     </View>
                   </LinearGradient>
                 </TouchableOpacity>
@@ -1662,7 +1759,8 @@ const styles = StyleSheet.create({
   },
   dropdownOption: {
     paddingVertical: 8,
-    alignSelf: "center",
+    width: "100%",
+    alignItems: "center",
   },
   iconImgStyle: { height: 15, width: 15, tintColor: "#00367E" },
   iconImage: {
