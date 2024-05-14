@@ -14,9 +14,10 @@ import {
   useColorScheme,
 } from "react-native";
 import DropDownComponent from "../../components/Dropdown";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import Modal from "react-native-modal";
+import { AuthContext } from "../../Utils/context/AuthContext";
 import {
   FontAwesome,
   Ionicons,
@@ -43,6 +44,8 @@ import Header from "../../components/Header";
 // import { TouchableOpacity } from "react-native-web";
 
 const Registration = ({ navigation }) => {
+  const { updateUpiLink } = useContext(AuthContext);
+  const { updateOrderid } = useContext(AuthContext);
   const [isChecked, setChecked] = useState(false);
   // const [name, setname] = useState("");
   // const [nameError, setnameError] = useState("");
@@ -97,7 +100,7 @@ const Registration = ({ navigation }) => {
     setFormData({ ...formData, [key]: value });
   };
 
-  const handleInputBlur = (key) => {
+  const handleInputBlur = async (key) => {
     setFieldTouched({ ...fieldTouched, [key]: true });
     validateForm();
   };
@@ -137,13 +140,22 @@ const Registration = ({ navigation }) => {
       console.log("6565655", formsData);
       sendPostData("/register", formsData)
         .then((res) => {
-          if (res?.status) {
+          if (res?.message !== 'Success') {
             showToast("Registration Successfull");
             console.log("11111111", res?.status);
             navigation.navigate("Login");
-          } else {
-            console.log("00", res);
-            console.log("888", formsData);
+          }
+           else {
+            // console.log("00", res);
+            // console.log("888", formsData);
+
+            // navigation.navigate("QR_Screen");
+console.log("data is comig from registration===--=---=-=-=-=-=-=",res?.data?.upi_link)
+            updateUpiLink(res?.data?.upi_link);
+            console.log("djdjdddddddddddddd-----------------------=============-=",res?.data?.order_id)
+            updateOrderid(res?.data?.order_id)
+            
+            navigation.navigate("QR_Screen");
           }
         })
         .catch((err) => {

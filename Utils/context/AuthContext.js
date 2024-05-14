@@ -7,7 +7,8 @@ export const AuthProvider = ({children}) =>{
     const [test, setTest] = useState("Test Me")
     const [myLoading, setmyLoading] = useState(false)
     const [userToken, setuserToken] = useState(null)
-    const [phoneNumber ,setphoneNumber]= useState(null)
+    const [UpiLink ,setupiLink]= useState("")
+    const [orderid ,setorderid]= useState("")
 
     const isLoggedIn = async()=>{
         try {
@@ -19,6 +20,12 @@ export const AuthProvider = ({children}) =>{
             console.log(`isLogged error ${e}`)
         }
     }
+    const updateUpiLink = (value) => {
+        setupiLink(value);
+    };
+    const updateOrderid = (value) => {
+        setorderid(value);
+    };
 
     useEffect(()=>{
         isLoggedIn()
@@ -26,7 +33,7 @@ export const AuthProvider = ({children}) =>{
     },[])
 
     return (
-        <AuthContext.Provider value={{test,myLoading,userToken,setuserToken,setmyLoading,setphoneNumber}}>
+        <AuthContext.Provider value={{test,myLoading,userToken,setuserToken,setmyLoading,UpiLink,updateUpiLink ,updateOrderid,orderid}}>
             {children}
         </AuthContext.Provider>
     )

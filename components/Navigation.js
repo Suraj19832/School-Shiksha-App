@@ -259,6 +259,11 @@ const Navigation = () => {
               component={ForgetPassword}
               options={{ headerShown: false }}
             />
+                  <Stack.Screen
+              name="QR_Screen"
+              component={PaymentQR}
+              options={{ headerShown: false }}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       )}
