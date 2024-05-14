@@ -69,7 +69,7 @@ const Registration = ({ navigation }) => {
     religion: "",
     district_id: "",
     password: "",
-    referral_code: "",
+  
   });
   // console.log(formData.fatherName)
   const [email, setEmail] = useState("");
@@ -104,8 +104,8 @@ const Registration = ({ navigation }) => {
     setFieldTouched({ ...fieldTouched, [key]: true });
     validateForm();
   };
-
-  const handleRegistration = () => {
+const [refercode ,setrefercode]=useState("")
+  const handleRegistration = async() => {
     if (formData.name && formData.mobile) {
     }
     const formsData = new FormData();
@@ -136,26 +136,29 @@ const Registration = ({ navigation }) => {
       // formsData.append("block", blockId);
       formsData.append("class_id", classid);
       formsData.append("plan_id", planid);
-
+      formsData.append("referral_code", refercode);
       console.log("6565655", formsData);
-      sendPostData("/register", formsData)
+      await sendPostData("/register", formsData)
         .then((res) => {
-          if (res?.message !== 'Success') {
+          console.log("-0-0-0-0-0-0-0-0-0-0-0-0-0-00-0-0--0-0-0-0-0-00-0-",res);
+          if (res?.message === "Success") {
+            updateUpiLink(res?.data?.upi_link);
+            console.log(
+              "djdjdddddddddddddd-----------------------=============-=",
+              res?.data?.order_id
+            );
+            updateOrderid(res?.data?.order_id);
+
+            navigation.navigate("QR_Screen");
+          }
+          if(res?.message === "Student registration successful") {
+            console.log("=================grpgp=gppg", res?.message);
             showToast("Registration Successfull");
             console.log("11111111", res?.status);
             navigation.navigate("Login");
           }
-           else {
-            // console.log("00", res);
-            // console.log("888", formsData);
-
-            // navigation.navigate("QR_Screen");
-console.log("data is comig from registration===--=---=-=-=-=-=-=",res?.data?.upi_link)
-            updateUpiLink(res?.data?.upi_link);
-            console.log("djdjdddddddddddddd-----------------------=============-=",res?.data?.order_id)
-            updateOrderid(res?.data?.order_id)
-            
-            navigation.navigate("QR_Screen");
+          if(res?.message === "Validation errors"){
+            showToast("User Exists");
           }
         })
         .catch((err) => {
@@ -473,13 +476,18 @@ console.log("data is comig from registration===--=---=-=-=-=-=-=",res?.data?.upi
     setInputValueplan(option);
     setDropdownOpenplan(false);
     setplanid(plannnid);
+    console.log("uiyuiyiyuiuyiuykkhjkhjkkjkjk",planid)
   };
 
   const handleInputChangeplan = (text) => {
     setInputValueplan(text);
     setDropdownOpenplan(null); // Clear selected option when user edits input
   };
-
+  const handleInputChangerefer = (text) => {
+  setrefercode(text)
+  console.log(refercode)
+    // setDropdownOpenplan(null); // Clear selected option when user edits input
+  };
   const toggleDropdownblock = () => {
     setDropdownOpenblock(!isDropdownOpenblock);
     if (!isDropdownOpenblock) {
@@ -610,7 +618,7 @@ console.log("data is comig from registration===--=---=-=-=-=-=-=",res?.data?.upi
 
   // console.log("88", blockdata);
 
-  // console.log("789", formData);
+  console.log("789", formData);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -872,7 +880,7 @@ console.log("data is comig from registration===--=---=-=-=-=-=-=",res?.data?.upi
                 />
               </View> */}
               <View style={styles.inputbox_main_container}>
-                <View>
+                <View style={{ flexDirection: "row", gap: 1 }}>
                   <Text
                     style={{
                       color: "rgba(0, 54, 126, 1)",
@@ -882,6 +890,7 @@ console.log("data is comig from registration===--=---=-=-=-=-=-=",res?.data?.upi
                   >
                     D.O.B
                   </Text>
+                  <Text style={{ color: "red", fontSize: 18 }}>*</Text>
                 </View>
                 <View style={styles.inputbox_container}>
                   {/* <Feather
@@ -1825,10 +1834,8 @@ console.log("data is comig from registration===--=---=-=-=-=-=-=",res?.data?.upi
                     style={styles.input}
                     placeholder="Username"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
-                    value={formData.referral_code}
-                    onChangeText={(text) =>
-                      handleInputChange("referral_code", text)
-                    }
+                    value={refercode}
+                    onChangeText={handleInputChangerefer}
                     onBlur={() => handleInputBlur("referral_code")}
                   />
                 </View>

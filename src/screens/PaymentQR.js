@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image, Alert } from "react-native";
+import { View, Text, StyleSheet, Image, Alert, Platform } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import Header from "../../components/Header";
 import { AuthContext } from "../../Utils/context/AuthContext";
@@ -8,87 +8,19 @@ const PaymentQR = ({ navigation }) => {
   const [minutes, setMinutes] = useState(4);
   const [seconds, setSeconds] = useState(59);
   const [timerEnded, setTimerEnded] = useState(false);
+  
   const [paymentStatus, setPaymentStatus] = useState("pending");
   const [paymentCompleted, setPaymentCompleted] = useState(false);
   const { UpiLink } = useContext(AuthContext);
   const { orderid } = useContext(AuthContext);
 
 
-  // useEffect(() => {
-  //   const initialTimeoutId = setTimeout(() => {
-  //     if (!paymentCompleted && !timerEnded) {
-  //       // Make initial API call after 30 seconds
-  //       makeAPICall();
-  //       console.log("object")
-  //       // Set interval to call API every 4 seconds until 300 seconds complete
-  //       const intervalId = setInterval(makeAPICall, 4000);
-  //       // Clear interval after 300 seconds
-  //       const stopInterval = setTimeout(() => {
-  //         clearInterval(intervalId);
-  //         setTimerEnded(true);
-  //       }, 270000);
-  //       return () => {
-  //         clearInterval(intervalId);
-  //         clearTimeout(stopInterval);
-  //       };
-  //     }
-  //   }, 3000);
 
-  //   // Timer logic
-  //   const timerInterval = setInterval(() => {
-  //     if (!paymentCompleted && !timerEnded) {
-  //       if (seconds === 0) {
-  //         if (minutes === 0) {
-  //           clearInterval(timerInterval);
-  //           setTimerEnded(true);
-  //           // Timer has reached 00:00, handle completion logic here
-  //           return;
-  //         } else {
-  //           setMinutes(minutes - 1);
-  //           setSeconds(59);
-  //         }
-  //       } else {
-  //         setSeconds(seconds - 1);
-  //       }
-  //     }
-  //   }, 1000);
-
-  //   return () => {
-  //     clearInterval(timerInterval);
-  //     clearTimeout(initialTimeoutId);
-  //   };
-  // }, [minutes, seconds, timerEnded, paymentCompleted]);
-
-
-  // useEffect(() => {
   
-  
-  //   // Timer logic
-  //   const timerInterval = setInterval(() => {
-  //     if (!paymentCompleted && !timerEnded) {
-  //       if (seconds === 0) {
-  //         if (minutes === 0) {
-  //           clearInterval(timerInterval);
-  //           setTimerEnded(true);
-  //           // Timer has reached 00:00, handle completion logic here
-  //           return;
-  //         } else {
-  //           setMinutes(minutes - 1);
-  //           setSeconds(59);
-  //         }
-  //       } else {
-  //         setSeconds(seconds - 1);
-  //       }
-  //     }
-  //   }, 1000);
-  
-  //   return () => {
-  //     clearInterval(timerInterval);
-  //     clearTimeout(initialTimeoutId);
-  //   };
-  // }, [minutes, seconds, timerEnded]);
   useEffect(() => {
+    console.log("Timer Effect Call")
     const countdownInterval = setInterval(() => {
+      console.log(timerEnded)
       if (!timerEnded) {
         if (seconds === 0) {
           if (minutes === 0) {
@@ -111,6 +43,7 @@ const PaymentQR = ({ navigation }) => {
 
   useEffect(() => {
     // Make initial API call
+    console.log("Api effect is call")
     makeAPICall();
   
     // Set interval to call API every 4 seconds until payment is completed or timer ends
@@ -127,41 +60,22 @@ const PaymentQR = ({ navigation }) => {
     const stopInterval = setTimeout(() => {
       clearInterval(intervalId);
       setTimerEnded(true);
-    }, 300000); // 5 minutes
+    }, 318000); // 5 minutes
   
     return () => {
       clearInterval(intervalId);
       clearTimeout(stopInterval);
     };
-  }, [paymentCompleted, timerEnded]);
+  }, [paymentCompleted ,timerEnded]);
+
+
+ 
+  
+  
   
 
 
 
-  // const qrValue =
-  //   "upi://pay?cu=INR&pa=paytmqr2810050501011c7hdlw291fz@paytm&pn=Paytm Merchant&am=1&mam=1&tr=laRFeh88vh1715582842&tn=UPI Payment";
-  //  useEffect( async () => {
-  //   try {
-  //     const postData = {
-  //       order_id: "DTPL1715335745",
-  //     };
-  //     const formData = objectToFormData(postData);
-  //     const res = await postDataWithFormData("auth/txn-status", formData);
-  //     console.log("Response from API for district:",res);
-  //     if (res?.data?.status === 'SUCCESS') {
-  //       setPaymentStatus(res?.data?.status);
-  //       alert("Payment completed successfully.");
-  //       setPaymentCompleted(true);
-  //       setTimerEnded(true);
-  //     } else if (res?.data?.status === "PENDING") {
-  //       setPaymentStatus("pending");
-  //       console.log("Payment is pending. Making another API call."); 
-  //     }
-  //   } catch (error) {
-  //     console.error("Error making API call:", error);
-  //   }
-  //  }, [])
-   
   const makeAPICall = async () => {
     console.log("nothingf")
     try {
@@ -193,8 +107,7 @@ const PaymentQR = ({ navigation }) => {
       alert(message);
     }
   };
-  // const qrValue="upi://pay?cu=INR&pa=paytmqr2810050501011c7hdlw291fz@paytm&pn=Paytm Merchant&am=1&mam=1&tr=k8I63nh0Zf1715601118&tn=UPI Payment"
-  // console.log("fffffffffffffffffffffffffffffffff", UpiLink);
+
  
   return (
     <View style={styles.container}>
@@ -283,5 +196,4 @@ const styles = StyleSheet.create({
   },
 });
 
-//make a set timeout that after 30 sec a api call and inside the set timeout a set interval is present which same api will code and this set interval run after 4 - 4  sec till 300 sec complete and if by any chance api return the status successful then set time out off
-//Aree you dont get my point i said there i qr which will valid for 5 min means 300 sec so that i tell you that after 30 second i can first api call and i check payment is succesfull or not if suppose first call made in 30 second then only 300-30 sec left for made payment and this 270sec we call the api after 4 -4 section and chrck the payment status is complete in any call then  show a alert that payment complete and if status is pending then again again make call api and chaeck status and if in 300 sec not get the status complete then show a that qr expire .i also give you code in which a background timer is runniung and decrese by 1 sec you also make call on
+
