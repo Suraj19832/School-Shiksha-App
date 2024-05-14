@@ -1,11 +1,117 @@
-import { View, Text, StyleSheet, Image } from "react-native";
-import React from "react";
+import { View, Text, StyleSheet, Image, Alert, Platform } from "react-native";
+import React, { useContext, useEffect, useState } from "react";
 import Header from "../../components/Header";
-
+import { AuthContext } from "../../Utils/context/AuthContext";
+import QRCode from "react-native-qrcode-svg";
+import { objectToFormData, postDataWithFormData, sendPostData } from "../../Helper/Helper";
 const PaymentQR = ({ navigation }) => {
+  const [minutes, setMinutes] = useState(4);
+  const [seconds, setSeconds] = useState(59);
+  const [timerEnded, setTimerEnded] = useState(false);
+  
+  const [paymentStatus, setPaymentStatus] = useState("pending");
+  const [paymentCompleted, setPaymentCompleted] = useState(false);
+  const { UpiLink } = useContext(AuthContext);
+  const { orderid } = useContext(AuthContext);
+
+
+
+  
+  useEffect(() => {
+    console.log("Timer Effect Call")
+    const countdownInterval = setInterval(() => {
+      console.log(timerEnded)
+      if (!timerEnded) {
+        if (seconds === 0) {
+          if (minutes === 0) {
+            clearInterval(countdownInterval);
+            // Timer has reached 00:00, handle completion logic here
+            return;
+          } else {
+            setMinutes(minutes - 1);
+            setSeconds(59);
+          }
+        } else {
+          setSeconds(seconds - 1);
+        }
+      }
+    }, 1000);
+  
+    return () => clearInterval(countdownInterval);
+  }, [seconds, minutes, timerEnded]);
+  
+
+  useEffect(() => {
+    // Make initial API call
+    console.log("Api effect is call")
+    makeAPICall();
+  
+    // Set interval to call API every 4 seconds until payment is completed or timer ends
+    const intervalId = setInterval(() => {
+      if (!paymentCompleted && !timerEnded) {
+        makeAPICall();
+      }
+    }, 4000);
+    if(paymentCompleted){
+      navigation.navigate("Login");
+    }
+  
+    // Clear interval after 5 minutes
+    const stopInterval = setTimeout(() => {
+      clearInterval(intervalId);
+      setTimerEnded(true);
+    }, 318000); // 5 minutes
+  
+    return () => {
+      clearInterval(intervalId);
+      clearTimeout(stopInterval);
+    };
+  }, [paymentCompleted ,timerEnded]);
+
+
+ 
+  
+  
+  
+
+
+
+  const makeAPICall = async () => {
+    console.log("nothingf")
+    try {
+      const postData = {
+        order_id: orderid,
+      };
+      const formData = objectToFormData(postData);
+      const res = await postDataWithFormData("auth/txn-status", formData);
+      console.log("Response from API for district:", res?.data?.status);
+      if (res?.data?.status === 'SUCCESS') {
+        setPaymentStatus(res?.data?.status);
+        // alert("Payment completed successfully.");
+        setPaymentCompleted(true);
+        setTimerEnded(true);
+        showToast("Payment Successfull");
+      } else if (res?.data?.status === "PENDING") {
+        setPaymentStatus("pending");
+        console.log("Payment is pending. Making another API call.");
+      }
+    } catch (error) {
+      console.error("Error making API call:", error);
+    }
+  };
+  
+  const showToast = (message) => {
+    if (Platform.OS === "android") {
+      ToastAndroid.show(message, ToastAndroid.SHORT);
+    } else {
+      alert(message);
+    }
+  };
+
+ 
   return (
     <View style={styles.container}>
-      <Header title="Payment QR code" navigateTo={navigation.goBack} />
+      <Header title="Payment QR code" navigateTo={navigation.goBack} /> 
       <View style={styles.main_container}>
         <View style={styles.heading}>
           <Text style={styles.headingText}>
@@ -44,11 +150,21 @@ const PaymentQR = ({ navigation }) => {
           />
         </View>
         <View style={{ justifyContent: "center", alignItems: "center" }}>
-          <Image source={require("../../assets/icons/qr_code.png")} />
+          <QRCode
+            value={UpiLink}
+            size={200}
+            color="black"
+            backgroundColor="white"
+          />
         </View>
         <View style={styles.qrcode}>
           <Text style={styles.headingText}>
-            This QR code will expire in 04:54
+            This QR code will expire in{" "}
+            {`${minutes.toString().padStart(2, "0")}:${seconds
+              .toString()
+              .padStart(2, "0")}`}
+            {/* {timerEnded && <p>QR code has expired.</p>} */}
+      {timerEnded && <Text>QR code has expired.</Text>}
           </Text>
         </View>
       </View>
@@ -79,3 +195,5 @@ const styles = StyleSheet.create({
     marginTop: 25,
   },
 });
+
+

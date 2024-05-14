@@ -19,6 +19,7 @@ import TitleDash from "../../components/TitleDash";
 import Footer from "../../components/Footer";
 import { AuthContext } from "../../Utils/context/AuthContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getdata } from "../../Helper/Helper";
 const Dashboard = ({ navigation }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -170,7 +171,26 @@ const Dashboard = ({ navigation }) => {
       </View>
     );
   };
+  const[heading ,setheading]=useState([])
+  useEffect(() => {
+    // Define the URL you want to fetch data from
+    const apiUrl = "master/service-type";
 
+    // Call the getstatedata function with the API URL
+    getdata(apiUrl)
+      .then((res) => {
+        console.log("Response from API-------------:", res?.message);
+        console.log(res.data)
+        const longheading = res.data.map((item) => item);
+        setheading(longheading);
+        console.log("=======================",heading) 
+        // console.log("Plan Names:", planNames);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, []);  
+ 
   return (
     <View style={styles.container}>
       <StatusBar
