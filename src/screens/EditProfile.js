@@ -769,7 +769,7 @@ const EditProfile = ({ navigation }) => {
                 <View style={styles.inputbox_container}>
                   <Feather name="mail" size={16} color="rgba(0, 54, 126, 1)" />
                   <TextInput
-                    style={styles.input}
+                    style={(styles.input, { width: "100%" })}
                     placeholder="Enter your email"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
                     value={profileData.email || ""}
@@ -942,10 +942,9 @@ const EditProfile = ({ navigation }) => {
                         gap: 8,
                       }}
                     >
-                      <Foundation
-                        name="male-female"
-                        size={16}
-                        color="rgba(0, 54, 126, 1)"
+                      <Image
+                        style={styles.iconImage}
+                        source={require("../../assets/icons/gender (1).png")}
                       />
                       <TextInput
                         style={styles.input}
