@@ -34,10 +34,10 @@ const Footer = () => {
       >
         <Image
           source={require("./../assets/icons/home (2).png")}
-          style={[styles.img, selectedTab === "Home" && styles.selectedIcon]}
+          style={[styles.img1, selectedTab === "Home" && styles.selectedIcon1]}
         />
         <Text
-          style={[styles.text, selectedTab === "Home" && styles.selectedText]}
+          style={[styles.text, selectedTab === "Home" && styles.selectedText1]}
         >
           Home
         </Text>
@@ -51,7 +51,7 @@ const Footer = () => {
           style={[styles.img, selectedTab === "Refer" && styles.selectedIcon]}
         />
         <Text
-          style={[styles.text, selectedTab === "Refer" && styles.selectedText]}
+          style={[styles.text,  styles.selectedText]}
         >
           Refer
         </Text>
@@ -65,7 +65,7 @@ const Footer = () => {
           style={[styles.img, selectedTab === "Query" && styles.selectedIcon]}
         />
         <Text
-          style={[styles.text, selectedTab === "Query" && styles.selectedText]}
+          style={[styles.text,  styles.selectedText]}
         >
           Query
         </Text>
@@ -81,7 +81,7 @@ const Footer = () => {
         <Text
           style={[
             styles.text,
-            selectedTab === "Contact" && styles.selectedText,
+             styles.selectedText,
           ]}
         >
           Contact
@@ -115,12 +115,21 @@ const styles = StyleSheet.create({
   img: {
     height: 24,
     width: 24,
+    tintColor:'#373737'
   },
-  selectedIcon: {
-    tintColor: "#373737",
+  img1: {
+    height: 24,
+    width: 24,
   },
+  // selectedIcon: {
+  //   tintColor: "#373737",
+  // },
   selectedText: {
     color: "#373737",
+    fontWeight: "500",
+  },
+  selectedText1: {
+    color: "#03357D",
     fontWeight: "500",
   },
 });
