@@ -19,7 +19,7 @@ import TitleDash from "../../components/TitleDash";
 import Footer from "../../components/Footer";
 import { AuthContext } from "../../Utils/context/AuthContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { getdata } from "../../Helper/Helper";
+import { GetfetchDataWithParams, getdata } from "../../Helper/Helper";
 const Dashboard = ({ navigation }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -172,6 +172,7 @@ const Dashboard = ({ navigation }) => {
     );
   };
   const[heading ,setheading]=useState([])
+  const [carddata ,setcarddata]=useState([])
   useEffect(() => {
     // Define the URL you want to fetch data from
     const apiUrl = "master/service-type";
@@ -181,16 +182,44 @@ const Dashboard = ({ navigation }) => {
       .then((res) => {
         console.log("Response from API-------------:", res?.message);
         console.log(res.data)
-        const longheading = res.data.map((item) => item);
+        const longheading = res.data.map((item) => item.long_name); 
+        console.log(longheading)
         setheading(longheading);
-        console.log("=======================",heading) 
+        console.log("=======================",heading)  
         // console.log("Plan Names:", planNames);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
   }, []);  
- 
+  const colorMap = {
+    "Secondary Pass Student's Benefits": "#C83000",
+    "H.S Pass Student's Benefits": "#004F3C",
+    "Graduate Pass Student's Benefits": "#951F1F",
+    "Others Benefits": "#60317D",
+    // Add more mappings as needed
+  };
+  async function fetchUserData(serviceType) {
+    try {
+      const endpoint = 'master/services';
+      const params = {
+        // page: 1,
+        limit: 3,
+        service_type: serviceType,
+      };
+  
+      const userData = await GetfetchDataWithParams(endpoint, params);
+      setcarddata(userData)
+      console.log(userData); // Handle or process the fetched user data here
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    }
+  }
+  
+  useEffect(() => {
+    // Define the URL you want to fetch data from
+    fetchUserData('hs');
+  }, []);  
   return (
     <View style={styles.container}>
       <StatusBar
@@ -514,6 +543,33 @@ const Dashboard = ({ navigation }) => {
           />
           {renderPagination()}
         </View>
+<View>
+  {/* //create by me  */}
+  {/* <View>
+ 
+
+           {heading.map((title, index) => (
+    <TitleDash
+      key={index}
+      title={title}
+      primaryColor={colorMap[title]}
+    />
+  ))}
+          
+  </View> */}
+
+  <View style={{ paddingTop: 20 }}>
+    <TouchableOpacity
+      style={styles.button}
+      onPress={() => navigation.navigate("mpBenefits")}
+    >
+      <Text style={styles.text}>{"Show More >"}</Text>
+    </TouchableOpacity>
+  </View>
+</View>
+
+
+        
 
         <View>
           <TitleDash

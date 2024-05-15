@@ -105,6 +105,33 @@ export const postDataWithFormData = async (endpoint, formData) => {
   }
 };
 
+export const GetfetchDataWithParams = async (endpoint, params) => {
+  // Construct query string from params object
+  const queryString = Object.keys(params)
+    .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(params[key]))
+    .join('&');
+
+  // Construct full URL with endpoint and query string
+  const url = `${Configs.API_BASE_URL_V1}/${endpoint}?${queryString}`;
+
+  try {
+    // Fetch data using GET method
+    const response = await fetch(url, {
+      method: 'GET',
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch data');
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    return null;
+  }
+};
+
 
 export const postDataWithFormDataWithToken = async (endpoint, formData ,token) => {
   const url = `${Configs.API_BASE_URL_V1}/${endpoint}`;
