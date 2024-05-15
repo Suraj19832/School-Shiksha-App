@@ -34,6 +34,11 @@ const FreeCollegeList = ({ navigation }) => {
     { label: "Option 3", value: "option3" },
   ];
 
+  const [showMsg, setShowMsg] = useState(false);
+  const renderSucessfully = () => {
+    navigation.navigate("sucessfully");
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <Header title="Paid College List" navigateTo={navigation.goBack} />
@@ -52,7 +57,6 @@ const FreeCollegeList = ({ navigation }) => {
                 color: "#00367E",
                 fontWeight: "600",
                 fontSize: 20,
-                alignSelf: "center",
               }}
             >
               Search Paid College Admission{" "}
@@ -96,22 +100,28 @@ const FreeCollegeList = ({ navigation }) => {
                       style={styles.input}
                       placeholder="Select"
                       placeholderTextColor="rgba(166, 166, 166, 1)"
+                      editable={false}
                     />
                   </View>
 
                   <AntDesign name="caretdown" size={16} color="#03357D" />
                 </View>
-                <Text
-                  style={{
-                    alignSelf: "flex-end",
-                    color: "#0567F5",
-                    fontWeight: "500",
-                    fontSize: 14,
-                    textDecorationLine: "underline",
-                  }}
+                <TouchableOpacity
+                  style={{ marginLeft: 180 }}
+                  onPress={renderSucessfully}
                 >
-                  Request Course
-                </Text>
+                  <Text
+                    style={{
+                      // alignSelf: "flex-end",
+                      color: "#0567F5",
+                      fontWeight: "500",
+                      fontSize: 14,
+                      textDecorationLine: "underline",
+                    }}
+                  >
+                    Request Course
+                  </Text>
+                </TouchableOpacity>
               </View>
             </View>
 
@@ -236,7 +246,12 @@ const FreeCollegeList = ({ navigation }) => {
             <View style={styles.cardButtons}>
               <TouchableOpacity
                 style={styles.buttonbox}
-                onPress={() => navigation.navigate("paidCollegeDetails")}
+                onPress={() =>
+                  navigation.navigate("paidCollegeDetails", {
+                    collegeName: "Deshbandhu College",
+                    courseName: "B.C.A",
+                  })
+                }
               >
                 <Text
                   style={{
@@ -251,7 +266,12 @@ const FreeCollegeList = ({ navigation }) => {
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => navigation.navigate("paidCollgeAdmForm")}
+                onPress={() =>
+                  navigation.navigate("paidCollgeAdmForm", {
+                    collegeName: "Deshbandhu College",
+                    courseName: "B.C.A",
+                  })
+                }
               >
                 <LinearGradient
                   colors={["#03357D", "#0569FA"]} // Define your gradient colors here
@@ -370,7 +390,12 @@ const FreeCollegeList = ({ navigation }) => {
             <View style={styles.cardButtons}>
               <TouchableOpacity
                 style={styles.buttonbox}
-                onPress={() => navigation.navigate("paidCollegeDetails")}
+                onPress={() =>
+                  navigation.navigate("paidCollegeDetails", {
+                    collegeName: "Behala College",
+                    courseName: "B.C.A",
+                  })
+                }
               >
                 <Text
                   style={{
@@ -385,7 +410,12 @@ const FreeCollegeList = ({ navigation }) => {
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => navigation.navigate("paidCollgeAdmForm")}
+                onPress={() =>
+                  navigation.navigate("paidCollgeAdmForm", {
+                    collegeName: "Behala College",
+                    courseName: "B.C.A",
+                  })
+                }
               >
                 <LinearGradient
                   colors={["#03357D", "#0569FA"]} // Define your gradient colors here
@@ -504,7 +534,12 @@ const FreeCollegeList = ({ navigation }) => {
             <View style={styles.cardButtons}>
               <TouchableOpacity
                 style={styles.buttonbox}
-                onPress={() => navigation.navigate("paidCollegeDetails")}
+                onPress={() =>
+                  navigation.navigate("paidCollegeDetails", {
+                    collegeName: "Pandaveswar College",
+                    courseName: "B.C.A",
+                  })
+                }
               >
                 <Text
                   style={{
@@ -519,7 +554,12 @@ const FreeCollegeList = ({ navigation }) => {
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => navigation.navigate("paidCollgeAdmForm")}
+                onPress={() =>
+                  navigation.navigate("paidCollgeAdmForm", {
+                    collegeName: "Pandaveswar College",
+                    courseName: "B.C.A",
+                  })
+                }
               >
                 <LinearGradient
                   colors={["#03357D", "#0569FA"]} // Define your gradient colors here

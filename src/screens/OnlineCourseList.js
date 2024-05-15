@@ -219,6 +219,7 @@ const OnlineCourseList = ({ navigation }) => {
             </View>
           </View>
         </View>
+
         <View style={styles.listContainer}>
           {/* 1st college  */}
           <View style={styles.listCart}>

@@ -43,6 +43,7 @@ import PaidCollegeDetails from "../src/screens/PaidCollegeDetails";
 import PaymentQR from "../src/screens/PaymentQR";
 import ComputerCourseDetails from "../src/screens/ComputerCourseDetails";
 import PaidCertiDetails from "../src/screens/PaidCertiDetails";
+import Succesfully from "./Succesfully";
 
 const Stack = createNativeStackNavigator();
 
@@ -217,7 +218,11 @@ const Navigation = () => {
               component={PaymentQR}
               options={{ headerShown: false }}
             />
-
+            <Stack.Screen
+              name="sucessfully"
+              component={Succesfully}
+              options={{ headerShown: false }}
+            />
             <Stack.Screen
               name="onlineCourseDetails"
               component={OnlineCourseDetails}
@@ -259,7 +264,7 @@ const Navigation = () => {
               component={ForgetPassword}
               options={{ headerShown: false }}
             />
-                  <Stack.Screen
+            <Stack.Screen
               name="QR_Screen"
               component={PaymentQR}
               options={{ headerShown: false }}

@@ -25,7 +25,7 @@ import { useRoute } from "@react-navigation/native";
 const PaidCollegeRegForm = ({ navigation }) => {
   const [isChecked, setChecked] = useState(false);
   const route = useRoute();
-  const { collegeName ,courseName } = route.params;
+  const { collegeName, courseName } = route.params;
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
       <Header
@@ -52,16 +52,18 @@ const PaidCollegeRegForm = ({ navigation }) => {
               <Text style={styles.college_details_text}>College name</Text>
               <TextInput
                 style={styles.college_details_input}
-                placeholder="Deshvbandhu College"
+                placeholder={collegeName}
                 placeholderTextColor={"rgba(166, 166, 166, 1)"}
+                value={collegeName}
               />
             </View>
             <View>
               <Text style={styles.college_details_text}>Course name</Text>
               <TextInput
                 style={styles.college_details_input}
-                placeholder="B.C.A"
+                placeholder={courseName}
                 placeholderTextColor={"rgba(166, 166, 166, 1)"}
+                value={courseName}
               />
             </View>
           </View>
