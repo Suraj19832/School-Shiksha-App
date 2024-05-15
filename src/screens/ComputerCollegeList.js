@@ -215,7 +215,7 @@ const FreeCollegeList = ({ navigation }) => {
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => navigation.navigate("computerAdmissionForm")}
+                onPress={() => navigation.navigate("computerAdmissionForm" , { collegename: "IEM Institute" ,courcename:'B.C.A' }) }
               >
                 <LinearGradient
                   colors={["#03357D", "#0569FA"]} // Define your gradient colors here
@@ -349,7 +349,7 @@ const FreeCollegeList = ({ navigation }) => {
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => navigation.navigate("computerAdmissionForm")}
+                onPress={() => navigation.navigate("computerAdmissionForm" , { collegename: "Techno India University" ,courcename:'B.C.A' })}
               >
                 <LinearGradient
                   colors={["#03357D", "#0569FA"]} // Define your gradient colors here
@@ -483,7 +483,7 @@ const FreeCollegeList = ({ navigation }) => {
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => navigation.navigate("computerAdmissionForm")}
+                onPress={() => navigation.navigate("computerAdmissionForm" , { collegename: "The Heritage Academy" ,courcename:'B.C.A' })}
               >
                 <LinearGradient
                   colors={["#03357D", "#0569FA"]} // Define your gradient colors here

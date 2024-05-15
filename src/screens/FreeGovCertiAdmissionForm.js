@@ -13,8 +13,13 @@ import { FontAwesome5, Fontisto, Feather, AntDesign } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import Checkbox from "expo-checkbox";
+import { useRoute } from "@react-navigation/native";
 
 const FreeGovCertiAdmissionForm = ({ navigation }) => {
+
+  
+  const route = useRoute();
+  const { collegename ,courcename } = route.params;
   const [isChecked, setChecked] = useState(false);
   //For gender
   const [genderData, setGenderData] = useState("");
@@ -106,7 +111,8 @@ const FreeGovCertiAdmissionForm = ({ navigation }) => {
               <Text style={styles.college_details_text}>College name</Text>
               <TextInput
                 style={styles.college_details_input}
-                placeholder="The University of Calcutta"
+                placeholder={collegename}
+                value={collegename}
                 placeholderTextColor={"rgba(166, 166, 166, 1)"}
               />
             </View>
@@ -115,6 +121,7 @@ const FreeGovCertiAdmissionForm = ({ navigation }) => {
               <TextInput
                 style={styles.college_details_input}
                 placeholder="Course"
+                value={courcename}
                 placeholderTextColor={"rgba(166, 166, 166, 1)"}
               />
             </View>
@@ -389,7 +396,7 @@ const FreeGovCertiAdmissionForm = ({ navigation }) => {
               </View>
               <View style={{ marginTop: 25 }}>
                 <View style={styles.heading}>
-                  <Text style={styles.text}>Student Personal Details</Text>
+                  <Text style={styles.text}>Education Details</Text>
                 </View>
                 <View style={styles.fields_main}>
                   <Text style={styles.inputHeading}>Last Qualification</Text>

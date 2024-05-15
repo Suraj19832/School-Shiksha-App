@@ -9,8 +9,9 @@ import {
   Modal,
   TouchableOpacity,
   Dimensions,
+  FlatList,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import DropDownPicker from "react-native-dropdown-picker";
 import {
   FontAwesome,
@@ -52,7 +53,35 @@ const PaidCertificationList = ({ navigation }) => {
     setInputValueclass(text);
     setDropdownOpenclass(null); // Clear selected option when user edits input
   };
-
+  const [activeIndex, setActiveIndex] = useState(0);
+  const flatListRef = useRef(null);
+  const images = [
+    require("../../assets/img/paidCollegeList.png"),
+    require("../../assets/img/slider3.png"),
+    require("../../assets/img/slider2.png"),
+  ];
+  const onViewableItemsChanged = ({ viewableItems }) => {
+    if (viewableItems && viewableItems.length > 0) {
+      setActiveIndex(viewableItems[0].index || 0);
+    }
+  };
+  const renderPagination = () => {
+    return (
+      <View style={styles.paginationContainer}>
+        <View style={styles.pagination}>
+          {images.map((_, index) => (
+            <View
+              key={index}
+              style={[
+                styles.paginationDot,
+                index === activeIndex && styles.paginationDotActive,
+              ]}
+            />
+          ))}
+        </View>
+      </View>
+    );
+  };
   return (
     <SafeAreaView style={styles.container}>
       {/* <ScrollView style={styles.scrollView}> */}
@@ -64,11 +93,27 @@ const PaidCertificationList = ({ navigation }) => {
         </View> */}
       <Header title="Paid Certificate List" navigateTo={navigation.goBack} />
       <ScrollView style={{ backgroundColor: "#FFFCCE" }}>
-        <View>
+        {/* <View>
           <Image
             style={styles.image}
             source={require("../../assets/img/paidCollegeList.png")}
           />
+        </View> */}
+
+<View style={{ position: "relative" }}>
+          <FlatList
+            ref={flatListRef}
+            data={images}
+            horizontal
+            pagingEnabled
+            showsHorizontalScrollIndicator={false}
+            renderItem={({ item }) => (
+              <Image style={styles.imgStyle} source={item} resizeMode="cover" />
+            )}
+            keyExtractor={(item, index) => index.toString()}
+            onViewableItemsChanged={onViewableItemsChanged}
+          />
+          {renderPagination()}
         </View>
 
         <View style={styles.searchContainer}>
@@ -133,7 +178,7 @@ const PaidCertificationList = ({ navigation }) => {
                     />
                     <TextInput
                       style={styles.input}
-                      placeholder="Choose Option"
+                      placeholder="Select"
                       placeholderTextColor="rgba(166, 166, 166, 1)"
                       value={inputValueclass}
                       onChangeText={handleInputChangeclass}
@@ -325,7 +370,7 @@ const PaidCertificationList = ({ navigation }) => {
               </View>
             </View>
 
-            <View style={styles.cardButtons}>
+            {/* <View style={styles.cardButtons}>
               <TouchableOpacity
                 style={styles.buttonbox}
                 onPress={() => navigation.navigate("paidCertificateDetails")}
@@ -371,6 +416,61 @@ const PaidCertificationList = ({ navigation }) => {
                   </Text>
                 </TouchableOpacity>
               </LinearGradient>
+            </View> */}
+               <View style={styles.cardButtons}>
+              <TouchableOpacity
+                style={styles.buttonbox}
+                onPress={() => navigation.navigate("paidCertificateDetails")}
+              >
+                <Text
+                  style={{
+                    textAlign: "center",
+                    color: "#0567F5",
+                    fontWeight: "500",
+                    fontSize: 14,
+                    lineHeight: 16.41,
+                  }}
+                >
+                  View All Details
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("paidcertificateForm")}
+              >
+                <LinearGradient
+                  colors={["#03357D", "#0569FA"]} // Define your gradient colors here
+                  start={{ x: 0, y: 0.5 }}
+                  end={{ x: 1, y: 0.5 }}
+                  style={[
+                    styles.buttonbox,
+                    { justifyContent: "center", paddingHorizontal: 30 },
+                  ]}
+                >
+                  <View
+                    style={{
+                      justifyContent: "center",
+                      alignItems: "center",
+                      display: "flex",
+                    }}
+                  >
+                    <Text
+                      style={{
+                        fontSize: 14,
+                        fontWeight: "500",
+                        alignItems: "center",
+                        // alignSelf:'center',
+                        // justifyContent:'center',
+                        display: "flex",
+                        justifyContent: "center",
+                        color: "white",
+                        lineHeight: 16.41,
+                      }}
+                    >
+                      Apply Link
+                    </Text>
+                  </View>
+                </LinearGradient>
+              </TouchableOpacity>
             </View>
           </View>
 
@@ -453,7 +553,7 @@ const PaidCertificationList = ({ navigation }) => {
               </View>
             </View>
 
-            <View style={styles.cardButtons}>
+            {/* <View style={styles.cardButtons}>
               <TouchableOpacity
                 style={styles.buttonbox}
                 onPress={() => navigation.navigate("paidCertificateDetails")}
@@ -499,6 +599,61 @@ const PaidCertificationList = ({ navigation }) => {
                   </Text>
                 </TouchableOpacity>
               </LinearGradient>
+            </View> */}
+             <View style={styles.cardButtons}>
+              <TouchableOpacity
+                style={styles.buttonbox}
+                onPress={() => navigation.navigate("paidCertificateDetails")}
+              >
+                <Text
+                  style={{
+                    textAlign: "center",
+                    color: "#0567F5",
+                    fontWeight: "500",
+                    fontSize: 14,
+                    lineHeight: 16.41,
+                  }}
+                >
+                  View All Details
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("paidcertificateForm")}
+              >
+                <LinearGradient
+                  colors={["#03357D", "#0569FA"]} // Define your gradient colors here
+                  start={{ x: 0, y: 0.5 }}
+                  end={{ x: 1, y: 0.5 }}
+                  style={[
+                    styles.buttonbox,
+                    { justifyContent: "center", paddingHorizontal: 30 },
+                  ]}
+                >
+                  <View
+                    style={{
+                      justifyContent: "center",
+                      alignItems: "center",
+                      display: "flex",
+                    }}
+                  >
+                    <Text
+                      style={{
+                        fontSize: 14,
+                        fontWeight: "500",
+                        alignItems: "center",
+                        // alignSelf:'center',
+                        // justifyContent:'center',
+                        display: "flex",
+                        justifyContent: "center",
+                        color: "white",
+                        lineHeight: 16.41,
+                      }}
+                    >
+                      Apply Link
+                    </Text>
+                  </View>
+                </LinearGradient>
+              </TouchableOpacity>
             </View>
           </View>
 
@@ -581,7 +736,7 @@ const PaidCertificationList = ({ navigation }) => {
               </View>
             </View>
 
-            <View style={styles.cardButtons}>
+            {/* <View style={styles.cardButtons}>
               <TouchableOpacity
                 style={styles.buttonbox}
                 onPress={() => navigation.navigate("paidCertificateDetails")}
@@ -627,6 +782,63 @@ const PaidCertificationList = ({ navigation }) => {
                       Apply Link
                     </Text>
                   </TouchableOpacity>
+                </LinearGradient>
+              </TouchableOpacity>
+
+
+            </View> */}
+              <View style={styles.cardButtons}>
+              <TouchableOpacity
+                style={styles.buttonbox}
+                onPress={() => navigation.navigate("paidCertificateDetails")}
+              >
+                <Text
+                  style={{
+                    textAlign: "center",
+                    color: "#0567F5",
+                    fontWeight: "500",
+                    fontSize: 14,
+                    lineHeight: 16.41,
+                  }}
+                >
+                  View All Details
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("paidcertificateForm")}
+              >
+                <LinearGradient
+                  colors={["#03357D", "#0569FA"]} // Define your gradient colors here
+                  start={{ x: 0, y: 0.5 }}
+                  end={{ x: 1, y: 0.5 }}
+                  style={[
+                    styles.buttonbox,
+                    { justifyContent: "center", paddingHorizontal: 30 },
+                  ]}
+                >
+                  <View
+                    style={{
+                      justifyContent: "center",
+                      alignItems: "center",
+                      display: "flex",
+                    }}
+                  >
+                    <Text
+                      style={{
+                        fontSize: 14,
+                        fontWeight: "500",
+                        alignItems: "center",
+                        // alignSelf:'center',
+                        // justifyContent:'center',
+                        display: "flex",
+                        justifyContent: "center",
+                        color: "white",
+                        lineHeight: 16.41,
+                      }}
+                    >
+                      Apply Link
+                    </Text>
+                  </View>
                 </LinearGradient>
               </TouchableOpacity>
             </View>
@@ -761,6 +973,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     flexDirection: "row",
     justifyContent: "space-between",
+    marginVertical: 2,
   },
   buttonbox: {
     flexDirection: "row",
@@ -768,7 +981,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderWidth: 1,
     borderColor: "#0567F5",
-    padding: 12,
+    padding: 14,
     paddingHorizontal: 15,
     borderRadius: 30,
     gap: 8,
@@ -807,14 +1020,14 @@ const styles = StyleSheet.create({
     // zIndex:1,
     backgroundColor: "yellow",
     marginTop: 10,
-    width: "85%",
+    width: "88%",
     backgroundColor: "#fff",
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 4,
     padding: 8,
     zIndex: 1,
-    left: 17,
+    left: 0,
     alignSelf: "center",
     // justifyContent:'center'
   },
@@ -828,5 +1041,36 @@ const styles = StyleSheet.create({
     width: "30%",
     right: 9,
     alignSelf: "flex-end",
+  },
+
+  paginationDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: "white",
+    marginHorizontal: 4,
+  },
+  paginationDotActive: {
+    backgroundColor: "#00367E",
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+  },
+  pagination: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  paginationContainer: {
+    position: "absolute",
+    bottom: 10,
+    left: 0,
+    right: 0,
+    alignItems: "center",
+  },
+  imgStyle: {
+    height: Dimensions.get("window").height * 0.29,
+    width: Dimensions.get("window").width * 0.999,
+    // borderRadius: 10,
   },
 });

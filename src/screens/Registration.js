@@ -67,7 +67,7 @@ const Registration = ({ navigation }) => {
     police_station: "",
     pincode: "",
     aadhar_number: "",
-    nationality: "",
+    // nationality: "",
     religion: "",
     district_id: "",
     password: "",
@@ -99,6 +99,13 @@ const Registration = ({ navigation }) => {
 
   const handleInputChange = (key, value) => {
     setFormData({ ...formData, [key]: value });
+  
+  };
+  const handleInputChangeNumber = (key, value) => {
+  if (/^[0-9]*$/.test(value) || value === "") {
+    setFormData({ ...formData, [key]: value });
+  }
+  
   };
 
   const handleInputBlur = async (key) => {
@@ -119,59 +126,68 @@ const Registration = ({ navigation }) => {
       formData.address &&
       formData.whatsapp_number
     ) {
-      formsData.append("name", formData.name);
-      formsData.append("father_name", formData.fatherName);
-      formsData.append("email", email);
-      formsData.append("mobile", formData.mobile);
-      formsData.append("date_of_birth", userDetails.date_of_birth);
-      // formsData.append("aadhar_number", formData.aadhar_number);
-      formsData.append("gender", genderData);
-      formsData.append("pincode", formData.pincode);
-      formsData.append("police_station", formData.police_station);
-      formsData.append("district_id", districtId);
-      formsData.append("address", formData.address);
-      formsData.append("whatsapp_number", formData.whatsapp_number);
-      formsData.append("password", password);
-      formsData.append("referral_code", formData.referral_code);
-      formsData.append("nationality", formData.nationality);
-      formsData.append("religion", formData.religion);
-      // formsData.append("block", blockId);
-      formsData.append("class_id", classid);
-      formsData.append("plan_id", planid);
-      formsData.append("referral_code", refercode);
-      console.log("6565655", formsData);
-      await sendPostData("/register", formsData)
-        .then((res) => {
+      if(isChecked)
+        {
+          formsData.append("name", formData.name);
+          formsData.append("father_name", formData.fatherName);
+          formsData.append("email", email);
+          formsData.append("mobile", formData.mobile);
+          formsData.append("date_of_birth", userDetails.date_of_birth);
+          // formsData.append("aadhar_number", formData.aadhar_number);
+          formsData.append("gender", genderData);
+          formsData.append("pincode", formData.pincode);
+          formsData.append("police_station", formData.police_station);
+          formsData.append("district_id", districtId);
+          formsData.append("address", formData.address);
+          formsData.append("whatsapp_number", formData.whatsapp_number);
+          formsData.append("password", password);
+          formsData.append("referral_code", formData.referral_code);
+          // formsData.append("nationality", formData.nationality);
+          formsData.append("religion", formData.religion);
+          // formsData.append("block", blockId);
+          formsData.append("class_id", classid);
+          formsData.append("plan_id", planid);
+          formsData.append("referral_code", refercode);
+          console.log("6565655", formsData);
+          await sendPostData("/register", formsData)
+            .then((res) => {
+              setLoading(false);
+              console.log(
+                "-0-0-0-0-0-0-0-0-0-0-0-0-0-00-0-0--0-0-0-0-0-00-0-",
+                res
+              );
+              if (res?.message === "Success") {
+                updateUpiLink(res?.data?.upi_link);
+                console.log(
+                  "djdjdddddddddddddd-----------------------=============-=",
+                  res?.data?.order_id
+                );
+                updateOrderid(res?.data?.order_id);
+    
+                navigation.navigate("QR_Screen");
+              }
+              if (res?.message === "Student registration successful") {
+                console.log("=================grpgp=gppg", res?.message);
+                showToast("Registration Successfull");
+                console.log("11111111", res?.status);
+                navigation.navigate("Login");
+              }
+              if (res?.message === "Validation errors") {
+                showToast("User Exists");
+              }
+            })
+            .catch((err) => {
+              setLoading(false);
+              console.log(err, "--err");
+            });
+        }
+        if (!isChecked) {
+          setshowcheckboxrror(!showcheckboxrror)
           setLoading(false);
-          console.log(
-            "-0-0-0-0-0-0-0-0-0-0-0-0-0-00-0-0--0-0-0-0-0-00-0-",
-            res
-          );
-          if (res?.message === "Success") {
-            updateUpiLink(res?.data?.upi_link);
-            console.log(
-              "djdjdddddddddddddd-----------------------=============-=",
-              res?.data?.order_id
-            );
-            updateOrderid(res?.data?.order_id);
-
-            navigation.navigate("QR_Screen");
-          }
-          if (res?.message === "Student registration successful") {
-            console.log("=================grpgp=gppg", res?.message);
-            showToast("Registration Successfull");
-            console.log("11111111", res?.status);
-            navigation.navigate("Login");
-          }
-          if (res?.message === "Validation errors") {
-            showToast("User Exists");
-          }
-        })
-        .catch((err) => {
-          setLoading(false);
-          console.log(err, "--err");
-        });
-    } else {
+     
+        }
+    }
+     else {
       console.log("Registration failed: Required fields are missing");
       // Alert.alert("Alert", "Please Fill up All Fields");
       showToast("Please fill up all blacks");
@@ -314,6 +330,7 @@ const Registration = ({ navigation }) => {
   const [stateInfo, setStateInfo] = useState();
   const [districtId, setDistrictId] = useState();
   const [blockId, setBlockId] = useState();
+  const [showcheckboxrror, setshowcheckboxrror] = useState(false);
   const toggleDropdownpolice = () => {
     setDropdownOpen(!isDropdownOpen);
     if (!isDropdownOpen) {
@@ -627,6 +644,14 @@ const Registration = ({ navigation }) => {
   // console.log("88", blockdata);
 
   console.log("789", formData);
+  const  handlecheckbox=()=>{
+    setChecked(!isChecked)
+    // setshowcheckboxrror(isChecked)
+  }
+  const  handlecheckboxerror=()=>{
+    // setChecked(!isChecked)
+    setshowcheckboxrror(isChecked)
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -706,7 +731,7 @@ const Registration = ({ navigation }) => {
                       fontSize: 18,
                     }}
                   >
-                    Father's Name
+                    Guardian's Name
                   </Text>
                   <Text style={{ color: "red", fontSize: 18 }}>*</Text>
                 </View>
@@ -756,7 +781,7 @@ const Registration = ({ navigation }) => {
                     placeholder="Enter your mobile number"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
                     value={formData.mobile}
-                    onChangeText={(text) => handleInputChange("mobile", text)}
+                    onChangeText={(text) => handleInputChangeNumber("mobile", text)}
                     onBlur={() => handleInputBlur("mobile")}
                     maxLength={10}
                   />
@@ -766,7 +791,8 @@ const Registration = ({ navigation }) => {
                 )}
                 {!formErrors.mobile &&
                   formData.mobile &&
-                  formData.mobile.trim().length !== 10 && (
+                  formData.mobile.trim().length !== 10 &&
+                  (
                     <Text style={{ color: "red" }}>
                       Mobile number must be 10 digits
                     </Text>
@@ -799,7 +825,7 @@ const Registration = ({ navigation }) => {
                     placeholderTextColor="rgba(166, 166, 166, 1)"
                     value={formData.whatsapp_number}
                     onChangeText={(text) =>
-                      handleInputChange("whatsapp_number", text)
+                      handleInputChangeNumber("whatsapp_number", text)
                     }
                     onBlur={() => handleInputBlur("whatsapp_number")}
                     maxLength={10}
@@ -1238,7 +1264,7 @@ const Registration = ({ navigation }) => {
                 )}
               </View>
               {/* Nationality */}
-              <View style={styles.inputbox_main_container}>
+              {/* <View style={styles.inputbox_main_container}>
                 <View style={{ flexDirection: "row", gap: 1 }}>
                   <Text
                     style={{
@@ -1252,11 +1278,7 @@ const Registration = ({ navigation }) => {
                   <Text style={{ color: "red", fontSize: 18 }}>*</Text>
                 </View>
                 <View style={styles.inputbox_container}>
-                  {/* <MaterialCommunityIcons
-                    name="home-map-marker"
-                    size={16}
-                    color="rgba(0, 54, 126, 1)"
-                  /> */}
+                 
                   <Image
                     source={require("../../assets/icons/united-nations.png")}
                     style={styles.iconImage}
@@ -1279,7 +1301,7 @@ const Registration = ({ navigation }) => {
                       Please enter Nationality{" "}
                     </Text>
                   )}
-              </View>
+              </View> */}
               {/* Religion */}
               <View style={styles.inputbox_main_container}>
                 <View style={{ flexDirection: "row", gap: 1 }}>
@@ -1424,7 +1446,7 @@ const Registration = ({ navigation }) => {
               </View>
 
               {/* Police  */}
-              <View style={styles.inputbox_main_container}>
+              {/* <View style={styles.inputbox_main_container}>
                 <View style={{ flexDirection: "row", gap: 1 }}>
                   <Text
                     style={{
@@ -1461,7 +1483,7 @@ const Registration = ({ navigation }) => {
                       Please enter your Police Station
                     </Text>
                   )}
-              </View>
+              </View> */}
               {/* District  */}
               {/* <View style={styles.inputbox_main_container}>
                 <View>
@@ -1595,7 +1617,7 @@ const Registration = ({ navigation }) => {
                 )}
               </View>
               {/* Block */}
-              <View style={styles.inputbox_main_container}>
+              {/* <View style={styles.inputbox_main_container}>
                 <View style={{ flexDirection: "row", gap: 1 }}>
                   <Text
                     style={{
@@ -1663,7 +1685,7 @@ const Registration = ({ navigation }) => {
                     })}
                   </View>
                 )}
-              </View>
+              </View> */}
               {/* Aadhar  */}
               {/* <View style={styles.inputbox_main_container}>
                 <View style={{ flexDirection: "row", gap: 1 }}>
@@ -1741,6 +1763,46 @@ const Registration = ({ navigation }) => {
                   fieldTouched.pincode && (
                     <Text style={{ color: "red" }}>
                       Please enter your pincode
+                    </Text>
+                  )}
+              </View>
+
+                  {/* Police  */}
+                  <View style={styles.inputbox_main_container}>
+                <View style={{ flexDirection: "row", gap: 1 }}>
+                  <Text
+                    style={{
+                      color: "rgba(0, 54, 126, 1)",
+                      fontWeight: "500",
+                      fontSize: 18,
+                    }}
+                  >
+                    Police Station
+                  </Text>
+                  <Text style={{ color: "red", fontSize: 18 }}>*</Text>
+                </View>
+                <View style={styles.inputbox_container}>
+                  <Image
+                    style={styles.iconImage}
+                    source={require("../../assets/icons/police-station.png")}
+                  />
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Police Station"
+                    placeholderTextColor="rgba(166, 166, 166, 1)"
+                    value={formData.police_station}
+                    onChangeText={(text) =>
+                      handleInputChange("police_station", text)
+                    }
+                    onBlur={() => handleInputBlur("police_station")}
+                    // editable={false}
+                  />
+                </View>
+                {formErrors.police_station &&
+                  !formData.police_station &&
+                  fieldTouched.police_station && (
+                    <Text style={{ color: "red" }}>
+                      Please enter your Police Station
                     </Text>
                   )}
               </View>
@@ -1846,7 +1908,7 @@ const Registration = ({ navigation }) => {
                 </View>
               </View>
               {/* Payment fee  */}
-              <View style={styles.inputbox_main_container}>
+              {/* <View style={styles.inputbox_main_container}>
                 <View style={{ flexDirection: "row", gap: 1 }}>
                   <Text
                     style={{
@@ -1887,7 +1949,7 @@ const Registration = ({ navigation }) => {
                         onBlur={() =>
                           handleSelectOptionPayment(inputValuePayment)
                         }
-                        editable={false} // Allow editing only when dropdown is closed
+                        editable={false} 
                       />
                       <AntDesign
                         name="caretdown"
@@ -1900,24 +1962,23 @@ const Registration = ({ navigation }) => {
 
                 {isDropdownOpenPayment && (
                   <View style={styles.dropdownContainer}>
-                    <TouchableOpacity
-                      style={styles.dropdownOption}
-                      onPress={() => handleSelectOptionPayment("Free Plan")}
-                    >
-                      <Text>Free Plan</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
+                    {inputValueplan==="Free Plan" ? (
+                        <TouchableOpacity
+                        style={styles.dropdownOption}
+                        onPress={() => handleSelectOptionPayment("Free Plan")}
+                      >
+                        <Text>Free Plan</Text>
+                      </TouchableOpacity>
+                    ):(<TouchableOpacity
                       style={styles.dropdownOption}
                       onPress={() => handleSelectOptionPayment("Payment")}
                     >
                       <Text>Payment</Text>
-                    </TouchableOpacity>
-                    {/* <TouchableOpacity style={styles.dropdownOption} onPress={() => handleSelectOptionPayment("3")}>
-                                          <Text>3</Text>
-                                      </TouchableOpacity> */}
+                    </TouchableOpacity>)}
+                 
                   </View>
                 )}
-              </View>
+              </View> */}
 
               {/* password  */}
               <View style={styles.inputbox_main_container}>
@@ -1975,21 +2036,29 @@ const Registration = ({ navigation }) => {
                 ) : null}
               </View>
             </View>
-
-            <View style={{ gap: 7 }}>
+<View >
+<View style={{ gap: 3 ,marginBottom:15 }}>
               <View style={styles.section}>
                 <Checkbox
                   style={styles.checkbox}
                   value={isChecked}
-                  onValueChange={setChecked}
+                  onValueChange={handlecheckbox}
                 />
+               
                 <Text style={{ fontSize: 14, fontWeight: "400" }}>
                   I agree with the
                 </Text>
                 <Text style={{ fontSize: 14, fontWeight: "600" }}>
                   Terms & Conditions
                 </Text>
+                
               </View>
+              <View>
+              {showcheckboxrror && <Text style={{color:'red' ,fontWeight:'400',alignSelf:'center'}}>Please Check the checkbox</Text>}
+              </View>
+</View>
+          
+           
 
               {/* button  */}
 
@@ -2141,7 +2210,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     gap: 8,
-    marginBottom: 15,
+    // marginBottom: 15,
     marginTop: 25,
   },
   buttonboxWrapper: {

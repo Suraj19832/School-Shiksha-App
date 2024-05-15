@@ -21,12 +21,16 @@ import {
 import Header from "../../components/Header";
 import { LinearGradient } from "expo-linear-gradient";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { useRoute } from "@react-navigation/native";
 
 const ComputerCourseAdmissForm = ({ navigation }) => {
   const [genderData, setGenderData] = useState("");
   const [isDropdownOpengender, setDropdownOpengender] = useState(false);
   const [selectedOptiongender, setSelectedOptiongender] = useState(null);
   const [inputValuegender, setInputValuegender] = useState("");
+
+  const route = useRoute();
+  const { collegename ,courcename } = route.params;
 
   //handle toggle for gender
   const toggleDropdowngender = () => {
@@ -254,7 +258,8 @@ const ComputerCourseAdmissForm = ({ navigation }) => {
               <Text style={styles.college_details_text}>College name</Text>
               <TextInput
                 style={styles.college_details_input}
-                placeholder="IEM Institute"
+                placeholder={collegename}
+                value={collegename}
                 placeholderTextColor={"rgba(166, 166, 166, 1)"}
               />
             </View>
@@ -262,7 +267,8 @@ const ComputerCourseAdmissForm = ({ navigation }) => {
               <Text style={styles.college_details_text}>Course name</Text>
               <TextInput
                 style={styles.college_details_input}
-                placeholder="B.C.A"
+                placeholder={courcename}
+                value={courcename}
                 placeholderTextColor={"rgba(166, 166, 166, 1)"}
               />
             </View>

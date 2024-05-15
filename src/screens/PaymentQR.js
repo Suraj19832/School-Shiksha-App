@@ -53,7 +53,9 @@ const PaymentQR = ({ navigation }) => {
       }
     }, 4000);
     if(paymentCompleted){
+      showToast("Payment Successfull");
       navigation.navigate("Login");
+   
     }
   
     // Clear interval after 5 minutes

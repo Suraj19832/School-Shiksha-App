@@ -558,14 +558,14 @@ const Dashboard = ({ navigation }) => {
           
   </View> */}
 
-  <View style={{ paddingTop: 20 }}>
+  {/* <View style={{ paddingTop: 20 }}>
     <TouchableOpacity
       style={styles.button}
       onPress={() => navigation.navigate("mpBenefits")}
     >
       <Text style={styles.text}>{"Show More >"}</Text>
     </TouchableOpacity>
-  </View>
+  </View> */}
 </View>
 
 
