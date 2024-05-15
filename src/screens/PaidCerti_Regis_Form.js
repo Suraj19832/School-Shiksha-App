@@ -12,6 +12,7 @@ import { TextInput } from "react-native";
 import { FontAwesome5, Fontisto, Feather, AntDesign } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { useRoute } from "@react-navigation/native";
 
 const PaidCerti_Regis_Form = ({ navigation }) => {
   //For gender
@@ -77,7 +78,8 @@ const PaidCerti_Regis_Form = ({ navigation }) => {
     setInputValueQualification(text);
     setDropdownOpenQualification(null); // Clear selected option when user edits input
   };
-
+  const route = useRoute();
+  const { collegeName ,courseName } = route.params;
   return (
     <View style={styles.container}>
       <Header
@@ -103,6 +105,7 @@ const PaidCerti_Regis_Form = ({ navigation }) => {
               <TextInput
                 style={styles.college_details_input}
                 placeholder="Brainware Univesity"
+                value={collegeName}
                 placeholderTextColor={"rgba(166, 166, 166, 1)"}
               />
             </View>
@@ -111,6 +114,7 @@ const PaidCerti_Regis_Form = ({ navigation }) => {
               <TextInput
                 style={styles.college_details_input}
                 placeholder="Course"
+                value={courseName}
                 placeholderTextColor={"rgba(166, 166, 166, 1)"}
               />
             </View>

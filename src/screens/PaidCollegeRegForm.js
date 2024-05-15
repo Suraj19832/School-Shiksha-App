@@ -20,9 +20,12 @@ import {
 import Header from "../../components/Header";
 import Checkbox from "expo-checkbox";
 import { LinearGradient } from "expo-linear-gradient";
+import { useRoute } from "@react-navigation/native";
 
 const PaidCollegeRegForm = ({ navigation }) => {
   const [isChecked, setChecked] = useState(false);
+  const route = useRoute();
+  const { collegeName ,courseName } = route.params;
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
       <Header

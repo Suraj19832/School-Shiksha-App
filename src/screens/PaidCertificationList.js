@@ -276,17 +276,17 @@ const PaidCertificationList = ({ navigation }) => {
       </View> */}
 
             <View>
-              <Text
-                style={{
-                  alignSelf: "flex-end",
-                  right: 10,
-                  color: "#0567F5",
-                  fontWeight: "500",
-                }}
-              >
-                Request Course
-              </Text>
-              <View style={styles.hairlineMenu} />
+            <Text
+                  style={{
+                    alignSelf: "flex-end",
+                    color: "#0567F5",
+                    fontWeight: "500",
+                    fontSize: 14,
+                    textDecorationLine: "underline",
+                  }}
+                >
+                  Request Course
+                </Text>
             </View>
           </View>
         </View>
@@ -420,7 +420,10 @@ const PaidCertificationList = ({ navigation }) => {
                <View style={styles.cardButtons}>
               <TouchableOpacity
                 style={styles.buttonbox}
-                onPress={() => navigation.navigate("paidCertificateDetails")}
+                onPress={() => navigation.navigate("paidCertificateDetails" , {
+                  collegeName: "Deshbandhu College",
+                  courseName: "B.C.A",
+                })}
               >
                 <Text
                   style={{
@@ -435,7 +438,10 @@ const PaidCertificationList = ({ navigation }) => {
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => navigation.navigate("paidcertificateForm")}
+                onPress={() => navigation.navigate("paidcertificateForm" , {
+                  collegeName: "Deshbandhu College",
+                  courseName: "B.C.A",
+                })}
               >
                 <LinearGradient
                   colors={["#03357D", "#0569FA"]} // Define your gradient colors here
@@ -603,7 +609,10 @@ const PaidCertificationList = ({ navigation }) => {
              <View style={styles.cardButtons}>
               <TouchableOpacity
                 style={styles.buttonbox}
-                onPress={() => navigation.navigate("paidCertificateDetails")}
+                onPress={() => navigation.navigate("paidCertificateDetails" , {
+                  collegeName: "Behala College",
+                  courseName: "B.C.A",
+                })}
               >
                 <Text
                   style={{
@@ -618,7 +627,10 @@ const PaidCertificationList = ({ navigation }) => {
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => navigation.navigate("paidcertificateForm")}
+                onPress={() => navigation.navigate("paidcertificateForm"  , {
+                  collegeName: "Behala College",
+                  courseName: "B.C.A",
+                })}
               >
                 <LinearGradient
                   colors={["#03357D", "#0569FA"]} // Define your gradient colors here
@@ -790,7 +802,10 @@ const PaidCertificationList = ({ navigation }) => {
               <View style={styles.cardButtons}>
               <TouchableOpacity
                 style={styles.buttonbox}
-                onPress={() => navigation.navigate("paidCertificateDetails")}
+                onPress={() => navigation.navigate("paidCertificateDetails" , {
+                  collegeName: "Pandaveswar College",
+                  courseName: "B.C.A",
+                })}
               >
                 <Text
                   style={{
@@ -805,7 +820,10 @@ const PaidCertificationList = ({ navigation }) => {
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => navigation.navigate("paidcertificateForm")}
+                onPress={() => navigation.navigate("paidcertificateForm" , {
+                  collegeName: "Pandaveswar College",
+                  courseName: "B.C.A",
+                })}
               >
                 <LinearGradient
                   colors={["#03357D", "#0569FA"]} // Define your gradient colors here

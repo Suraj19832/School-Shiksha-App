@@ -242,7 +242,10 @@ const FreeCollegeList = ({ navigation }) => {
             <View style={styles.cardButtons}>
               <TouchableOpacity
                 style={styles.buttonbox}
-                onPress={() => navigation.navigate("details")}
+                onPress={() => navigation.navigate("details" , {
+                  collegeName: "Anandamohan College",
+                  courseName: "B.C.A",
+                })}
               >
                 <Text
                   style={{
@@ -381,7 +384,10 @@ const FreeCollegeList = ({ navigation }) => {
             <View style={styles.cardButtons}>
               <TouchableOpacity
                 style={styles.buttonbox}
-                onPress={() => navigation.navigate("details")}
+                onPress={() => navigation.navigate("details" ,{
+                  collegeName: "Bethun College",
+                  courseName: "B.C.A",
+                })}
               >
                 <Text
                   style={{
@@ -520,7 +526,10 @@ const FreeCollegeList = ({ navigation }) => {
             <View style={styles.cardButtons}>
               <TouchableOpacity
                 style={styles.buttonbox}
-                onPress={() => navigation.navigate("details")}
+                onPress={() => navigation.navigate("details" ,{
+                  collegeName: "Chittaranjan College",
+                  courseName: "B.C.A",
+                })}
               >
                 <Text
                   style={{

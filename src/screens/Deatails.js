@@ -26,6 +26,7 @@ import {
 import { Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Header from "../../components/Header";
+import { useRoute } from "@react-navigation/native";
 // import { FlatList } from "react-native-web";
 
 const Details = ({ navigation }) => {
@@ -58,6 +59,8 @@ const Details = ({ navigation }) => {
       </View>
     );
   };
+  const route = useRoute();
+  const { collegeName, courseName } = route.params;
   return (
     <SafeAreaView style={styles.container}>
       <Header title="Free College List" navigateTo={navigation.goBack} />
@@ -104,7 +107,7 @@ const Details = ({ navigation }) => {
                   fontSize: 18,
                 }}
               >
-                Anandamohan College
+                {collegeName}
               </Text>
             </View>
             <View style={styles.course}>
@@ -116,7 +119,7 @@ const Details = ({ navigation }) => {
               <Text
                 style={{ color: "#595959", fontWeight: "600", fontSize: 14 }}
               >
-                B.C.A
+                {courseName}
               </Text>
             </View>
 
@@ -190,7 +193,9 @@ const Details = ({ navigation }) => {
             </View>
             <View style={styles.cardButtons}>
               <TouchableOpacity
-                onPress={() => navigation.navigate("freeAdmissionForm")}
+                onPress={() => navigation.navigate("freeAdmissionForm" , {
+                collegeName,courseName
+                })}
               >
                 <LinearGradient
                   colors={["#03357D", "#0569FA"]} // Define your gradient colors here
