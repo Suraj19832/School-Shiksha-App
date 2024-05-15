@@ -203,19 +203,18 @@ const OnlineCourseList = ({ navigation }) => {
             </View>
 
             <View>
-            
               <Text
-                  style={{
-                    alignSelf: "flex-end",
-                    color: "#0567F5",
-                    fontWeight: "500",
-                    fontSize: 14,
-                    textDecorationLine: "underline",
-                  }}
-                >
-                  Request Course
-                </Text>
-              
+                style={{
+                  alignSelf: "flex-end",
+                  color: "#0567F5",
+                  fontWeight: "500",
+                  fontSize: 14,
+                  textDecorationLine: "underline",
+                }}
+              >
+                Request Course
+              </Text>
+
               {/* <View style={styles.hairlineMenu} /> */}
             </View>
           </View>
@@ -303,7 +302,12 @@ const OnlineCourseList = ({ navigation }) => {
             <View style={styles.cardButtons}>
               <TouchableOpacity
                 style={styles.buttonbox}
-                onPress={() => navigation.navigate("onlineCourseDetails")}
+                onPress={() =>
+                  navigation.navigate("onlineCourseDetails", {
+                    collegeName: "Deshbandhu College",
+                    courseName: "B.C.A",
+                  })
+                }
               >
                 <Text
                   style={{
@@ -442,7 +446,12 @@ const OnlineCourseList = ({ navigation }) => {
             <View style={styles.cardButtons}>
               <TouchableOpacity
                 style={styles.buttonbox}
-                onPress={() => navigation.navigate("onlineCourseDetails")}
+                onPress={() =>
+                  navigation.navigate("onlineCourseDetails", {
+                    collegeName: "Behala College",
+                    courseName: "B.C.A",
+                  })
+                }
               >
                 <Text
                   style={{
@@ -581,7 +590,12 @@ const OnlineCourseList = ({ navigation }) => {
             <View style={styles.cardButtons}>
               <TouchableOpacity
                 style={styles.buttonbox}
-                onPress={() => navigation.navigate("onlineCourseDetails")}
+                onPress={() =>
+                  navigation.navigate("onlineCourseDetails", {
+                    collegeName: "Pandaveswar College",
+                    courseName: "B.C.A",
+                  })
+                }
               >
                 <Text
                   style={{

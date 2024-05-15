@@ -24,7 +24,10 @@ import {
 import { Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Header from "../../components/Header";
+import { useRoute } from "@react-navigation/native";
 const FreeGovtCertiDetails = ({ navigation }) => {
+  const route = useRoute();
+  const { collegename, courcename } = route.params;
   return (
     <SafeAreaView style={styles.container}>
       <Header
@@ -65,7 +68,7 @@ const FreeGovtCertiDetails = ({ navigation }) => {
                   fontSize: 18,
                 }}
               >
-                Anandamohan College
+                {collegename}
               </Text>
             </View>
             <View style={styles.course}>
@@ -77,7 +80,7 @@ const FreeGovtCertiDetails = ({ navigation }) => {
               <Text
                 style={{ color: "#595959", fontWeight: "600", fontSize: 14 }}
               >
-                B.C.A
+                {courcename}
               </Text>
             </View>
 
@@ -151,7 +154,12 @@ const FreeGovtCertiDetails = ({ navigation }) => {
             </View>
             <View style={styles.cardButtons}>
               <TouchableOpacity
-                onPress={() => navigation.navigate("freeGovAdmissionForm")}
+                onPress={() =>
+                  navigation.navigate("freeGovAdmissionForm", {
+                    collegename,
+                    courcename,
+                  })
+                }
               >
                 <LinearGradient
                   colors={["#03357D", "#0569FA"]} // Define your gradient colors here

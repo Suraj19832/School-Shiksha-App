@@ -24,7 +24,10 @@ import {
 import { Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Header from "../../components/Header";
+import { useRoute } from "@react-navigation/native";
 const OnlineCourseDetails = ({ navigation }) => {
+  const route = useRoute();
+  const { collegeName, courseName } = route.params;
   return (
     <SafeAreaView style={styles.container}>
       <Header title="Online Course Details" navigateTo={navigation.goBack} />
@@ -62,7 +65,7 @@ const OnlineCourseDetails = ({ navigation }) => {
                   fontSize: 18,
                 }}
               >
-                Anandamohan College
+                {collegeName}
               </Text>
             </View>
             <View style={styles.course}>
@@ -74,7 +77,7 @@ const OnlineCourseDetails = ({ navigation }) => {
               <Text
                 style={{ color: "#595959", fontWeight: "600", fontSize: 14 }}
               >
-                B.C.A
+                {courseName}
               </Text>
             </View>
 
@@ -146,15 +149,24 @@ const OnlineCourseDetails = ({ navigation }) => {
                 Lorem Ipsum.
               </Text>
             </View>
+
             <View style={styles.cardButtons}>
               <TouchableOpacity
-                onPress={() => navigation.navigate("onlineAdmissionForm")}
+                onPress={() =>
+                  navigation.navigate("onlineAdmissionForm", {
+                    collegeName,
+                    courseName,
+                  })
+                }
               >
                 <LinearGradient
                   colors={["#03357D", "#0569FA"]} // Define your gradient colors here
                   start={{ x: 0, y: 0.5 }}
                   end={{ x: 1, y: 0.5 }}
-                  style={[styles.buttonbox, { justifyContent: "center" }]}
+                  style={[
+                    styles.buttonbox,
+                    { justifyContent: "center", paddingHorizontal: 30 },
+                  ]}
                 >
                   <View
                     style={{
@@ -165,12 +177,13 @@ const OnlineCourseDetails = ({ navigation }) => {
                   >
                     <Text
                       style={{
-                        fontSize: 16,
+                        fontSize: 14,
                         fontWeight: "500",
                         alignItems: "center",
                         display: "flex",
                         justifyContent: "center",
                         color: "white",
+                        lineHeight: 16.41,
                       }}
                     >
                       Apply Link
