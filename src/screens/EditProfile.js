@@ -990,7 +990,7 @@ const EditProfile = ({ navigation }) => {
               </View>
 
               {/* Nationality  */}
-              <View style={styles.inputbox_main_container}>
+              {/* <View style={styles.inputbox_main_container}>
                 <View style={{ flexDirection: "row", gap: 1 }}>
                   <Text
                     style={{
@@ -1025,7 +1025,7 @@ const EditProfile = ({ navigation }) => {
                       Please enter Nationality{" "}
                     </Text>
                   )} */}
-              </View>
+              {/* </View> */}
 
               {/* Religion  */}
 
