@@ -203,17 +203,20 @@ const OnlineCourseList = ({ navigation }) => {
             </View>
 
             <View>
+            
               <Text
-                style={{
-                  alignSelf: "flex-end",
-                  right: 10,
-                  color: "#0567F5",
-                  fontWeight: "500",
-                }}
-              >
-                Request Course
-              </Text>
-              <View style={styles.hairlineMenu} />
+                  style={{
+                    alignSelf: "flex-end",
+                    color: "#0567F5",
+                    fontWeight: "500",
+                    fontSize: 14,
+                    textDecorationLine: "underline",
+                  }}
+                >
+                  Request Course
+                </Text>
+              
+              {/* <View style={styles.hairlineMenu} /> */}
             </View>
           </View>
         </View>
@@ -641,7 +644,7 @@ const OnlineCourseList = ({ navigation }) => {
               gap: 4,
               height: 32,
               backgroundColor: "#FFFFFF",
-              marginBottom: 80,
+              marginBottom: 30,
               paddingHorizontal: 10,
             }}
           >
@@ -811,14 +814,14 @@ const styles = StyleSheet.create({
     // zIndex:1,
     backgroundColor: "yellow",
     marginTop: 10,
-    width: "85%",
+    width: "88%",
     backgroundColor: "#fff",
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 4,
     padding: 8,
     zIndex: 1,
-    left: 17,
+    // left: 17,
     alignSelf: "center",
     // justifyContent:'center'
   },

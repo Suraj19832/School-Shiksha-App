@@ -15,6 +15,7 @@ import { TextInput } from "react-native";
 import { FontAwesome5, Fontisto, Feather, AntDesign } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { useRoute } from "@react-navigation/native";
 
 const OnlineAdmissionForm = ({ navigation }) => {
   //For gender
@@ -212,6 +213,8 @@ const OnlineAdmissionForm = ({ navigation }) => {
       setEmailError("");
     }
   };
+  const route = useRoute();
+  const { collegeName ,courseName } = route.params;
   return (
     <View style={styles.container}>
       <Header
@@ -236,7 +239,8 @@ const OnlineAdmissionForm = ({ navigation }) => {
               <Text style={styles.college_details_text}>College name</Text>
               <TextInput
                 style={styles.college_details_input}
-                placeholder="Brainware Univesity"
+                placeholder={collegeName}
+                value={collegeName}
                 placeholderTextColor={"rgba(166, 166, 166, 1)"}
               />
             </View>
@@ -244,7 +248,8 @@ const OnlineAdmissionForm = ({ navigation }) => {
               <Text style={styles.college_details_text}>Course name</Text>
               <TextInput
                 style={styles.college_details_input}
-                placeholder="Course"
+                placeholder={courseName}
+                value={courseName}
                 placeholderTextColor={"rgba(166, 166, 166, 1)"}
               />
             </View>
