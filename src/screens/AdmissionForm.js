@@ -655,11 +655,14 @@ const AdmissionForm = ({ navigation }) => {
       <ScrollView>
         <View style={styles.main_content}>
           <View style={styles.profile}>
-            <View style={{
-    width: 70,
-    height: 70,
-    backgroundColor: "#03357D",
-    borderRadius: 50,}}>
+            <View
+              style={{
+                width: 70,
+                height: 70,
+                backgroundColor: "#03357D",
+                borderRadius: 50,
+              }}
+            >
               <Image
                 style={styles.img}
                 source={require("../../assets/img/student.png")}
@@ -673,7 +676,7 @@ const AdmissionForm = ({ navigation }) => {
           </View>
           <View style={styles.college_details}>
             <View>
-              <Text style={styles.college_details_text}>College name</Text>
+              <Text style={styles.college_details_text}>College Name</Text>
               <TextInput
                 style={styles.college_details_input}
                 placeholder="Anandamohan College"
@@ -681,7 +684,7 @@ const AdmissionForm = ({ navigation }) => {
               />
             </View>
             <View>
-              <Text style={styles.college_details_text}>Course name</Text>
+              <Text style={styles.college_details_text}>Course Name</Text>
               <TextInput
                 style={styles.college_details_input}
                 placeholder="B.C.A"

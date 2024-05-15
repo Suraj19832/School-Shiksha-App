@@ -1619,7 +1619,11 @@ const EditProfile = ({ navigation }) => {
                       }}
                     >
                       {updateLoading ? (
-                        <ActivityIndicator size={"small"} color={"#ffffff"} />
+                        <ActivityIndicator
+                          size={"small"}
+                          color={"#ffffff"}
+                          style={{ paddingVertical: 5 }}
+                        />
                       ) : (
                         <Text
                           style={{

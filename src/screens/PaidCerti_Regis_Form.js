@@ -99,7 +99,7 @@ const PaidCerti_Regis_Form = ({ navigation }) => {
           </View>
           <View style={styles.college_details}>
             <View>
-              <Text style={styles.college_details_text}>College name</Text>
+              <Text style={styles.college_details_text}>College Name</Text>
               <TextInput
                 style={styles.college_details_input}
                 placeholder="Brainware Univesity"
@@ -107,7 +107,7 @@ const PaidCerti_Regis_Form = ({ navigation }) => {
               />
             </View>
             <View>
-              <Text style={styles.college_details_text}>Course name</Text>
+              <Text style={styles.college_details_text}>Course Name</Text>
               <TextInput
                 style={styles.college_details_input}
                 placeholder="Course"
@@ -137,13 +137,11 @@ const PaidCerti_Regis_Form = ({ navigation }) => {
               </View>
               <View style={styles.fields_main}>
                 <Text style={styles.inputHeading}>Date of Birth</Text>
-                <View style={styles.input_box}>
-                  <Fontisto
-                    name="date"
-                    size={14}
-                    color="rgba(0, 54, 126, 1)"
-                    onPress={showDatePicker}
-                  />
+                <TouchableOpacity
+                  style={styles.input_box}
+                  onPress={showDatePicker}
+                >
+                  <Fontisto name="date" size={14} color="rgba(0, 54, 126, 1)" />
                   <TextInput
                     style={styles.input}
                     placeholder="Date of Birth"
@@ -155,7 +153,7 @@ const PaidCerti_Regis_Form = ({ navigation }) => {
                     onFocus={showDatePicker} // Show date picker when input field is focused
                     editable={true} // Make the input field editable
                   />
-                </View>
+                </TouchableOpacity>
                 <DateTimePickerModal
                   isVisible={isDatePickerVisible}
                   mode="date"
@@ -174,7 +172,7 @@ const PaidCerti_Regis_Form = ({ navigation }) => {
                     />
                     <TextInput
                       style={styles.input}
-                      placeholder="Choose Option"
+                      placeholder="Select"
                       placeholderTextColor="rgba(166, 166, 166, 1)"
                       value={inputValuegender}
                       onChangeText={handleInputChangegender}
@@ -418,7 +416,7 @@ const styles = StyleSheet.create({
     paddingRight: "35%",
     position: "relative",
     color: "black",
-    width: "80%",
+    width: "99%",
   },
   iconImage: {
     height: 17,

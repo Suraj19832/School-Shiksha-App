@@ -12,6 +12,7 @@ import {
   Platform,
   Dimensions,
   useColorScheme,
+  ActivityIndicator,
 } from "react-native";
 import DropDownComponent from "../../components/Dropdown";
 import React, { useContext, useEffect, useState } from "react";
@@ -47,6 +48,7 @@ const Registration = ({ navigation }) => {
   const { updateUpiLink } = useContext(AuthContext);
   const { updateOrderid } = useContext(AuthContext);
   const [isChecked, setChecked] = useState(false);
+  const [loading, setLoading] = useState(false);
   // const [name, setname] = useState("");
   // const [nameError, setnameError] = useState("");
   const showToast = (message) => {
@@ -69,7 +71,6 @@ const Registration = ({ navigation }) => {
     religion: "",
     district_id: "",
     password: "",
-  
   });
   // console.log(formData.fatherName)
   const [email, setEmail] = useState("");
@@ -104,9 +105,10 @@ const Registration = ({ navigation }) => {
     setFieldTouched({ ...fieldTouched, [key]: true });
     validateForm();
   };
-const [refercode ,setrefercode]=useState("")
-  const handleRegistration = async() => {
+  const [refercode, setrefercode] = useState("");
+  const handleRegistration = async () => {
     if (formData.name && formData.mobile) {
+      setLoading(true);
     }
     const formsData = new FormData();
     if (
@@ -140,7 +142,11 @@ const [refercode ,setrefercode]=useState("")
       console.log("6565655", formsData);
       await sendPostData("/register", formsData)
         .then((res) => {
-          console.log("-0-0-0-0-0-0-0-0-0-0-0-0-0-00-0-0--0-0-0-0-0-00-0-",res);
+          setLoading(false);
+          console.log(
+            "-0-0-0-0-0-0-0-0-0-0-0-0-0-00-0-0--0-0-0-0-0-00-0-",
+            res
+          );
           if (res?.message === "Success") {
             updateUpiLink(res?.data?.upi_link);
             console.log(
@@ -151,22 +157,24 @@ const [refercode ,setrefercode]=useState("")
 
             navigation.navigate("QR_Screen");
           }
-          if(res?.message === "Student registration successful") {
+          if (res?.message === "Student registration successful") {
             console.log("=================grpgp=gppg", res?.message);
             showToast("Registration Successfull");
             console.log("11111111", res?.status);
             navigation.navigate("Login");
           }
-          if(res?.message === "Validation errors"){
+          if (res?.message === "Validation errors") {
             showToast("User Exists");
           }
         })
         .catch((err) => {
+          setLoading(false);
           console.log(err, "--err");
         });
     } else {
       console.log("Registration failed: Required fields are missing");
-      Alert.alert("Alert", "Please Fill up All Fields");
+      // Alert.alert("Alert", "Please Fill up All Fields");
+      showToast("Please fill up all blacks");
     }
   };
   // email validation
@@ -476,7 +484,7 @@ const [refercode ,setrefercode]=useState("")
     setInputValueplan(option);
     setDropdownOpenplan(false);
     setplanid(plannnid);
-    console.log("uiyuiyiyuiuyiuykkhjkhjkkjkjk",planid)
+    console.log("uiyuiyiyuiuyiuykkhjkhjkkjkjk", planid);
   };
 
   const handleInputChangeplan = (text) => {
@@ -484,8 +492,8 @@ const [refercode ,setrefercode]=useState("")
     setDropdownOpenplan(null); // Clear selected option when user edits input
   };
   const handleInputChangerefer = (text) => {
-  setrefercode(text)
-  console.log(refercode)
+    setrefercode(text);
+    console.log(refercode);
     // setDropdownOpenplan(null); // Clear selected option when user edits input
   };
   const toggleDropdownblock = () => {
@@ -892,19 +900,16 @@ const [refercode ,setrefercode]=useState("")
                   </Text>
                   <Text style={{ color: "red", fontSize: 18 }}>*</Text>
                 </View>
-                <View style={styles.inputbox_container}>
-                  {/* <Feather
-                    name="calendar"
-                    size={16}
-                    color="rgba(0, 54, 126, 1)"
-                    onPress={showDatePicker}
-                  /> */}
-                  <TouchableOpacity onPress={showDatePicker}>
+                <TouchableOpacity
+                  style={styles.inputbox_container}
+                  onPress={showDatePicker}
+                >
+                  <View>
                     <Image
                       style={styles.iconImage}
                       source={require("../../assets/icons/calendar.png")}
                     />
-                  </TouchableOpacity>
+                  </View>
                   <TextInput
                     style={styles.input}
                     placeholder="YY/MM/DD"
@@ -916,7 +921,7 @@ const [refercode ,setrefercode]=useState("")
                     onFocus={showDatePicker} // Show date picker when input field is focused
                     editable={false} // Make the input field editable
                   />
-                </View>
+                </TouchableOpacity>
 
                 <DateTimePickerModal
                   isVisible={isDatePickerVisible}
@@ -1219,13 +1224,13 @@ const [refercode ,setrefercode]=useState("")
                   <View style={styles.dropdownContainer}>
                     <TouchableOpacity
                       style={styles.dropdownOption}
-                      onPress={() => handleSelectOptiongender("male")}
+                      onPress={() => handleSelectOptiongender("Male")}
                     >
                       <Text>Male</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                       style={styles.dropdownOption}
-                      onPress={() => handleSelectOptiongender("female")}
+                      onPress={() => handleSelectOptiongender("Female")}
                     >
                       <Text>Female</Text>
                     </TouchableOpacity>
@@ -2009,18 +2014,22 @@ const [refercode ,setrefercode]=useState("")
                         display: "flex",
                       }}
                     >
-                      <Text
-                        style={{
-                          fontSize: 16,
-                          fontWeight: "500",
-                          alignItems: "center",
-                          display: "flex",
-                          justifyContent: "center",
-                          color: "white",
-                        }}
-                      >
-                        Sign Up
-                      </Text>
+                      {loading ? (
+                        <ActivityIndicator size={"small"} color={"white"} />
+                      ) : (
+                        <Text
+                          style={{
+                            fontSize: 16,
+                            fontWeight: "500",
+                            alignItems: "center",
+                            display: "flex",
+                            justifyContent: "center",
+                            color: "white",
+                          }}
+                        >
+                          Sign Up
+                        </Text>
+                      )}
                     </View>
                   </LinearGradient>
                 </TouchableOpacity>
@@ -2142,6 +2151,7 @@ const styles = StyleSheet.create({
   input: {
     width: "82%",
     color: "black",
+    // backgroundColor: "red",
   },
   iconImage: {
     height: 17,
@@ -2200,6 +2210,7 @@ const styles = StyleSheet.create({
   },
   dropdownOption: {
     paddingVertical: 8,
-    alignSelf: "center",
+    width: "100%",
+    alignItems: "center",
   },
 });

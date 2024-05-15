@@ -29,7 +29,7 @@ const NotificationContainer = (props) => {
           flexDirection: "row",
           justifyContent: "space-between",
           alignItems: "center",
-          marginTop: 8,
+          marginTop: 6,
           backgroundColor: "white",
           paddingVertical: 15,
         }}
