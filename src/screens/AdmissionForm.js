@@ -29,6 +29,7 @@ import * as DocumentPicker from "expo-document-picker";
 import { Camera } from "expo-camera";
 // import CameraAccess from "../../components/CamraAccess";
 import * as ImagePicker from "expo-image-picker";
+import { useRoute } from "@react-navigation/native";
 const AdmissionForm = ({ navigation }) => {
   const [isChecked, setChecked] = useState(false);
   const showToast = (message) => {
@@ -38,6 +39,10 @@ const AdmissionForm = ({ navigation }) => {
       alert(message);
     }
   };
+
+  const route = useRoute();
+  const { collegeName, courseName } = route.params;
+
   // users data
   const [formErrors, setFormErrors] = useState({});
 
@@ -681,6 +686,7 @@ const AdmissionForm = ({ navigation }) => {
                 style={styles.college_details_input}
                 placeholder="Anandamohan College"
                 placeholderTextColor={"rgba(166, 166, 166, 1)"}
+                value={collegeName}
               />
             </View>
             <View>
@@ -689,6 +695,7 @@ const AdmissionForm = ({ navigation }) => {
                 style={styles.college_details_input}
                 placeholder="B.C.A"
                 placeholderTextColor={"rgba(166, 166, 166, 1)"}
+                value={courseName}
               />
             </View>
           </View>

@@ -167,8 +167,8 @@ const PaidCerti_Regis_Form = ({ navigation }) => {
                 <TouchableOpacity onPress={toggleDropdowngender}>
                   <View style={styles.input_box}>
                     <Image
-                      source={require("../../assets/icons/gender.png")}
                       style={styles.iconImage}
+                      source={require("../../assets/icons/gender (1).png")}
                     />
                     <TextInput
                       style={styles.input}
@@ -235,7 +235,6 @@ const PaidCerti_Regis_Form = ({ navigation }) => {
                   />
                 </View>
               </View>
-
               <View style={styles.fields_main}>
                 <Text style={styles.inputHeading}>Full Address</Text>
                 <View style={styles.input_box}>
@@ -250,6 +249,93 @@ const PaidCerti_Regis_Form = ({ navigation }) => {
                   />
                 </View>
               </View>
+              <View style={styles.fields_main}>
+                <Text style={styles.inputHeading}>State</Text>
+                <View style={styles.input_box}>
+                  <Image
+                    style={styles.iconImage}
+                    source={require("../../assets/icons/map.png")}
+                  />
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Enter your State"
+                    placeholderTextColor={"rgba(166, 166, 166, 1)"}
+                    editable={false}
+                  />
+                  <AntDesign
+                    name="caretdown"
+                    style={styles.arrowdown}
+                    size={15}
+                    color="rgba(0, 54, 126, 1)"
+                  />
+                </View>
+              </View>
+              <View style={styles.fields_main}>
+                <Text style={styles.inputHeading}>District</Text>
+                <View style={styles.input_box}>
+                  <Image
+                    style={styles.iconImage}
+                    source={require("../../assets/icons/district (1).png")}
+                  />
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Enter your district"
+                    placeholderTextColor={"rgba(166, 166, 166, 1)"}
+                    editable={false}
+                  />
+                  <AntDesign
+                    name="caretdown"
+                    style={styles.arrowdown}
+                    size={15}
+                    color="rgba(0, 54, 126, 1)"
+                  />
+                </View>
+              </View>
+
+              <View style={styles.fields_main}>
+                <Text style={styles.inputHeading}>P.O</Text>
+                <View style={styles.input_box}>
+                  <Image
+                    source={require("../../assets/icons/post-office.png")}
+                    style={styles.iconImage}
+                  />
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Enter your Post Office"
+                    placeholderTextColor={"rgba(166, 166, 166, 1)"}
+                  />
+                </View>
+              </View>
+              <View style={styles.fields_main}>
+                <Text style={styles.inputHeading}>P.S</Text>
+                <View style={styles.input_box}>
+                  <Image
+                    source={require("../../assets/img/police.png")}
+                    style={styles.iconImage}
+                  />
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Enter your Police Station"
+                    placeholderTextColor={"rgba(166, 166, 166, 1)"}
+                  />
+                </View>
+              </View>
+
+              <View style={styles.fields_main}>
+                <Text style={styles.inputHeading}>Pin Code</Text>
+                <View style={styles.input_box}>
+                  <Image
+                    style={styles.iconImage}
+                    source={require("../../assets/icons/pin-code.png")}
+                  />
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Enter your pin code"
+                    placeholderTextColor={"rgba(166, 166, 166, 1)"}
+                  />
+                </View>
+              </View>
+
               <View style={styles.fields_main}>
                 <Text style={styles.inputHeading}>Qualification</Text>
                 <TouchableOpacity onPress={toggleDropdownQualification}>

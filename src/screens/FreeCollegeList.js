@@ -87,13 +87,19 @@ const FreeCollegeList = ({ navigation }) => {
                     { borderRadius: 30, backgroundColor: "#FDF1DD" },
                   ]}
                 >
-                  <View style={{ flexDirection: "row", gap: 4 }}>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      gap: 4,
+                      alignItems: "center",
+                    }}
+                  >
                     <Image
                       style={{}}
                       source={require("../../assets/img/online-course.png")}
                     />
                     <TextInput
-                      style={styles.input}
+                      style={(styles.input, { paddingLeft: 5 })}
                       placeholder="Select"
                       placeholderTextColor="rgba(166, 166, 166, 1)"
                     />
@@ -243,21 +249,29 @@ const FreeCollegeList = ({ navigation }) => {
                     textAlign: "center",
                     color: "#0567F5",
                     fontWeight: "500",
-                    fontSize: 16,
-                    lineHeight: 18.75,
+                    fontSize: 14,
+                    lineHeight: 16.41,
                   }}
                 >
                   View All Details
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => navigation.navigate("freeAdmissionForm")}
+                onPress={() =>
+                  navigation.navigate("freeAdmissionForm", {
+                    collegeName: "Anandamohan College",
+                    courseName: "B.C.A",
+                  })
+                }
               >
                 <LinearGradient
                   colors={["#03357D", "#0569FA"]} // Define your gradient colors here
                   start={{ x: 0, y: 0.5 }}
                   end={{ x: 1, y: 0.5 }}
-                  style={[styles.buttonbox, { justifyContent: "center" }]}
+                  style={[
+                    styles.buttonbox,
+                    { justifyContent: "center", paddingHorizontal: 30 },
+                  ]}
                 >
                   <View
                     style={{
@@ -268,12 +282,13 @@ const FreeCollegeList = ({ navigation }) => {
                   >
                     <Text
                       style={{
-                        fontSize: 16,
+                        fontSize: 14,
                         fontWeight: "500",
                         alignItems: "center",
                         display: "flex",
                         justifyContent: "center",
                         color: "white",
+                        lineHeight: 16.41,
                       }}
                     >
                       Apply Link
@@ -373,42 +388,53 @@ const FreeCollegeList = ({ navigation }) => {
                     textAlign: "center",
                     color: "#0567F5",
                     fontWeight: "500",
-                    fontSize: 16,
-                    lineHeight: 18.75,
+                    fontSize: 14,
+                    lineHeight: 16.41,
                   }}
                 >
                   View All Details
                 </Text>
               </TouchableOpacity>
-
-              <LinearGradient
-                colors={["#03357D", "#0569FA"]} // Define your gradient colors here
-                start={{ x: 0, y: 0.5 }}
-                end={{ x: 1, y: 0.5 }}
-                style={[styles.buttonbox, { justifyContent: "center" }]}
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate("freeAdmissionForm", {
+                    collegeName: "Bethun College",
+                    courseName: "B.C.A",
+                  })
+                }
               >
-                <TouchableOpacity
-                  onPress={() => navigation.navigate("freeAdmissionForm")}
-                  style={{
-                    justifyContent: "center",
-                    alignItems: "center",
-                    display: "flex",
-                  }}
+                <LinearGradient
+                  colors={["#03357D", "#0569FA"]} // Define your gradient colors here
+                  start={{ x: 0, y: 0.5 }}
+                  end={{ x: 1, y: 0.5 }}
+                  style={[
+                    styles.buttonbox,
+                    { justifyContent: "center", paddingHorizontal: 30 },
+                  ]}
                 >
-                  <Text
+                  <View
                     style={{
-                      fontSize: 16,
-                      fontWeight: "500",
+                      justifyContent: "center",
                       alignItems: "center",
                       display: "flex",
-                      justifyContent: "center",
-                      color: "white",
                     }}
                   >
-                    Apply Link
-                  </Text>
-                </TouchableOpacity>
-              </LinearGradient>
+                    <Text
+                      style={{
+                        fontSize: 14,
+                        fontWeight: "500",
+                        alignItems: "center",
+                        display: "flex",
+                        justifyContent: "center",
+                        color: "white",
+                        lineHeight: 16.41,
+                      }}
+                    >
+                      Apply Link
+                    </Text>
+                  </View>
+                </LinearGradient>
+              </TouchableOpacity>
             </View>
           </View>
 
@@ -501,42 +527,53 @@ const FreeCollegeList = ({ navigation }) => {
                     textAlign: "center",
                     color: "#0567F5",
                     fontWeight: "500",
-                    fontSize: 16,
-                    lineHeight: 18.75,
+                    fontSize: 14,
+                    lineHeight: 16.41,
                   }}
                 >
                   View All Details
                 </Text>
               </TouchableOpacity>
-
-              <LinearGradient
-                colors={["#03357D", "#0569FA"]} // Define your gradient colors here
-                start={{ x: 0, y: 0.5 }}
-                end={{ x: 1, y: 0.5 }}
-                style={[styles.buttonbox, { justifyContent: "center" }]}
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate("freeAdmissionForm", {
+                    collegeName: "Chittaranjan College",
+                    courseName: "B.C.A",
+                  })
+                }
               >
-                <TouchableOpacity
-                  onPress={() => navigation.navigate("freeAdmissionForm")}
-                  style={{
-                    justifyContent: "center",
-                    alignItems: "center",
-                    display: "flex",
-                  }}
+                <LinearGradient
+                  colors={["#03357D", "#0569FA"]} // Define your gradient colors here
+                  start={{ x: 0, y: 0.5 }}
+                  end={{ x: 1, y: 0.5 }}
+                  style={[
+                    styles.buttonbox,
+                    { justifyContent: "center", paddingHorizontal: 30 },
+                  ]}
                 >
-                  <Text
+                  <View
                     style={{
-                      fontSize: 16,
-                      fontWeight: "500",
+                      justifyContent: "center",
                       alignItems: "center",
                       display: "flex",
-                      justifyContent: "center",
-                      color: "white",
                     }}
                   >
-                    Apply Link
-                  </Text>
-                </TouchableOpacity>
-              </LinearGradient>
+                    <Text
+                      style={{
+                        fontSize: 14,
+                        fontWeight: "500",
+                        alignItems: "center",
+                        display: "flex",
+                        justifyContent: "center",
+                        color: "white",
+                        lineHeight: 16.41,
+                      }}
+                    >
+                      Apply Link
+                    </Text>
+                  </View>
+                </LinearGradient>
+              </TouchableOpacity>
             </View>
           </View>
           <View
@@ -667,6 +704,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     flexDirection: "row",
     justifyContent: "space-between",
+    marginVertical: 3,
   },
   buttonbox: {
     flexDirection: "row",

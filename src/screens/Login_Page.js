@@ -30,16 +30,12 @@ const Login_Page = ({ navigation }) => {
 
   const errors = {};
   function validateData() {
-    if (phoneNumber == null) {
+    if (!phoneNumber) {
       errors.phoneNumber = "Mobile number is required";
-    }
-    if (phoneNumber == "") {
-      errors.phoneNumber = "Mobile number is required";
-    }
-    if (phoneNumber != "") {
-      if (phoneNumber?.length < 5) {
-        errors.phoneNumber = "Phone number should be 10 digit";
-      }
+    } else if (!/^[0-9]*$/.test(phoneNumber)) {
+      errors.phoneNumber = "Phone number should only contain numbers";
+    } else if (phoneNumber.length !== 10) {
+      errors.phoneNumber = "Phone number should be 10 digits";
     }
     if (password == null) {
       errors.password = "Password is required";
@@ -141,9 +137,15 @@ const Login_Page = ({ navigation }) => {
                 />
                 <TextInput
                   placeholder={"Enter Mobile Number"}
-                  onChangeText={(value) => setPhoneNumber(value)}
+                  value={phoneNumber}
+                  onChangeText={(value) => {
+                    if (/^[0-9]*$/.test(value) || value === "") {
+                      setPhoneNumber(value);
+                    }
+                  }}
                   style={styles.input}
-                  r
+                  keyboardType={"number-pad"}
+                  maxLength={10}
                 />
               </View>
               {validationError.phoneNumber && (

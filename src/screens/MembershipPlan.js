@@ -62,7 +62,14 @@ const MembershipPlan = ({ navigation }) => {
                 style={{ height: 24, width: 24 }}
               />
             </TouchableOpacity>
-            <Text style={{ fontSize: 21, fontWeight: "500" }}>
+            <Text
+              style={{
+                fontSize: 18,
+                fontWeight: "500",
+                lineHeight: 27,
+                color: "rgba(55, 55, 55, 1)",
+              }}
+            >
               Membership Plan
             </Text>
           </View>
@@ -75,77 +82,92 @@ const MembershipPlan = ({ navigation }) => {
             />
           </View>
           <View>
-            <View
-              style={[styles.card, { borderColor: "green", borderWidth: 3 }]}
+            <LinearGradient
+              colors={["#00367E", "#FEA613"]}
+              start={[1.2, 0]}
+              end={[1, 1]}
+              style={{
+                // borderWidth: 1,
+                borderRadius: 12,
+                overflow: "hidden", // Ensures border radius is applied
+                padding: 1.5,
+              }}
             >
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
+              <View style={styles.card_main}>
                 <View
                   style={{
                     flexDirection: "row",
-                    gap: 10,
+                    justifyContent: "space-between",
                     alignItems: "center",
+                    borderRadius: 10,
                   }}
                 >
-                  <Image
-                    source={require("../../assets/img/free.png")}
-                    style={styles.image}
-                  />
-                  <Text
+                  <View
                     style={{
-                      color: "#006641",
-                      fontSize: 25,
-                      fontWeight: "500",
+                      flexDirection: "row",
+                      gap: 10,
+                      alignItems: "center",
                     }}
                   >
-                    Free
-                  </Text>
+                    <Image
+                      source={require("../../assets/img/free.png")}
+                      style={styles.image}
+                    />
+                    <Text
+                      style={{
+                        color: "#006641",
+                        fontSize: 25,
+                        fontWeight: "500",
+                      }}
+                    >
+                      Free
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      backgroundColor: "#006641",
+                      borderRadius: 50,
+                      height: Dimensions.get("window").height * 0.032,
+                      width: Dimensions.get("window").width * 0.23,
+                      alignItems: "center",
+                      alignContent: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Text
+                      style={{
+                        color: "white",
+                        textAlign: "center",
+                        fontWeight: "500",
+                      }}
+                    >
+                      Active
+                    </Text>
+                  </View>
                 </View>
                 <View
                   style={{
-                    backgroundColor: "#006641",
-                    borderRadius: 50,
-                    height: Dimensions.get("window").height * 0.032,
-                    width: Dimensions.get("window").width * 0.23,
-                    alignItems: "center",
-                    alignContent: "center",
-                    justifyContent: "center",
+                    flexDirection: "row",
+                    gap: 5,
+                    alignItems: "baseline",
                   }}
                 >
-                  <Text
-                    style={{
-                      color: "white",
-                      textAlign: "center",
-                      fontWeight: "500",
-                    }}
-                  >
-                    Active
-                  </Text>
+                  <Text style={{ fontSize: 20, fontWeight: "600" }}>Rs.</Text>
+                  <Text style={{ fontSize: 48, fontWeight: "900" }}>0</Text>
+                  <Text style={{ fontSize: 65, fontWeight: "900" }}>/- </Text>
                 </View>
-              </View>
-              <View
-                style={{ flexDirection: "row", gap: 5, alignItems: "baseline" }}
-              >
-                <Text style={{ fontSize: 20, fontWeight: "600" }}>Rs.</Text>
-                <Text style={{ fontSize: 48, fontWeight: "900" }}>0</Text>
-                <Text style={{ fontSize: 65, fontWeight: "900" }}>/- </Text>
-              </View>
 
-              <View style={{ paddingVertical: 15, paddingHorizontal: 8 }}>
-                <SpanText text="Free College Admission" />
-                <View style={styles.hairlineMenu} />
-                <SpanText text="Free Govt. Certificate" />
-                <View style={styles.hairlineMenu} />
-                <SpanText text="Free Apprenticeship training with Stipend" />
-                <View style={styles.hairlineMenu} />
+                <View style={{ paddingVertical: 15, paddingHorizontal: 8 }}>
+                  <SpanText text="Free College Admission" />
+                  <View style={styles.hairlineMenu} />
+                  <SpanText text="Free Govt. Certificate" />
+                  <View style={styles.hairlineMenu} />
+                  <SpanText text="Free Apprenticeship training with Stipend" />
+                  <View style={styles.hairlineMenu} />
+                </View>
+                <BorderGradient text="Get Started" />
               </View>
-              <BorderGradient text="Get Started" />
-            </View>
+            </LinearGradient>
           </View>
           <View>
             <View style={[styles.card, { backgroundColor: "#00367E" }]}>
@@ -380,6 +402,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     position: "relative", // To allow absolute positioning of lock image
     borderWidth: 1,
+  },
+  card_main: {
+    width: Dimensions.get("screen").width * 0.88,
+    height: Dimensions.get("screen").height * 0.55,
+    // backgroundColor: "red",
+    backgroundColor: "white",
+    borderRadius: 10,
+    // borderWidth: 1,
+    borderColor: "transparent",
+    paddingTop: 20,
+    paddingBottom: 30,
+    paddingHorizontal: 15,
   },
   image: {
     width: 25,

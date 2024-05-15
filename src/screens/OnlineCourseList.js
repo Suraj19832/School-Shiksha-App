@@ -141,7 +141,7 @@ const OnlineCourseList = ({ navigation }) => {
                     />
                     <TextInput
                       style={styles.input}
-                      placeholder="Choose Option"
+                      placeholder="Select"
                       placeholderTextColor="rgba(166, 166, 166, 1)"
                       value={inputValueclass}
                       onChangeText={handleInputChangeclass}
