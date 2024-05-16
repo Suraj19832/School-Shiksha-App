@@ -166,7 +166,6 @@ const PaymentQR = ({ navigation }) => {
               .toString()
               .padStart(2, "0")}`}
             {/* {timerEnded && <p>QR code has expired.</p>} */}
-            {timerEnded && <Text>QR code has expired.</Text>}
           </Text>):(<Text></Text>)}
         
         </View>

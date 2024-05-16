@@ -172,6 +172,7 @@ const Dashboard = ({ navigation }) => {
     );
   };
   const [heading, setheading] = useState([]);
+  const [sortheading, setsortheading] = useState([]);
   const [carddata, setcarddata] = useState([]);
   useEffect(() => {
     // Define the URL you want to fetch data from
@@ -186,6 +187,10 @@ const Dashboard = ({ navigation }) => {
         console.log(longheading);
         setheading(longheading);
         console.log("=======================", heading);
+        const st_title =res?.data?.map((item)=>item.short_name)
+        console.log(st_title)
+        setsortheading(st_title)
+        console.log("0-0-0-0-0-0-0-0-0-0-0--",sortheading)
         // console.log("Plan Names:", planNames);
       })
       .catch((error) => {
@@ -218,7 +223,11 @@ const Dashboard = ({ navigation }) => {
 
   useEffect(() => {
     // Define the URL you want to fetch data from
-    fetchUserData("hs");
+    // fetchUserData("hs");
+    sortheading.map(async (title) => {
+      // console.log(title)
+      fetchUserData(title);
+    })
   }, []);
   return (
     <View style={styles.container}>
@@ -544,6 +553,10 @@ const Dashboard = ({ navigation }) => {
           {renderPagination()}
         </View>
         <View>
+
+        {/* new start  */}
+
+        
           {/* //create by me  */}
           {/* <View>
  
@@ -566,6 +579,11 @@ const Dashboard = ({ navigation }) => {
       <Text style={styles.text}>{"Show More >"}</Text>
     </TouchableOpacity>
   </View> */}
+
+
+
+
+
         </View>
 
         <View>
@@ -981,3 +999,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
+
+//i will tell you the senario there is 2 api from first api will give the title and second api will take the title name and give data corresponsing to the title . i show tell you  the design first title is render and then data belong to that title is render and again another title and then data regarding second title and show on how xan i achive that  
