@@ -103,7 +103,7 @@ const PaymentQR = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Header title="Payment QR code" navigateTo={navigation.goBack} />
+      {/* <Header title="Payment QR code" navigateTo={navigation.goBack} /> */}
       <View style={styles.main_container}>
         <View style={styles.heading}>
           <Text style={styles.headingText}>
@@ -142,22 +142,33 @@ const PaymentQR = ({ navigation }) => {
           />
         </View>
         <View style={{ justifyContent: "center", alignItems: "center" }}>
-          <QRCode
+          {timerEnded ?(
+            <View style={{alignItems:'center' }}>
+ <Text style={{fontWeight:'600' ,fontSize:20,color:'red' }}>QR Code Expired</Text>
+          <Text style={{fontWeight:'900' ,fontSize:30,color:'red' }}>Register Again</Text>
+            </View>
+         
+          ):(
+            
+            <QRCode
             value={UpiLink || "test"}
             size={200}
             color="black"
             backgroundColor="white"
           />
+          )}
+      
         </View>
         <View style={styles.qrcode}>
-          <Text style={styles.headingText}>
+          {!timerEnded ?(  <Text style={styles.headingText}>
             This QR code will expire in{" "}
             {`${minutes.toString().padStart(2, "0")}:${seconds
               .toString()
               .padStart(2, "0")}`}
             {/* {timerEnded && <p>QR code has expired.</p>} */}
             {timerEnded && <Text>QR code has expired.</Text>}
-          </Text>
+          </Text>):(<Text></Text>)}
+        
         </View>
       </View>
     </View>
