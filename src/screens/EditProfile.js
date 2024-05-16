@@ -45,6 +45,7 @@ import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 import { AuthContext } from "../../Utils/context/AuthContext";
 const EditProfile = ({ navigation }) => {
   const { userToken } = useContext(AuthContext);
+
   const showToast = (message) => {
     if (Platform.OS === "android") {
       ToastAndroid.show(message, ToastAndroid.SHORT);
@@ -598,6 +599,19 @@ const EditProfile = ({ navigation }) => {
         showToast("Failed to update profile");
       });
   };
+
+  if (loading) {
+    return (
+      <View>
+        <Header title="Edit Profile" navigateTo={navigation.goBack} />
+        <ActivityIndicator
+          size={"large"}
+          color={"#00367E"}
+          style={styles.loader}
+        />
+      </View>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -1797,5 +1811,12 @@ const styles = StyleSheet.create({
     height: 17,
     width: 17,
     // right: 3,
+  },
+  loader: {
+    height: Dimensions.get("window").height * 1,
+    // width: Dimensions.get("window").width * 0.7,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "white",
   },
 });

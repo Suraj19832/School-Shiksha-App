@@ -1,4 +1,4 @@
-import { Linking } from "react-native";
+import { Linking, ActivityIndicator } from "react-native";
 import React, { useState, useRef, useEffect } from "react";
 import {
   Image,
@@ -17,6 +17,7 @@ import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import Header from "../../components/Header";
 import { LinearGradient } from "expo-linear-gradient";
 import { getdata } from "../../Helper/Helper";
+
 const ContactContainer = (props) => {
   const imgPath = {
     "phone-call": require("../../assets/img/phone-call.png"),
@@ -69,31 +70,51 @@ const ContactContainer = (props) => {
 
 const ContactUs = ({ navigation }) => {
   const [data, setData] = useState({});
-  console.log(data, "====>ssssssss");
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     getdata("master/contact-details")
       .then((res) => {
         console.log(res?.data);
         setData(res?.data);
+        setIsLoading(false); // Set loading to false when data is fetched
       })
       .catch((err) => {
         console.log("dkjhkjghk");
+        setIsLoading(false); // Set loading to false if there's an error
       });
   }, []);
-  const handleCall = (phoneNumber) => {
-    // console.log("first")
 
+  const handleCall = (phoneNumber) => {
     const contactUrl = `tel:${data.mobile}`;
     Linking.openURL(contactUrl);
   };
+
   const handleEmail = (email) => {
     const emailUrl = `mailto:${data.email}`;
     Linking.openURL(emailUrl);
   };
+
   const handleWhatsapp = (phoneNumber) => {
     const whatsappUrl = `whatsapp://send?phone=${data.whatsapp_number}`;
     Linking.openURL(whatsappUrl);
   };
+
+  if (isLoading) {
+    return (
+      <View>
+        <Header
+          title="Contact Us"
+          navigateTo={() => navigation.goBack("Home")}
+        />
+        <ActivityIndicator
+          size="large"
+          color="#00367E"
+          style={styles.loaderContainer}
+        />
+      </View>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -152,33 +173,26 @@ const styles = StyleSheet.create({
   },
   mainView: {
     flex: 0,
-    // justifyContent: "center",
-    // alignItems: "center",
     width: "100%",
     height: "auto",
-    // backgroundColor: "red",
   },
   innerView: {
     width: "90%",
     height: "auto",
-    // backgroundColor: "yellow",
-
     gap: 10,
-    // justifyContent:'center',
-    // alignItems:'center'
   },
   hairline: {
-    backgroundColor: "#00367E66", // Change the color
+    backgroundColor: "#00367E66",
     height: 2,
     width: "100%",
-    shadowColor: "#00367E66", // Shadow color
+    shadowColor: "#00367E66",
     shadowOffset: {
       width: 0,
       height: 2,
     },
-    shadowOpacity: 0.5, // Shadow opacity
-    shadowRadius: 2, // Shadow radius
-    elevation: 2, // Android shadow elevation
+    shadowOpacity: 0.5,
+    shadowRadius: 2,
+    elevation: 2,
   },
   mainContainer: {
     marginHorizontal: 20,
@@ -191,5 +205,12 @@ const styles = StyleSheet.create({
     width: 50,
     justifyContent: "center",
     alignItems: "center",
+  },
+  loaderContainer: {
+    height: Dimensions.get("window").height * 1,
+    // width: Dimensions.get("window").width * 0.7,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "white",
   },
 });
