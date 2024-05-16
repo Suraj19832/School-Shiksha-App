@@ -16,6 +16,7 @@ import {
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import Header from "../../components/Header";
 import { LinearGradient } from "expo-linear-gradient";
+import { getdata } from "../../Helper/Helper";
 const ContactContainer = (props) => {
   const imgPath = {
     "phone-call": require("../../assets/img/phone-call.png"),
@@ -67,18 +68,30 @@ const ContactContainer = (props) => {
 };
 
 const ContactUs = ({ navigation }) => {
+  const [data, setData] = useState({});
+  console.log(data, "====>ssssssss");
+  useEffect(() => {
+    getdata("master/contact-details")
+      .then((res) => {
+        console.log(res?.data);
+        setData(res?.data);
+      })
+      .catch((err) => {
+        console.log("dkjhkjghk");
+      });
+  }, []);
   const handleCall = (phoneNumber) => {
     // console.log("first")
 
-    const contactUrl = `tel:${phoneNumber}`;
+    const contactUrl = `tel:${data.mobile}`;
     Linking.openURL(contactUrl);
   };
   const handleEmail = (email) => {
-    const emailUrl = `mailto:${email}`;
+    const emailUrl = `mailto:${data.email}`;
     Linking.openURL(emailUrl);
   };
   const handleWhatsapp = (phoneNumber) => {
-    const whatsappUrl = `whatsapp://send?phone=${phoneNumber}`;
+    const whatsappUrl = `whatsapp://send?phone=${data.whatsapp_number}`;
     Linking.openURL(whatsappUrl);
   };
 
@@ -103,24 +116,24 @@ const ContactUs = ({ navigation }) => {
                 ]}
               />
             </View>
-            <TouchableOpacity onPress={() => handleCall("9876543210")}>
+            <TouchableOpacity onPress={() => handleCall()}>
               <ContactContainer
                 contactTitle="Mobile Number"
-                contactMode="9874561230"
+                contactMode={data.mobile}
                 imgName="phone-call"
               />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => handleEmail("abcd@gmail.com")}>
+            <TouchableOpacity onPress={() => handleEmail()}>
               <ContactContainer
                 contactTitle="Email Id"
-                contactMode="abcd@gmail.com"
+                contactMode={data.email}
                 imgName="email"
               />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => handleWhatsapp("1234567890")}>
+            <TouchableOpacity onPress={() => handleWhatsapp()}>
               <ContactContainer
                 contactTitle="Whatsapp"
-                contactMode="9874561230"
+                contactMode={data.whatsapp_number}
                 imgName="whatsapp"
               />
             </TouchableOpacity>
