@@ -178,23 +178,27 @@ const Dashboard = ({ navigation }) => {
     // Define the URL you want to fetch data from
     const apiUrl = "master/service-type";
 
+    console.log("5555", apiUrl);
     // Call the getstatedata function with the API URL
     getdata(apiUrl)
       .then((res) => {
-        console.log("Response from API-------------:", res?.message);
+        console.log(
+          "Response from API in dashboard------------->.:",
+          res?.message
+        );
         console.log(res.data);
         const longheading = res.data.map((item) => item.long_name);
         console.log(longheading);
         setheading(longheading);
         console.log("=======================", heading);
-        const st_title =res?.data?.map((item)=>item.short_name)
-        console.log(st_title)
-        setsortheading(st_title)
-        console.log("0-0-0-0-0-0-0-0-0-0-0--",sortheading)
+        const st_title = res?.data?.map((item) => item.short_name);
+        console.log(st_title);
+        setsortheading(st_title);
+        console.log("0-0-0-0-0-0-0-0-0-0-0--", sortheading);
         // console.log("Plan Names:", planNames);
       })
       .catch((error) => {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching data in dashboard:", error);
       });
   }, []);
   const colorMap = {
@@ -227,7 +231,7 @@ const Dashboard = ({ navigation }) => {
     sortheading.map(async (title) => {
       // console.log(title)
       fetchUserData(title);
-    })
+    });
   }, []);
   return (
     <View style={styles.container}>
@@ -553,10 +557,8 @@ const Dashboard = ({ navigation }) => {
           {renderPagination()}
         </View>
         <View>
+          {/* new start  */}
 
-        {/* new start  */}
-
-        
           {/* //create by me  */}
           {/* <View>
  
@@ -579,11 +581,6 @@ const Dashboard = ({ navigation }) => {
       <Text style={styles.text}>{"Show More >"}</Text>
     </TouchableOpacity>
   </View> */}
-
-
-
-
-
         </View>
 
         <View>
@@ -1000,4 +997,4 @@ const styles = StyleSheet.create({
   },
 });
 
-//i will tell you the senario there is 2 api from first api will give the title and second api will take the title name and give data corresponsing to the title . i show tell you  the design first title is render and then data belong to that title is render and again another title and then data regarding second title and show on how xan i achive that  
+//i will tell you the senario there is 2 api from first api will give the title and second api will take the title name and give data corresponsing to the title . i show tell you  the design first title is render and then data belong to that title is render and again another title and then data regarding second title and show on how xan i achive that

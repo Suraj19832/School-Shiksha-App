@@ -9,7 +9,7 @@ import {
   Modal,
   TouchableOpacity,
   Dimensions,
-  FlatList
+  FlatList,
 } from "react-native";
 import React, { useRef, useState } from "react";
 import DropDownPicker from "react-native-dropdown-picker";
@@ -90,7 +90,7 @@ const FreeCollegeList = ({ navigation }) => {
             source={require("../../assets/img/onlinecourselist.png")}
           />
         </View> */}
-           <View style={{ position: "relative" }}>
+        <View style={{ position: "relative" }}>
           <FlatList
             ref={flatListRef}
             data={images}
@@ -142,85 +142,85 @@ const FreeCollegeList = ({ navigation }) => {
                 Course Name
               </Text>
               <View style={styles.inputbox_main_container1}>
-              <TouchableOpacity onPress={toggleDropdownclass}>
-              <View
-                  style={[
-                    styles.inputbox_container,
-                    { borderRadius: 30, backgroundColor: "#FDF1DD" },
-                  ]}
-                >
+                <TouchableOpacity onPress={toggleDropdownclass}>
                   <View
-                    style={{
-                      flexDirection: "row",
-                      gap: 4,
-                      alignItems: "center",
-                    }}
+                    style={[
+                      styles.inputbox_container,
+                      { borderRadius: 30, backgroundColor: "#FDF1DD" },
+                    ]}
                   >
-                    <Image
-                      style={{}}
-                      source={require("../../assets/img/online-course.png")}
-                    />
-                    <TextInput
-                      style={(styles.input, { paddingLeft: 5 ,color:'black' })}
-                      placeholder="Select"
-                      placeholderTextColor="rgba(166, 166, 166, 1)"
-                      value={inputValueclass}
-                      onChangeText={handleInputChangeclass}
-                      onBlur={() => handleSelectOptionclass(inputValueclass)}
-                      editable={false} // Allow editing only when dropdown is closed
-                      
-                    />
-                  </View>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        gap: 4,
+                        alignItems: "center",
+                      }}
+                    >
+                      <Image
+                        style={{}}
+                        source={require("../../assets/img/online-course.png")}
+                      />
+                      <TextInput
+                        style={
+                          (styles.input, { paddingLeft: 5, color: "black" })
+                        }
+                        placeholder="Select"
+                        placeholderTextColor="rgba(166, 166, 166, 1)"
+                        value={inputValueclass}
+                        onChangeText={handleInputChangeclass}
+                        onBlur={() => handleSelectOptionclass(inputValueclass)}
+                        editable={false} // Allow editing only when dropdown is closed
+                      />
+                    </View>
 
-                  <AntDesign name="caretdown" size={16} color="#03357D" />
-                </View>
-              </TouchableOpacity>
-              {isDropdownOpenclass && (
-                <View style={styles.dropdownContainer}>
-                  <TouchableOpacity
-                    style={styles.dropdownOption}
-                    onPress={() => handleSelectOptionclass("1")}
-                  >
-                    <View
-                      style={{
-                        width: Dimensions.get("window").width * 0.7,
-                        alignItems: "center",
-                      }}
+                    <AntDesign name="caretdown" size={16} color="#03357D" />
+                  </View>
+                </TouchableOpacity>
+                {isDropdownOpenclass && (
+                  <View style={styles.dropdownContainer}>
+                    <TouchableOpacity
+                      style={styles.dropdownOption}
+                      onPress={() => handleSelectOptionclass("1")}
                     >
-                      <Text>1</Text>
-                    </View>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={styles.dropdownOption}
-                    onPress={() => handleSelectOptionclass("2")}
-                  >
-                    <View
-                      style={{
-                        width: Dimensions.get("window").width * 0.7,
-                        alignItems: "center",
-                      }}
+                      <View
+                        style={{
+                          width: Dimensions.get("window").width * 0.7,
+                          alignItems: "center",
+                        }}
+                      >
+                        <Text>1</Text>
+                      </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={styles.dropdownOption}
+                      onPress={() => handleSelectOptionclass("2")}
                     >
-                      <Text>2</Text>
-                    </View>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={styles.dropdownOption}
-                    onPress={() => handleSelectOptionclass("3")}
-                  >
-                    <View
-                      style={{
-                        width: Dimensions.get("window").width * 0.7,
-                        alignItems: "center",
-                      }}
+                      <View
+                        style={{
+                          width: Dimensions.get("window").width * 0.7,
+                          alignItems: "center",
+                        }}
+                      >
+                        <Text>2</Text>
+                      </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={styles.dropdownOption}
+                      onPress={() => handleSelectOptionclass("3")}
                     >
-                      <Text>3</Text>
-                    </View>
-                  </TouchableOpacity>
-                </View>
-              )}
-                
+                      <View
+                        style={{
+                          width: Dimensions.get("window").width * 0.7,
+                          alignItems: "center",
+                        }}
+                      >
+                        <Text>3</Text>
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+                )}
               </View>
-              <Text
+              {/* <Text
                   style={{
                     alignSelf: "flex-end",
                     color: "#0567F5",
@@ -230,7 +230,7 @@ const FreeCollegeList = ({ navigation }) => {
                   }}
                 >
                   Request Course
-                </Text>
+                </Text> */}
             </View>
           </View>
         </View>

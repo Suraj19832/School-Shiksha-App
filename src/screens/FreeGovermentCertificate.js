@@ -220,7 +220,7 @@ const FreeGovermentCertificate = ({ navigation }) => {
               )}
             </View>
 
-            <Text
+            {/* <Text
               style={{
                 alignSelf: "flex-end",
                 color: "#0567F5",
@@ -230,7 +230,7 @@ const FreeGovermentCertificate = ({ navigation }) => {
               }}
             >
               Request Course
-            </Text>
+            </Text> */}
           </View>
         </View>
         <View style={styles.listContainer}>

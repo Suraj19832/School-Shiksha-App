@@ -99,13 +99,11 @@ const Registration = ({ navigation }) => {
 
   const handleInputChange = (key, value) => {
     setFormData({ ...formData, [key]: value });
-  
   };
   const handleInputChangeNumber = (key, value) => {
-  if (/^[0-9]*$/.test(value) || value === "") {
-    setFormData({ ...formData, [key]: value });
-  }
-  
+    if (/^[0-9]*$/.test(value) || value === "") {
+      setFormData({ ...formData, [key]: value });
+    }
   };
 
   const handleInputBlur = async (key) => {
@@ -126,71 +124,71 @@ const Registration = ({ navigation }) => {
       formData.address &&
       formData.whatsapp_number
     ) {
-      if(isChecked)
-        {
-          formsData.append("name", formData.name);
-          formsData.append("father_name", formData.fatherName);
-          formsData.append("email", email);
-          formsData.append("mobile", formData.mobile);
-          formsData.append("date_of_birth", userDetails.date_of_birth);
-          // formsData.append("aadhar_number", formData.aadhar_number);
-          formsData.append("gender", genderData);
-          formsData.append("pincode", formData.pincode);
-          formsData.append("police_station", formData.police_station);
-          formsData.append("district_id", districtId);
-          formsData.append("address", formData.address);
-          formsData.append("whatsapp_number", formData.whatsapp_number);
-          formsData.append("password", password);
-          formsData.append("referral_code", formData.referral_code);
-          // formsData.append("nationality", formData.nationality);
-          formsData.append("religion", formData.religion);
-          // formsData.append("block", blockId);
-          formsData.append("class_id", classid);
-          formsData.append("plan_id", planid);
-          formsData.append("referral_code", refercode);
-          console.log("6565655", formsData);
-          await sendPostData("/register", formsData)
-            .then((res) => {
-              setLoading(false);
+      if (isChecked) {
+        formsData.append("name", formData.name);
+        formsData.append("father_name", formData.fatherName);
+        formsData.append("email", email);
+        formsData.append("mobile", formData.mobile);
+        formsData.append("date_of_birth", userDetails.date_of_birth);
+        // formsData.append("aadhar_number", formData.aadhar_number);
+        formsData.append("gender", genderData);
+        formsData.append("pincode", formData.pincode);
+        formsData.append("police_station", formData.police_station);
+        formsData.append("district_id", districtId);
+        formsData.append("address", formData.address);
+        formsData.append("whatsapp_number", formData.whatsapp_number);
+        formsData.append("password", password);
+        formsData.append("referral_code", formData.referral_code);
+        // formsData.append("nationality", formData.nationality);
+        formsData.append("religion", formData.religion);
+        // formsData.append("block", blockId);
+        formsData.append("class_id", classid);
+        formsData.append("plan_id", planid);
+        formsData.append("referral_code", refercode);
+        console.log("6565655", formsData);
+        await sendPostData("/register", formsData)
+          .then((res) => {
+            setLoading(false);
+            console.log(
+              "-0-0-0-0-0-0-0-0-0-0-0-0-0-00-0-0--0-0-0-0-0-00-0-",
+              res
+            );
+            if (res?.message === "Success") {
+              updateUpiLink(res?.data?.upi_link);
               console.log(
-                "-0-0-0-0-0-0-0-0-0-0-0-0-0-00-0-0--0-0-0-0-0-00-0-",
-                res
+                "djdjdddddddddddddd-----------------------=============-=",
+                res?.data?.order_id
               );
-              if (res?.message === "Success") {
-                updateUpiLink(res?.data?.upi_link);
-                console.log(
-                  "djdjdddddddddddddd-----------------------=============-=",
-                  res?.data?.order_id
-                );
-                updateOrderid(res?.data?.order_id);
-    
-                navigation.navigate("QR_Screen");
+              updateOrderid(res?.data?.order_id);
+
+              navigation.navigate("QR_Screen");
+            }
+            if (res?.message === "Student registration successful") {
+              console.log("=================grpgp=gppg", res?.message);
+              showToast("Registration Successfull");
+              console.log("11111111", res?.status);
+              navigation.navigate("Login");
+            }
+            if (res?.message === "Validation errors") {
+              if (
+                res?.errors?.referral_code ===
+                `${refercode} invalid referral code`
+              ) {
+                showToast("Invalid Referral");
               }
-              if (res?.message === "Student registration successful") {
-                console.log("=================grpgp=gppg", res?.message);
-                showToast("Registration Successfull");
-                console.log("11111111", res?.status);
-                navigation.navigate("Login");
-              }
-              if (res?.message === "Validation errors") {
-                if(res?.errors?.referral_code === `${refercode} invalid referral code`){
-                  showToast("Invalid Referral");
-                }
-                showToast("User Exists");
-              }
-            })
-            .catch((err) => {
-              setLoading(false);
-              console.log(err, "--err");
-            });
-        }
-        if (!isChecked) {
-          setshowcheckboxrror(!showcheckboxrror)
-          setLoading(false);
-     
-        }
-    }
-     else {
+              showToast("User Exists");
+            }
+          })
+          .catch((err) => {
+            setLoading(false);
+            console.log(err, "--err");
+          });
+      }
+      if (!isChecked) {
+        setshowcheckboxrror(!showcheckboxrror);
+        setLoading(false);
+      }
+    } else {
       console.log("Registration failed: Required fields are missing");
       // Alert.alert("Alert", "Please Fill up All Fields");
       showToast("Please fill up all blacks");
@@ -617,7 +615,7 @@ const Registration = ({ navigation }) => {
         // console.log("Plan Names:", planNames);
       })
       .catch((error) => {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching data in registration:", error);
       });
   }, []);
 
@@ -647,14 +645,14 @@ const Registration = ({ navigation }) => {
   // console.log("88", blockdata);
 
   console.log("789", formData);
-  const  handlecheckbox=()=>{
-    setChecked(!isChecked)
+  const handlecheckbox = () => {
+    setChecked(!isChecked);
     // setshowcheckboxrror(isChecked)
-  }
-  const  handlecheckboxerror=()=>{
+  };
+  const handlecheckboxerror = () => {
     // setChecked(!isChecked)
-    setshowcheckboxrror(isChecked)
-  }
+    setshowcheckboxrror(isChecked);
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -784,7 +782,9 @@ const Registration = ({ navigation }) => {
                     placeholder="Enter your mobile number"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
                     value={formData.mobile}
-                    onChangeText={(text) => handleInputChangeNumber("mobile", text)}
+                    onChangeText={(text) =>
+                      handleInputChangeNumber("mobile", text)
+                    }
                     onBlur={() => handleInputBlur("mobile")}
                     maxLength={10}
                   />
@@ -794,8 +794,7 @@ const Registration = ({ navigation }) => {
                 )}
                 {!formErrors.mobile &&
                   formData.mobile &&
-                  formData.mobile.trim().length !== 10 &&
-                  (
+                  formData.mobile.trim().length !== 10 && (
                     <Text style={{ color: "red" }}>
                       Mobile number must be 10 digits
                     </Text>
@@ -1770,8 +1769,8 @@ const Registration = ({ navigation }) => {
                   )}
               </View>
 
-                  {/* Police  */}
-                  <View style={styles.inputbox_main_container}>
+              {/* Police  */}
+              <View style={styles.inputbox_main_container}>
                 <View style={{ flexDirection: "row", gap: 1 }}>
                   <Text
                     style={{
@@ -2039,29 +2038,36 @@ const Registration = ({ navigation }) => {
                 ) : null}
               </View>
             </View>
-<View >
-<View style={{ gap: 3 ,marginBottom:15 }}>
-              <View style={styles.section}>
-                <Checkbox
-                  style={styles.checkbox}
-                  value={isChecked}
-                  onValueChange={handlecheckbox}
-                />
-               
-                <Text style={{ fontSize: 14, fontWeight: "400" }}>
-                  I agree with the
-                </Text>
-                <Text style={{ fontSize: 14, fontWeight: "600" }}>
-                  Terms & Conditions
-                </Text>
-                
+            <View>
+              <View style={{ gap: 3, marginBottom: 15 }}>
+                <View style={styles.section}>
+                  <Checkbox
+                    style={styles.checkbox}
+                    value={isChecked}
+                    onValueChange={handlecheckbox}
+                  />
+
+                  <Text style={{ fontSize: 14, fontWeight: "400" }}>
+                    I agree with the
+                  </Text>
+                  <Text style={{ fontSize: 14, fontWeight: "600" }}>
+                    Terms & Conditions
+                  </Text>
+                </View>
+                <View>
+                  {showcheckboxrror && (
+                    <Text
+                      style={{
+                        color: "red",
+                        fontWeight: "400",
+                        alignSelf: "center",
+                      }}
+                    >
+                      Please Check the checkbox
+                    </Text>
+                  )}
+                </View>
               </View>
-              <View>
-              {showcheckboxrror && <Text style={{color:'red' ,fontWeight:'400',alignSelf:'center'}}>Please Check the checkbox</Text>}
-              </View>
-</View>
-          
-           
 
               {/* button  */}
 

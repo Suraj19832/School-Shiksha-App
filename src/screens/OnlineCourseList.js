@@ -9,7 +9,7 @@ import {
   Modal,
   TouchableOpacity,
   Dimensions,
-  FlatList
+  FlatList,
 } from "react-native";
 import React, { useRef, useState } from "react";
 import DropDownPicker from "react-native-dropdown-picker";
@@ -107,7 +107,7 @@ const OnlineCourseList = ({ navigation }) => {
             source={require("../../assets/img/onlinecourselist.png")}
           />
         </View> */}
-           <View style={{ position: "relative" }}>
+        <View style={{ position: "relative" }}>
           <FlatList
             ref={flatListRef}
             data={images}
@@ -246,7 +246,7 @@ const OnlineCourseList = ({ navigation }) => {
               )}
             </View>
 
-            <View>
+            {/* <View>
               <Text
                 style={{
                   alignSelf: "flex-end",
@@ -259,8 +259,8 @@ const OnlineCourseList = ({ navigation }) => {
                 Request Course
               </Text>
 
-              {/* <View style={styles.hairlineMenu} /> */}
-            </View>
+             
+            </View> */}
           </View>
         </View>
 
