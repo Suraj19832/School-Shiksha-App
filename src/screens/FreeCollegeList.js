@@ -8,8 +8,10 @@ import {
   StatusBar,
   Modal,
   TouchableOpacity,
+  Dimensions,
+  FlatList
 } from "react-native";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import DropDownPicker from "react-native-dropdown-picker";
 import {
   FontAwesome,
@@ -25,6 +27,7 @@ import {
 import { Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Header from "../../components/Header";
+// import { FlatList } from "react-native-web";
 const FreeCollegeList = ({ navigation }) => {
   const [selectedValue, setSelectedValue] = useState(null);
   const [open, setOpen] = useState(false);
@@ -33,16 +36,74 @@ const FreeCollegeList = ({ navigation }) => {
     { label: "Option 2", value: "option2" },
     { label: "Option 3", value: "option3" },
   ];
-
+  const [isDropdownOpenclass, setDropdownOpenclass] = useState(false);
+  const [selectedOptionclass, setSelectedOptionclass] = useState(null);
+  const [inputValueclass, setInputValueclass] = useState("");
+  const toggleDropdownclass = () => {
+    setDropdownOpenclass(!isDropdownOpenclass);
+  };
+  const handleSelectOptionclass = (option) => {
+    setSelectedOptionclass(option);
+    setInputValueclass(option);
+    setDropdownOpenclass(false);
+  };
+  const handleInputChangeclass = (text) => {
+    setInputValueclass(text);
+    setDropdownOpenclass(null); // Clear selected option when user edits input
+  };
+  const [activeIndex, setActiveIndex] = useState(0);
+  const flatListRef = useRef(null);
+  const images = [
+    require("../../assets/img/freeCollege.png"),
+    require("../../assets/img/slider3.png"),
+    require("../../assets/img/slider2.png"),
+  ];
+  const onViewableItemsChanged = ({ viewableItems }) => {
+    if (viewableItems && viewableItems.length > 0) {
+      setActiveIndex(viewableItems[0].index || 0);
+    }
+  };
+  const renderPagination = () => {
+    return (
+      <View style={styles.paginationContainer}>
+        <View style={styles.pagination}>
+          {images.map((_, index) => (
+            <View
+              key={index}
+              style={[
+                styles.paginationDot,
+                index === activeIndex && styles.paginationDotActive,
+              ]}
+            />
+          ))}
+        </View>
+      </View>
+    );
+  };
   return (
     <SafeAreaView style={styles.container}>
       <Header title="Free College List" navigateTo={navigation.goBack} />
       <ScrollView style={{ backgroundColor: "#FFFCCE" }}>
-        <View>
+        {/* <View>
           <Image
             style={styles.image}
             source={require("../../assets/img/freeCollege.png")}
           />
+        </View> */}
+           <View style={{ position: "relative" }}>
+          <FlatList
+            ref={flatListRef}
+            data={images}
+            horizontal
+            pagingEnabled
+            showsHorizontalScrollIndicator={false}
+            renderItem={({ item }) => (
+              <Image style={styles.imgStyle} source={item} resizeMode="cover" />
+            )}
+            keyExtractor={(item, index) => index.toString()}
+            onViewableItemsChanged={onViewableItemsChanged}
+          />
+          {renderPagination()}
         </View>
 
         <View style={styles.searchContainer}>
@@ -81,7 +142,8 @@ const FreeCollegeList = ({ navigation }) => {
                 Course Name
               </Text>
               <View style={styles.inputbox_main_container1}>
-                <View
+              <TouchableOpacity onPress={toggleDropdownclass}>
+              <View
                   style={[
                     styles.inputbox_container,
                     { borderRadius: 30, backgroundColor: "#FDF1DD" },
@@ -99,15 +161,67 @@ const FreeCollegeList = ({ navigation }) => {
                       source={require("../../assets/img/online-course.png")}
                     />
                     <TextInput
-                      style={(styles.input, { paddingLeft: 5 })}
+                      style={(styles.input, { paddingLeft: 5 ,color:'black' })}
                       placeholder="Select"
                       placeholderTextColor="rgba(166, 166, 166, 1)"
+                      value={inputValueclass}
+                      onChangeText={handleInputChangeclass}
+                      onBlur={() => handleSelectOptionclass(inputValueclass)}
+                      editable={false} // Allow editing only when dropdown is closed
+                      
                     />
                   </View>
 
                   <AntDesign name="caretdown" size={16} color="#03357D" />
                 </View>
-                <Text
+              </TouchableOpacity>
+              {isDropdownOpenclass && (
+                <View style={styles.dropdownContainer}>
+                  <TouchableOpacity
+                    style={styles.dropdownOption}
+                    onPress={() => handleSelectOptionclass("1")}
+                  >
+                    <View
+                      style={{
+                        width: Dimensions.get("window").width * 0.7,
+                        alignItems: "center",
+                      }}
+                    >
+                      <Text>1</Text>
+                    </View>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.dropdownOption}
+                    onPress={() => handleSelectOptionclass("2")}
+                  >
+                    <View
+                      style={{
+                        width: Dimensions.get("window").width * 0.7,
+                        alignItems: "center",
+                      }}
+                    >
+                      <Text>2</Text>
+                    </View>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.dropdownOption}
+                    onPress={() => handleSelectOptionclass("3")}
+                  >
+                    <View
+                      style={{
+                        width: Dimensions.get("window").width * 0.7,
+                        alignItems: "center",
+                      }}
+                    >
+                      <Text>3</Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              )}
+               
+              
+              </View>
+              <Text
                   style={{
                     alignSelf: "flex-end",
                     color: "#0567F5",
@@ -118,7 +232,6 @@ const FreeCollegeList = ({ navigation }) => {
                 >
                   Request Course
                 </Text>
-              </View>
             </View>
 
             {/* <View style={{ gap: 15, alignSelf: 'center' }}>
@@ -750,5 +863,57 @@ const styles = StyleSheet.create({
   },
   optionText: {
     textAlign: "center",
+  },
+  dropdownContainer: {
+    position: "absolute",
+    top: "100%",
+    left: 0,
+    // zIndex:1,
+    backgroundColor: "yellow",
+    marginTop: 10,
+    width: "88%",
+    backgroundColor: "#fff",
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 4,
+    padding: 8,
+    zIndex: 1,
+    left: 0,
+    alignSelf: "center",
+    // justifyContent:'center'
+  },
+  dropdownOption: {
+    paddingVertical: 8,
+    alignSelf: "center",
+  },
+  paginationDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: "white",
+    marginHorizontal: 4,
+  },
+  paginationDotActive: {
+    backgroundColor: "#00367E",
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+  },
+  pagination: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  paginationContainer: {
+    position: "absolute",
+    bottom: 10,
+    left: 0,
+    right: 0,
+    alignItems: "center",
+  },
+  imgStyle: {
+    height: Dimensions.get("window").height * 0.29,
+    width: Dimensions.get("window").width * 0.999,
+    // borderRadius: 10,
   },
 });

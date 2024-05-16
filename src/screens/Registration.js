@@ -173,6 +173,9 @@ const Registration = ({ navigation }) => {
                 navigation.navigate("Login");
               }
               if (res?.message === "Validation errors") {
+                if(res?.errors?.referral_code === `${refercode} invalid referral code`){
+                  showToast("Invalid Referral");
+                }
                 showToast("User Exists");
               }
             })
@@ -1899,7 +1902,7 @@ const Registration = ({ navigation }) => {
                   /> */}
                   <TextInput
                     style={styles.input}
-                    placeholder="Username"
+                    placeholder="Enter Your Referral Code (Optional)"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
                     value={refercode}
                     onChangeText={handleInputChangerefer}

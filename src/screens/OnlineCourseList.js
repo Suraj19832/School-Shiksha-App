@@ -9,8 +9,9 @@ import {
   Modal,
   TouchableOpacity,
   Dimensions,
+  FlatList
 } from "react-native";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import DropDownPicker from "react-native-dropdown-picker";
 import {
   FontAwesome,
@@ -52,7 +53,35 @@ const OnlineCourseList = ({ navigation }) => {
     setInputValueclass(text);
     setDropdownOpenclass(null); // Clear selected option when user edits input
   };
-
+  const [activeIndex, setActiveIndex] = useState(0);
+  const flatListRef = useRef(null);
+  const images = [
+    require("../../assets/img/onlinecourselist.png"),
+    require("../../assets/img/slider3.png"),
+    require("../../assets/img/slider2.png"),
+  ];
+  const onViewableItemsChanged = ({ viewableItems }) => {
+    if (viewableItems && viewableItems.length > 0) {
+      setActiveIndex(viewableItems[0].index || 0);
+    }
+  };
+  const renderPagination = () => {
+    return (
+      <View style={styles.paginationContainer}>
+        <View style={styles.pagination}>
+          {images.map((_, index) => (
+            <View
+              key={index}
+              style={[
+                styles.paginationDot,
+                index === activeIndex && styles.paginationDotActive,
+              ]}
+            />
+          ))}
+        </View>
+      </View>
+    );
+  };
   return (
     <SafeAreaView style={styles.container}>
       {/* <ScrollView style={styles.scrollView}> */}
@@ -72,11 +101,26 @@ const OnlineCourseList = ({ navigation }) => {
         navigateTo={navigation.goBack}
       />
       <ScrollView style={{ backgroundColor: "#FFFCCE" }}>
-        <View>
+        {/* <View>
           <Image
             style={styles.image}
             source={require("../../assets/img/onlinecourselist.png")}
           />
+        </View> */}
+           <View style={{ position: "relative" }}>
+          <FlatList
+            ref={flatListRef}
+            data={images}
+            horizontal
+            pagingEnabled
+            showsHorizontalScrollIndicator={false}
+            renderItem={({ item }) => (
+              <Image style={styles.imgStyle} source={item} resizeMode="cover" />
+            )}
+            keyExtractor={(item, index) => index.toString()}
+            onViewableItemsChanged={onViewableItemsChanged}
+          />
+          {renderPagination()}
         </View>
 
         <View style={styles.searchContainer}>
@@ -850,5 +894,35 @@ const styles = StyleSheet.create({
     width: "30%",
     right: 9,
     alignSelf: "flex-end",
+  },
+  paginationDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: "white",
+    marginHorizontal: 4,
+  },
+  paginationDotActive: {
+    backgroundColor: "#00367E",
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+  },
+  pagination: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  paginationContainer: {
+    position: "absolute",
+    bottom: 10,
+    left: 0,
+    right: 0,
+    alignItems: "center",
+  },
+  imgStyle: {
+    height: Dimensions.get("window").height * 0.29,
+    width: Dimensions.get("window").width * 0.999,
+    // borderRadius: 10,
   },
 });
