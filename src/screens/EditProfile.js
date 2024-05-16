@@ -537,6 +537,33 @@ const EditProfile = ({ navigation }) => {
       district_id,
       class_id,
     } = profileData;
+    const requiredFields = [
+      "name",
+      "father_name",
+      "mobile",
+      "whatsapp_number",
+      "email",
+      "date_of_birth",
+      "class_name",
+      "gender",
+      "nationality",
+      "religion",
+      "address",
+      "state_name",
+      "district_name",
+      "police_station",
+      "pincode",
+      "district_id",
+      "class_id",
+    ];
+    const emptyFields = requiredFields.filter((field) => !profileData[field]);
+
+    if (emptyFields.length > 0) {
+      showToast(
+        `Please fill in the following fields: ${emptyFields.join(", ")}`
+      );
+      return;
+    }
 
     const postData = {
       id,
