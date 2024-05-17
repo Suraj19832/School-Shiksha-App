@@ -706,7 +706,7 @@ const Registration = ({ navigation }) => {
                   <Feather name="user" size={16} color="rgba(0, 54, 126, 1)" />
                   <TextInput
                     style={styles.input}
-                    placeholder="Username"
+                    placeholder="Enter your full name"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
                     value={formData.name}
                     onChangeText={(text) => handleInputChange("name", text)}
@@ -740,7 +740,7 @@ const Registration = ({ navigation }) => {
                   <Feather name="user" size={16} color="rgba(0, 54, 126, 1)" />
                   <TextInput
                     style={styles.input}
-                    placeholder="Enter Your Father's name"
+                    placeholder="Enter your guardian's name"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
                     value={formData.fatherName}
                     onChangeText={(text) =>
@@ -823,7 +823,7 @@ const Registration = ({ navigation }) => {
                   <TextInput
                     style={styles.input}
                     keyboardType="numeric"
-                    placeholder="Phone"
+                    placeholder="Enter your whatsapp number"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
                     value={formData.whatsapp_number}
                     onChangeText={(text) =>
@@ -863,7 +863,7 @@ const Registration = ({ navigation }) => {
                   <Feather name="mail" size={16} color="rgba(0, 54, 126, 1)" />
                   <TextInput
                     style={styles.input}
-                    placeholder="Enter your email"
+                    placeholder="Enter your email id"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
                     value={email}
                     onChangeText={handleEmailChange}
@@ -940,7 +940,7 @@ const Registration = ({ navigation }) => {
                   </View>
                   <TextInput
                     style={styles.input}
-                    placeholder="YY/MM/DD"
+                    placeholder="YYYY/MM/DD"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
                     value={userDetails.date_of_birth}
                     onChangeText={(text) =>
@@ -1325,7 +1325,7 @@ const Registration = ({ navigation }) => {
                   />
                   <TextInput
                     style={styles.input}
-                    placeholder="Select"
+                    placeholder="Enter your religion"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
                     value={formData.religion}
                     onChangeText={(text) => handleInputChange("religion", text)}
@@ -1410,7 +1410,7 @@ const Registration = ({ navigation }) => {
                       />
                       <TextInput
                         style={styles.input}
-                        placeholder="Choose Option"
+                        placeholder="Select"
                         placeholderTextColor="rgba(166, 166, 166, 1)"
                         value={inputValuestate}
                         onChangeText={handleInputChangestate}
@@ -1580,7 +1580,7 @@ const Registration = ({ navigation }) => {
                       />
                       <TextInput
                         style={styles.input}
-                        placeholder="Choose Option"
+                        placeholder="Select"
                         placeholderTextColor="rgba(166, 166, 166, 1)"
                         value={inputValue}
                         onChangeText={(text) =>
@@ -1752,7 +1752,7 @@ const Registration = ({ navigation }) => {
                   />
                   <TextInput
                     style={styles.input}
-                    placeholder="Enter Pin Code"
+                    placeholder="Enter your pincode"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
                     value={formData.pincode}
                     onChangeText={(text) => handleInputChange("pincode", text)}
@@ -1790,7 +1790,7 @@ const Registration = ({ navigation }) => {
                   />
                   <TextInput
                     style={styles.input}
-                    placeholder="Police Station"
+                    placeholder="Enter your police station"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
                     value={formData.police_station}
                     onChangeText={(text) =>
@@ -1901,7 +1901,7 @@ const Registration = ({ navigation }) => {
                   /> */}
                   <TextInput
                     style={styles.input}
-                    placeholder="Enter Your Referral Code (Optional)"
+                    placeholder="Enter your referral code (optional)"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
                     value={refercode}
                     onChangeText={handleInputChangerefer}
@@ -2200,7 +2200,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderWidth: 1,
     borderColor: "#03357D",
-    padding: 12,
+    padding: 14,
     paddingHorizontal: 20,
     borderRadius: 30,
     gap: 8,
