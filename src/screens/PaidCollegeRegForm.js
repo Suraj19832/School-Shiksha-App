@@ -7,6 +7,7 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
+  Modal,
 } from "react-native";
 import React, { useState } from "react";
 import {
@@ -21,11 +22,189 @@ import Header from "../../components/Header";
 import Checkbox from "expo-checkbox";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRoute } from "@react-navigation/native";
-
+import * as DocumentPicker from "expo-document-picker";
+import * as ImagePicker from "expo-image-picker";
 const PaidCollegeRegForm = ({ navigation }) => {
   const [isChecked, setChecked] = useState(false);
   const route = useRoute();
   const { collegeName, courseName } = route.params;
+  const [modalVisibleHSMarksheet, setModalVisibleHSMarksheet] = useState(false);
+    // Passport
+    const [capturedImagePassport, setCapturedImagePassport] = useState(null);
+    const [modalVisiblePassport, setModalVisiblePassport] = useState(false);
+    const [fileUriPassPortPhoto, setFileUriPassPortPhoto] = useState(null);
+    const [errorMessagePassPortPhoto, setErrorMessagePassPortPhoto] =
+      useState(null);
+    const [isPickingFilePassPortPhoto, setIsPickingFilePassPortPhoto] =
+      useState(false);
+      const closeModal = () => {
+        setModalVisible(false);
+        setModalVisiblePassport(false);
+        setModalVisibleHSMarksheet(false);
+        setModalVisibleAddharBack(false);
+        setModalVisibleAddharfront(false);
+      };
+
+      //For PassPort Photo function
+  const pickFilePassPortPhoto = async () => {
+    if (isPickingFilePassPortPhoto) {
+      console.log("Document picking in progress");
+      return;
+    }
+
+    setIsPickingFilePassPortPhoto(true);
+    setErrorMessagePassPortPhoto(null);
+
+    try {
+      const result = await DocumentPicker.getDocumentAsync({
+        type: "*/*",
+      });
+
+      console.log("File picker result:", result);
+
+      if (
+        !result.canceled &&
+        result.assets &&
+        result.assets.length > 0 &&
+        result.assets[0].uri
+      ) {
+        console.log("File picked:", result.assets[0].uri);
+        setFileUriPassPortPhoto(result.assets[0].uri);
+      } else if (result.canceled) {
+        console.log("File picking cancelled");
+      } else {
+        console.log("File picking failed");
+        setErrorMessagePassPortPhoto("File picking failed");
+      }
+    } catch (error) {
+      console.error("Error picking file:", error);
+      setErrorMessagePassPortPhoto("Error picking file");
+    } finally {
+      setIsPickingFilePassPortPhoto(false);
+    }
+    closeModal();
+  };
+  const takePicture = async (options) => {
+    console.log(options);
+    const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+    if (permissionResult.granted === false) {
+      alert("Camera permission is required to take photos.");
+      return;
+    }
+
+    try {
+      const imageResult = await ImagePicker.launchCameraAsync();
+      console.log("sdkfpf", imageResult);
+      if (imageResult.assets[0].uri !== null) {
+        if (options === "income") {
+          setCapturedImage(imageResult.assets[0].uri);
+          console.log("ndhlslsjvjjv;", imageResult.assets[0].uri);
+          setModalVisible(false);
+        }
+        if (options === "passport") {
+          setCapturedImagePassport(imageResult.assets[0].uri);
+          console.log("[][][]];", imageResult.assets[0].uri);
+          setModalVisiblePassport(false);
+        }
+        if (options === "HSMarksheet") {
+          setCapturedImageHSMarksheet(imageResult.assets[0].uri);
+          console.log("[][][]];", imageResult.assets[0].uri);
+          setModalVisibleHSMarksheet(false);
+        }
+        if (options === "AddharBack") {
+          setCapturedImageAddharBack(imageResult.assets[0].uri);
+          console.log("[][][]];", imageResult.assets[0].uri);
+          setModalVisibleAddharBack(false);
+        }
+        if (options === "AddharFront") {
+          setCapturedImageAddharfront(imageResult.assets[0].uri);
+          console.log("[][][]];", imageResult.assets[0].uri);
+          setModalVisibleAddharfront(false);
+        }
+      }
+    } catch (error) {
+      console.error("Error taking picture:", error);
+      // Handle error
+    }
+  };
+
+  const deleteDocuments = (options) => {
+    if (options === "passport") {
+      setCapturedImagePassport(null);
+      setFileUriPassPortPhoto(null);
+    }
+    if (options === "HSMarksheet") {
+      setCapturedImageHSMarksheet(null);
+      setFileUriHSMarksheet(null);
+    }
+    if (options === "AddharBack") {
+      setCapturedImageAddharBack(null);
+      setFileUriAddharBack(null);
+    }
+    if (options === "AddharFront") {
+      setCapturedImageAddharfront(null);
+      setFileUri(null);
+    }
+  };
+  const [modalVisible, setModalVisible] = useState(false);
+  const deleteImagePassPortPhoto = () => {
+    setFileUriPassPortPhoto(null);
+    setCapturedImagePassport(null);
+  };
+
+  const [capturedImageHSMarksheet, setCapturedImageHSMarksheet] =
+  useState(null);
+// const [modalVisibleHSMarksheet, setModalVisibleHSMarksheet] = useState(false);
+
+
+  // States For HS Marksheet
+  const [fileUriHSMarksheet, setFileUriHSMarksheet] = useState(null);
+  const [errorMessageHSMarksheet, setErrorMessageHSMarksheet] = useState(null);
+  const [isPickingFileHSMarksheet, setIsPickingFileHSMarksheet] =
+    useState(false);
+
+    const pickFileHSMarksheet = async () => {
+      if (isPickingFileHSMarksheet) {
+        console.log("Document picking in progress");
+        return;
+      }
+  
+      setIsPickingFileHSMarksheet(true);
+      setErrorMessageHSMarksheet(null);
+  
+      try {
+        const result = await DocumentPicker.getDocumentAsync({
+          type: "*/*",
+        });
+  
+        console.log("File picker result:", result);
+  
+        if (
+          !result.canceled &&
+          result.assets &&
+          result.assets.length > 0 &&
+          result.assets[0].uri
+        ) {
+          console.log("File picked:", result.assets[0].uri);
+          setFileUriHSMarksheet(result.assets[0].uri);
+        } else if (result.canceled) {
+          console.log("File picking cancelled");
+        } else {
+          console.log("File picking failed");
+          setErrorMessageHSMarksheet("File picking failed");
+        }
+      } catch (error) {
+        console.error("Error picking file:", error);
+        setErrorMessageHSMarksheet("Error picking file");
+      } finally {
+        setIsPickingFileHSMarksheet(false);
+      }
+      closeModal();
+    };
+    const deleteImageHSMarksheet = () => {
+      setFileUriHSMarksheet(null);
+      setCapturedImageHSMarksheet(null);
+    };
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
       <Header
@@ -257,7 +436,7 @@ const PaidCollegeRegForm = ({ navigation }) => {
                 <Text style={styles.text}>Family Details</Text>
               </View>
 
-              <View style={styles.fields_main}>
+              {/* <View style={styles.fields_main}>
                 <Text style={styles.inputHeading}>Mother's Name</Text>
                 <View style={styles.input_box}>
                   <Image
@@ -270,9 +449,9 @@ const PaidCollegeRegForm = ({ navigation }) => {
                     placeholderTextColor={"rgba(166, 166, 166, 1)"}
                   />
                 </View>
-              </View>
+              </View> */}
               <View style={styles.fields_main}>
-                <Text style={styles.inputHeading}>Father's Name</Text>
+                <Text style={styles.inputHeading}>Guardian Name</Text>
                 <View style={styles.input_box}>
                   <Image
                     source={require("../../assets/icons/user (1).png")}
@@ -280,13 +459,13 @@ const PaidCollegeRegForm = ({ navigation }) => {
                   />
                   <TextInput
                     style={styles.input}
-                    placeholder="Enter Your Father's Name"
+                    placeholder="Enter Your Guardian's Name"
                     placeholderTextColor={"rgba(166, 166, 166, 1)"}
                   />
                 </View>
               </View>
               <View style={styles.fields_main}>
-                <Text style={styles.inputHeading}>Father's Mobile Number</Text>
+                <Text style={styles.inputHeading}>Guardian Mobile Number</Text>
                 <View style={styles.input_box}>
                   <Feather
                     name="phone-call"
@@ -301,7 +480,7 @@ const PaidCollegeRegForm = ({ navigation }) => {
                 </View>
               </View>
               <View style={styles.fields_main}>
-                <Text style={styles.inputHeading}>Parents Occupation</Text>
+                <Text style={styles.inputHeading}>Guardian's Occupation</Text>
                 <View style={styles.input_box}>
                   <Image
                     source={require("../../assets/icons/businessman.png")}
@@ -334,7 +513,7 @@ const PaidCollegeRegForm = ({ navigation }) => {
                   />
                 </View>
               </View> */}
-              <View style={styles.fields_main}>
+              {/* <View style={styles.fields_main}>
                 <Text style={styles.inputHeading}>Number of Member</Text>
                 <View style={styles.input_box}>
                   <Image
@@ -347,7 +526,7 @@ const PaidCollegeRegForm = ({ navigation }) => {
                     placeholderTextColor={"rgba(166, 166, 166, 1)"}
                   />
                 </View>
-              </View>
+              </View> */}
               <View style={styles.headingg}>
                 <Text style={styles.text}>Education Details</Text>
               </View>
@@ -372,7 +551,7 @@ const PaidCollegeRegForm = ({ navigation }) => {
                 </View>
               </View> */}
               <View style={styles.fields_main}>
-                <Text style={styles.inputHeading}>H.S Pass Out Year</Text>
+                <Text style={styles.inputHeading}>10+2 Pass Out Year</Text>
                 <View style={styles.input_box}>
                   <Image
                     source={require("../../assets/icons/school.png")}
@@ -391,7 +570,7 @@ const PaidCollegeRegForm = ({ navigation }) => {
                   />
                 </View>
               </View>
-              <View style={styles.fields_main}>
+              {/* <View style={styles.fields_main}>
                 <Text style={styles.inputHeading}>H.S Roll Number</Text>
                 <View style={styles.input_box}>
                   <Image
@@ -404,7 +583,7 @@ const PaidCollegeRegForm = ({ navigation }) => {
                     placeholderTextColor={"rgba(166, 166, 166, 1)"}
                   />
                 </View>
-              </View>
+              </View> */}
               <View style={styles.fields_main}>
                 <Text style={styles.inputHeading}>Percentage</Text>
                 <View style={styles.input_box}>
@@ -419,7 +598,7 @@ const PaidCollegeRegForm = ({ navigation }) => {
                   />
                 </View>
               </View>
-              <View style={styles.fields_main}>
+              {/* <View style={styles.fields_main}>
                 <Text style={styles.inputHeading}>Total Number</Text>
                 <View style={styles.input_box}>
                   <Image
@@ -432,6 +611,233 @@ const PaidCollegeRegForm = ({ navigation }) => {
                     placeholderTextColor={"rgba(166, 166, 166, 1)"}
                   />
                 </View>
+              </View> */}
+
+              {/* hsmarksheet  */}
+              <View>
+                {!capturedImageHSMarksheet && !fileUriHSMarksheet && (
+                  <View style={styles.fields_main}>
+                    <Text style={styles.inputHeading}>H.S.Marksheet</Text>
+                    <TouchableOpacity
+                      style={styles.uploadBox}
+                      onPress={() => setModalVisibleHSMarksheet(true)}
+                    >
+                      <View style={styles.uploadItems}>
+                        <SimpleLineIcons
+                          name="cloud-upload"
+                          size={22}
+                          color="rgba(166, 166, 166, 1)"
+                        />
+                        <Text style={styles.uploadtext}>Upload a File</Text>
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+                )}
+                {fileUriHSMarksheet && (
+                  <View>
+                    <View
+                      style={[
+                        styles.titleContainer,
+                        {
+                          justifyContent: "space-between",
+                          flexDirection: "row",
+                          alignItems: "center",
+                        },
+                      ]}
+                    >
+                      <Text style={styles.inputHeading}>H.S.Marksheet</Text>
+                      <TouchableOpacity
+                        onPress={() => deleteDocuments("HSMarksheet")}
+                      >
+                        <AntDesign name="delete" size={20} color="#FF0000" />
+                      </TouchableOpacity>
+                    </View>
+                    <View style={styles.imageContainer}>
+                      <Image
+                        source={{ uri: fileUriHSMarksheet }}
+                        style={styles.uploadedImage}
+                      />
+                    </View>
+                  </View>
+                )}
+                {capturedImageHSMarksheet && (
+                  <View>
+                    <View
+                      style={[
+                        styles.titleContainer,
+                        {
+                          justifyContent: "space-between",
+                          flexDirection: "row",
+                          alignItems: "center",
+                        },
+                      ]}
+                    >
+                      <Text style={styles.inputHeading}>H.S.Marksheet</Text>
+                      <TouchableOpacity onPress={deleteImageHSMarksheet}>
+                        <AntDesign name="delete" size={20} color="#FF0000" />
+                      </TouchableOpacity>
+                    </View>
+                    <View style={styles.imageContainer}>
+                      <Image
+                        source={{ uri: capturedImageHSMarksheet }}
+                        style={styles.uploadedImage}
+                      />
+                    </View>
+                  </View>
+                )}
+
+                {errorMessageHSMarksheet && (
+                  <Text style={styles.errorMessage}>
+                    {errorMessageHSMarksheet}
+                  </Text>
+                )}
+                <Modal
+                  animationType="slide"
+                  transparent={true}
+                  visible={modalVisibleHSMarksheet}
+                  onRequestClose={closeModal}
+                >
+                  <View style={styles.modalContainer}>
+                    <View style={styles.modalContent}>
+                      <TouchableOpacity
+                        style={styles.modalOption}
+                        onPress={() => {
+                          takePicture("HSMarksheet");
+                        }}
+                      >
+                        <Text style={styles.modalOptionText}>Take Photo</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={styles.modalOption}
+                        onPress={pickFileHSMarksheet}
+                      >
+                        <Text style={styles.modalOptionText}>
+                          Choose from Library
+                        </Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={styles.modalOption}
+                        onPress={closeModal}
+                      >
+                        <Text style={styles.modalOptionText}>Cancel</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </Modal>
+              </View>
+
+
+              {/* passport  */}
+                  <View>
+                {!capturedImagePassport && !fileUriPassPortPhoto && (
+                  <View style={styles.fields_main}>
+                    <Text style={styles.inputHeading}>Passport Photo</Text>
+                    <TouchableOpacity
+                      style={styles.uploadBox}
+                      onPress={() => setModalVisiblePassport(true)}
+                    >
+                      <View style={styles.uploadItems}>
+                        <SimpleLineIcons
+                          name="cloud-upload"
+                          size={22}
+                          color="rgba(166, 166, 166, 1)"
+                        />
+                        <Text style={styles.uploadtext}>Upload a File</Text>
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+                )}
+                {fileUriPassPortPhoto && (
+                  <View>
+                    <View
+                      style={[
+                        styles.titleContainer,
+                        {
+                          justifyContent: "space-between",
+                          flexDirection: "row",
+                          alignItems: "center",
+                        },
+                      ]}
+                    >
+                      <Text style={styles.inputHeading}>PassPort Photo</Text>
+                      <TouchableOpacity
+                        onPress={() => deleteDocuments("passport")}
+                      >
+                        <AntDesign name="delete" size={20} color="#FF0000" />
+                      </TouchableOpacity>
+                    </View>
+                    <View style={styles.imageContainer}>
+                      <Image
+                        source={{ uri: fileUriPassPortPhoto }}
+                        style={styles.uploadedImage}
+                      />
+                    </View>
+                  </View>
+                )}
+                {capturedImagePassport && (
+                  <View>
+                    <View
+                      style={[
+                        styles.titleContainer,
+                        {
+                          justifyContent: "space-between",
+                          flexDirection: "row",
+                          alignItems: "center",
+                        },
+                      ]}
+                    >
+                      <Text style={styles.inputHeading}>Passport Photo</Text>
+                      <TouchableOpacity onPress={deleteImagePassPortPhoto}>
+                        <AntDesign name="delete" size={20} color="#FF0000" />
+                      </TouchableOpacity>
+                    </View>
+                    <View style={styles.imageContainer}>
+                      <Image
+                        source={{ uri: capturedImagePassport }}
+                        style={styles.uploadedImage}
+                      />
+                    </View>
+                  </View>
+                )}
+
+                {errorMessagePassPortPhoto && (
+                  <Text style={styles.errorMessage}>
+                    {errorMessagePassPortPhoto}
+                  </Text>
+                )}
+                <Modal
+                  animationType="slide"
+                  transparent={true}
+                  visible={modalVisiblePassport}
+                  onRequestClose={closeModal}
+                >
+                  <View style={styles.modalContainer}>
+                    <View style={styles.modalContent}>
+                      <TouchableOpacity
+                        style={styles.modalOption}
+                        onPress={() => {
+                          takePicture("passport");
+                        }}
+                      >
+                        <Text style={styles.modalOptionText}>Take Photo</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={styles.modalOption}
+                        onPress={pickFilePassPortPhoto}
+                      >
+                        <Text style={styles.modalOptionText}>
+                          Choose from Library
+                        </Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={styles.modalOption}
+                        onPress={closeModal}
+                      >
+                        <Text style={styles.modalOptionText}>Cancel</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </Modal>
               </View>
 
               <View style={styles.condition_box_main}>
@@ -660,5 +1066,74 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     fontSize: 16,
     lineHeight: 18.75,
+  },
+  uploadedImage: {
+    width: 100,
+    height: 100,
+  },
+  fields_main: {
+    marginTop: 17,
+  },
+  inputHeading: {
+    fontWeight: "500",
+    fontSize: 18,
+    lineHeight: 27,
+    color: "rgba(0, 54, 126, 1)",
+    paddingBottom: 10,
+  },
+  uploadBox: {
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "rgba(245, 245, 245, 1)",
+    padding: 30,
+    borderWidth: 0.5,
+    borderColor: "rgba(217, 217, 217, 1)",
+    borderRadius: 0.58,
+    marginTop: 8,
+  },
+  uploadItems: {
+    alignItems: "center",
+    gap: 3,
+  },
+  uploadtext: {
+    fontWeight: "500",
+    fontSize: 16,
+    lineHeight: 24,
+    color: "rgba(55, 55, 55, 1)",
+  },
+  imageContainer: {
+    alignItems: "center",
+    marginTop: 10,
+  },
+  uploadedImage: {
+    width: 100,
+    height: 100,
+  },
+  errorMessage: {
+    color: "red",
+    marginTop: 10,
+    textAlign: "center",
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: "flex-end",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modalContent: {
+    backgroundColor: "#fff",
+    width: "100%",
+    padding: 20,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+  },
+  modalOption: {
+    padding: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ccc",
+  },
+  modalOptionText: {
+    fontSize: 18,
+    textAlign: "center",
   },
 });
