@@ -139,7 +139,7 @@ const Dashboard = ({ navigation }) => {
       status: "inActive",
     },
   ];
-
+const [alldata ,setalldata] =useState([])
   useEffect(() => {
     Animated.timing(menuTranslateX, {
       toValue: isMenuOpen ? 0 : -menuWidth,
@@ -173,6 +173,7 @@ const Dashboard = ({ navigation }) => {
   };
   const [heading, setheading] = useState([]);
   const [sortheading, setsortheading] = useState([]);
+
   const [carddata, setcarddata] = useState([]);
   useEffect(() => {
     // Define the URL you want to fetch data from
@@ -187,8 +188,13 @@ const Dashboard = ({ navigation }) => {
           res?.message
         );
         console.log(res.data);
-        const longheading = res.data.map((item) => item.long_name);
+        // const longheading = res.data.map((item) => item.long_name);
+        const longheading = res.data.map((item) => item);
         console.log(longheading);
+        setcarddata([])
+        longheading?.map((item)=>{ 
+          return fetchUserData(item)
+        })
         setheading(longheading);
         console.log("=======================", heading);
         const st_title = res?.data?.map((item) => item.short_name);
@@ -201,6 +207,7 @@ const Dashboard = ({ navigation }) => {
         console.error("Error fetching data in dashboard:", error);
       });
   }, []);
+  console.log("?????????????????????????????>>>>000000>",JSON.stringify(carddata))
   const colorMap = {
     "Secondary Pass Student's Benefits": "#C83000",
     "H.S Pass Student's Benefits": "#004F3C",
@@ -214,25 +221,27 @@ const Dashboard = ({ navigation }) => {
       const params = {
         // page: 1,
         limit: 3,
-        service_type: serviceType,
+        service_type: serviceType.short_name,
       };
 
       const userData = await GetfetchDataWithParams(endpoint, params);
-      setcarddata(userData);
-      console.log(userData); // Handle or process the fetched user data here
+      setcarddata((prev)=>{
+        return [...prev,{title:serviceType.long_name,data:userData.data}]
+      })
+      // console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<",userData,params); // Handle or process the fetched user data here
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
   }
 
-  useEffect(() => {
-    // Define the URL you want to fetch data from
-    // fetchUserData("hs");
-    sortheading.map(async (title) => {
-      // console.log(title)
-      fetchUserData(title);
-    });
-  }, []);
+  // useEffect(() => {
+  //   // Define the URL you want to fetch data from
+  //   // fetchUserData("hs");
+  //   sortheading.map(async (title) => {
+  //     // console.log(title)
+  //     fetchUserData(title);
+  //   });
+  // }, []);
   return (
     <View style={styles.container}>
       <StatusBar
@@ -558,29 +567,64 @@ const Dashboard = ({ navigation }) => {
         </View>
         <View>
           {/* new start  */}
-
-          {/* //create by me  */}
-          {/* <View>
- 
-
-           {heading.map((title, index) => (
+<View>
+  {/* data from api  */}
+  {/* <View>
+  {carddata.map((item ,index) => {
+  console.log("00000000000000000000000000000",carddata[index].title)
+  return (
+    <>
     <TitleDash
-      key={index}
-      title={title}
-      primaryColor={colorMap[title]}
-    />
-  ))}
-          
-  </View> */}
+            title={carddata[index]?.title}
+            primaryColor="#C83000"
+          />
+          <View style={{ alignItems: "center" }}>
+            <View
+              style={{ flexDirection: "row", gap: 8, justifyContent: "center" }}
+            >
+{carddata[index]?.data.map((cd)=>{
+  return (
+    <>
+     <TouchableOpacity
+                style={styles.card}
+                onPress={() => navigation.navigate("computerCollegeList")}
+              >
+                {cards[0].status === "inActive" && (
+                  <View style={styles.lockContainer}>
+                    <Fontisto name="locked" />
+                  </View>
+                )}
+                <View style={styles.imgContainer}>
+                  <Image source={cards[0].image} style={styles.image} />
+                </View>
+                <Text style={styles.textStyle}>{cd.service_name}</Text>
+              </TouchableOpacity>
+    </>
+  )
+})}
+             
 
-          {/* <View style={{ paddingTop: 20 }}>
-    <TouchableOpacity
-      style={styles.button}
-      onPress={() => navigation.navigate("mpBenefits")}
-    >
-      <Text style={styles.text}>{"Show More >"}</Text>
-    </TouchableOpacity>
+             
+            </View>
+
+            <View style={{ paddingTop: 20 }}>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => navigation.navigate("mpBenefits")}
+              >
+                <Text style={styles.text}>{"Show More >"}</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+    </>
+
+  )
+})}
   </View> */}
+{/* end here  */}
+
+</View>
+         
         </View>
 
         <View>
