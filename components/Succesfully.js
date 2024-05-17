@@ -18,6 +18,42 @@ const Succesfully = ({ navigation }) => {
         </View>
       </View>
     </View>
+
+    // {/* <NotificationContainer
+    //               NotificationMsg="Ajax Valerio  completed create new component."
+    //               imgNam="phone-call"
+    //               msgTime="1h"
+    //               iconColor="#E8A96E"
+    //               iconName="JW"
+    //             /> */}
+    //             {/* <NotificationContainer
+    //               NotificationMsg="Jenny Wilson  completed create new component."
+    //               imgName="phone-call"
+    //               msgTime="2h"
+    //               iconColor="#19CF4C"
+    //               iconName="JW"
+    //             />
+    //             <NotificationContainer
+    //               NotificationMsg="Jenny Wilson  completed create new component."
+    //               imgName="phone-call"
+    //               msgTime="4h"
+    //               iconColor="#8A9A98"
+    //               iconName="JW"
+    //             />
+    //             <NotificationContainer
+    //               NotificationMsg="Annete Black  completed Improve workflow in React."
+    //               imgName="phone-call"
+    //               msgTime="5h"
+    //               iconColor="#F47272"
+    //               iconName="AB"
+    //             />
+    //             <NotificationContainer
+    //               NotificationMsg="Jenny Wilson  completed create new component."
+    //               imgName="phone-call"
+    //               msgTime="23h"
+    //               iconColor="#6E90E8"
+    //               iconName="JW"
+    //             /> */}
   );
 };
 

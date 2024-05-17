@@ -62,7 +62,7 @@ const EditProfile = ({ navigation }) => {
     police_station: "",
     pincode: "",
     aadhar_number: "",
-    religion: "",
+    // religion: "",
     district_id: "",
     password: "",
     referral_code: "",
@@ -491,7 +491,7 @@ const EditProfile = ({ navigation }) => {
     date_of_birth: "",
     class_name: "",
     gender: "",
-    religion: "",
+    // religion: "",
     address: "",
     state_name: "",
     district_name: "",
@@ -526,7 +526,7 @@ const EditProfile = ({ navigation }) => {
       date_of_birth,
       class_name,
       gender,
-      religion,
+      // religion,
       address,
       state_name,
       district_name,
@@ -535,6 +535,24 @@ const EditProfile = ({ navigation }) => {
       district_id,
       class_id,
     } = profileData;
+
+    const fieldDisplayNames = {
+      name: "full name",
+      father_name: "guardian's Name",
+      mobile: "mobile number",
+      whatsapp_number: "Whatsapp Number",
+      email: "Email id",
+      date_of_birth: "Date of Birth",
+      class_name: "Class Name",
+      gender: "Gender",
+      address: "Address",
+      state_name: "State Name",
+      district_name: "District Name",
+      police_station: "Police Station",
+      pincode: "Pincode",
+      district_id: "District ID",
+      class_id: "Class ID",
+    };
     const requiredFields = [
       "name",
       "father_name",
@@ -544,7 +562,7 @@ const EditProfile = ({ navigation }) => {
       "date_of_birth",
       "class_name",
       "gender",
-      "religion",
+      // "religion",
       "address",
       "state_name",
       "district_name",
@@ -553,15 +571,24 @@ const EditProfile = ({ navigation }) => {
       "district_id",
       "class_id",
     ];
+    // const emptyFields = requiredFields.filter((field) => !profileData[field]);
+
+    // if (emptyFields.length > 0) {
+    //   showToast(
+    //     `Please fill in the following fields: ${emptyFields.join(", ")}`
+    //   );
+    //   return;
+    // }
+
     const emptyFields = requiredFields.filter((field) => !profileData[field]);
 
     if (emptyFields.length > 0) {
-      showToast(
-        `Please fill in the following fields: ${emptyFields.join(", ")}`
-      );
+      const displayEmptyFields = emptyFields
+        .map((field) => fieldDisplayNames[field])
+        .join(", ");
+      showToast(`Please fill in the following fields: ${displayEmptyFields}`);
       return;
     }
-
     const postData = {
       id,
       name,
@@ -573,7 +600,7 @@ const EditProfile = ({ navigation }) => {
       class_name,
       gender,
 
-      religion,
+      // religion,
       address,
       state_name,
       district_name,
@@ -626,7 +653,7 @@ const EditProfile = ({ navigation }) => {
             <View style={{ left: 0, marginTop: 20 }}>
               {/* Name  */}
               <View style={styles.inputbox_main_container}>
-                <View>
+                <View style={{ flexDirection: "row", gap: 2 }}>
                   <Text
                     style={{
                       color: "rgba(0, 54, 126, 1)",
@@ -636,12 +663,13 @@ const EditProfile = ({ navigation }) => {
                   >
                     Full Name
                   </Text>
+                  <Text style={{ color: "red", fontSize: 18 }}>*</Text>
                 </View>
                 <View style={styles.inputbox_container}>
                   <Feather name="user" size={16} color="rgba(0, 54, 126, 1)" />
                   <TextInput
                     style={styles.input}
-                    placeholder="Username"
+                    placeholder="Enter your full name"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
                     value={profileData.name || ""}
                     onChangeText={(text) =>
@@ -660,7 +688,7 @@ const EditProfile = ({ navigation }) => {
 
               {/* Father name  */}
               <View style={styles.inputbox_main_container}>
-                <View>
+                <View style={{ flexDirection: "row", gap: 2 }}>
                   <Text
                     style={{
                       color: "rgba(0, 54, 126, 1)",
@@ -668,14 +696,15 @@ const EditProfile = ({ navigation }) => {
                       fontSize: 18,
                     }}
                   >
-                    Father's Name
+                    Guardian's Name
                   </Text>
+                  <Text style={{ color: "red", fontSize: 18 }}>*</Text>
                 </View>
                 <View style={styles.inputbox_container}>
                   <Feather name="user" size={16} color="rgba(0, 54, 126, 1)" />
                   <TextInput
                     style={styles.input}
-                    placeholder="Enter Your Father's name"
+                    placeholder="Enter your guardian's name"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
                     value={profileData.father_name || ""}
                     onChangeText={(text) =>
@@ -687,13 +716,15 @@ const EditProfile = ({ navigation }) => {
                 {formErrors.fatherName &&
                   !formData.fatherName &&
                   fieldTouched.fatherName && (
-                    <Text style={{ color: "red" }}>father's name required</Text>
+                    <Text style={{ color: "red" }}>
+                      guardian's name required
+                    </Text>
                   )}
               </View>
 
               {/* Mobile number  */}
               <View style={styles.inputbox_main_container}>
-                <View>
+                <View style={{ flexDirection: "row", gap: 2 }}>
                   <Text
                     style={{
                       color: "rgba(0, 54, 126, 1)",
@@ -703,6 +734,7 @@ const EditProfile = ({ navigation }) => {
                   >
                     Mobile Number
                   </Text>
+                  <Text style={{ color: "red", fontSize: 18 }}>*</Text>
                 </View>
                 <View
                   style={[
@@ -721,9 +753,8 @@ const EditProfile = ({ navigation }) => {
                   <TextInput
                     style={styles.input}
                     keyboardType="numeric"
-                    placeholder="9874561230"
+                    placeholder="Enter your mobile number"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
-                    // value={formData.mobile}
                     value={profileData.mobile || ""}
                     onChangeText={(text) =>
                       setProfileData({ ...profileData, mobile: text })
@@ -747,7 +778,7 @@ const EditProfile = ({ navigation }) => {
 
               {/* whatsapp number  */}
               <View style={styles.inputbox_main_container}>
-                <View>
+                <View style={{ flexDirection: "row", gap: 2 }}>
                   <Text
                     style={{
                       color: "rgba(0, 54, 126, 1)",
@@ -757,6 +788,7 @@ const EditProfile = ({ navigation }) => {
                   >
                     WhatsApp Number
                   </Text>
+                  <Text style={{ color: "red", fontSize: 18 }}>*</Text>
                 </View>
                 <View style={styles.inputbox_container}>
                   <FontAwesome5
@@ -767,7 +799,7 @@ const EditProfile = ({ navigation }) => {
                   <TextInput
                     style={styles.input}
                     keyboardType="numeric"
-                    placeholder="Enter your WhatsApp number"
+                    placeholder="Enter your whatsapp number"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
                     // value={formData.whatsapp_number}
                     value={profileData.whatsapp_number || ""}
@@ -792,7 +824,7 @@ const EditProfile = ({ navigation }) => {
 
               {/* email id  */}
               <View style={styles.inputbox_main_container}>
-                <View>
+                <View style={{ flexDirection: "row", gap: 2 }}>
                   <Text
                     style={{
                       color: "rgba(0, 54, 126, 1)",
@@ -802,12 +834,13 @@ const EditProfile = ({ navigation }) => {
                   >
                     Email Id
                   </Text>
+                  <Text style={{ color: "red", fontSize: 18 }}>*</Text>
                 </View>
                 <View style={styles.inputbox_container}>
                   <Feather name="mail" size={16} color="rgba(0, 54, 126, 1)" />
                   <TextInput
                     style={(styles.input, { width: "100%" })}
-                    placeholder="Enter your email"
+                    placeholder="Enter your email id"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
                     value={profileData.email || ""}
                     onChangeText={(text) =>
@@ -823,7 +856,7 @@ const EditProfile = ({ navigation }) => {
               {/* date of birth  */}
 
               <View style={styles.inputbox_main_container}>
-                <View>
+                <View style={{ flexDirection: "row", gap: 2 }}>
                   <Text
                     style={{
                       color: "rgba(0, 54, 126, 1)",
@@ -833,6 +866,7 @@ const EditProfile = ({ navigation }) => {
                   >
                     D.O.B
                   </Text>
+                  <Text style={{ color: "red", fontSize: 18 }}>*</Text>
                 </View>
                 <View style={styles.inputbox_container}>
                   <Image
@@ -843,7 +877,7 @@ const EditProfile = ({ navigation }) => {
                   />
                   <TextInput
                     style={styles.input}
-                    placeholder="Date of Birth"
+                    placeholder="YYYY/MM/DD"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
                     value={profileData.date_of_birth || ""}
                     onChangeText={(text) =>
@@ -864,7 +898,7 @@ const EditProfile = ({ navigation }) => {
 
               {/* for class */}
               <View style={styles.inputbox_main_container}>
-                <View>
+                <View style={{ flexDirection: "row", gap: 2 }}>
                   <Text
                     style={{
                       color: "rgba(0, 54, 126, 1)",
@@ -874,6 +908,7 @@ const EditProfile = ({ navigation }) => {
                   >
                     Class
                   </Text>
+                  <Text style={{ color: "red", fontSize: 18 }}>*</Text>
                 </View>
                 <View
                   style={[
@@ -953,7 +988,7 @@ const EditProfile = ({ navigation }) => {
 
               {/* for gender */}
               <View style={styles.inputbox_main_container}>
-                <View>
+                <View style={{ flexDirection: "row", gap: 2 }}>
                   <Text
                     style={{
                       color: "rgba(0, 54, 126, 1)",
@@ -963,6 +998,7 @@ const EditProfile = ({ navigation }) => {
                   >
                     Gender
                   </Text>
+                  <Text style={{ color: "red", fontSize: 18 }}>*</Text>
                 </View>
                 <View
                   style={[
@@ -1066,7 +1102,7 @@ const EditProfile = ({ navigation }) => {
 
               {/* Religion  */}
 
-              <View style={styles.inputbox_main_container}>
+              {/* <View style={styles.inputbox_main_container}>
                 <View style={{ flexDirection: "row", gap: 1 }}>
                   <Text
                     style={{
@@ -1077,7 +1113,6 @@ const EditProfile = ({ navigation }) => {
                   >
                     Religion
                   </Text>
-                  {/* <Text style={{color:'red' ,fontSize:18}}>*</Text> */}
                 </View>
                 <View style={styles.inputbox_container}>
                   <Image
@@ -1100,10 +1135,11 @@ const EditProfile = ({ navigation }) => {
                   fieldTouched.religion && (
                     <Text style={{ color: "red" }}>Please enter Religion </Text>
                   )}
-              </View>
+              </View> */}
+
               {/* full address  */}
               <View style={styles.inputbox_main_container}>
-                <View>
+                <View style={{ flexDirection: "row", gap: 2 }}>
                   <Text
                     style={{
                       color: "rgba(0, 54, 126, 1)",
@@ -1113,6 +1149,7 @@ const EditProfile = ({ navigation }) => {
                   >
                     Address
                   </Text>
+                  <Text style={{ color: "red", fontSize: 18 }}>*</Text>
                 </View>
                 <View style={styles.inputbox_container}>
                   <MaterialCommunityIcons
@@ -1142,7 +1179,7 @@ const EditProfile = ({ navigation }) => {
 
               {/* state  */}
               <View style={styles.inputbox_main_container}>
-                <View>
+                <View style={{ flexDirection: "row", gap: 2 }}>
                   <Text
                     style={{
                       color: "rgba(0, 54, 126, 1)",
@@ -1152,6 +1189,7 @@ const EditProfile = ({ navigation }) => {
                   >
                     State
                   </Text>
+                  <Text style={{ color: "red", fontSize: 18 }}>*</Text>
                 </View>
                 <View
                   style={[
@@ -1175,7 +1213,7 @@ const EditProfile = ({ navigation }) => {
                       />
                       <TextInput
                         style={styles.input}
-                        placeholder="Choose Option"
+                        placeholder="Select"
                         placeholderTextColor="rgba(166, 166, 166, 1)"
                         value={profileData.state_name || ""}
                         editable={false}
@@ -1215,7 +1253,7 @@ const EditProfile = ({ navigation }) => {
 
               {/* District */}
               <View style={styles.inputbox_main_container}>
-                <View>
+                <View style={{ flexDirection: "row", gap: 2 }}>
                   <Text
                     style={{
                       color: "rgba(0, 54, 126, 1)",
@@ -1225,6 +1263,7 @@ const EditProfile = ({ navigation }) => {
                   >
                     District
                   </Text>
+                  <Text style={{ color: "red", fontSize: 18 }}>*</Text>
                 </View>
                 <View
                   style={[
@@ -1247,7 +1286,7 @@ const EditProfile = ({ navigation }) => {
                       />
                       <TextInput
                         style={styles.input}
-                        placeholder="Choose Option"
+                        placeholder="Select"
                         placeholderTextColor="rgba(166, 166, 166, 1)"
                         value={
                           profileData.district_name.charAt(0).toUpperCase() +
@@ -1291,7 +1330,7 @@ const EditProfile = ({ navigation }) => {
 
               {/* Police  */}
               <View style={styles.inputbox_main_container}>
-                <View>
+                <View style={{ flexDirection: "row", gap: 2 }}>
                   <Text
                     style={{
                       color: "rgba(0, 54, 126, 1)",
@@ -1299,8 +1338,9 @@ const EditProfile = ({ navigation }) => {
                       fontSize: 18,
                     }}
                   >
-                    P.S
+                    Police Station
                   </Text>
+                  <Text style={{ color: "red", fontSize: 18 }}>*</Text>
                 </View>
                 <View style={styles.inputbox_container}>
                   <Image
@@ -1309,7 +1349,7 @@ const EditProfile = ({ navigation }) => {
                   />
                   <TextInput
                     style={styles.input}
-                    placeholder="Police Station"
+                    placeholder="Enter your police station"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
                     value={profileData.police_station || ""}
                     onChangeText={(text) =>
@@ -1329,7 +1369,7 @@ const EditProfile = ({ navigation }) => {
               </View>
               {/* pincode  */}
               <View style={styles.inputbox_main_container}>
-                <View>
+                <View style={{ flexDirection: "row", gap: 2 }}>
                   <Text
                     style={{
                       color: "rgba(0, 54, 126, 1)",
@@ -1339,6 +1379,7 @@ const EditProfile = ({ navigation }) => {
                   >
                     Pin
                   </Text>
+                  <Text style={{ color: "red", fontSize: 18 }}>*</Text>
                 </View>
                 <View style={styles.inputbox_container}>
                   <Image
@@ -1347,7 +1388,7 @@ const EditProfile = ({ navigation }) => {
                   />
                   <TextInput
                     style={styles.input}
-                    placeholder="Enter Pin code"
+                    placeholder="Enter pincode"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
                     value={profileData.pincode || ""}
                     onChangeText={(text) =>

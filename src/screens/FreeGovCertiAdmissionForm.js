@@ -16,10 +16,8 @@ import Checkbox from "expo-checkbox";
 import { useRoute } from "@react-navigation/native";
 
 const FreeGovCertiAdmissionForm = ({ navigation }) => {
-
-  
   const route = useRoute();
-  const { collegename ,courcename } = route.params;
+  const { collegename, courcename } = route.params;
   const [isChecked, setChecked] = useState(false);
   //For gender
   const [genderData, setGenderData] = useState("");
@@ -114,6 +112,7 @@ const FreeGovCertiAdmissionForm = ({ navigation }) => {
                 placeholder={collegename}
                 value={collegename}
                 placeholderTextColor={"rgba(166, 166, 166, 1)"}
+                editable={false}
               />
             </View>
             <View>
@@ -123,6 +122,7 @@ const FreeGovCertiAdmissionForm = ({ navigation }) => {
                 placeholder="Course"
                 value={courcename}
                 placeholderTextColor={"rgba(166, 166, 166, 1)"}
+                editable={false}
               />
             </View>
           </View>
@@ -278,7 +278,7 @@ const FreeGovCertiAdmissionForm = ({ navigation }) => {
                 </View>
               </View>
 
-              <View style={styles.fields_main}>
+              {/* <View style={styles.fields_main}>
                 <Text style={styles.inputHeading}>Nationality</Text>
                 <View style={styles.input_box}>
                   <Image
@@ -297,7 +297,7 @@ const FreeGovCertiAdmissionForm = ({ navigation }) => {
                     color="rgba(0, 54, 126, 1)"
                   />
                 </View>
-              </View>
+              </View> */}
 
               <View style={styles.fields_main}>
                 <Text style={styles.inputHeading}>Religion</Text>
@@ -398,7 +398,7 @@ const FreeGovCertiAdmissionForm = ({ navigation }) => {
                 <View style={styles.heading}>
                   <Text style={styles.text}>Education Details</Text>
                 </View>
-                <View style={styles.fields_main}>
+                {/* <View style={styles.fields_main}>
                   <Text style={styles.inputHeading}>Last Qualification</Text>
                   <View style={styles.input_box}>
                     <Image
@@ -417,9 +417,9 @@ const FreeGovCertiAdmissionForm = ({ navigation }) => {
                       color="rgba(0, 54, 126, 1)"
                     />
                   </View>
-                </View>
+                </View> */}
                 <View style={styles.fields_main}>
-                  <Text style={styles.inputHeading}>H.S Pass Out Year</Text>
+                  <Text style={styles.inputHeading}>10+2 Pass Out Year</Text>
                   <View style={styles.input_box}>
                     <Image
                       source={require("../../assets/icons/school.png")}

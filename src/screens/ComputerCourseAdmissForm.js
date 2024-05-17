@@ -30,7 +30,7 @@ const ComputerCourseAdmissForm = ({ navigation }) => {
   const [inputValuegender, setInputValuegender] = useState("");
 
   const route = useRoute();
-  const { collegename ,courcename } = route.params;
+  const { collegename, courcename } = route.params;
 
   //handle toggle for gender
   const toggleDropdowngender = () => {
@@ -261,6 +261,7 @@ const ComputerCourseAdmissForm = ({ navigation }) => {
                 placeholder={collegename}
                 value={collegename}
                 placeholderTextColor={"rgba(166, 166, 166, 1)"}
+                editable={false}
               />
             </View>
             <View>
@@ -270,6 +271,7 @@ const ComputerCourseAdmissForm = ({ navigation }) => {
                 placeholder={courcename}
                 value={courcename}
                 placeholderTextColor={"rgba(166, 166, 166, 1)"}
+                editable={false}
               />
             </View>
           </View>
@@ -288,7 +290,7 @@ const ComputerCourseAdmissForm = ({ navigation }) => {
                   />
                   <TextInput
                     style={styles.input}
-                    placeholder="Name"
+                    placeholder="Enter your name"
                     value={formData.name}
                     onChangeText={(text) => handleInputChange("name", text)}
                     onBlur={() => handleInputBlur("name")}
@@ -308,7 +310,7 @@ const ComputerCourseAdmissForm = ({ navigation }) => {
                   />
                   <TextInput
                     style={styles.input}
-                    placeholder="Date of Birth"
+                    placeholder="YYYY/MM/DD"
                     placeholderTextColor={"rgba(166, 166, 166, 1)"}
                     value={formData.date_of_birth}
                     onChangeText={(text) =>
@@ -339,7 +341,7 @@ const ComputerCourseAdmissForm = ({ navigation }) => {
                     />
                     <TextInput
                       style={styles.input}
-                      placeholder="Choose Option"
+                      placeholder="Select"
                       placeholderTextColor="rgba(166, 166, 166, 1)"
                       value={inputValuegender}
                       onChangeText={handleInputChangegender}
@@ -381,7 +383,7 @@ const ComputerCourseAdmissForm = ({ navigation }) => {
                   />
                   <TextInput
                     style={styles.input}
-                    placeholder="Enter your email"
+                    placeholder="Enter your email id"
                     placeholderTextColor={"rgba(166, 166, 166, 1)"}
                     value={email}
                     onChangeText={handleEmailChange}
@@ -431,7 +433,7 @@ const ComputerCourseAdmissForm = ({ navigation }) => {
                   />
                   <TextInput
                     style={styles.input}
-                    placeholder="Enter Your P.S"
+                    placeholder="Enter Your police station"
                     placeholderTextColor={"rgba(166, 166, 166, 1)"}
                     value={formData.police_station}
                     onChangeText={(text) =>
@@ -523,7 +525,7 @@ const ComputerCourseAdmissForm = ({ navigation }) => {
                   />
                   <TextInput
                     style={styles.input}
-                    placeholder="Phone"
+                    placeholder="Enter your whatsapp number"
                     value={formData.whatsapp_number}
                     keyboardType="numeric"
                     onChangeText={(text) =>
@@ -651,7 +653,7 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   input: {
-    paddingRight: "35%",
+    // paddingRight: "35%",
     position: "relative",
     color: "black",
   },

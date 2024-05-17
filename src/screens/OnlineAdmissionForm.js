@@ -214,7 +214,7 @@ const OnlineAdmissionForm = ({ navigation }) => {
     }
   };
   const route = useRoute();
-  const { collegeName ,courseName } = route.params;
+  const { collegeName, courseName } = route.params;
   return (
     <View style={styles.container}>
       <Header
@@ -242,6 +242,7 @@ const OnlineAdmissionForm = ({ navigation }) => {
                 placeholder={collegeName}
                 value={collegeName}
                 placeholderTextColor={"rgba(166, 166, 166, 1)"}
+                editable={false}
               />
             </View>
             <View>
@@ -251,6 +252,7 @@ const OnlineAdmissionForm = ({ navigation }) => {
                 placeholder={courseName}
                 value={courseName}
                 placeholderTextColor={"rgba(166, 166, 166, 1)"}
+                editable={false}
               />
             </View>
           </View>

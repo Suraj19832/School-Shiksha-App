@@ -55,6 +55,7 @@ const PaidCollegeRegForm = ({ navigation }) => {
                 placeholder={collegeName}
                 placeholderTextColor={"rgba(166, 166, 166, 1)"}
                 value={collegeName}
+                editable={false}
               />
             </View>
             <View>
@@ -64,6 +65,7 @@ const PaidCollegeRegForm = ({ navigation }) => {
                 placeholder={courseName}
                 placeholderTextColor={"rgba(166, 166, 166, 1)"}
                 value={courseName}
+                editable={false}
               />
             </View>
           </View>
@@ -116,7 +118,7 @@ const PaidCollegeRegForm = ({ navigation }) => {
                   />
                 </View>
               </View>
-              <View style={styles.fields_main}>
+              {/* <View style={styles.fields_main}>
                 <Text style={styles.inputHeading}>Aadhar Number</Text>
                 <View style={styles.input_box}>
                   <FontAwesome
@@ -130,7 +132,7 @@ const PaidCollegeRegForm = ({ navigation }) => {
                     placeholderTextColor={"rgba(166, 166, 166, 1)"}
                   />
                 </View>
-              </View>
+              </View> */}
               <View style={styles.fields_main}>
                 <Text style={styles.inputHeading}>Gender</Text>
                 <View style={styles.input_box}>
@@ -181,7 +183,7 @@ const PaidCollegeRegForm = ({ navigation }) => {
                   />
                 </View>
               </View>
-              <View style={styles.fields_main}>
+              {/* <View style={styles.fields_main}>
                 <Text style={styles.inputHeading}>Nationality</Text>
                 <View style={styles.input_box}>
                   <Image
@@ -200,7 +202,7 @@ const PaidCollegeRegForm = ({ navigation }) => {
                     color="rgba(0, 54, 126, 1)"
                   />
                 </View>
-              </View>
+              </View> */}
               <View style={styles.fields_main}>
                 <Text style={styles.inputHeading}>Religion</Text>
                 <View style={styles.input_box}>
@@ -318,7 +320,7 @@ const PaidCollegeRegForm = ({ navigation }) => {
                   />
                 </View>
               </View>
-              <View style={styles.fields_main}>
+              {/* <View style={styles.fields_main}>
                 <Text style={styles.inputHeading}>Family Income</Text>
                 <View style={styles.input_box}>
                   <Image
@@ -331,7 +333,7 @@ const PaidCollegeRegForm = ({ navigation }) => {
                     placeholderTextColor={"rgba(166, 166, 166, 1)"}
                   />
                 </View>
-              </View>
+              </View> */}
               <View style={styles.fields_main}>
                 <Text style={styles.inputHeading}>Number of Member</Text>
                 <View style={styles.input_box}>
@@ -349,7 +351,7 @@ const PaidCollegeRegForm = ({ navigation }) => {
               <View style={styles.headingg}>
                 <Text style={styles.text}>Education Details</Text>
               </View>
-              <View style={styles.fields_main}>
+              {/* <View style={styles.fields_main}>
                 <Text style={styles.inputHeading}>Last Qualification</Text>
                 <View style={styles.input_box}>
                   <Image
@@ -368,7 +370,7 @@ const PaidCollegeRegForm = ({ navigation }) => {
                     color="rgba(0, 54, 126, 1)"
                   />
                 </View>
-              </View>
+              </View> */}
               <View style={styles.fields_main}>
                 <Text style={styles.inputHeading}>H.S Pass Out Year</Text>
                 <View style={styles.input_box}>

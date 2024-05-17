@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import {
   Image,
   View,
@@ -14,10 +14,36 @@ import {
 } from "react-native";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import Header from "../../components/Header";
+import { getrequestwithtoken } from "../../Helper/Helper";
+import { AuthContext } from "../../Utils/context/AuthContext";
+import moment from "moment";
+
+const formatNotificationTime = (dateString) => {
+  const now = moment();
+  const date = moment(dateString);
+  const duration = moment.duration(now.diff(date));
+
+  const minutes = duration.asMinutes();
+  const hours = duration.asHours();
+  const days = duration.asDays();
+  const weeks = duration.asWeeks();
+
+  if (minutes < 60) {
+    return `${Math.floor(minutes)} min ago`;
+  } else if (hours < 24) {
+    return `${Math.floor(hours)} hr ago`;
+  } else if (days < 7) {
+    return `${Math.floor(days)} day ago`;
+  } else if (weeks < 2) {
+    return "a week ago";
+  } else {
+    return `${Math.floor(weeks)}W ago`;
+  }
+};
 
 const NotificationContainer = (props) => {
   const imgPath = {
-    "phone-call": require("../../assets/img/phone-call.png"),
+    // "phone-call": require("../../assets/img/phone-call.png"),
     email: require("../../assets/img/email.png"),
     whatsapp: require("../../assets/img/whatsappIcon.png"),
   };
@@ -32,6 +58,7 @@ const NotificationContainer = (props) => {
           marginTop: 6,
           backgroundColor: "white",
           paddingVertical: 15,
+          height: 85,
         }}
       >
         <View
@@ -41,12 +68,26 @@ const NotificationContainer = (props) => {
             flexDirection: "row",
             width: Dimensions.get("screen").width * 0.9,
             flexWrap: "wrap",
+            alignItems: "center",
           }}
         >
           <View style={[styles.icon, { backgroundColor: props.iconColor }]}>
             <Text>{props.iconName}</Text>
           </View>
-          <View>
+          {/* <View>
+          // </View> */}
+          <View style={{ position: "relative" }}>
+            <Text
+              style={{
+                position: "absolute",
+                bottom: 22,
+                fontSize: 10,
+                fontWeight: "500",
+                lineHeight: 18,
+              }}
+            >
+              {props.subjectMsg}
+            </Text>
             <Text
               style={{
                 marginTop: 5,
@@ -62,7 +103,7 @@ const NotificationContainer = (props) => {
           </View>
           <View style={{ position: "absolute", bottom: 0, right: 0 }}>
             <Text style={{ fontSize: 11, color: "#A6A6A6" }}>
-              {props.msgTime}
+              {formatNotificationTime(props.msgTime)}
             </Text>
           </View>
         </View>
@@ -72,59 +113,39 @@ const NotificationContainer = (props) => {
 };
 
 const Notification = ({ navigation }) => {
+  const [notifiData, setNotifiData] = useState([]);
+  const { userToken } = useContext(AuthContext);
+  useEffect(() => {
+    getrequestwithtoken("student/notifications", userToken)
+      .then((res) => {
+        const objData = res.data.map((item) => item);
+        setNotifiData(objData);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
   return (
     <SafeAreaView style={styles.container}>
-      <Header
-        title="Notifications"
-        navigateTo={() => navigation.navigate("Dashboard")}
-      />
+      <Header title="Notifications" navigateTo={navigation.goBack} />
       <ScrollView>
         <View style={styles.mainView}>
           <View style={styles.innerView}></View>
 
           <View>
-            <NotificationContainer
-              NotificationMsg="Jenny Wilson  completed create new component."
-              imgName="phone-call"
-              msgTime="Just now"
-              iconColor="#C5F2EC"
-              iconName="JW"
-            />
-            <NotificationContainer
-              NotificationMsg="Ajax Valerio  completed create new component."
-              imgName="phone-call"
-              msgTime="1h"
-              iconColor="#E8A96E"
-              iconName="JW"
-            />
-            <NotificationContainer
-              NotificationMsg="Jenny Wilson  completed create new component."
-              imgName="phone-call"
-              msgTime="2h"
-              iconColor="#19CF4C"
-              iconName="JW"
-            />
-            <NotificationContainer
-              NotificationMsg="Jenny Wilson  completed create new component."
-              imgName="phone-call"
-              msgTime="4h"
-              iconColor="#8A9A98"
-              iconName="JW"
-            />
-            <NotificationContainer
-              NotificationMsg="Annete Black  completed Improve workflow in React."
-              imgName="phone-call"
-              msgTime="5h"
-              iconColor="#F47272"
-              iconName="AB"
-            />
-            <NotificationContainer
-              NotificationMsg="Jenny Wilson  completed create new component."
-              imgName="phone-call"
-              msgTime="23h"
-              iconColor="#6E90E8"
-              iconName="JW"
-            />
+            {notifiData.map((item, index) => {
+              return (
+                <View key={index}>
+                  <NotificationContainer
+                    subjectMsg={item.subject}
+                    NotificationMsg={item.message}
+                    msgTime={item.created_at}
+                    iconColor="#C5F2EC"
+                    iconName="SS"
+                  />
+                </View>
+              );
+            })}
           </View>
         </View>
       </ScrollView>
@@ -135,15 +156,11 @@ const Notification = ({ navigation }) => {
 export default Notification;
 
 const styles = StyleSheet.create({
-  container: {
-    // marginTop: 52,
-  },
+  container: {},
   mainView: {
     flex: 0,
-    // justifyContent: "center",
-    // alignItems: "center",
     width: "100%",
-    height: Dimensions.get("screen").height * 1.2,
+    height: Dimensions.get("screen").height * 0.9,
     backgroundColor: "#FFFCCE",
     paddingTop: 12,
   },

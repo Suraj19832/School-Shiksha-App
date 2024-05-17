@@ -139,7 +139,7 @@ const Dashboard = ({ navigation }) => {
       status: "inActive",
     },
   ];
-const [alldata ,setalldata] =useState([])
+  const [alldata, setalldata] = useState([]);
   useEffect(() => {
     Animated.timing(menuTranslateX, {
       toValue: isMenuOpen ? 0 : -menuWidth,
@@ -179,35 +179,35 @@ const [alldata ,setalldata] =useState([])
     // Define the URL you want to fetch data from
     const apiUrl = "master/service-type";
 
-    console.log("5555", apiUrl);
+    // console.log("5555", apiUrl);
     // Call the getstatedata function with the API URL
     getdata(apiUrl)
       .then((res) => {
-        console.log(
-          "Response from API in dashboard------------->.:",
-          res?.message
-        );
-        console.log(res.data);
+        // console.log(
+        //   "Response from API in dashboard------------->.:",
+        //   res?.message
+        // );
+        // console.log(res.data);
         // const longheading = res.data.map((item) => item.long_name);
         const longheading = res.data.map((item) => item);
-        console.log(longheading);
-        setcarddata([])
-        longheading?.map((item)=>{ 
-          return fetchUserData(item)
-        })
+        // console.log(longheading);
+        setcarddata([]);
+        longheading?.map((item) => {
+          return fetchUserData(item);
+        });
         setheading(longheading);
-        console.log("=======================", heading);
+        // console.log("=======================", heading);//
         const st_title = res?.data?.map((item) => item.short_name);
-        console.log(st_title);
+        // console.log(st_title);
         setsortheading(st_title);
-        console.log("0-0-0-0-0-0-0-0-0-0-0--", sortheading);
+        // console.log("0-0-0-0-0-0-0-0-0-0-0--", sortheading);
         // console.log("Plan Names:", planNames);
       })
       .catch((error) => {
         console.error("Error fetching data in dashboard:", error);
       });
   }, []);
-  console.log("?????????????????????????????>>>>000000>",JSON.stringify(carddata))
+  // console.log("?????????????????????????????>>>>000000>",JSON.stringify(carddata))
   const colorMap = {
     "Secondary Pass Student's Benefits": "#C83000",
     "H.S Pass Student's Benefits": "#004F3C",
@@ -225,9 +225,9 @@ const [alldata ,setalldata] =useState([])
       };
 
       const userData = await GetfetchDataWithParams(endpoint, params);
-      setcarddata((prev)=>{
-        return [...prev,{title:serviceType.long_name,data:userData.data}]
-      })
+      setcarddata((prev) => {
+        return [...prev, { title: serviceType.long_name, data: userData.data }];
+      });
       // console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<",userData,params); // Handle or process the fetched user data here
     } catch (error) {
       console.error("Error fetching user data:", error);
@@ -567,9 +567,9 @@ const [alldata ,setalldata] =useState([])
         </View>
         <View>
           {/* new start  */}
-<View>
-  {/* data from api  */}
-  {/* <View>
+          <View>
+            {/* data from api  */}
+            {/* <View>
   {carddata.map((item ,index) => {
   console.log("00000000000000000000000000000",carddata[index].title)
   return (
@@ -621,10 +621,8 @@ const [alldata ,setalldata] =useState([])
   )
 })}
   </View> */}
-{/* end here  */}
-
-</View>
-         
+            {/* end here  */}
+          </View>
         </View>
 
         <View>

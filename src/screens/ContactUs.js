@@ -75,12 +75,12 @@ const ContactUs = ({ navigation }) => {
   useEffect(() => {
     getdata("master/contact-details")
       .then((res) => {
-        console.log(res?.data);
+        // console.log(res?.data);
         setData(res?.data);
         setIsLoading(false); // Set loading to false when data is fetched
       })
       .catch((err) => {
-        console.log("dkjhkjghk");
+        // console.log("dkjhkjghk");
         setIsLoading(false); // Set loading to false if there's an error
       });
   }, []);

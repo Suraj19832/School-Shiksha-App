@@ -687,6 +687,7 @@ const AdmissionForm = ({ navigation }) => {
                 placeholder="Anandamohan College"
                 placeholderTextColor={"rgba(166, 166, 166, 1)"}
                 value={collegeName}
+                editable={false}
               />
             </View>
             <View>
@@ -696,6 +697,7 @@ const AdmissionForm = ({ navigation }) => {
                 placeholder="B.C.A"
                 placeholderTextColor={"rgba(166, 166, 166, 1)"}
                 value={courseName}
+                editable={false}
               />
             </View>
           </View>
@@ -871,7 +873,7 @@ const AdmissionForm = ({ navigation }) => {
                     </Text>
                   )}
               </View>
-              <View style={styles.fields_main}>
+              {/* <View style={styles.fields_main}>
                 <Text style={styles.inputHeading}>Nationality</Text>
                 <View style={styles.input_box}>
                   <Image
@@ -896,7 +898,7 @@ const AdmissionForm = ({ navigation }) => {
                       Please enter Nationality{" "}
                     </Text>
                   )}
-              </View>
+              </View> */}
               <View style={styles.fields_main}>
                 <Text style={styles.inputHeading}>Religion</Text>
                 <View style={styles.input_box}>
@@ -983,7 +985,7 @@ const AdmissionForm = ({ navigation }) => {
                 <Text style={styles.text}>Family Details</Text>
               </View>
 
-              <View style={styles.fields_main}>
+              {/* <View style={styles.fields_main}>
                 <Text style={styles.inputHeading}>Mother's Name</Text>
                 <View style={styles.input_box}>
                   <Image
@@ -1008,10 +1010,10 @@ const AdmissionForm = ({ navigation }) => {
                       Mother name is required
                     </Text>
                   )}
-              </View>
-              {/* Father Name */}
+              </View> */}
+              {/* Guardian Name */}
               <View style={styles.fields_main}>
-                <Text style={styles.inputHeading}>Father's Name</Text>
+                <Text style={styles.inputHeading}>Guardian's Name</Text>
                 <View style={styles.input_box}>
                   <FontAwesome5
                     name="user"
@@ -1020,7 +1022,7 @@ const AdmissionForm = ({ navigation }) => {
                   />
                   <TextInput
                     style={styles.input}
-                    placeholder="Enter Your Father's name"
+                    placeholder="Enter your guardian's name"
                     placeholderTextColor={"rgba(166, 166, 166, 1)"}
                     value={formData.name}
                     onChangeText={(text) =>
@@ -1033,12 +1035,14 @@ const AdmissionForm = ({ navigation }) => {
                   !formData.fatherName &&
                   fieldTouched.fatherName && (
                     <Text style={{ color: "red" }}>
-                      Father name is required
+                      Guardian's name is required
                     </Text>
                   )}
               </View>
               <View style={styles.fields_main}>
-                <Text style={styles.inputHeading}>Father's Mobile Number</Text>
+                <Text style={styles.inputHeading}>
+                  Guardian's Mobile Number
+                </Text>
                 <View style={styles.input_box}>
                   <Feather
                     name="phone-call"
@@ -1047,7 +1051,7 @@ const AdmissionForm = ({ navigation }) => {
                   />
                   <TextInput
                     style={styles.input}
-                    placeholder="Enter mobile number"
+                    placeholder="Enter guardian mobile number"
                     keyboardType="numeric"
                     placeholderTextColor={"rgba(166, 166, 166, 1)"}
                     value={formData.fatherMobile}
@@ -1067,7 +1071,7 @@ const AdmissionForm = ({ navigation }) => {
                   )}
               </View>
               <View style={styles.fields_main}>
-                <Text style={styles.inputHeading}>Parents Occupation</Text>
+                <Text style={styles.inputHeading}>Guardian's Occupation</Text>
                 <TouchableOpacity onPress={toggleDropdownoccupation}>
                   <View style={styles.input_box}>
                     <Image
@@ -1161,7 +1165,7 @@ const AdmissionForm = ({ navigation }) => {
                 <Text style={styles.text}>Education Details</Text>
               </View>
               {/* Last qualification */}
-              <View style={styles.fields_main}>
+              {/* <View style={styles.fields_main}>
                 <Text style={styles.inputHeading}>Last Qualification</Text>
                 <TouchableOpacity onPress={toggleDropdownLastQuali}>
                   <View style={styles.input_box}>
@@ -1204,10 +1208,10 @@ const AdmissionForm = ({ navigation }) => {
                     <Text>12</Text>
                   </TouchableOpacity>
                 </View>
-              )}
+              )} */}
 
               <View style={styles.fields_main}>
-                <Text style={styles.inputHeading}>H.S Pass Out Year</Text>
+                <Text style={styles.inputHeading}>10+2 Pass Out Year</Text>
                 <TouchableOpacity onPress={toggleDropdownHs}>
                   <View style={styles.input_box}>
                     <Image
@@ -2074,9 +2078,9 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   input: {
-    paddingRight: "35%",
     position: "relative",
     color: "black",
+    width: "90%",
   },
   iconImage: {
     height: 17,

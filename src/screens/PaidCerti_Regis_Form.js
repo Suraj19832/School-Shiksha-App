@@ -79,7 +79,7 @@ const PaidCerti_Regis_Form = ({ navigation }) => {
     setDropdownOpenQualification(null); // Clear selected option when user edits input
   };
   const route = useRoute();
-  const { collegeName ,courseName } = route.params;
+  const { collegeName, courseName } = route.params;
   return (
     <View style={styles.container}>
       <Header
@@ -107,6 +107,7 @@ const PaidCerti_Regis_Form = ({ navigation }) => {
                 placeholder="Brainware Univesity"
                 value={collegeName}
                 placeholderTextColor={"rgba(166, 166, 166, 1)"}
+                editable={false}
               />
             </View>
             <View>
@@ -116,6 +117,7 @@ const PaidCerti_Regis_Form = ({ navigation }) => {
                 placeholder="Course"
                 value={courseName}
                 placeholderTextColor={"rgba(166, 166, 166, 1)"}
+                editable={false}
               />
             </View>
           </View>
@@ -134,7 +136,7 @@ const PaidCerti_Regis_Form = ({ navigation }) => {
                   />
                   <TextInput
                     style={styles.input}
-                    placeholder="Name"
+                    placeholder="Enter your name"
                     placeholderTextColor={"rgba(166, 166, 166, 1)"}
                   />
                 </View>
@@ -148,7 +150,7 @@ const PaidCerti_Regis_Form = ({ navigation }) => {
                   <Fontisto name="date" size={14} color="rgba(0, 54, 126, 1)" />
                   <TextInput
                     style={styles.input}
-                    placeholder="Date of Birth"
+                    placeholder="YYYY/MM/DD"
                     placeholderTextColor={"rgba(166, 166, 166, 1)"}
                     value={userDetails.date_of_birth}
                     onChangeText={(text) =>
@@ -219,7 +221,7 @@ const PaidCerti_Regis_Form = ({ navigation }) => {
                   />
                   <TextInput
                     style={styles.input}
-                    placeholder="Enter your email"
+                    placeholder="Enter your email id"
                     placeholderTextColor={"rgba(166, 166, 166, 1)"}
                   />
                 </View>
@@ -262,7 +264,7 @@ const PaidCerti_Regis_Form = ({ navigation }) => {
                   />
                   <TextInput
                     style={styles.input}
-                    placeholder="Enter your State"
+                    placeholder="Select"
                     placeholderTextColor={"rgba(166, 166, 166, 1)"}
                     editable={false}
                   />
@@ -283,7 +285,7 @@ const PaidCerti_Regis_Form = ({ navigation }) => {
                   />
                   <TextInput
                     style={styles.input}
-                    placeholder="Enter your district"
+                    placeholder="Select"
                     placeholderTextColor={"rgba(166, 166, 166, 1)"}
                     editable={false}
                   />
@@ -297,7 +299,7 @@ const PaidCerti_Regis_Form = ({ navigation }) => {
               </View>
 
               <View style={styles.fields_main}>
-                <Text style={styles.inputHeading}>P.O</Text>
+                <Text style={styles.inputHeading}>Post Office</Text>
                 <View style={styles.input_box}>
                   <Image
                     source={require("../../assets/icons/post-office.png")}
@@ -305,13 +307,13 @@ const PaidCerti_Regis_Form = ({ navigation }) => {
                   />
                   <TextInput
                     style={styles.input}
-                    placeholder="Enter your Post Office"
+                    placeholder="Enter your post office"
                     placeholderTextColor={"rgba(166, 166, 166, 1)"}
                   />
                 </View>
               </View>
               <View style={styles.fields_main}>
-                <Text style={styles.inputHeading}>P.S</Text>
+                <Text style={styles.inputHeading}>Police Station</Text>
                 <View style={styles.input_box}>
                   <Image
                     source={require("../../assets/img/police.png")}
@@ -319,7 +321,7 @@ const PaidCerti_Regis_Form = ({ navigation }) => {
                   />
                   <TextInput
                     style={styles.input}
-                    placeholder="Enter your Police Station"
+                    placeholder="Enter your police station"
                     placeholderTextColor={"rgba(166, 166, 166, 1)"}
                   />
                 </View>
@@ -334,7 +336,7 @@ const PaidCerti_Regis_Form = ({ navigation }) => {
                   />
                   <TextInput
                     style={styles.input}
-                    placeholder="Enter your pin code"
+                    placeholder="Enter your pincode"
                     placeholderTextColor={"rgba(166, 166, 166, 1)"}
                   />
                 </View>
@@ -394,7 +396,7 @@ const PaidCerti_Regis_Form = ({ navigation }) => {
                   />
                   <TextInput
                     style={styles.input}
-                    placeholder="Phone"
+                    placeholder="Enter your whatsapp number"
                     placeholderTextColor={"rgba(166, 166, 166, 1)"}
                   />
                 </View>
