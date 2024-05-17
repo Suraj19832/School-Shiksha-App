@@ -171,15 +171,15 @@ const Registration = ({ navigation }) => {
             }
             if (res?.message === "Validation errors") {
               if (
-                !res?.status && res?.errors?.referral_code ===
-                `${refercode} invalid referral code`
+                !res?.status &&
+                res?.errors?.referral_code ===
+                  `${refercode} invalid referral code`
               ) {
                 showToast("Invalid Referral");
               }
-              if(res?.errors?.mobile || res?.errors?.email){
+              if (res?.errors?.mobile || res?.errors?.email) {
                 showToast("User Exists");
               }
-            
             }
           })
           .catch((err) => {
@@ -709,7 +709,7 @@ const Registration = ({ navigation }) => {
                   <Feather name="user" size={16} color="rgba(0, 54, 126, 1)" />
                   <TextInput
                     style={styles.input}
-                    placeholder="Enter your full name"
+                    placeholder="Enter your Full Name"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
                     value={formData.name}
                     onChangeText={(text) => handleInputChange("name", text)}
@@ -743,7 +743,7 @@ const Registration = ({ navigation }) => {
                   <Feather name="user" size={16} color="rgba(0, 54, 126, 1)" />
                   <TextInput
                     style={styles.input}
-                    placeholder="Enter your guardian's name"
+                    placeholder="Enter your Guardian's Name"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
                     value={formData.fatherName}
                     onChangeText={(text) =>
@@ -782,7 +782,7 @@ const Registration = ({ navigation }) => {
                   <TextInput
                     style={styles.input}
                     keyboardType="numeric"
-                    placeholder="Enter your mobile number"
+                    placeholder="Enter your Mobile Number"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
                     value={formData.mobile}
                     onChangeText={(text) =>
@@ -826,7 +826,7 @@ const Registration = ({ navigation }) => {
                   <TextInput
                     style={styles.input}
                     keyboardType="numeric"
-                    placeholder="Enter your whatsapp number"
+                    placeholder="Enter your Whatsapp Number"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
                     value={formData.whatsapp_number}
                     onChangeText={(text) =>
@@ -866,7 +866,7 @@ const Registration = ({ navigation }) => {
                   <Feather name="mail" size={16} color="rgba(0, 54, 126, 1)" />
                   <TextInput
                     style={styles.input}
-                    placeholder="Enter your email id"
+                    placeholder="Enter your Email Id"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
                     value={email}
                     onChangeText={handleEmailChange}
@@ -1362,7 +1362,7 @@ const Registration = ({ navigation }) => {
                   />
                   <TextInput
                     style={styles.input}
-                    placeholder="Enter your full address"
+                    placeholder="Enter your Full Address"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
                     value={formData.address}
                     onChangeText={(text) => handleInputChange("address", text)}
@@ -1793,7 +1793,7 @@ const Registration = ({ navigation }) => {
                   />
                   <TextInput
                     style={styles.input}
-                    placeholder="Enter your police station"
+                    placeholder="Enter your Police Station"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
                     value={formData.police_station}
                     onChangeText={(text) =>

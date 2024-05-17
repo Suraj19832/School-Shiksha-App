@@ -21,6 +21,7 @@ import {
   FontAwesome,
   Feather,
   AntDesign,
+  MaterialCommunityIcons,
 } from "@expo/vector-icons";
 import Header from "../../components/Header";
 import Checkbox from "expo-checkbox";
@@ -716,7 +717,7 @@ const AdmissionForm = ({ navigation }) => {
                   />
                   <TextInput
                     style={styles.input}
-                    placeholder="Name"
+                    placeholder="Enter your name"
                     placeholderTextColor={"rgba(166, 166, 166, 1)"}
                     value={formData.name}
                     onChangeText={(text) => handleInputChange("name", text)}
@@ -740,7 +741,7 @@ const AdmissionForm = ({ navigation }) => {
                   />
                   <TextInput
                     style={styles.input}
-                    placeholder="Date of Birth"
+                    placeholder="YYYY/MM/DD"
                     placeholderTextColor={"rgba(166, 166, 166, 1)"}
                   />
                 </View>
@@ -755,7 +756,7 @@ const AdmissionForm = ({ navigation }) => {
                   />
                   <TextInput
                     style={styles.input}
-                    placeholder="Enter aadhar number"
+                    placeholder="Enter your Aadhar number"
                     value={formData.aadhar_number}
                     onChangeText={(text) =>
                       handleInputChange("aadhar_number", text)
@@ -831,7 +832,7 @@ const AdmissionForm = ({ navigation }) => {
                   />
                   <TextInput
                     style={styles.input}
-                    placeholder="Enter your email"
+                    placeholder="Enter your Email id"
                     value={email}
                     onChangeText={handleEmailChange}
                     onBlur={validateEmail}
@@ -853,7 +854,7 @@ const AdmissionForm = ({ navigation }) => {
                   />
                   <TextInput
                     style={styles.input}
-                    placeholder="Enter your mobile number"
+                    placeholder="Enter your Mobile number"
                     keyboardType="numeric"
                     placeholderTextColor={"rgba(166, 166, 166, 1)"}
                     value={formData.mobile}
@@ -908,7 +909,7 @@ const AdmissionForm = ({ navigation }) => {
                   />
                   <TextInput
                     style={styles.input}
-                    placeholder="Select"
+                    placeholder="Enter your Religion"
                     placeholderTextColor={"rgba(166, 166, 166, 1)"}
                     value={formData.religion}
                     onChangeText={(text) => handleInputChange("religion", text)}
@@ -944,6 +945,132 @@ const AdmissionForm = ({ navigation }) => {
                   fieldTouched.address && (
                     <Text style={{ color: "red" }}>
                       Please enter Your Address{" "}
+                    </Text>
+                  )}
+              </View>
+              <View style={styles.fields_main}>
+                <Text style={styles.inputHeading}>Post Office</Text>
+                <View style={styles.input_box}>
+                  <MaterialCommunityIcons
+                    name="police-station"
+                    size={16}
+                    color="rgba(0, 54, 126, 1)"
+                  />
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Enter your Post office"
+                    placeholderTextColor={"rgba(166, 166, 166, 1)"}
+                    value={formData.address}
+                    onChangeText={(text) => handleInputChange("address", text)}
+                    onBlur={() => handleInputBlur("address")}
+                  />
+                </View>
+                {!formErrors.address &&
+                  !formData.address &&
+                  fieldTouched.address && (
+                    <Text style={{ color: "red" }}>
+                      Please enter Your post office{" "}
+                    </Text>
+                  )}
+              </View>
+              <View style={styles.fields_main}>
+                <Text style={styles.inputHeading}>Police Station</Text>
+                <View style={styles.input_box}>
+                  <Image
+                    source={require("../../assets/img/police.png")}
+                    style={styles.iconImgStyle}
+                  />
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Enter your Police station"
+                    placeholderTextColor={"rgba(166, 166, 166, 1)"}
+                    value={formData.address}
+                    onChangeText={(text) => handleInputChange("address", text)}
+                    onBlur={() => handleInputBlur("address")}
+                  />
+                </View>
+                {!formErrors.address &&
+                  !formData.address &&
+                  fieldTouched.address && (
+                    <Text style={{ color: "red" }}>
+                      Please enter Your police station{" "}
+                    </Text>
+                  )}
+              </View>
+              <View style={styles.fields_main}>
+                <Text style={styles.inputHeading}>State</Text>
+                <TouchableOpacity>
+                  <View style={styles.input_box}>
+                    <MaterialCommunityIcons
+                      name="police-station"
+                      size={16}
+                      color="rgba(0, 54, 126, 1)"
+                    />
+                    <TextInput
+                      style={styles.input}
+                      placeholder="Select"
+                      value={inputValuegender}
+                      onBlur={() => handleSelectOptiongender(inputValuegender)}
+                      editable={false} // Allow editing only when dropdown is closed
+                      placeholderTextColor={"rgba(166, 166, 166, 1)"}
+                    />
+                    <AntDesign
+                      name="caretdown"
+                      style={styles.arrowdown}
+                      size={15}
+                      color="rgba(0, 54, 126, 1)"
+                    />
+                  </View>
+                </TouchableOpacity>
+              </View>
+
+              <View style={styles.fields_main}>
+                <Text style={styles.inputHeading}>District</Text>
+                <TouchableOpacity>
+                  <View style={styles.input_box}>
+                    <Image
+                      source={require("../../assets/img/district.png")}
+                      style={styles.iconImgStyle}
+                    />
+                    <TextInput
+                      style={styles.input}
+                      placeholder="Select"
+                      value={inputValuegender}
+                      onBlur={() => handleSelectOptiongender(inputValuegender)}
+                      editable={false} // Allow editing only when dropdown is closed
+                      placeholderTextColor={"rgba(166, 166, 166, 1)"}
+                    />
+                    <AntDesign
+                      name="caretdown"
+                      style={styles.arrowdown}
+                      size={15}
+                      color="rgba(0, 54, 126, 1)"
+                    />
+                  </View>
+                </TouchableOpacity>
+              </View>
+
+              <View style={styles.fields_main}>
+                <Text style={styles.inputHeading}>Pin Code</Text>
+                <View style={styles.input_box}>
+                  <Image
+                    source={require("../../assets/img/password.png")}
+                    style={styles.iconImgStyle}
+                  />
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Enter your pincode"
+                    placeholderTextColor={"rgba(166, 166, 166, 1)"}
+                    value={formData.address}
+                    onChangeText={(text) => handleInputChange("address", text)}
+                    onBlur={() => handleInputBlur("address")}
+                  />
+                </View>
+                {!formErrors.address &&
+                  !formData.address &&
+                  fieldTouched.address && (
+                    <Text style={{ color: "red" }}>
+                      Please enter Your pincode{" "}
                     </Text>
                   )}
               </View>
@@ -1137,7 +1264,7 @@ const AdmissionForm = ({ navigation }) => {
                   )}
               </View>
               {/* Member */}
-              <View style={styles.fields_main}>
+              {/* <View style={styles.fields_main}>
                 <Text style={styles.inputHeading}>Number of Member</Text>
                 <View style={styles.input_box}>
                   <Image
@@ -1160,7 +1287,7 @@ const AdmissionForm = ({ navigation }) => {
                       Member number is required
                     </Text>
                   )}
-              </View>
+              </View> */}
               <View style={styles.headingg}>
                 <Text style={styles.text}>Education Details</Text>
               </View>
@@ -1251,7 +1378,7 @@ const AdmissionForm = ({ navigation }) => {
                   </TouchableOpacity>
                 </View>
               )}
-              <View style={styles.fields_main}>
+              {/* <View style={styles.fields_main}>
                 <Text style={styles.inputHeading}>H.S Roll Number</Text>
                 <View style={styles.input_box}>
                   <Image
@@ -1275,7 +1402,7 @@ const AdmissionForm = ({ navigation }) => {
                   fieldTouched.roll_number && (
                     <Text style={{ color: "red" }}>Roll is required</Text>
                   )}
-              </View>
+              </View> */}
               <View style={styles.fields_main}>
                 <Text style={styles.inputHeading}>Percentage</Text>
                 <View style={styles.input_box}>
@@ -1300,7 +1427,7 @@ const AdmissionForm = ({ navigation }) => {
                     <Text style={{ color: "red" }}>Percentage is required</Text>
                   )}
               </View>
-              <View style={styles.fields_main}>
+              {/* <View style={styles.fields_main}>
                 <Text style={styles.inputHeading}>Total Number</Text>
                 <View style={styles.input_box}>
                   <Image
@@ -1325,7 +1452,7 @@ const AdmissionForm = ({ navigation }) => {
                       Total Number is required
                     </Text>
                   )}
-              </View>
+              </View> */}
               <View style={styles.headingg}>
                 <Text style={styles.text}>Upload Documents</Text>
               </View>
@@ -1601,7 +1728,7 @@ const AdmissionForm = ({ navigation }) => {
                 </Modal>
               </View>
               {/* H.S.Marksheet */}
-              <View>
+              {/* <View>
                 {!capturedImageHSMarksheet && !fileUriHSMarksheet && (
                   <View style={styles.fields_main}>
                     <Text style={styles.inputHeading}>H.S.Marksheet</Text>
@@ -1711,7 +1838,7 @@ const AdmissionForm = ({ navigation }) => {
                     </View>
                   </View>
                 </Modal>
-              </View>
+              </View> */}
 
               {/* Passport photo */}
               <View>
@@ -2091,6 +2218,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: 22,
   },
+  iconImgStyle: { height: 15, width: 15, tintColor: "#00367E" },
   input_box: {
     flexDirection: "row",
     alignItems: "center",

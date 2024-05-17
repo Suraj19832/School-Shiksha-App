@@ -41,6 +41,13 @@ const formatNotificationTime = (dateString) => {
   }
 };
 
+const truncateMessage = (message, maxLength = 30) => {
+  if (message.length > maxLength) {
+    return message.substring(0, maxLength) + "...";
+  }
+  return message;
+};
+
 const NotificationContainer = (props) => {
   const imgPath = {
     // "phone-call": require("../../assets/img/phone-call.png"),
@@ -77,7 +84,7 @@ const NotificationContainer = (props) => {
           {/* <View>
           // </View> */}
           <View style={{ position: "relative" }}>
-            <Text
+            <View
               style={{
                 position: "absolute",
                 bottom: 22,
@@ -86,8 +93,8 @@ const NotificationContainer = (props) => {
                 lineHeight: 18,
               }}
             >
-              {props.subjectMsg}
-            </Text>
+              <Text>{props.subjectMsg}</Text>
+            </View>
             <Text
               style={{
                 marginTop: 5,
@@ -98,7 +105,7 @@ const NotificationContainer = (props) => {
                 fontWeight: "500",
               }}
             >
-              {props.NotificationMsg}
+              {truncateMessage(props.NotificationMsg)}
             </Text>
           </View>
           <View style={{ position: "absolute", bottom: 0, right: 0 }}>
