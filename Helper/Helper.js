@@ -32,18 +32,21 @@ export const getdata = async (endpoint) => {
 };
 
 export const getrequestwithtoken = async (endpoint, token) => {
-  const url = `${Configs.API_BASE_URL_V1}/${endpoint}`;
+  const url = `${Configs.API_BASE_URL_V1}${endpoint}`;
+  console.log("6666",url,token)
   try {
     const response = await fetch(url, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-    if (!response.ok) {
-      throw new Error("Failed to fetch data");
-    }
+    console.log("554545",response)
+    // if (!response.ok) {
+    //   throw new Error("Failed to fetch data");
+    // }
     const data = await response.json();
-    console.log(data);
+    console.log("220202",data);
+    
     return data; // Return the data here
   } catch (error) {
     console.error("Error fetching dataa:", error);

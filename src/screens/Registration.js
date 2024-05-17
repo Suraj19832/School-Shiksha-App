@@ -68,7 +68,7 @@ const Registration = ({ navigation }) => {
     pincode: "",
     aadhar_number: "",
     // nationality: "",
-    religion: "",
+    // religion: "",
     district_id: "",
     password: "",
   });
@@ -140,7 +140,7 @@ const Registration = ({ navigation }) => {
         formsData.append("password", password);
         formsData.append("referral_code", formData.referral_code);
         // formsData.append("nationality", formData.nationality);
-        formsData.append("religion", formData.religion);
+        // formsData.append("religion", formData.religion);
         // formsData.append("block", blockId);
         formsData.append("class_id", classid);
         formsData.append("plan_id", planid);
@@ -171,12 +171,15 @@ const Registration = ({ navigation }) => {
             }
             if (res?.message === "Validation errors") {
               if (
-                res?.errors?.referral_code ===
+                !res?.status && res?.errors?.referral_code ===
                 `${refercode} invalid referral code`
               ) {
                 showToast("Invalid Referral");
               }
-              showToast("User Exists");
+              if(res?.errors?.mobile || res?.errors?.email){
+                showToast("User Exists");
+              }
+            
             }
           })
           .catch((err) => {
@@ -1305,7 +1308,7 @@ const Registration = ({ navigation }) => {
                   )}
               </View> */}
               {/* Religion */}
-              <View style={styles.inputbox_main_container}>
+              {/* <View style={styles.inputbox_main_container}>
                 <View style={{ flexDirection: "row", gap: 1 }}>
                   <Text
                     style={{
@@ -1337,7 +1340,7 @@ const Registration = ({ navigation }) => {
                   fieldTouched.religion && (
                     <Text style={{ color: "red" }}>Please enter Religion </Text>
                   )}
-              </View>
+              </View> */}
               {/* full address  */}
               <View style={styles.inputbox_main_container}>
                 <View style={{ flexDirection: "row", gap: 1 }}>

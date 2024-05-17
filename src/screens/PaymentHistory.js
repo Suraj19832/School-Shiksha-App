@@ -9,7 +9,7 @@ import {
   Modal,
   TouchableOpacity,
 } from "react-native";
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   FontAwesome,
   Ionicons,
@@ -21,15 +21,162 @@ import {
   Feather,
   Octicons,
 } from "@expo/vector-icons";
+import { AuthContext } from "../../Utils/context/AuthContext";
 import { Image } from "react-native";
 import Header from "../../components/Header";
+import { getrequestwithtoken } from "../../Helper/Helper";
+import { ActivityIndicator } from "react-native";
+
 const PaymentHistory = ({ navigation }) => {
+  const { userToken } = useContext(AuthContext);
+  // console.log(userToken);
+  const [orderHistory, setorderHistory] = useState([]);
+  const [pageloading, setpageloading] = useState(true)
+  const getInfoData = async()=>{
+   
+    const url = "student/order-details"; 
+    await getrequestwithtoken(url, userToken)
+       .then((res) => {
+         // console.log("iiohhuh",res.data)
+         // console.log("tytytyytytytytttytyyytytytytytytytyyt", res?.status);
+         const order = res.data.map((item,index) => item);
+         setorderHistory(order);   
+         setpageloading(false)
+        //  console.log("+++++++>>",res.status) 
+        //  console.log("+++++++<<",res?.data) 
+        //  console.log("+++++++)))",res?.data[0]?.item_description)
+        // console.log("55555",order) 
+       })
+       .catch((error) => {
+         console.error("Error posting css", error?.message);
+        
+         // setIsLoading(false);
+       });
+  }
+  useEffect(() => {
+    
+    getInfoData()
+  }, [userToken]);
+
+// console.log(to)
+
+console.log("cdcjdoijcodijcoisdjcojscsouhiufhvfdhviuh",orderHistory)
+const formatDate = (dateString) => {
+  const date = new Date(dateString);
+
+  // Manually format the date part to "DD.MM.YYYY"
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+  const year = date.getFullYear();
+
+  const formattedDate = `${day}.${month}.${year}`;
+
+  // Format the time part to "h:mm AM/PM"
+  const options = {
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true
+  };
+  const formattedTime = date.toLocaleString('en-US', options);
+
+  return `${formattedDate} ${formattedTime}`;
+};
+
+if (pageloading) {
+  return (
+    <View>
+      <Header
+        title="Contact Us"
+        navigateTo={() => navigation.goBack("Home")}
+      />
+      <View style={{justifyContent:'center' ,alignItems:'center'  ,height:'90%'}}>
+      <ActivityIndicator
+        size="large"
+        color="#00367E"
+        style={{justifyContent:'center',alignSelf:'center'}}
+      />
+      </View>
+    
+    </View>
+  );
+}
+
+  
   return (
     <SafeAreaView style={styles.container}>
       <Header title="Payment History" navigateTo={navigation.goBack} />
-      <ScrollView>
+      <ScrollView> 
         <View style={{ alignItems: "center", marginTop: 20 }}>
-          <View
+          {/* By api implementation  */}
+          {orderHistory.map((items, key) => (
+           
+    <>
+         <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    width: "85%",
+                  }}
+                >
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      gap: 10,
+                      marginBottom: 20,
+                    }}
+                  >
+                    <Image
+                      style={styles.image}
+                      source={require("../../assets/img/Group 68.png")}
+                    />
+                    <View>
+                      <Text
+                        style={{
+                          color: "#1A1A1A",
+                          fontWeight: "500",
+                          fontSize: 14,
+                        }}
+                      >
+                        {items.item_description}
+                      </Text>
+                      <Text
+                        style={{
+                          color: "#A6A6A6",
+                          fontWeight: "400",
+                          fontSize: 10,
+                        }}
+                      >
+                        {formatDate(items.created_at)}
+                      </Text>
+                    </View>
+                  </View>
+                  <View>
+                    <Text
+                      style={{
+                        color: "#BE0000",
+                        fontWeight: "500",
+                        fontSize: 14,
+                      }}
+                    >
+                      -{items.total}
+                    </Text>
+                  </View>
+                </View>
+
+                <View style={styles.hairlineMenu} />
+             
+    </>
+           
+           
+          ))}
+
+          {/* end  */}
+
+
+          {/* dummy  */}
+          {/* <View
             style={{
               flexDirection: "row",
               alignItems: "center",
@@ -373,7 +520,7 @@ const PaymentHistory = ({ navigation }) => {
             </View>
           </View>
 
-          <View style={styles.hairlineMenu} />
+          <View style={styles.hairlineMenu} /> */}
         </View>
       </ScrollView>
     </SafeAreaView>
