@@ -112,8 +112,9 @@ const Registration = ({ navigation }) => {
   };
   const [refercode, setrefercode] = useState("");
   const handleRegistration = async () => {
+    setLoading(true);
     if (formData.name && formData.mobile) {
-      setLoading(true);
+     
     }
     const formsData = new FormData();
     if (
@@ -122,7 +123,17 @@ const Registration = ({ navigation }) => {
       formData.pincode &&
       formData.police_station &&
       formData.address &&
-      formData.whatsapp_number
+      formData.whatsapp_number &&
+      formData.fatherName &&
+      userDetails.date_of_birth &&
+      genderData &&
+      classid &&
+      planid 
+
+
+
+
+
     ) {
       if (isChecked) {
         formsData.append("name", formData.name);
@@ -194,7 +205,9 @@ const Registration = ({ navigation }) => {
     } else {
       console.log("Registration failed: Required fields are missing");
       // Alert.alert("Alert", "Please Fill up All Fields");
-      showToast("Please fill up all blacks");
+      setLoading(false)
+      showToast("Please fill up all fields");
+      
     }
   };
   // email validation
@@ -228,20 +241,34 @@ const Registration = ({ navigation }) => {
     setPasswordVisible(!passwordVisible);
   };
 
+  // const validatePassword = () => {
+  //   const passwordPattern =
+  //     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{5,}$/;
+
+  //   if (!password.trim()) {
+  //     setPasswordError("Password is required");
+  //   } else if (!passwordPattern.test(password)) {
+  //     setPasswordError(
+  //       "Password must contain a capital letter, a lowercase letter, a special symbol, and have a minimum length of 5 characters"
+  //     );
+  //   } else {
+  //     setPasswordError("");
+  //   }
+  // };
+
   const validatePassword = () => {
-    const passwordPattern =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{5,}$/;
+    const passwordPattern = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{5,}$/;
 
     if (!password.trim()) {
-      setPasswordError("Password is required");
+        setPasswordError("Password is required");
     } else if (!passwordPattern.test(password)) {
-      setPasswordError(
-        "Password must contain a capital letter, a lowercase letter, a special symbol, and have a minimum length of 5 characters"
-      );
+        setPasswordError(
+            "Password must contain at least one capital letter, one special character, one number, and be at least 5 characters long"
+        );
     } else {
-      setPasswordError("");
+        setPasswordError("");
     }
-  };
+};
 
   const handlePasswordChange = (text) => {
     setPassword(text);
