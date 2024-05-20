@@ -9,7 +9,7 @@ import {
   Modal,
   TouchableOpacity,
   FlatList,
-  Dimensions
+  Dimensions,
 } from "react-native";
 import React, { useRef, useState } from "react";
 import {
@@ -69,7 +69,7 @@ const OnlineCourseDetails = ({ navigation }) => {
             source={require("../../assets/img/onlinecourselist.png")}
           />
         </View> */}
-           <View style={{ position: "relative" }}>
+        <View style={{ position: "relative" }}>
           <FlatList
             ref={flatListRef}
             data={images}
@@ -361,8 +361,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   imgStyle: {
-    height: Dimensions.get("window").height * 0.29,
-    width: Dimensions.get("window").width * 0.999,
+    // height: Dimensions.get("window").height * 0.29,
+    // width: Dimensions.get("window").width * 0.999,
     // borderRadius: 10,
+    height: 172,
+    width: 360,
   },
 });

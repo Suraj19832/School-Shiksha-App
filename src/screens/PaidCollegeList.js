@@ -41,7 +41,6 @@ const FreeCollegeList = ({ navigation }) => {
     navigation.navigate("sucessfully");
   };
 
-
   const [activeIndex, setActiveIndex] = useState(0);
   const flatListRef = useRef(null);
   const images = [
@@ -81,7 +80,7 @@ const FreeCollegeList = ({ navigation }) => {
             source={require("../../assets/img/paidcollegeCroped.png")}
           />
         </View> */}
-           <View style={{ position: "relative" }}>
+        <View style={{ position: "relative" }}>
           <FlatList
             ref={flatListRef}
             data={images}
@@ -888,8 +887,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   imgStyle: {
-    height: Dimensions.get("window").height * 0.29,
-    width: Dimensions.get("window").width * 0.999,
+    // height: Dimensions.get("window").height * 0.29,
+    // width: Dimensions.get("window").width * 0.999,
     // borderRadius: 10,
+    height: 162,
+    width: 360,
   },
 });

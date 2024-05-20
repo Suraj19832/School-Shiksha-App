@@ -8,8 +8,9 @@ import {
   StatusBar,
   Modal,
   TouchableOpacity,
+  FlatList,
 } from "react-native";
-import React from "react";
+import React, { useRef, useState } from "react";
 import {
   FontAwesome,
   Ionicons,
@@ -28,15 +29,54 @@ import { useRoute } from "@react-navigation/native";
 const PaidCollegeDetails = ({ navigation }) => {
   const route = useRoute();
   const { collegeName, courseName } = route.params;
+
+  const [activeIndex, setActiveIndex] = useState(0);
+  const flatListRef = useRef(null);
+  const images = [
+    require("../../assets/img/paidcollegeCroped.png"),
+    require("../../assets/img/slider3.png"),
+    require("../../assets/img/slider2.png"),
+  ];
+  const onViewableItemsChanged = ({ viewableItems }) => {
+    if (viewableItems && viewableItems.length > 0) {
+      setActiveIndex(viewableItems[0].index || 0);
+    }
+  };
+  const renderPagination = () => {
+    return (
+      <View style={styles.paginationContainer}>
+        <View style={styles.pagination}>
+          {images.map((_, index) => (
+            <View
+              key={index}
+              style={[
+                styles.paginationDot,
+                index === activeIndex && styles.paginationDotActive,
+              ]}
+            />
+          ))}
+        </View>
+      </View>
+    );
+  };
   return (
     <SafeAreaView style={styles.container}>
       <Header title="Paid College Details" navigateTo={navigation.goBack} />
       <ScrollView style={{ backgroundColor: "#FFFCCE" }}>
-        <View>
-          <Image
-            style={styles.image}
-            source={require("../../assets/img/paidcollegeCroped.png")}
+        <View style={{ position: "relative" }}>
+          <FlatList
+            ref={flatListRef}
+            data={images}
+            horizontal
+            pagingEnabled
+            showsHorizontalScrollIndicator={false}
+            renderItem={({ item }) => (
+              <Image style={styles.imgStyle} source={item} resizeMode="cover" />
+            )}
+            keyExtractor={(item, index) => index.toString()}
+            onViewableItemsChanged={onViewableItemsChanged}
           />
+          {renderPagination()}
         </View>
         <View style={styles.listContainer}>
           {/* cardd */}
@@ -291,5 +331,34 @@ const styles = StyleSheet.create({
     gap: 8,
     width: "auto",
     marginBottom: 10,
+  },
+  paginationDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: "white",
+    marginHorizontal: 4,
+  },
+  paginationDotActive: {
+    backgroundColor: "#00367E",
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+  },
+  pagination: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  paginationContainer: {
+    position: "absolute",
+    bottom: 10,
+    left: 0,
+    right: 0,
+    alignItems: "center",
+  },
+  imgStyle: {
+    height: 162,
+    width: 360,
   },
 });

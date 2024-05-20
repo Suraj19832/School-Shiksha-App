@@ -193,9 +193,12 @@ const Details = ({ navigation }) => {
             </View>
             <View style={styles.cardButtons}>
               <TouchableOpacity
-                onPress={() => navigation.navigate("freeAdmissionForm" , {
-                collegeName,courseName
-                })}
+                onPress={() =>
+                  navigation.navigate("freeAdmissionForm", {
+                    collegeName,
+                    courseName,
+                  })
+                }
               >
                 <LinearGradient
                   colors={["#03357D", "#0569FA"]} // Define your gradient colors here
@@ -311,9 +314,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   imgStyle: {
-    height: Dimensions.get("window").height * 0.29,
-    width: Dimensions.get("window").width * 0.999,
+    // height: Dimensions.get("window").height * 0.29,
+    // width: Dimensions.get("window").width * 0.999,
     // borderRadius: 10,
+    height: 162,
+    width: 360,
   },
   buttonbox: {
     flexDirection: "row",

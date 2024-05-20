@@ -921,8 +921,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   imgStyle: {
-    height: Dimensions.get("window").height * 0.29,
-    width: Dimensions.get("window").width * 0.999,
+    // height: Dimensions.get("window").height * 0.29,
+    // width: Dimensions.get("window").width * 0.999,
     // borderRadius: 10,
+    height: 172,
+    width: 360,
   },
 });
