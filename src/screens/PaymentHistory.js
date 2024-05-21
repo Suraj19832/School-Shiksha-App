@@ -86,7 +86,7 @@ if (pageloading) {
   return (
     <View>
       <Header
-        title="Contact Us"
+        title="Payment History"
         navigateTo={() => navigation.goBack("Home")}
       />
       <View style={{justifyContent:'center' ,alignItems:'center'  ,height:'90%'}}>

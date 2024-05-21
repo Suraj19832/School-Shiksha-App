@@ -89,9 +89,9 @@ export const GetfetchDataWithParams = async (endpoint, params) => {
       method: "GET",
     });
 
-    if (!response.ok) {
-      throw new Error("Failed to fetch data");
-    }
+    // if (!response.ok) {
+    //   throw new Error("Failed to fetch data");
+    // }
 
     const data = await response.json();
     return data;

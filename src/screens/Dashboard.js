@@ -12,14 +12,15 @@ import {
   Easing,
   StatusBar,
   useColorScheme,
+  Linking,
 } from "react-native";
-import { Ionicons, Fontisto } from "@expo/vector-icons";
+import { Ionicons, Fontisto, MaterialCommunityIcons } from "@expo/vector-icons";
 import TitleDash from "../../components/TitleDash";
 
 import Footer from "../../components/Footer";
 import { AuthContext } from "../../Utils/context/AuthContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { GetfetchDataWithParams, getdata } from "../../Helper/Helper";
+import { GetfetchDataWithParams, getdata, getrequestwithtoken } from "../../Helper/Helper";
 const Dashboard = ({ navigation }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -31,7 +32,30 @@ const Dashboard = ({ navigation }) => {
   const colorScheme = useColorScheme();
   const statusBarColor = colorScheme === "dark" ? "black" : "white";
 
+  const [name, setname] = useState()
+  const [phone, setphone] = useState()
+  const [gender, setgender] = useState()
+  const [plan, setplan] = useState()
+
   const toggleMenu = () => {
+
+// console.log("menu is clicked ")
+
+//  console.log("cdcksdvdfkvdfkndfnbnb",userToken) 
+getrequestwithtoken("student/profile" ,userToken).then((res)=>{
+  console.log("apple mango cat", res.status)
+  console.log("88-8-8-8-8-8-8-8-8-8--8-8-8-8-8--8-8-8-8-8-88-8-", res?.data?.name)
+  if(res?.status){
+  setname(res?.data?.name)
+  setphone(res?.data?.mobile)
+  setgender(res?.data?.gender)
+  setplan(res?.data?.subscription?.plan_name)
+  }
+  
+   })
+
+
+
     setIsMenuOpen(!isMenuOpen);
     Animated.timing(menuTranslateX, {
       toValue: isMenuOpen ? -menuWidth : 0,
@@ -206,6 +230,18 @@ const Dashboard = ({ navigation }) => {
       .catch((error) => {
         console.error("Error fetching data in dashboard:", error);
       });
+
+      getrequestwithtoken("student/profile" ,userToken).then((res)=>{
+        console.log("apple mango cat", res.status)
+        console.log("88-8-8-8-8-8-8-8-8-8--8-8-8-8-8--8-8-8-8-8-88-8-", res?.data?.name)
+        if(res?.status){
+        setname(res?.data?.name)
+        setphone(res?.data?.mobile)
+        setgender(res?.data?.gender)
+        setplan(res?.data?.subscription?.plan_name)
+        }
+        
+         })
   }, []);
   // console.log("?????????????????????????????>>>>000000>",JSON.stringify(carddata))
   const colorMap = {
@@ -234,6 +270,14 @@ const Dashboard = ({ navigation }) => {
     }
   }
 
+
+  const serviceNameToPageMap = {
+    "FREE COLLEGE ADMISSION": "freeCollege",
+    "PAID COLLEGE ADMISSION": "membershipPlan",
+    "FREE GOVT CERTIFICATE COURSE": "freeGovCertificate",
+    // Add more mappings as needed
+  };
+  
   // useEffect(() => {
   //   // Define the URL you want to fetch data from
   //   // fetchUserData("hs");
@@ -242,6 +286,10 @@ const Dashboard = ({ navigation }) => {
   //     fetchUserData(title);
   //   });
   // }, []);
+  const whatsappclicked =()=>{
+    const whatsappUrl = `whatsapp://send?phone=9088776656`;
+    Linking.openURL(whatsappUrl);
+  }
   return (
     <View style={styles.container}>
       <StatusBar
@@ -254,7 +302,7 @@ const Dashboard = ({ navigation }) => {
           <Ionicons name="menu" size={35} color="#00367E" />
         </TouchableOpacity>
         <View style={{ flexDirection: "row", alignItems: "center", gap: 20 }}>
-          <TouchableOpacity onPress={() => navigation.navigate("contactUs")}>
+          <TouchableOpacity onPress={() => whatsappclicked()}>
             <Image
               source={require("../../assets/img/whatsapp.png")}
               style={{ width: 25, height: 25 }}
@@ -278,10 +326,19 @@ const Dashboard = ({ navigation }) => {
               borderRadius: 20,
             }}
           >
-            <Image
-              source={require("../../assets/img/person.png")}
+       
+            {gender ==="female" ? (
+     <Image
+     source={require("../../assets/img/person.png")}
+     style={styles.avatarImg}
+   />
+            ):(
+              <Image
+              source={require("../../assets/img/male-student.png")}
               style={styles.avatarImg}
             />
+            )
+            }
           </TouchableOpacity>
         </View>
       </View>
@@ -313,15 +370,28 @@ const Dashboard = ({ navigation }) => {
                   gap: 20,
                 }}
               >
-                <Image
+                {gender === 'female' ?(
+  <Image
+  style={{
+    marginBottom: 12,
+    width: 60,
+    height: 60,
+    resizeMode: "cover",
+  }}
+  source={require("../../assets/img/human (1).png")}
+/>
+                ):(
+                  <Image
                   style={{
                     marginBottom: 12,
                     width: 60,
                     height: 60,
                     resizeMode: "cover",
                   }}
-                  source={require("../../assets/img/person1.png")}
+                  source={require("../../assets/img/man (1).png")}
                 />
+                )}
+              
                 <View style={{ marginBottom: 15 }}>
                   <Text
                     style={{
@@ -331,7 +401,7 @@ const Dashboard = ({ navigation }) => {
                       fontWeight: "700",
                     }}
                   >
-                    Chayanika Ghosh
+                    {name}
                   </Text>
                   <Text
                     style={{
@@ -341,12 +411,16 @@ const Dashboard = ({ navigation }) => {
                       fontWeight: "500",
                     }}
                   >
-                    +91 987 654 3210
+                    +91 {phone}
                   </Text>
-                  <Image
+                  {/* <Image
                     style={{ width: 82, height: 17, marginTop: 5 }}
                     source={require("../../assets/img/premium1.png")}
-                  />
+                  /> */}
+                  <View style={{backgroundColor:'#FFAE2B' ,height:20,width:80 ,borderRadius:10,alignItems:'center' ,justifyContent:'center' ,flexDirection:'row',gap:4}}>
+                  <MaterialCommunityIcons name="crown" size={10} color="white" />
+                    <Text style={{fontWeight:'500' ,fontSize:10,color:'white'}}>{plan}</Text>
+                  </View>
                 </View>
               </View>
             </View>
@@ -405,7 +479,7 @@ const Dashboard = ({ navigation }) => {
                   )
                 }
               >
-                <Text style={styles.menuText}>Order History</Text>
+                <Text style={styles.menuText}>Transection History</Text>
               </TouchableOpacity>
             </View>
             <View style={styles.hairlineMenu} />
@@ -455,10 +529,12 @@ const Dashboard = ({ navigation }) => {
             >
               <Image
                 style={{ width: 25, height: 25, tintColor: "#435354" }}
-                source={require("../../assets/img/refer.png")}
+                source={require("../../assets/img/membership.png")}
               />
-              <TouchableOpacity>
-                <Text style={styles.menuText}>Refer</Text>
+              <TouchableOpacity onPress={() =>
+                  navigation.navigate("membershipPlan", setIsMenuOpen(!isMenuOpen))
+                }>
+                <Text style={styles.menuText}>Membership Plan</Text>
               </TouchableOpacity>
             </View>
             <View style={styles.hairlineMenu} />
@@ -569,25 +645,29 @@ const Dashboard = ({ navigation }) => {
           {/* new start  */}
           <View>
             {/* data from api  */}
-            {/* <View>
+            <View>
   {carddata.map((item ,index) => {
   console.log("00000000000000000000000000000",carddata[index].title)
   return (
     <>
     <TitleDash
             title={carddata[index]?.title}
-            primaryColor="#C83000"
+            primaryColor={colorMap[carddata[index]?.title]}
           />
           <View style={{ alignItems: "center" }}>
             <View
               style={{ flexDirection: "row", gap: 8, justifyContent: "center" }}
             >
 {carddata[index]?.data.map((cd)=>{
+// console.log("imageeeeeee" ,cd.image)
+const navigateToPage = serviceNameToPageMap[cd.service_name]
   return (
     <>
      <TouchableOpacity
                 style={styles.card}
-                onPress={() => navigation.navigate("computerCollegeList")}
+                onPress={() => navigation.navigate(navigateToPage ,{
+                  id:cd.id
+                }) }
               >
                 {cards[0].status === "inActive" && (
                   <View style={styles.lockContainer}>
@@ -595,9 +675,11 @@ const Dashboard = ({ navigation }) => {
                   </View>
                 )}
                 <View style={styles.imgContainer}>
-                  <Image source={cards[0].image} style={styles.image} />
+                  {/* <Image source={cards[0].image} style={styles.image} /> */}
+                  <Image style={[styles.image ,{height:80 ,width:80}]} source={{uri :cd.image}} resizeMode="contain"/>
                 </View>
                 <Text style={styles.textStyle}>{cd.service_name}</Text>
+                {/* <Text style={styles.textStyle}>{cd.intended_for}</Text> */}
               </TouchableOpacity>
     </>
   )
@@ -620,12 +702,15 @@ const Dashboard = ({ navigation }) => {
 
   )
 })}
-  </View> */}
+  </View>
             {/* end here  */}
           </View>
         </View>
 
-        <View>
+
+{/* Dummy Data  */}
+
+        {/* <View>
           <TitleDash
             title="Secondary Pass Student’s Benefits"
             primaryColor="#C83000"
@@ -863,7 +948,9 @@ const Dashboard = ({ navigation }) => {
               </TouchableOpacity>
             </View>
           </View>
-        </View>
+        </View> */}
+
+        {/* dummy data end here  */}
       </ScrollView>
       <Footer />
     </View>

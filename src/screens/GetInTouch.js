@@ -127,7 +127,7 @@ setpageloading(false)
     return (
       <View>
         <Header
-          title="Contact Us"
+          title="Query"
           navigateTo={() => navigation.goBack("Home")}
         />
         <View style={{justifyContent:'center' ,alignItems:'center'  ,height:'90%'}}>
