@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
 export const BorderGradient = (props) => {
-  console.log(props);
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
@@ -17,7 +16,9 @@ export const BorderGradient = (props) => {
           style={styles.buttonContainer}
           onPress={() => {
             if (props.text === "Buy Now") {
-              navigation.navigate("membershipPayment");
+              navigation.navigate("membershipPayment", {
+                plan_id: props.plan_id,
+              });
             } else {
               navigation.navigate("Dashboard");
             }
@@ -32,9 +33,11 @@ export const BorderGradient = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1.0,
+    flex: 1,
     justifyContent: "center",
-    // backgroundColor:"red"
+    position: "absolute",
+    bottom: 25,
+    alignSelf: "center",
   },
   grediant: {
     height: 44,

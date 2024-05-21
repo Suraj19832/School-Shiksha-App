@@ -51,13 +51,12 @@ const MembershipPlan = ({ navigation }) => {
       .catch((err) => {
         console.log(err, "===========>error from membership for plan ID");
       });
-  }, [userToken]);
+  }, []);
 
   useEffect(() => {
     getdata("master/plan")
       .then((res) => {
         setCardData(res.data);
-        console.log(cardData.id, "4452452424524====================>");
       })
       .catch((err) => {
         console.log(err, "===========>error from membership api");
@@ -99,7 +98,7 @@ const MembershipPlan = ({ navigation }) => {
               text="Choose your plan"
             />
           </View>
-          <View style={{ gap: 30 }}>
+          <View style={{ gap: 30, marginBottom: 70 }}>
             {cardData.map((cards, index) => {
               const descriptionData = JSON.parse(
                 cards.plan_description || "[]"
@@ -251,29 +250,24 @@ const MembershipPlan = ({ navigation }) => {
                           <View
                             key={index}
                             style={{
-                              paddingVertical: 10,
+                              marginVertical: 10,
                               paddingHorizontal: 8,
+                              borderBottomWidth: 0.5,
+                              borderBottomColor:
+                                cards.plan_name === "Free Plan"
+                                  ? "#00367E"
+                                  : "#D9D9D9",
+                              paddingBottom: 10,
                             }}
                           >
                             <SpanText text={item} style={{ color: "red" }} />
-                            <View
-                              style={[
-                                styles.hairlineMenu,
-                                {
-                                  backgroundColor:
-                                    cards.plan_name === "Free Plan"
-                                      ? "#00367E"
-                                      : "#D9D9D9",
-                                },
-                              ]}
-                            />
                           </View>
                         );
                       })}
                       {cards.id === planId ? (
-                        <BorderGradient text="Get Started" />
+                        <BorderGradient text="Get Started" plan_id={planId} />
                       ) : (
-                        <BorderGradient text="Buy Now" />
+                        <BorderGradient text="Buy Now" plan_id={cards.id} />
                       )}
                     </View>
                   </LinearGradient>
@@ -478,7 +472,7 @@ const styles = StyleSheet.create({
   },
   hairline: {
     backgroundColor: "#00367E66", // Change the color
-    height: 2,
+    height: 1,
     width: "100%",
     marginTop: 15,
     shadowColor: "#00367E66", // Shadow color

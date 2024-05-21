@@ -4,34 +4,74 @@ import {
   StyleSheet,
   Image,
   Alert,
-  Platform,
   TouchableOpacity,
   Linking,
 } from "react-native";
 import Header from "../../components/Header";
-
 import QRCode from "react-native-qrcode-svg";
-import { useEffect } from "react";
-import { GetfetchDataWithParams } from "../../Helper/Helper";
+import { useContext, useEffect, useState } from "react";
+import { getRequestWithParamsTokens } from "../../Helper/Helper";
+import { AuthContext } from "../../Utils/context/AuthContext";
+import { useRoute } from "@react-navigation/native";
 
 const MembershipPayment = ({ navigation }) => {
+  const { userToken } = useContext(AuthContext);
+  const [upiLink, setUpiLink] = useState("");
+  const route = useRoute();
+  const { plan_id } = route.params;
+  const [minutes, setMinutes] = useState(0);
+  const [seconds, setSeconds] = useState(9);
+  const [timerEnded, setTimerEnded] = useState(false);
+
   useEffect(() => {
-    GetfetchDataWithParams("student/buy-plan")
+    const countdownInterval = setInterval(() => {
+      if (!timerEnded) {
+        if (seconds === 0) {
+          if (minutes === 0) {
+            clearInterval(countdownInterval);
+            setTimerEnded(true);
+            return;
+          } else {
+            setMinutes(minutes - 1);
+            setSeconds(59);
+          }
+        } else {
+          setSeconds(seconds - 1);
+        }
+      }
+    }, 1000);
+
+    return () => clearInterval(countdownInterval);
+  }, [seconds, minutes, timerEnded]);
+
+  useEffect(() => {
+    const params = { plan_id: plan_id };
+
+    getRequestWithParamsTokens("student/buy-plan", userToken, params)
       .then((res) => {
-        console.log(res);
+        if (res.data && res.data.upi_link) {
+          setUpiLink(res.data.upi_link);
+          console.log(res.data.upi_link, "got response from payment method");
+        } else {
+          console.error("UPI link not found in response");
+        }
       })
       .catch((err) => {
-        console.log(err);
+        console.log(err, "got error from payment");
       });
-  });
+  }, [plan_id, userToken]);
 
   const payviaApps = () => {
-    const upiLink = "upi://pay?pa=example@upi&pn=Example&am=1";
-    Linking.openURL(upiLink).catch((err) => {
-      console.error("Failed to open UPI link:", err);
-      showToast("Failed to open UPI link. Please try again.");
-    });
+    if (upiLink) {
+      Linking.openURL(upiLink).catch((err) => {
+        console.error("Failed to open UPI link:", err);
+        Alert.alert("Error", "Failed to open UPI link. Please try again.");
+      });
+    } else {
+      Alert.alert("Error", "UPI link is not available.");
+    }
   };
+
   return (
     <View style={styles.container}>
       <Header title="Buy Membership" navigateTo={navigation.goBack} />
@@ -41,62 +81,54 @@ const MembershipPayment = ({ navigation }) => {
             Scan QR code using BHIM or your preferred UPI app
           </Text>
         </View>
-        <View
-          style={{
-            marginHorizontal: 20,
-            flexDirection: "row",
-            marginVertical: 20,
-            gap: 2,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
+        <View style={styles.iconContainer}>
           <Image
             source={require("../../assets/icons/gpay.png")}
-            style={{ height: 22, width: 50 }}
+            style={styles.icon}
           />
           <Image
             source={require("../../assets/icons/paytm.png")}
-            style={{ height: 22, width: 67 }}
+            style={styles.iconLarge}
           />
           <Image
             source={require("../../assets/icons/phonepe.png")}
-            style={{ height: 22, width: 22 }}
+            style={styles.icon}
           />
           <Image
             source={require("../../assets/icons/bharatpe.png")}
-            style={{ height: 22, width: 22 }}
+            style={styles.icon}
           />
           <Image
             source={require("../../assets/icons/amazonpay.png")}
-            style={{ height: 22, width: 35 }}
+            style={styles.iconMedium}
           />
         </View>
-        <View style={{ alignItems: "center", top: 10 }}>
-          <QRCode size={200} />
+        <View style={styles.qrCodeContainer}>
+          {timerEnded ? (
+            <Text style={styles.expiredText}>
+              QR code expired. Please try again.
+            </Text>
+          ) : upiLink ? (
+            <QRCode value={upiLink} size={200} />
+          ) : (
+            <Text style={styles.loadingQr}>Loading QR code...</Text>
+          )}
         </View>
         <View style={styles.qrcode}>
-          <Text style={styles.headingText}>
-            This QR code will expire in 04:45
-          </Text>
+          {!timerEnded ? (
+            <Text style={styles.headingText}>
+              This QR code will expire in{" "}
+              {`${minutes.toString().padStart(2, "0")}:${seconds
+                .toString()
+                .padStart(2, "0")}`}
+            </Text>
+          ) : (
+            <Text></Text>
+          )}
         </View>
         <View>
-          <TouchableOpacity
-            onPress={payviaApps}
-            style={{
-              backgroundColor: "#00367E",
-              width: "45%",
-              textAlign: "center",
-              alignItems: "center",
-              padding: 12,
-              top: 40,
-              alignSelf: "center",
-              borderRadius: 8,
-            }}
-          >
-            <Text style={{ color: "white", fontWeight: "500" }}>
-              Pay via apps
-            </Text>
+          <TouchableOpacity onPress={payviaApps} style={styles.payButton}>
+            <Text style={styles.payButtonText}>Pay Via UPI's</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -107,7 +139,10 @@ const MembershipPayment = ({ navigation }) => {
 export default MembershipPayment;
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    flex: 1,
+    backgroundColor: "white",
+  },
   main_container: {
     marginHorizontal: 20,
     marginTop: 50,
@@ -122,8 +157,55 @@ const styles = StyleSheet.create({
     lineHeight: 23.44,
     textAlign: "center",
   },
+  iconContainer: {
+    flexDirection: "row",
+    marginVertical: 20,
+    gap: 2,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  icon: {
+    height: 22,
+    width: 22,
+  },
+  iconLarge: {
+    height: 22,
+    width: 67,
+  },
+  iconMedium: {
+    height: 22,
+    width: 35,
+  },
+  qrCodeContainer: {
+    alignItems: "center",
+    top: 10,
+  },
   qrcode: {
     marginHorizontal: 40,
     marginTop: 25,
+  },
+  payButton: {
+    backgroundColor: "#00367E",
+    width: "45%",
+    textAlign: "center",
+    alignItems: "center",
+    padding: 12,
+    top: 40,
+    alignSelf: "center",
+    borderRadius: 8,
+  },
+  payButtonText: {
+    color: "white",
+    fontWeight: "500",
+  },
+  loadingQr: {
+    fontSize: 18,
+    fontWeight: "600",
+    color: "red",
+  },
+  expiredText: {
+    fontSize: 16,
+    textAlign: "center",
+    color: "red",
   },
 });

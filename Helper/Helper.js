@@ -33,23 +33,58 @@ export const getdata = async (endpoint) => {
 
 export const getrequestwithtoken = async (endpoint, token) => {
   const url = `${Configs.API_BASE_URL_V1}${endpoint}`;
-  console.log("6666",url,token)
+  console.log("6666", url, token);
   try {
     const response = await fetch(url, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log("554545",response)
+    console.log("554545", response);
     // if (!response.ok) {
     //   throw new Error("Failed to fetch data");
     // }
     const data = await response.json();
-    console.log("220202",data);
-    
+    console.log("220202", data);
+
     return data; // Return the data here
   } catch (error) {
     console.error("Error fetching dataa:", error);
+    return null;
+  }
+};
+
+export const getRequestWithParamsTokens = async (endpoint, token, params) => {
+  const url = new URL(`${Configs.API_BASE_URL_V1}${endpoint}`);
+
+  // Add query parameters to the URL if params are provided
+  if (params) {
+    Object.keys(params).forEach((key) =>
+      url.searchParams.append(key, params[key])
+    );
+  }
+
+  console.log("6666", url.toString(), token);
+
+  try {
+    const response = await fetch(url.toString(), {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    console.log("554545", response);
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch data");
+    }
+
+    const data = await response.json();
+    console.log("220202", data);
+
+    return data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
     return null;
   }
 };
