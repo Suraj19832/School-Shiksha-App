@@ -11,7 +11,7 @@ import {
   TouchableOpacity,
   Dimensions,
 } from "react-native";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   FontAwesome,
   Ionicons,
@@ -27,6 +27,7 @@ import { Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Header from "../../components/Header";
 import { useRoute } from "@react-navigation/native";
+import { GetfetchDataWithParams } from "../../Helper/Helper";
 // import { FlatList } from "react-native-web";
 
 const Details = ({ navigation }) => {
@@ -60,7 +61,39 @@ const Details = ({ navigation }) => {
     );
   };
   const route = useRoute();
-  const { collegeName, courseName } = route.params;
+  const { collegeName, courseName ,courseid } = route.params;
+
+  const [deatailsData, setdeatailsData] = useState([])
+  async function fetchUserData(endpoint,id) {
+    // console.log(search_value,"********************************")
+    try {
+      // const endpoint = "master/organization-course";
+      const params = {
+        // page: 1,
+        // limit: 3,
+        // service_type: serviceType.short_name,
+        organization_course_id:id,
+        // course_id:course_idd
+      };
+    
+
+      GetfetchDataWithParams(endpoint, params)
+      .then((res)=>{
+        console.log("free college list api hit status'-____________________" ,res.status)
+        setdeatailsData(res?.data)
+        // setisLoading(false)
+      })
+    
+      // console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<",userData,params); // Handle or process the fetched user data here
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  }
+
+  useEffect(() => {
+    fetchUserData('master/course-details' ,courseid)
+  }, [courseid])
+  console.log("courseiddd",courseid)
   return (
     <SafeAreaView style={styles.container}>
       <Header title="Free College List" navigateTo={navigation.goBack} />
@@ -179,16 +212,7 @@ const Details = ({ navigation }) => {
                   fontSize: 14,
                 }}
               >
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry. Lorem Ipsum has been the industry's standard dummy
-                text ever since the 1500s, when an unknown printer took a galley
-                of type and scrambled it to make a type specimen book. It has
-                survived not only five centuries, but also the leap into
-                electronic typesetting, remaining essentially unchanged. It was
-                popularised in the 1960s with the release of Letraset sheets
-                containing Lorem Ipsum passages, and more recently with desktop
-                publishing software like Aldus PageMaker including versions of
-                Lorem Ipsum.
+            {deatailsData.course_details}
               </Text>
             </View>
             <View style={styles.cardButtons}>

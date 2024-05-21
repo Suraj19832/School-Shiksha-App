@@ -614,6 +614,7 @@ const FreeCollegeList = ({ navigation }) => {
                     navigation.navigate("details", {
                       collegeName: value?.organization_name,
                       courseName: value?.course_name,
+                      courseid:value?.organization_course_id
                     })
                   }
                 >

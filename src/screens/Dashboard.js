@@ -216,10 +216,11 @@ getrequestwithtoken("student/profile" ,userToken).then((res)=>{
         const longheading = res.data.map((item) => item);
         // console.log(longheading);
         setcarddata([]);
-        longheading?.map((item) => {
-          return fetchUserData(item);
-        });
-        setheading(longheading);
+        longheading?.map( async (item) => {
+          // console.log("))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))",item)
+          return await fetchUserData(item);
+        }); 
+        setheading(longheading); 
         // console.log("=======================", heading);//
         const st_title = res?.data?.map((item) => item.short_name);
         // console.log(st_title);
@@ -252,7 +253,8 @@ getrequestwithtoken("student/profile" ,userToken).then((res)=>{
     // Add more mappings as needed
   };
   async function fetchUserData(serviceType) {
-    try {
+    console.log("((((((((((((((((((((((((((((((((((((((object))))))))))))))))))))))))))))))))))))))" ,serviceType) 
+    try  {
       const endpoint = "master/services";
       const params = {
         // page: 1,
@@ -262,12 +264,13 @@ getrequestwithtoken("student/profile" ,userToken).then((res)=>{
 
       const userData = await GetfetchDataWithParams(endpoint, params);
       setcarddata((prev) => {
+        console.log("previosssssssssssssssssss",prev) 
         return [...prev, { title: serviceType.long_name, data: userData.data }];
       });
       // console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<",userData,params); // Handle or process the fetched user data here
     } catch (error) {
       console.error("Error fetching user data:", error);
-    }
+    } 
   }
 
 
@@ -647,11 +650,13 @@ getrequestwithtoken("student/profile" ,userToken).then((res)=>{
             {/* data from api  */}
             <View>
   {carddata.map((item ,index) => {
-  console.log("00000000000000000000000000000",carddata[index].title)
+    console.log("vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv88888888888888888",carddata)
+    console.log("--------------===----------",index)
+  console.log("00000000000000000000000000000",item.title)
   return (
-    <>
+    <View > 
     <TitleDash
-            title={carddata[index]?.title}
+            title={item?.title}
             primaryColor={colorMap[carddata[index]?.title]}
           />
           <View style={{ alignItems: "center" }}>
@@ -698,7 +703,7 @@ const navigateToPage = serviceNameToPageMap[cd.service_name]
               </TouchableOpacity>
             </View>
           </View>
-    </>
+    </View>
 
   )
 })}
