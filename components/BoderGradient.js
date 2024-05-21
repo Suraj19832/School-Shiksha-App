@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
 export const BorderGradient = (props) => {
+  console.log(props);
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
@@ -14,7 +15,13 @@ export const BorderGradient = (props) => {
       >
         <TouchableOpacity
           style={styles.buttonContainer}
-          onPress={() => navigation.navigate("paymentQR")}
+          onPress={() => {
+            if (props.text === "Buy Now") {
+              navigation.navigate("membershipPayment");
+            } else {
+              navigation.navigate("Dashboard");
+            }
+          }}
         >
           <Text style={styles.buttonText}>{props.text}</Text>
         </TouchableOpacity>

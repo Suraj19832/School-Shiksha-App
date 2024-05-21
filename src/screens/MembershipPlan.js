@@ -1,28 +1,21 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Image,
   View,
   Text,
   StyleSheet,
   Dimensions,
-  FlatList,
   ScrollView,
   TouchableOpacity,
-  Animated,
-  Easing,
   SafeAreaView,
   useColorScheme,
   StatusBar,
 } from "react-native";
-import {
-  Ionicons,
-  MaterialCommunityIcons,
-  FontAwesome5,
-} from "@expo/vector-icons";
-
 import { LinearGradient } from "expo-linear-gradient";
 import GradientText from "../../components/GradientText";
 import { BorderGradient } from "../../components/BoderGradient";
+import { getdata, getrequestwithtoken } from "../../Helper/Helper";
+import { AuthContext } from "../../Utils/context/AuthContext";
 
 const SpanText = (props) => {
   return (
@@ -33,8 +26,8 @@ const SpanText = (props) => {
       />
       <Text
         style={[
-          { fontWeight: "400", fontSize: 16 },
-          props.textColor ? { color: "#FFFFFF" } : { color: "#435354" },
+          { fontWeight: "400", fontSize: 14, lineHeight: 21 },
+          props.textColor ? { color: "#435354" } : { color: "white" },
         ]}
       >
         {props.text}
@@ -44,8 +37,33 @@ const SpanText = (props) => {
 };
 
 const MembershipPlan = ({ navigation }) => {
+  const { userToken } = useContext(AuthContext);
   const colorScheme = useColorScheme();
   const statusBarColor = colorScheme === "dark" ? "black" : "white";
+  const [cardData, setCardData] = useState([]);
+  const [planId, setPlanId] = useState(null);
+
+  useEffect(() => {
+    getrequestwithtoken("student/profile", userToken)
+      .then((res) => {
+        setPlanId(res.data.subscription.plan_id);
+      })
+      .catch((err) => {
+        console.log(err, "===========>error from membership for plan ID");
+      });
+  }, [userToken]);
+
+  useEffect(() => {
+    getdata("master/plan")
+      .then((res) => {
+        setCardData(res.data);
+        console.log(cardData.id, "4452452424524====================>");
+      })
+      .catch((err) => {
+        console.log(err, "===========>error from membership api");
+      });
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar
@@ -81,95 +99,189 @@ const MembershipPlan = ({ navigation }) => {
               text="Choose your plan"
             />
           </View>
-          <View>
-            <LinearGradient
-              colors={["#00367E", "#FEA613"]}
-              start={[1.2, 0]}
-              end={[1, 1]}
-              style={{
-                // borderWidth: 1,
-                borderRadius: 12,
-                overflow: "hidden", // Ensures border radius is applied
-                padding: 1.5,
-              }}
-            >
-              <View style={styles.card_main}>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    borderRadius: 10,
-                  }}
-                >
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      gap: 10,
-                      alignItems: "center",
-                    }}
-                  >
-                    <Image
-                      source={require("../../assets/img/free.png")}
-                      style={styles.image}
-                    />
-                    <Text
-                      style={{
-                        color: "#006641",
-                        fontSize: 25,
-                        fontWeight: "500",
-                      }}
-                    >
-                      Free
-                    </Text>
-                  </View>
-                  <View
-                    style={{
-                      backgroundColor: "#006641",
-                      borderRadius: 50,
-                      height: Dimensions.get("window").height * 0.032,
-                      width: Dimensions.get("window").width * 0.23,
-                      alignItems: "center",
-                      alignContent: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <Text
-                      style={{
-                        color: "white",
-                        textAlign: "center",
-                        fontWeight: "500",
-                      }}
-                    >
-                      Active
-                    </Text>
-                  </View>
-                </View>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    gap: 5,
-                    alignItems: "baseline",
-                  }}
-                >
-                  <Text style={{ fontSize: 20, fontWeight: "600" }}>Rs.</Text>
-                  <Text style={{ fontSize: 48, fontWeight: "900" }}>0</Text>
-                  <Text style={{ fontSize: 65, fontWeight: "900" }}>/- </Text>
-                </View>
+          <View style={{ gap: 30 }}>
+            {cardData.map((cards, index) => {
+              const descriptionData = JSON.parse(
+                cards.plan_description || "[]"
+              );
+              const backgroundColor =
+                cards.plan_name === "Free Plan" ? "white" : "#00367E";
 
-                <View style={{ paddingVertical: 15, paddingHorizontal: 8 }}>
-                  <SpanText text="Free College Admission" />
-                  <View style={styles.hairlineMenu} />
-                  <SpanText text="Free Govt. Certificate" />
-                  <View style={styles.hairlineMenu} />
-                  <SpanText text="Free Apprenticeship training with Stipend" />
-                  <View style={styles.hairlineMenu} />
+              return (
+                <View key={index}>
+                  <LinearGradient
+                    colors={["#00367E", "#FEA613"]}
+                    start={[1.2, 0]}
+                    end={[1, 1]}
+                    style={{
+                      borderRadius: 12,
+                      overflow: "hidden",
+                      padding: 1.5,
+                    }}
+                  >
+                    <View style={[styles.card_main, { backgroundColor }]}>
+                      <View
+                        style={{
+                          borderRadius: 10,
+                        }}
+                      >
+                        {/* action status */}
+                        {cards?.id === planId ? (
+                          <View
+                            style={{
+                              backgroundColor: "#006641",
+                              borderRadius: 50,
+                              height: Dimensions.get("window").height * 0.032,
+                              width: Dimensions.get("window").width * 0.23,
+                              justifyContent: "center",
+                              left: "68%",
+                            }}
+                          >
+                            <Text
+                              style={{
+                                color: "white",
+                                textAlign: "center",
+                                fontWeight: "500",
+                                fontSize: 14,
+                                lineHeight: 21,
+                              }}
+                            >
+                              Active
+                            </Text>
+                          </View>
+                        ) : (
+                          <View></View>
+                        )}
+
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            gap: 10,
+                            alignItems: "center",
+                          }}
+                        >
+                          {cards.plan_name === "Free Plan" ? (
+                            <Image
+                              source={require("../../assets/img/free.png")}
+                              style={styles.image}
+                            />
+                          ) : (
+                            <Image
+                              source={require("../../assets/img/crown.png")}
+                              style={styles.image}
+                            />
+                          )}
+                          <Text
+                            style={{
+                              fontSize: 25,
+                              fontWeight: "500",
+                              lineHeight: 37.5,
+                              color:
+                                cards.plan_name === "Free Plan"
+                                  ? "black"
+                                  : "#FFAE2B",
+                            }}
+                          >
+                            {cards?.plan_name}
+                          </Text>
+                        </View>
+                      </View>
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          gap: 5,
+                          alignItems: "baseline",
+                        }}
+                      >
+                        <Text
+                          style={{
+                            fontSize: 18,
+                            fontWeight: "600",
+                            color:
+                              cards.plan_name === "Free Plan"
+                                ? "black"
+                                : "white",
+                          }}
+                        >
+                          Rs.
+                        </Text>
+                        <Text
+                          style={{
+                            fontSize: 45,
+                            fontWeight: "600",
+                            lineHeight: 67.5,
+                            color:
+                              cards.plan_name === "Free Plan"
+                                ? "black"
+                                : "white",
+                          }}
+                        >
+                          {cards.plan_amount}
+                        </Text>
+                        <Text
+                          style={{
+                            fontSize: 65,
+                            fontWeight: "600",
+                            lineHeight: 65.5,
+                            color:
+                              cards.plan_name === "Free Plan"
+                                ? "black"
+                                : "white",
+                          }}
+                        >
+                          /-{" "}
+                        </Text>
+                      </View>
+                      {cards.plan_name !== "Free Plan" && (
+                        <View style={{ marginVertical: 10 }}>
+                          <Text
+                            style={{
+                              color: "#C9C9C9",
+                              fontSize: 14,
+                              lineHeight: 21,
+                            }}
+                          >
+                            ({cards.plan_duration} months)
+                          </Text>
+                        </View>
+                      )}
+
+                      {descriptionData.map((item, index) => {
+                        return (
+                          <View
+                            key={index}
+                            style={{
+                              paddingVertical: 10,
+                              paddingHorizontal: 8,
+                            }}
+                          >
+                            <SpanText text={item} style={{ color: "red" }} />
+                            <View
+                              style={[
+                                styles.hairlineMenu,
+                                {
+                                  backgroundColor:
+                                    cards.plan_name === "Free Plan"
+                                      ? "#00367E"
+                                      : "#D9D9D9",
+                                },
+                              ]}
+                            />
+                          </View>
+                        );
+                      })}
+                      {cards.id === planId ? (
+                        <BorderGradient text="Get Started" />
+                      ) : (
+                        <BorderGradient text="Buy Now" />
+                      )}
+                    </View>
+                  </LinearGradient>
                 </View>
-                <BorderGradient text="Get Started" />
-              </View>
-            </LinearGradient>
+              );
+            })}
           </View>
-          <View>
+          {/* <View>
             <View style={[styles.card, { backgroundColor: "#00367E" }]}>
               <View
                 style={{
@@ -335,7 +447,7 @@ const MembershipPlan = ({ navigation }) => {
               </View>
               <BorderGradient text="Buy Plan" />
             </View>
-          </View>
+          </View> */}
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -416,12 +528,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
   image: {
-    width: 25,
-    height: 25,
+    width: 20,
+    height: 20,
   },
   hairlineMenu: {
-    backgroundColor: "#00367E33",
-    height: 1,
+    height: 0.5,
     width: "98%",
     marginVertical: 18,
     alignSelf: "center",

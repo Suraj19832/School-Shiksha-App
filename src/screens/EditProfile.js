@@ -482,6 +482,7 @@ const EditProfile = ({ navigation }) => {
   const [id, setId] = useState(null);
   const [loading, setLoading] = useState(false);
   const [updateLoading, setUpdateLoading] = useState(false);
+
   const [profileData, setProfileData] = useState({
     name: "",
     father_name: "",
@@ -515,7 +516,6 @@ const EditProfile = ({ navigation }) => {
         });
     }, [userToken])
   );
-
   const handleSubmission = () => {
     const {
       name,
@@ -526,7 +526,6 @@ const EditProfile = ({ navigation }) => {
       date_of_birth,
       class_name,
       gender,
-      // religion,
       address,
       state_name,
       district_name,
@@ -616,6 +615,7 @@ const EditProfile = ({ navigation }) => {
       .then((res) => {
         setUpdateLoading(false);
         showToast(res?.message);
+        navigation.navigate("Dashboard");
       })
       .catch((err) => {
         setUpdateLoading(false);

@@ -44,6 +44,7 @@ import PaymentQR from "../src/screens/PaymentQR";
 import ComputerCourseDetails from "../src/screens/ComputerCourseDetails";
 import PaidCertiDetails from "../src/screens/PaidCertiDetails";
 import Succesfully from "./Succesfully";
+import MembershipPayment from "../src/screens/MembershipPayment";
 
 const Stack = createNativeStackNavigator();
 
@@ -216,6 +217,11 @@ const Navigation = () => {
             <Stack.Screen
               name="paymentQR"
               component={PaymentQR}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="membershipPayment"
+              component={MembershipPayment}
               options={{ headerShown: false }}
             />
             <Stack.Screen
