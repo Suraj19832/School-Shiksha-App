@@ -6,11 +6,17 @@ import {
   Alert,
   TouchableOpacity,
   Linking,
+  Platform,
+  ToastAndroid,
 } from "react-native";
 import Header from "../../components/Header";
 import QRCode from "react-native-qrcode-svg";
 import { useContext, useEffect, useState } from "react";
-import { getRequestWithParamsTokens } from "../../Helper/Helper";
+import {
+  getRequestWithParamsTokens,
+  objectToFormData,
+  postDataWithFormDataWithToken,
+} from "../../Helper/Helper";
 import { AuthContext } from "../../Utils/context/AuthContext";
 import { useRoute } from "@react-navigation/native";
 
@@ -19,9 +25,10 @@ const MembershipPayment = ({ navigation }) => {
   const [upiLink, setUpiLink] = useState("");
   const route = useRoute();
   const { plan_id } = route.params;
-  const [minutes, setMinutes] = useState(0);
-  const [seconds, setSeconds] = useState(9);
+  const [minutes, setMinutes] = useState(4);
+  const [seconds, setSeconds] = useState(59);
   const [timerEnded, setTimerEnded] = useState(false);
+  const [orderId, setOrderId] = useState("");
 
   useEffect(() => {
     const countdownInterval = setInterval(() => {
@@ -46,12 +53,11 @@ const MembershipPayment = ({ navigation }) => {
 
   useEffect(() => {
     const params = { plan_id: plan_id };
-
     getRequestWithParamsTokens("student/buy-plan", userToken, params)
       .then((res) => {
         if (res.data && res.data.upi_link) {
           setUpiLink(res.data.upi_link);
-          console.log(res.data.upi_link, "got response from payment method");
+          setOrderId(res.data.order_id);
         } else {
           console.error("UPI link not found in response");
         }
@@ -69,6 +75,48 @@ const MembershipPayment = ({ navigation }) => {
       });
     } else {
       Alert.alert("Error", "UPI link is not available.");
+    }
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      checkPaymentStatus();
+    }, 4000); // Check every 4 seconds
+
+    return () => clearInterval(interval);
+  }, [orderId, userToken]);
+
+  const checkPaymentStatus = async () => {
+    try {
+      const postData = {
+        order_id: orderId,
+        plan_id: plan_id,
+      };
+      const formData = objectToFormData(postData);
+      const res = await postDataWithFormDataWithToken(
+        "student/buy-plan/status-check",
+        formData,
+        userToken
+      );
+
+      if (res?.data?.status === "SUCCESS") {
+        setTimerEnded(true);
+        showToast("Payment Successful");
+        // Navigate to success screen or perform other actions
+        navigation.navigate("sucessfully");
+      } else if (res?.data?.status === "PENDING") {
+        console.log("Payment is pending. Making another API call.", res);
+      }
+    } catch (error) {
+      console.error("Error making API call:", error);
+    }
+  };
+
+  const showToast = (message) => {
+    if (Platform.OS === "android") {
+      ToastAndroid.show(message, ToastAndroid.SHORT);
+    } else {
+      Alert.alert(message);
     }
   };
 
@@ -126,11 +174,11 @@ const MembershipPayment = ({ navigation }) => {
             <Text></Text>
           )}
         </View>
-        <View>
+        {/* <View>
           <TouchableOpacity onPress={payviaApps} style={styles.payButton}>
             <Text style={styles.payButtonText}>Pay Via UPI's</Text>
           </TouchableOpacity>
-        </View>
+        </View> */}
       </View>
     </View>
   );

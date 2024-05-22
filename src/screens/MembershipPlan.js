@@ -27,7 +27,7 @@ const SpanText = (props) => {
       <Text
         style={[
           { fontWeight: "400", fontSize: 14, lineHeight: 21 },
-          props.textColor ? { color: "#435354" } : { color: "white" },
+          props.color ? { color: "#435354" } : { color: "white" },
         ]}
       >
         {props.text}
@@ -42,11 +42,13 @@ const MembershipPlan = ({ navigation }) => {
   const statusBarColor = colorScheme === "dark" ? "black" : "white";
   const [cardData, setCardData] = useState([]);
   const [planId, setPlanId] = useState(null);
+  const [activePlanAmount, setActivePlanAmount] = useState(null);
 
   useEffect(() => {
     getrequestwithtoken("student/profile", userToken)
       .then((res) => {
         setPlanId(res.data.subscription.plan_id);
+        setActivePlanAmount(res.data.subscription.plan_amount);
       })
       .catch((err) => {
         console.log(err, "===========>error from membership for plan ID");
@@ -103,8 +105,14 @@ const MembershipPlan = ({ navigation }) => {
               const descriptionData = JSON.parse(
                 cards.plan_description || "[]"
               );
-              const backgroundColor =
-                cards.plan_name === "Free Plan" ? "white" : "#00367E";
+
+              const isActive = cards.id === planId;
+              const backgroundColor = isActive ? "white" : "#00367E";
+              const textPrice = isActive ? "black" : "white";
+              const textColor = isActive ? "#006641" : "#FFAE2B";
+              const borderbottom = isActive ? "#00367E" : "#D9D9D9";
+              const textDescription = isActive ? "#435354" : "white";
+              const disableButton = cards.plan_amount < activePlanAmount;
 
               return (
                 <View key={index}>
@@ -175,10 +183,7 @@ const MembershipPlan = ({ navigation }) => {
                               fontSize: 25,
                               fontWeight: "500",
                               lineHeight: 37.5,
-                              color:
-                                cards.plan_name === "Free Plan"
-                                  ? "black"
-                                  : "#FFAE2B",
+                              color: textColor,
                             }}
                           >
                             {cards?.plan_name}
@@ -196,10 +201,7 @@ const MembershipPlan = ({ navigation }) => {
                           style={{
                             fontSize: 18,
                             fontWeight: "600",
-                            color:
-                              cards.plan_name === "Free Plan"
-                                ? "black"
-                                : "white",
+                            color: textPrice,
                           }}
                         >
                           Rs.
@@ -209,10 +211,7 @@ const MembershipPlan = ({ navigation }) => {
                             fontSize: 45,
                             fontWeight: "600",
                             lineHeight: 67.5,
-                            color:
-                              cards.plan_name === "Free Plan"
-                                ? "black"
-                                : "white",
+                            color: textPrice,
                           }}
                         >
                           {cards.plan_amount}
@@ -222,28 +221,24 @@ const MembershipPlan = ({ navigation }) => {
                             fontSize: 65,
                             fontWeight: "600",
                             lineHeight: 65.5,
-                            color:
-                              cards.plan_name === "Free Plan"
-                                ? "black"
-                                : "white",
+                            color: textPrice,
                           }}
                         >
                           /-{" "}
                         </Text>
                       </View>
-                      {cards.plan_name !== "Free Plan" && (
-                        <View style={{ marginVertical: 10 }}>
-                          <Text
-                            style={{
-                              color: "#C9C9C9",
-                              fontSize: 14,
-                              lineHeight: 21,
-                            }}
-                          >
-                            ({cards.plan_duration} months)
-                          </Text>
-                        </View>
-                      )}
+
+                      <View style={{ marginVertical: 10 }}>
+                        <Text
+                          style={{
+                            color: textPrice,
+                            fontSize: 14,
+                            lineHeight: 21,
+                          }}
+                        >
+                          ( {cards.plan_duration} months )
+                        </Text>
+                      </View>
 
                       {descriptionData.map((item, index) => {
                         return (
@@ -252,22 +247,31 @@ const MembershipPlan = ({ navigation }) => {
                             style={{
                               marginVertical: 10,
                               paddingHorizontal: 8,
-                              borderBottomWidth: 0.5,
-                              borderBottomColor:
-                                cards.plan_name === "Free Plan"
-                                  ? "#00367E"
-                                  : "#D9D9D9",
+                              borderBottomWidth: 0.2,
+                              borderBottomColor: borderbottom,
                               paddingBottom: 10,
                             }}
                           >
-                            <SpanText text={item} style={{ color: "red" }} />
+                            <SpanText
+                              text={item}
+                              color={textDescription}
+                              style={{ color: "red" }}
+                            />
                           </View>
                         );
                       })}
                       {cards.id === planId ? (
-                        <BorderGradient text="Get Started" plan_id={planId} />
+                        <BorderGradient
+                          text="Get Started"
+                          plan_id={planId}
+                          disabled={false}
+                        />
                       ) : (
-                        <BorderGradient text="Buy Now" plan_id={cards.id} />
+                        <BorderGradient
+                          text="Buy Now"
+                          plan_id={cards.id}
+                          disabled={disableButton}
+                        />
                       )}
                     </View>
                   </LinearGradient>
