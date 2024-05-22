@@ -31,6 +31,7 @@ import { Camera } from "expo-camera";
 // import CameraAccess from "../../components/CamraAccess";
 import * as ImagePicker from "expo-image-picker";
 import { useRoute } from "@react-navigation/native";
+import { objectToFormData, postDataWithFormDataWithBaseUrl } from "../../Helper/Helper";
 const AdmissionForm = ({ navigation }) => {
   const [isChecked, setChecked] = useState(false);
   const showToast = (message) => {
@@ -69,6 +70,14 @@ const AdmissionForm = ({ navigation }) => {
   });
   const [fieldTouched, setFieldTouched] = useState({});
 
+
+  //States for sending the data in for file upload api
+  const [aadharFrontForUpload, setaadharFrontForUpload] = useState() 
+  const [aadharFrontForUploadss, setaadharFrontForUploadss] = useState() 
+  const [aadharBackForUpload, setaadharBackForUpload] = useState()
+  const [HSMarksheetForUpload, setHSMarksheetForUpload] = useState()
+  const [PassportPhotoForUpload, setPassportPhotoForUpload] = useState()
+  const [IncomeCertificateForUpload, setIncomeCertificateForUpload] = useState()
   // email
 
   const handleInputChange = (key, value) => {
@@ -332,6 +341,7 @@ const AdmissionForm = ({ navigation }) => {
   const takePicture = async (options) => {
     console.log(options);
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+    console.log("console.log::::E::WED:W::WD::D:" ,permissionResult)
     if (permissionResult.granted === false) {
       alert("Camera permission is required to take photos.");
       return;
@@ -339,6 +349,8 @@ const AdmissionForm = ({ navigation }) => {
 
     try {
       const imageResult = await ImagePicker.launchCameraAsync();
+      console.log(imageResult,"fdefdefsdvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv1111")
+      setaadharFrontForUploadss(imageResult)
       console.log("sdkfpf", imageResult);
       if (imageResult.assets[0].uri !== null) {
         if (options === "income") {
@@ -366,6 +378,17 @@ const AdmissionForm = ({ navigation }) => {
           console.log("[][][]];", imageResult.assets[0].uri);
           setModalVisibleAddharfront(false);
         }
+       
+        const postData = {
+          image : aadharFrontForUploadss
+        };
+        console.log(postData,"fjfddddddddddddddddddddddddddddd")
+        // return
+        const formDatablock = objectToFormData(postData);
+        postDataWithFormDataWithBaseUrl('https://dev.ehostingguru.com/school-shiksha/upload/index.php' ,formDatablock)
+        .then((res)=>{
+          console.log("-----------------res.status----------",res.status)
+        })
       }
     } catch (error) {
       console.error("Error taking picture:", error);
@@ -440,7 +463,8 @@ const AdmissionForm = ({ navigation }) => {
         type: "*/*",
       });
 
-      console.log("File picker result:", result);
+      console.log("File picker result:zxcvvfdfdbgb", result);
+      setaadharFrontForUpload(result)
 
       if (
         !result.cancelled &&
@@ -463,8 +487,20 @@ const AdmissionForm = ({ navigation }) => {
       setIsPickingFile(false);
     }
     closeModal();
+    console.log(aadharFrontForUpload)
+    const postData = {
+      image : aadharFrontForUpload
+    };
+  console.log("++++++++++++++++postData",postData);
+  return
+    const formDatablock = objectToFormData(postData.assets);
+    // console.log(formDatablock,"djeifjifgh")
+    postDataWithFormDataWithBaseUrl('https://dev.ehostingguru.com/school-shiksha/upload/index.php' ,formDatablock)
+    .then((res)=>{
+      console.log("-----------------res.status in upload----------",res.status)
+    })
   };
-
+console.log("Addhar card front whole file for upload api  is in " , aadharFrontForUpload)
   //For Addhar Back function
   const pickFileAddharBack = async () => {
     if (isPickingFileAddharBack) {
@@ -480,7 +516,7 @@ const AdmissionForm = ({ navigation }) => {
         type: "*/*",
       });
 
-      console.log("File picker result:", result);
+      console.log("File picker result???????????:", result);
 
       if (
         !result.canceled &&

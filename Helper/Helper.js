@@ -75,9 +75,9 @@ export const getRequestWithParamsTokens = async (endpoint, token, params) => {
 
     console.log("554545", response);
 
-    if (!response.ok) {
-      throw new Error("Failed to fetch data");
-    }
+    // if (!response.ok) {
+    //   throw new Error("Failed to fetch data");
+    // }
 
     const data = await response.json();
     console.log("220202", data);
@@ -103,6 +103,27 @@ export const postDataWithFormData = async (endpoint, formData) => {
     return data;
   } catch (error) {
     console.error("Error posting data:", error);
+    return null;
+  }
+};
+
+export const postDataWithFormDataWithBaseUrl = async (baseurl, formData) => {
+  console.log("::::::::::::::::::::::::",baseurl)
+  console.log("::::::::::::::::::::::::",formData)
+  // const url = `${Configs.API_BASE_URL_V1}/${endpoint}`;
+  try {
+    const response = await fetch(baseurl, {
+      method: "POST",
+      body: formData,
+    });
+    // if (!response.ok) {
+    //   throw new Error("Failed to post data");
+    // }
+    const data = await response.json();
+    console.log(data,"IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII")
+    return data;
+  } catch (error) {
+    console.error("Error posting dataa:", error);
     return null;
   }
 };

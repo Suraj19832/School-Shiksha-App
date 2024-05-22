@@ -20,7 +20,11 @@ import TitleDash from "../../components/TitleDash";
 import Footer from "../../components/Footer";
 import { AuthContext } from "../../Utils/context/AuthContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { GetfetchDataWithParams, getdata, getrequestwithtoken } from "../../Helper/Helper";
+import {
+  GetfetchDataWithParams,
+  getdata,
+  getrequestwithtoken,
+} from "../../Helper/Helper";
 const Dashboard = ({ navigation }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -32,29 +36,28 @@ const Dashboard = ({ navigation }) => {
   const colorScheme = useColorScheme();
   const statusBarColor = colorScheme === "dark" ? "black" : "white";
 
-  const [name, setname] = useState()
-  const [phone, setphone] = useState()
-  const [gender, setgender] = useState()
-  const [plan, setplan] = useState()
+  const [name, setname] = useState();
+  const [phone, setphone] = useState();
+  const [gender, setgender] = useState();
+  const [plan, setplan] = useState();
 
   const toggleMenu = () => {
+    // console.log("menu is clicked ")
 
-// console.log("menu is clicked ")
-
-//  console.log("cdcksdvdfkvdfkndfnbnb",userToken) 
-getrequestwithtoken("student/profile" ,userToken).then((res)=>{
-  console.log("apple mango cat", res.status)
-  console.log("88-8-8-8-8-8-8-8-8-8--8-8-8-8-8--8-8-8-8-8-88-8-", res?.data?.name)
-  if(res?.status){
-  setname(res?.data?.name)
-  setphone(res?.data?.mobile)
-  setgender(res?.data?.gender)
-  setplan(res?.data?.subscription?.plan_name)
-  }
-  
-   })
-
-
+    //  console.log("cdcksdvdfkvdfkndfnbnb",userToken)
+    getrequestwithtoken("student/profile", userToken).then((res) => {
+      console.log("apple mango cat", res.status);
+      console.log(
+        "88-8-8-8-8-8-8-8-8-8--8-8-8-8-8--8-8-8-8-8-88-8-",
+        res?.data?.name
+      );
+      if (res?.status) {
+        setname(res?.data?.name);
+        setphone(res?.data?.mobile);
+        setgender(res?.data?.gender);
+        setplan(res?.data?.subscription?.plan_name);
+      }
+    });
 
     setIsMenuOpen(!isMenuOpen);
     Animated.timing(menuTranslateX, {
@@ -216,11 +219,11 @@ getrequestwithtoken("student/profile" ,userToken).then((res)=>{
         const longheading = res.data.map((item) => item);
         // console.log(longheading);
         setcarddata([]);
-        longheading?.map( async (item) => {
+        longheading?.map(async (item) => {
           // console.log("))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))",item)
           return await fetchUserData(item);
-        }); 
-        setheading(longheading); 
+        });
+        setheading(longheading);
         // console.log("=======================", heading);//
         const st_title = res?.data?.map((item) => item.short_name);
         // console.log(st_title);
@@ -232,17 +235,19 @@ getrequestwithtoken("student/profile" ,userToken).then((res)=>{
         console.error("Error fetching data in dashboard:", error);
       });
 
-      getrequestwithtoken("student/profile" ,userToken).then((res)=>{
-        console.log("apple mango cat", res.status)
-        console.log("88-8-8-8-8-8-8-8-8-8--8-8-8-8-8--8-8-8-8-8-88-8-", res?.data?.name)
-        if(res?.status){
-        setname(res?.data?.name)
-        setphone(res?.data?.mobile)
-        setgender(res?.data?.gender)
-        setplan(res?.data?.subscription?.plan_name)
-        }
-        
-         })
+    getrequestwithtoken("student/profile", userToken).then((res) => {
+      console.log("apple mango cat", res.status);
+      console.log(
+        "88-8-8-8-8-8-8-8-8-8--8-8-8-8-8--8-8-8-8-8-88-8-",
+        res?.data?.name
+      );
+      if (res?.status) {
+        setname(res?.data?.name);
+        setphone(res?.data?.mobile);
+        setgender(res?.data?.gender);
+        setplan(res?.data?.subscription?.plan_name);
+      }
+    });
   }, []);
   // console.log("?????????????????????????????>>>>000000>",JSON.stringify(carddata))
   const colorMap = {
@@ -253,8 +258,11 @@ getrequestwithtoken("student/profile" ,userToken).then((res)=>{
     // Add more mappings as needed
   };
   async function fetchUserData(serviceType) {
-    console.log("((((((((((((((((((((((((((((((((((((((object))))))))))))))))))))))))))))))))))))))" ,serviceType) 
-    try  {
+    console.log(
+      "((((((((((((((((((((((((((((((((((((((object))))))))))))))))))))))))))))))))))))))",
+      serviceType
+    ); 
+    try {
       const endpoint = "master/services";
       const params = {
         // page: 1,
@@ -264,15 +272,14 @@ getrequestwithtoken("student/profile" ,userToken).then((res)=>{
 
       const userData = await GetfetchDataWithParams(endpoint, params);
       setcarddata((prev) => {
-        console.log("previosssssssssssssssssss",prev) 
+        console.log("previosssssssssssssssssss", prev);
         return [...prev, { title: serviceType.long_name, data: userData.data }];
       });
       // console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<",userData,params); // Handle or process the fetched user data here
     } catch (error) {
       console.error("Error fetching user data:", error);
-    } 
+    }
   }
-
 
   const serviceNameToPageMap = {
     "FREE COLLEGE ADMISSION": "freeCollege",
@@ -280,7 +287,7 @@ getrequestwithtoken("student/profile" ,userToken).then((res)=>{
     "FREE GOVT CERTIFICATE COURSE": "freeGovCertificate",
     // Add more mappings as needed
   };
-  
+
   // useEffect(() => {
   //   // Define the URL you want to fetch data from
   //   // fetchUserData("hs");
@@ -289,10 +296,10 @@ getrequestwithtoken("student/profile" ,userToken).then((res)=>{
   //     fetchUserData(title);
   //   });
   // }, []);
-  const whatsappclicked =()=>{
+  const whatsappclicked = () => {
     const whatsappUrl = `whatsapp://send?phone=9088776656`;
     Linking.openURL(whatsappUrl);
-  }
+  };
   return (
     <View style={styles.container}>
       <StatusBar
@@ -329,19 +336,17 @@ getrequestwithtoken("student/profile" ,userToken).then((res)=>{
               borderRadius: 20,
             }}
           >
-       
-            {gender ==="female" ? (
-     <Image
-     source={require("../../assets/img/person.png")}
-     style={styles.avatarImg}
-   />
-            ):(
+            {gender === "female" ? (
               <Image
-              source={require("../../assets/img/male-student.png")}
-              style={styles.avatarImg}
-            />
-            )
-            }
+                source={require("../../assets/img/person.png")}
+                style={styles.avatarImg}
+              />
+            ) : (
+              <Image
+                source={require("../../assets/img/male-student.png")}
+                style={styles.avatarImg}
+              />
+            )}
           </TouchableOpacity>
         </View>
       </View>
@@ -373,28 +378,28 @@ getrequestwithtoken("student/profile" ,userToken).then((res)=>{
                   gap: 20,
                 }}
               >
-                {gender === 'female' ?(
-  <Image
-  style={{
-    marginBottom: 12,
-    width: 60,
-    height: 60,
-    resizeMode: "cover",
-  }}
-  source={require("../../assets/img/human (1).png")}
-/>
-                ):(
+                {gender === "female" ? (
                   <Image
-                  style={{
-                    marginBottom: 12,
-                    width: 60,
-                    height: 60,
-                    resizeMode: "cover",
-                  }}
-                  source={require("../../assets/img/man (1).png")}
-                />
+                    style={{
+                      marginBottom: 12,
+                      width: 60,
+                      height: 60,
+                      resizeMode: "cover",
+                    }}
+                    source={require("../../assets/img/human (1).png")}
+                  />
+                ) : (
+                  <Image
+                    style={{
+                      marginBottom: 12,
+                      width: 60,
+                      height: 60,
+                      resizeMode: "cover",
+                    }}
+                    source={require("../../assets/img/man (1).png")}
+                  />
                 )}
-              
+
                 <View style={{ marginBottom: 15 }}>
                   <Text
                     style={{
@@ -420,9 +425,32 @@ getrequestwithtoken("student/profile" ,userToken).then((res)=>{
                     style={{ width: 82, height: 17, marginTop: 5 }}
                     source={require("../../assets/img/premium1.png")}
                   /> */}
-                  <View style={{backgroundColor:'#FFAE2B' ,height:20,width:80 ,borderRadius:10,alignItems:'center' ,justifyContent:'center' ,flexDirection:'row',gap:4}}>
-                  <MaterialCommunityIcons name="crown" size={10} color="white" />
-                    <Text style={{fontWeight:'500' ,fontSize:10,color:'white'}}>{plan}</Text>
+                  <View
+                    style={{
+                      backgroundColor: "#FFAE2B",
+                      height: 20,
+                      width: 80,
+                      borderRadius: 10,
+                      alignItems: "center",
+                      justifyContent: "center",
+                      flexDirection: "row",
+                      gap: 4,
+                    }}
+                  >
+                    <MaterialCommunityIcons
+                      name="crown"
+                      size={10}
+                      color="white"
+                    />
+                    <Text
+                      style={{
+                        fontWeight: "500",
+                        fontSize: 10,
+                        color: "white",
+                      }}
+                    >
+                      {plan}
+                    </Text>
                   </View>
                 </View>
               </View>
@@ -534,9 +562,14 @@ getrequestwithtoken("student/profile" ,userToken).then((res)=>{
                 style={{ width: 25, height: 25, tintColor: "#435354" }}
                 source={require("../../assets/img/membership.png")}
               />
-              <TouchableOpacity onPress={() =>
-                  navigation.navigate("membershipPlan", setIsMenuOpen(!isMenuOpen))
-                }>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate(
+                    "membershipPlan",
+                    setIsMenuOpen(!isMenuOpen)
+                  )
+                }
+              >
                 <Text style={styles.menuText}>Membership Plan</Text>
               </TouchableOpacity>
             </View>
@@ -649,71 +682,85 @@ getrequestwithtoken("student/profile" ,userToken).then((res)=>{
           <View>
             {/* data from api  */}
             <View>
-  {carddata.map((item ,index) => {
-    console.log("vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv88888888888888888",carddata)
-    console.log("--------------===----------",index)
-  console.log("00000000000000000000000000000",item.title)
-  return (
-    <View > 
-    <TitleDash
-            title={item?.title}
-            primaryColor={colorMap[carddata[index]?.title]}
-          />
-          <View style={{ alignItems: "center" }}>
-            <View
-              style={{ flexDirection: "row", gap: 8, justifyContent: "center" }}
-            >
-{carddata[index]?.data.map((cd)=>{
-// console.log("imageeeeeee" ,cd.image)
-const navigateToPage = serviceNameToPageMap[cd.service_name]
-  return (
-    <>
-     <TouchableOpacity
-                style={styles.card}
-                onPress={() => navigation.navigate(navigateToPage ,{
-                  id:cd.id
-                }) }
-              >
-                {cards[0].status === "inActive" && (
-                  <View style={styles.lockContainer}>
-                    <Fontisto name="locked" />
+              {carddata.map((item, index) => {
+                console.log(
+                  "vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv88888888888888888",
+                  carddata
+                );
+                console.log("--------------===----------", index);
+                console.log("00000000000000000000000000000", item.title);
+                return (
+                  <View>
+                    <TitleDash
+                      title={item?.title}
+                      primaryColor={colorMap[carddata[index]?.title]}
+                    />
+                    <View style={{ alignItems: "center" }}>
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          gap: 8,
+                          justifyContent: "center",
+                        }}
+                      >
+                        {carddata[index]?.data.map((cd) => {
+                          // console.log("imageeeeeee" ,cd.image)
+                          const navigateToPage =
+                            serviceNameToPageMap[cd.service_name];
+                          return (
+                            <>
+                              <TouchableOpacity
+                                style={styles.card}
+                                onPress={() =>
+                                  navigation.navigate(navigateToPage, {
+                                    id: cd.id,
+                                  })
+                                }
+                              >
+                                {cards[0].status === "inActive" && (
+                                  <View style={styles.lockContainer}>
+                                    <Fontisto name="locked" />
+                                  </View>
+                                )}
+                                <View style={styles.imgContainer}>
+                                  {/* <Image source={cards[0].image} style={styles.image} /> */}
+                                  <Image
+                                    style={[
+                                      styles.image,
+                                      { height: 80, width: 80 },
+                                    ]}
+                                    source={{ uri: cd.image }}
+                                    resizeMode="contain"
+                                  />
+                                </View>
+                                <Text style={styles.textStyle}>
+                                  {cd.service_name}
+                                </Text>
+                                {/* <Text style={styles.textStyle}>{cd.intended_for}</Text> */}
+                              </TouchableOpacity>
+                            </>
+                          );
+                        })}
+                      </View>
+
+                      <View style={{ paddingTop: 20 }}>
+                        <TouchableOpacity
+                          style={styles.button}
+                          onPress={() => navigation.navigate("mpBenefits")}
+                        >
+                          <Text style={styles.text}>{"Show More >"}</Text>
+                        </TouchableOpacity>
+                      </View>
+                    </View>
                   </View>
-                )}
-                <View style={styles.imgContainer}>
-                  {/* <Image source={cards[0].image} style={styles.image} /> */}
-                  <Image style={[styles.image ,{height:80 ,width:80}]} source={{uri :cd.image}} resizeMode="contain"/>
-                </View>
-                <Text style={styles.textStyle}>{cd.service_name}</Text>
-                {/* <Text style={styles.textStyle}>{cd.intended_for}</Text> */}
-              </TouchableOpacity>
-    </>
-  )
-})}
-             
-
-             
+                );
+              })}
             </View>
-
-            <View style={{ paddingTop: 20 }}>
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => navigation.navigate("mpBenefits")}
-              >
-                <Text style={styles.text}>{"Show More >"}</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-    </View>
-
-  )
-})}
-  </View>
             {/* end here  */}
           </View>
         </View>
 
-
-{/* Dummy Data  */}
+        {/* Dummy Data  */}
 
         {/* <View>
           <TitleDash
