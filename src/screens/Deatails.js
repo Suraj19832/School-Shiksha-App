@@ -61,7 +61,7 @@ const Details = ({ navigation }) => {
     );
   };
   const route = useRoute();
-  const { collegeName, courseName ,courseid } = route.params;
+  const { collegeName, courseName ,courseid ,id } = route.params;
 
   const [deatailsData, setdeatailsData] = useState([])
   async function fetchUserData(endpoint,id) {
@@ -221,6 +221,7 @@ const Details = ({ navigation }) => {
                   navigation.navigate("freeAdmissionForm", {
                     collegeName,
                     courseName,
+                    id
                   })
                 }
               >

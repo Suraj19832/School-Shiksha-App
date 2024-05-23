@@ -1,4 +1,5 @@
 import Configs from "../Configss/Configs";
+import * as mime from "react-native-mime-types";
 
 export async function sendPostData(endpoint, formData) {
   const url = `${Configs.API_BASE_URL_V1}/${endpoint}`;
@@ -15,7 +16,7 @@ export async function sendPostData(endpoint, formData) {
 
 export const getdata = async (endpoint) => {
   const url = `${Configs.API_BASE_URL_V1}${endpoint}`;
-  console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", url);
+  // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", url);
   try {
     const response = await fetch(url);
 
@@ -23,7 +24,7 @@ export const getdata = async (endpoint) => {
       throw new Error("Failed to fetch data");
     }
     const data = await response.json();
-    console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>response", response);
+    // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>response", response);
     return data;
   } catch (error) {
     console.error("Error fetching data in helper:", error);
@@ -171,9 +172,9 @@ export const postDataWithFormDataWithToken = async (
         Authorization: `Bearer ${token}`,
       },
     });
-    if (!response.ok) {
-      throw new Error("Failed to post data");
-    }
+    // if (!response.ok) {
+    //   throw new Error("Failed to post data");
+    // }
     const data = await response.json();
     return data;
   } catch (error) {
@@ -188,4 +189,73 @@ export const objectToFormData = (obj) => {
     formData.append(key, obj[key]);
   });
   return formData;
+};
+
+// export const objectToFormDataMultipleObject = (obj, formData = new FormData(), parentKey = '') => {
+//   if (obj && typeof obj === 'object' && !(obj instanceof Date) && !(obj instanceof File)) {
+//     Object.keys(obj).forEach(key => {
+//       const fullKey = parentKey ? `${parentKey}[${key}]` : key;
+//       objectToFormData(obj[key], formData, fullKey);
+//     });
+//   } else {
+//     formData.append(parentKey, obj);
+//   }
+//   return formData;
+// };
+
+
+// export const objectToFormDatawithnestedObject = (obj, formData = new FormData(), parentKey = '') => {
+//   if (obj && typeof obj === 'object' && !(obj instanceof Date) && !(obj instanceof File)) {
+//     Object.keys(obj).forEach(key => {
+//       const value = obj[key];
+//       const fullKey = parentKey ? `${parentKey}[${key}]` : key;
+
+//       if (Array.isArray(value)) {
+//         value.forEach((arrayValue, index) => {
+//           const arrayKey = `${fullKey}[${index}]`;
+//           objectToFormData(arrayValue, formData, arrayKey);
+//         });
+//       } else if (typeof value === 'object') {
+//         objectToFormData(value, formData, fullKey);
+//       } else {
+//         formData.append(fullKey, value);
+//       }
+//     });
+//   } else {
+//     formData.append(parentKey, obj);
+//   }
+//   return formData;
+// };
+
+export const objectToFormDatawithnestedObject = (obj) => {
+  const formData = new FormData();
+
+  Object.keys(obj).forEach(key => {
+    let value = obj[key];
+
+    if (key === 'enquiry_details' || key === 'documents') {
+      value = JSON.stringify(value);
+    }
+
+    formData.append(key, value);
+  });
+
+  return formData;
+};
+
+
+
+
+
+export const getFileData = (obj = {}) => {
+	let uri = obj?.assets ? obj?.assets[0]?.uri : obj?.uri;
+
+	let arr = uri.split("/");
+	let fileName = arr[arr.length - 1];
+
+	return {
+		uri: uri,
+		name: fileName,
+		type: mime.lookup(fileName),
+	};
 };
