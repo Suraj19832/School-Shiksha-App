@@ -1,24 +1,22 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useEffect } from "react";
 import {
   Image,
   View,
   Text,
   StyleSheet,
-  Dimensions,
-  FlatList,
   ScrollView,
   TouchableOpacity,
-  Animated,
-  Easing,
   SafeAreaView,
 } from "react-native";
-import { Ionicons, MaterialIcons, Fontisto } from "@expo/vector-icons";
-import TitleDash from "../../components/TitleDash";
+import { Fontisto } from "@expo/vector-icons";
 
-import Footer from "../../components/Footer";
 import Header from "../../components/Header";
+import { getdata, GetfetchDataWithParams } from "../../Helper/Helper";
+import { useRoute } from "@react-navigation/native";
 
 const MPBenefits = ({ navigation }) => {
+  const route = useRoute();
+  const { sortheading, heading } = route.params;
   const cards = [
     {
       title: "Computer Training",
@@ -81,10 +79,24 @@ const MPBenefits = ({ navigation }) => {
       status: "inActive",
     },
   ];
+
+  // api implementation
+  useEffect(() => {
+    const params = {
+      service_type: sortheading,
+    };
+    GetfetchDataWithParams("master/services", params)
+      .then((res) => {
+        console.log(res, ":::::::::||||||||||||||||||||||||||||||||||||");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
   return (
     <SafeAreaView style={styles.container}>
       <Header
-        title="Secondary Pass Student’s Benefits"
+        title={heading}
         titleColor="#00367E"
         navigateTo={navigation.goBack}
       />
@@ -145,25 +157,17 @@ const MPBenefits = ({ navigation }) => {
 export default MPBenefits;
 
 const styles = StyleSheet.create({
-  container: {
-    // marginTop: 52,
-  },
+  container: {},
   mainView: {
     flex: 0,
-    // justifyContent: "center",
-    // alignItems: "center",
+
     width: "100%",
     height: "auto",
-    // backgroundColor: "red",
   },
   innerView: {
     width: "90%",
     height: "auto",
-    // backgroundColor: "yellow",
-
     gap: 10,
-    // justifyContent:'center',
-    // alignItems:'center'
   },
   hairline: {
     backgroundColor: "#00367E66", // Change the color
