@@ -704,7 +704,12 @@ const Dashboard = ({ navigation }) => {
                       <View style={{ paddingTop: 20 }}>
                         <TouchableOpacity
                           style={styles.button}
-                          onPress={() => navigation.navigate("mpBenefits")}
+                          onPress={() =>
+                            navigation.navigate("mpBenefits", {
+                              sortheading: item?.short_name,
+                              heading: item?.long_name,
+                            })
+                          }
                         >
                           <Text style={styles.text}>{"Show More >"}</Text>
                         </TouchableOpacity>
