@@ -248,6 +248,7 @@ const Details = ({ navigation }) => {
                   navigation.navigate("freeAdmissionForm", {
                     collegeName,
                     courseName,
+                    id,
                   })
                 }
               >

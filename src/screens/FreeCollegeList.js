@@ -151,7 +151,7 @@ const FreeCollegeList = ({ navigation }) => {
   useEffect(() => {
     fetchUserData("master/organization-course",id )
   }, [id])
-  console.log("00000000000000000000000000000000000000000000",FreeCollegeList)
+  // console.log("00000000000000000000000000000000000000000000",FreeCollegeList)
   const [inputvlauesearch, setinputvlauesearch] = useState()
   const handleinputtextfield=(text)=>{
     setinputvlauesearch(text)
@@ -614,7 +614,8 @@ const FreeCollegeList = ({ navigation }) => {
                     navigation.navigate("details", {
                       collegeName: value?.organization_name,
                       courseName: value?.course_name,
-                      courseid:value?.organization_course_id
+                      courseid:value?.organization_course_id,
+                      id:id
                     })
                   }
                 >
@@ -635,6 +636,7 @@ const FreeCollegeList = ({ navigation }) => {
                     navigation.navigate("freeAdmissionForm", {
                       collegeName: value?.organization_name,
                       courseName: value?.course_name,
+                      id:id
                     })
                   }
                 >
