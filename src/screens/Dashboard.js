@@ -40,17 +40,10 @@ const Dashboard = ({ navigation }) => {
   const [phone, setphone] = useState();
   const [gender, setgender] = useState();
   const [plan, setplan] = useState();
+  const [bannerData, setBannerData] = useState([]);
 
   const toggleMenu = () => {
-    // console.log("menu is clicked ")
-
-    //  console.log("cdcksdvdfkvdfkndfnbnb",userToken)
     getrequestwithtoken("student/profile", userToken).then((res) => {
-      console.log("apple mango cat", res.status);
-      console.log(
-        "88-8-8-8-8-8-8-8-8-8--8-8-8-8-8--8-8-8-8-8-88-8-",
-        res?.data?.name
-      );
       if (res?.status) {
         setname(res?.data?.name);
         setphone(res?.data?.mobile);
@@ -78,11 +71,7 @@ const Dashboard = ({ navigation }) => {
     }).start();
   };
 
-  const images = [
-    require("../../assets/img/slider1.png"),
-    require("../../assets/img/slider3.png"),
-    require("../../assets/img/slider2.png"),
-  ];
+  const images = bannerData;
 
   const flatListRef = useRef(null);
 
@@ -91,6 +80,44 @@ const Dashboard = ({ navigation }) => {
       setActiveIndex(viewableItems[0].index || 0);
     }
   };
+
+  const renderPagination = () => {
+    return (
+      <View style={styles.paginationContainer}>
+        <View style={styles.pagination}>
+          {images.map((_, index) => (
+            <View
+              key={index}
+              style={[
+                styles.paginationDot,
+                index === activeIndex && styles.paginationDotActive,
+              ]}
+            />
+          ))}
+        </View>
+      </View>
+    );
+  };
+
+  const renderItem = ({ item }) => (
+    <View style={styles.imageContainer}>
+      <Image
+        source={{ uri: item.banner }} // Ensure this URi is correct
+        style={styles.image}
+        resizeMode="cover"
+      />
+    </View>
+  );
+
+  useEffect(() => {
+    getrequestwithtoken("master/dashboard-banner", userToken)
+      .then((res) => {
+        setBannerData(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [userToken]);
 
   const lastIndex = images.length - 1;
 
@@ -181,66 +208,28 @@ const Dashboard = ({ navigation }) => {
     setmyLoading(false);
   };
 
-  const renderPagination = () => {
-    return (
-      <View style={styles.paginationContainer}>
-        <View style={styles.pagination}>
-          {images.map((_, index) => (
-            <View
-              key={index}
-              style={[
-                styles.paginationDot,
-                index === activeIndex && styles.paginationDotActive,
-              ]}
-            />
-          ))}
-        </View>
-      </View>
-    );
-  };
   const [heading, setheading] = useState([]);
   const [sortheading, setsortheading] = useState([]);
 
   const [carddata, setcarddata] = useState([]);
   useEffect(() => {
-    // Define the URL you want to fetch data from
     const apiUrl = "master/service-type";
-
-    // console.log("5555", apiUrl);
-    // Call the getstatedata function with the API URL
     getdata(apiUrl)
       .then((res) => {
-        // console.log(
-        //   "Response from API in dashboard------------->.:",
-        //   res?.message
-        // );
-        // console.log(res.data);
-        // const longheading = res.data.map((item) => item.long_name);
         const longheading = res.data.map((item) => item);
-        // console.log(longheading);
         setcarddata([]);
         longheading?.map(async (item) => {
-          // console.log("))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))",item)
           return await fetchUserData(item);
         });
         setheading(longheading);
-        // console.log("=======================", heading);//
         const st_title = res?.data?.map((item) => item.short_name);
-        // console.log(st_title);
         setsortheading(st_title);
-        // console.log("0-0-0-0-0-0-0-0-0-0-0--", sortheading);
-        // console.log("Plan Names:", planNames);
       })
       .catch((error) => {
         console.error("Error fetching data in dashboard:", error);
       });
 
     getrequestwithtoken("student/profile", userToken).then((res) => {
-      console.log("apple mango cat", res.status);
-      console.log(
-        "88-8-8-8-8-8-8-8-8-8--8-8-8-8-8--8-8-8-8-8-88-8-",
-        res?.data?.name
-      );
       if (res?.status) {
         setname(res?.data?.name);
         setphone(res?.data?.mobile);
@@ -249,53 +238,35 @@ const Dashboard = ({ navigation }) => {
       }
     });
   }, []);
-  // console.log("?????????????????????????????>>>>000000>",JSON.stringify(carddata))
   const colorMap = {
     "Secondary Pass Student's Benefits": "#C83000",
     "H.S Pass Student's Benefits": "#004F3C",
     "Graduate Pass Student's Benefits": "#951F1F",
     "Others Benefits": "#60317D",
-    // Add more mappings as needed
   };
   async function fetchUserData(serviceType) {
-    console.log(
-      "((((((((((((((((((((((((((((((((((((((object))))))))))))))))))))))))))))))))))))))",
-      serviceType
-    ); 
     try {
       const endpoint = "master/services";
       const params = {
-        // page: 1,
         limit: 3,
         service_type: serviceType.short_name,
       };
 
       const userData = await GetfetchDataWithParams(endpoint, params);
       setcarddata((prev) => {
-        console.log("previosssssssssssssssssss", prev);
         return [...prev, { title: serviceType.long_name, data: userData.data }];
       });
-      // console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<",userData,params); // Handle or process the fetched user data here
+      console.log(userData.data, "<=====================userData.data");
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
   }
 
-  const serviceNameToPageMap = {
+  const naviagteToServices = {
     "FREE COLLEGE ADMISSION": "freeCollege",
     "PAID COLLEGE ADMISSION": "membershipPlan",
     "FREE GOVT CERTIFICATE COURSE": "freeGovCertificate",
-    // Add more mappings as needed
   };
-
-  // useEffect(() => {
-  //   // Define the URL you want to fetch data from
-  //   // fetchUserData("hs");
-  //   sortheading.map(async (title) => {
-  //     // console.log(title)
-  //     fetchUserData(title);
-  //   });
-  // }, []);
   const whatsappclicked = () => {
     const whatsappUrl = `whatsapp://send?phone=9088776656`;
     Linking.openURL(whatsappUrl);
@@ -338,12 +309,12 @@ const Dashboard = ({ navigation }) => {
           >
             {gender === "female" ? (
               <Image
-                source={require("../../assets/img/person.png")}
+                source={require("../../assets/img/human (1).png")}
                 style={styles.avatarImg}
               />
             ) : (
               <Image
-                source={require("../../assets/img/male-student.png")}
+                source={require("../../assets/img/man (1).png")}
                 style={styles.avatarImg}
               />
             )}
@@ -560,7 +531,7 @@ const Dashboard = ({ navigation }) => {
             >
               <Image
                 style={{ width: 25, height: 25, tintColor: "#435354" }}
-                source={require("../../assets/img/membership.png")}
+                source={require("../../assets/icons/community.png")}
               />
               <TouchableOpacity
                 onPress={() =>
@@ -669,9 +640,7 @@ const Dashboard = ({ navigation }) => {
             horizontal
             pagingEnabled
             showsHorizontalScrollIndicator={false}
-            renderItem={({ item }) => (
-              <Image style={styles.imgStyle} source={item} resizeMode="cover" />
-            )}
+            renderItem={renderItem}
             keyExtractor={(item, index) => index.toString()}
             onViewableItemsChanged={onViewableItemsChanged}
           />
@@ -683,14 +652,8 @@ const Dashboard = ({ navigation }) => {
             {/* data from api  */}
             <View>
               {carddata.map((item, index) => {
-                console.log(
-                  "vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv88888888888888888",
-                  carddata
-                );
-                console.log("--------------===----------", index);
-                console.log("00000000000000000000000000000", item.title);
                 return (
-                  <View>
+                  <View key={index}>
                     <TitleDash
                       title={item?.title}
                       primaryColor={colorMap[carddata[index]?.title]}
@@ -704,9 +667,8 @@ const Dashboard = ({ navigation }) => {
                         }}
                       >
                         {carddata[index]?.data.map((cd) => {
-                          // console.log("imageeeeeee" ,cd.image)
                           const navigateToPage =
-                            serviceNameToPageMap[cd.service_name];
+                            naviagteToServices[cd.service_name];
                           return (
                             <>
                               <TouchableOpacity
@@ -1020,6 +982,11 @@ const styles = StyleSheet.create({
     height: 2,
     width: "100%",
   },
+  imageContainer: {
+    width: 360,
+    height: 190, // Adjust based on your requirement
+    borderRadius: 10,
+  },
   menubarDiv: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -1060,8 +1027,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   avatarImg: {
-    width: 20,
-    height: 28,
+    width: 35,
+    height: 35,
   },
   menu: {
     position: "absolute",
@@ -1134,9 +1101,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   image: {
-    width: 50,
-    height: 50,
+    width: 360,
+    height: 190,
     marginBottom: 10,
+    borderRadius: 10,
   },
   textStyle: {
     textAlign: "center",

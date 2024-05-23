@@ -31,18 +31,34 @@ import { GetfetchDataWithParams } from "../../Helper/Helper";
 // import { FlatList } from "react-native-web";
 
 const Details = ({ navigation }) => {
+  const route = useRoute();
+  const { collegeName, courseName, courseid } = route.params;
   const [activeIndex, setActiveIndex] = useState(0);
+
+  const [bannerData, setBannerData] = useState([]);
+  useEffect(() => {
+    const params = {
+      organization_id: courseid,
+    };
+    GetfetchDataWithParams("master/organization-banner", params)
+      .then((res) => {
+        setBannerData(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  const images = bannerData;
+
   const flatListRef = useRef(null);
-  const images = [
-    require("../../assets/img/freeCollege.png"),
-    require("../../assets/img/slider3.png"),
-    require("../../assets/img/slider2.png"),
-  ];
+
   const onViewableItemsChanged = ({ viewableItems }) => {
     if (viewableItems && viewableItems.length > 0) {
       setActiveIndex(viewableItems[0].index || 0);
     }
   };
+
   const renderPagination = () => {
     return (
       <View style={styles.paginationContainer}>
@@ -60,11 +76,23 @@ const Details = ({ navigation }) => {
       </View>
     );
   };
-  const route = useRoute();
-  const { collegeName, courseName ,courseid } = route.params;
 
-  const [deatailsData, setdeatailsData] = useState([])
-  async function fetchUserData(endpoint,id) {
+  const renderItem = ({ item }) => (
+    // console.log(item.banner_image, "helloooooooooo"),
+    <View style={styles.imageContainer}>
+      <Image
+        source={{ uri: item.banner_image }}
+        style={styles.image}
+        resizeMode="cover"
+        // onError={(error) => console.log("Error loading image:", error)}
+      />
+    </View>
+  );
+
+  // console.log(courseid, "{{{{{{{{{{{{{{{{{{{course id enabs orgauu");
+
+  const [deatailsData, setdeatailsData] = useState([]);
+  async function fetchUserData(endpoint, id) {
     // console.log(search_value,"********************************")
     try {
       // const endpoint = "master/organization-course";
@@ -72,18 +100,19 @@ const Details = ({ navigation }) => {
         // page: 1,
         // limit: 3,
         // service_type: serviceType.short_name,
-        organization_course_id:id,
+        organization_course_id: id,
         // course_id:course_idd
       };
-    
 
-      GetfetchDataWithParams(endpoint, params)
-      .then((res)=>{
-        console.log("free college list api hit status'-____________________" ,res.status)
-        setdeatailsData(res?.data)
+      GetfetchDataWithParams(endpoint, params).then((res) => {
+        // console.log(
+        //   "free college list api hit status'-____________________",
+        //   res.status
+        // );
+        setdeatailsData(res?.data);
         // setisLoading(false)
-      })
-    
+      });
+
       // console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<",userData,params); // Handle or process the fetched user data here
     } catch (error) {
       console.error("Error fetching user data:", error);
@@ -91,13 +120,13 @@ const Details = ({ navigation }) => {
   }
 
   useEffect(() => {
-    fetchUserData('master/course-details' ,courseid)
-  }, [courseid])
-  console.log("courseiddd",courseid)
+    fetchUserData("master/course-details", courseid);
+  }, [courseid]);
+  // console.log("courseiddd", courseid);
   return (
     <SafeAreaView style={styles.container}>
       <Header title="Free College List" navigateTo={navigation.goBack} />
-      <ScrollView style={{ backgroundColor: "#FFFCCE" }}>
+      <ScrollView style={{ backgroundColor: "#FFFCCE", height: "100%" }}>
         <View style={{ position: "relative" }}>
           <FlatList
             ref={flatListRef}
@@ -105,9 +134,7 @@ const Details = ({ navigation }) => {
             horizontal
             pagingEnabled
             showsHorizontalScrollIndicator={false}
-            renderItem={({ item }) => (
-              <Image style={styles.imgStyle} source={item} resizeMode="cover" />
-            )}
+            renderItem={renderItem}
             keyExtractor={(item, index) => index.toString()}
             onViewableItemsChanged={onViewableItemsChanged}
           />
@@ -212,7 +239,7 @@ const Details = ({ navigation }) => {
                   fontSize: 14,
                 }}
               >
-            {deatailsData.course_details}
+                {deatailsData.course_details}
               </Text>
             </View>
             <View style={styles.cardButtons}>
@@ -263,8 +290,6 @@ const Details = ({ navigation }) => {
 export default Details;
 const styles = StyleSheet.create({
   container: {
-    // backgroundColor: "#FFFCCE",
-    // top: 53,
     marginBottom: 48,
   },
   heading: {
@@ -288,6 +313,11 @@ const styles = StyleSheet.create({
   image: {
     height: 220,
     width: "100%",
+  },
+  imageContainer: {
+    width: 360,
+    height: 162, // Adjust based on your requirement
+    borderRadius: 10,
   },
   listContainer: {
     marginTop: 20,

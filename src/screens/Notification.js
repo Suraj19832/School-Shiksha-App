@@ -41,7 +41,7 @@ const formatNotificationTime = (dateString) => {
   }
 };
 
-const truncateMessage = (message, maxLength = 30) => {
+const truncateMessage = (message, maxLength = 35) => {
   if (message.length > maxLength) {
     return message.substring(0, maxLength) + "...";
   }
@@ -101,7 +101,7 @@ const NotificationContainer = (props) => {
                 color: "#435354",
                 fontSize: 14,
                 fontWeight: "400",
-                maxWidth: Dimensions.get("screen").width * 0.6,
+                // maxWidth: Dimensions.get("screen").width * 0.6,
                 fontWeight: "500",
               }}
             >

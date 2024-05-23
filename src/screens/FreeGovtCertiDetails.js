@@ -30,20 +30,35 @@ import { useRoute } from "@react-navigation/native";
 import { GetfetchDataWithParams } from "../../Helper/Helper";
 const FreeGovtCertiDetails = ({ navigation }) => {
   const route = useRoute();
-  const { collegename, courcename ,courseid } = route.params;
-  const [deatailsData, setdeatailsData] = useState([])
+  const { collegename, courcename, courseid } = route.params;
+  console.log(courseid, ":::::::::::{{{{{{}}}}}}}}}}}dshkhjk");
+  const [deatailsData, setdeatailsData] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
+
+  const [bannerData, setBannerData] = useState([]);
+  useEffect(() => {
+    const params = {
+      organization_id: courseid,
+    };
+    GetfetchDataWithParams("master/organization-banner", params)
+      .then((res) => {
+        setBannerData(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  const images = bannerData;
+
   const flatListRef = useRef(null);
-  const images = [
-    require("../../assets/img/onlineLearning (1).png"),
-    require("../../assets/img/slider3.png"),
-    require("../../assets/img/slider2.png"),
-  ];
+
   const onViewableItemsChanged = ({ viewableItems }) => {
     if (viewableItems && viewableItems.length > 0) {
       setActiveIndex(viewableItems[0].index || 0);
     }
   };
+
   const renderPagination = () => {
     return (
       <View style={styles.paginationContainer}>
@@ -62,7 +77,19 @@ const FreeGovtCertiDetails = ({ navigation }) => {
     );
   };
 
-  async function fetchUserData(endpoint,id) {
+  const renderItem = ({ item }) => (
+    // console.log(item.banner_image, "helloooooooooo"),
+    <View style={styles.imageContainer}>
+      <Image
+        source={{ uri: item.banner_image }}
+        style={styles.image}
+        resizeMode="cover"
+        // onError={(error) => console.log("Error loading image:", error)}
+      />
+    </View>
+  );
+
+  async function fetchUserData(endpoint, id) {
     // console.log(search_value,"********************************")
     try {
       // const endpoint = "master/organization-course";
@@ -70,35 +97,35 @@ const FreeGovtCertiDetails = ({ navigation }) => {
         // page: 1,
         // limit: 3,
         // service_type: serviceType.short_name,
-        organization_course_id:id,
+        organization_course_id: id,
         // course_id:course_idd
       };
-    
 
-      GetfetchDataWithParams(endpoint, params)
-      .then((res)=>{
-        console.log("free college list api hit status'-____________________" ,res.status)
-        setdeatailsData(res?.data)
+      GetfetchDataWithParams(endpoint, params).then((res) => {
+        console.log(
+          "free college list api hit status'-____________________",
+          res.status
+        );
+        setdeatailsData(res?.data);
         // setisLoading(false)
-      })
-    
+      });
+
       // console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<",userData,params); // Handle or process the fetched user data here
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
   }
 
-  
   useEffect(() => {
-    fetchUserData('master/course-details' ,courseid)
-  }, [courseid])
+    fetchUserData("master/course-details", courseid);
+  }, [courseid]);
   return (
     <SafeAreaView style={styles.container}>
       <Header
         title="Free Govt. Certificate Details"
         navigateTo={navigation.goBack}
       />
-      <ScrollView style={{ backgroundColor: "#FFFCCE" }}>
+      <ScrollView style={{ backgroundColor: "#FFFCCE", height: "100%" }}>
         <View style={{ position: "relative" }}>
           <FlatList
             ref={flatListRef}
@@ -106,9 +133,7 @@ const FreeGovtCertiDetails = ({ navigation }) => {
             horizontal
             pagingEnabled
             showsHorizontalScrollIndicator={false}
-            renderItem={({ item }) => (
-              <Image style={styles.imgStyle} source={item} resizeMode="cover" />
-            )}
+            renderItem={renderItem}
             keyExtractor={(item, index) => index.toString()}
             onViewableItemsChanged={onViewableItemsChanged}
           />
@@ -213,7 +238,7 @@ const FreeGovtCertiDetails = ({ navigation }) => {
                   fontSize: 14,
                 }}
               >
-               {deatailsData.course_details}
+                {deatailsData.course_details}
               </Text>
             </View>
             <View style={styles.cardButtons}>
@@ -289,6 +314,11 @@ const styles = StyleSheet.create({
     position: "relative",
     left: 20,
     gap: 10,
+  },
+  imageContainer: {
+    width: 360,
+    height: 162, // Adjust based on your requirement
+    borderRadius: 10,
   },
   image: {
     height: 220,

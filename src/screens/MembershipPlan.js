@@ -17,24 +17,11 @@ import { BorderGradient } from "../../components/BoderGradient";
 import { getdata, getrequestwithtoken } from "../../Helper/Helper";
 import { AuthContext } from "../../Utils/context/AuthContext";
 
-const SpanText = (props) => {
-  return (
-    <View style={{ flexDirection: "row", gap: 8, alignItems: "center" }}>
-      <Image
-        style={{ width: 20, height: 20 }}
-        source={require("../../assets/img/correct.png")}
-      />
-      <Text
-        style={[
-          { fontWeight: "400", fontSize: 14, lineHeight: 21 },
-          props.color ? { color: "#435354" } : { color: "white" },
-        ]}
-      >
-        {props.text}
-      </Text>
-    </View>
-  );
-};
+// const SpanText = (props) => {
+//   return (
+
+//   );
+// };
 
 const MembershipPlan = ({ navigation }) => {
   const { userToken } = useContext(AuthContext);
@@ -250,29 +237,43 @@ const MembershipPlan = ({ navigation }) => {
                               borderBottomWidth: 0.2,
                               borderBottomColor: borderbottom,
                               paddingBottom: 10,
+                              flexDirection: "row",
+                              gap: 8,
+                              alignItems: "center",
                             }}
                           >
-                            <SpanText
-                              text={item}
-                              color={textDescription}
-                              style={{ color: "red" }}
+                            <Image
+                              style={{ width: 20, height: 20 }}
+                              source={require("../../assets/img/correct.png")}
                             />
+                            <Text
+                              style={{
+                                fontWeight: "400",
+                                fontSize: 14,
+                                lineHeight: 21,
+                                color: textDescription,
+                              }}
+                            >
+                              {item}
+                            </Text>
                           </View>
                         );
                       })}
-                      {cards.id === planId ? (
-                        <BorderGradient
-                          text="Get Started"
-                          plan_id={planId}
-                          disabled={false}
-                        />
-                      ) : (
-                        <BorderGradient
-                          text="Buy Now"
-                          plan_id={cards.id}
-                          disabled={disableButton}
-                        />
-                      )}
+                      <View style={{ marginTop: 20 }}>
+                        {cards.id === planId ? (
+                          <BorderGradient
+                            text="Get Started"
+                            plan_id={planId}
+                            disabled={false}
+                          />
+                        ) : (
+                          <BorderGradient
+                            text="Buy Now"
+                            plan_id={cards.id}
+                            disabled={disableButton}
+                          />
+                        )}
+                      </View>
                     </View>
                   </LinearGradient>
                 </View>
@@ -515,15 +516,14 @@ const styles = StyleSheet.create({
   },
   card_main: {
     width: Dimensions.get("screen").width * 0.88,
-    height: Dimensions.get("screen").height * 0.55,
-    // backgroundColor: "red",
+    height: "auto",
     backgroundColor: "white",
     borderRadius: 10,
-    // borderWidth: 1,
     borderColor: "transparent",
     paddingTop: 20,
     paddingBottom: 30,
     paddingHorizontal: 15,
+    paddingRight: 30,
   },
   image: {
     width: 20,

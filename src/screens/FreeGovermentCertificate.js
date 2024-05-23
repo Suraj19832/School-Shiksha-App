@@ -10,7 +10,7 @@ import {
   Modal,
   TouchableOpacity,
   FlatList,
-  ActivityIndicator
+  ActivityIndicator,
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import {
@@ -32,44 +32,61 @@ import { GetfetchDataWithParams } from "../../Helper/Helper";
 
 const FreeGovermentCertificate = ({ navigation }) => {
   const name = "kcodkcodkc";
-  const [isLoading, setisLoading] = useState(true)
+  const [isLoading, setisLoading] = useState(true);
   const [isDropdownOpenclass, setDropdownOpenclass] = useState(false);
   const [selectedOptionclass, setSelectedOptionclass] = useState(null);
   const [inputValueclass, setInputValueclass] = useState("");
-  const [inputvlauesearch, setinputvlauesearch] = useState()
+  const [inputvlauesearch, setinputvlauesearch] = useState();
   const toggleDropdownclass = () => {
     setDropdownOpenclass(!isDropdownOpenclass);
-    fetchDropDown("master/courses" ,id)
+    fetchDropDown("master/courses", id);
   };
 
-  const handleSelectOptionclass = (option , courseid) => {
+  const handleSelectOptionclass = (option, courseid) => {
     setSelectedOptionclass(option);
     setInputValueclass(option);
     setDropdownOpenclass(false);
-    fetchUserData("master/organization-course",id, courseid )
+    fetchUserData("master/organization-course", id, courseid);
   };
-  const handleinputtextfield=(text)=>{
-    setinputvlauesearch(text)
-    console.log(inputvlauesearch)
-    fetchUserData("master/organization-course",id,null,text)
-  }
+  const handleinputtextfield = (text) => {
+    setinputvlauesearch(text);
+    // console.log(inputvlauesearch)//
+    fetchUserData("master/organization-course", id, null, text);
+  };
   const handleInputChangeclass = (text) => {
     setInputValueclass(text);
     setDropdownOpenclass(null); // Clear selected option when user edits input
   };
 
+  const route = useRoute();
+  const { id } = route.params;
+
   const [activeIndex, setActiveIndex] = useState(0);
+
+  const [bannerData, setBannerData] = useState([]);
+  useEffect(() => {
+    const params = {
+      service_id: id,
+    };
+    GetfetchDataWithParams("master/service-banner", params)
+      .then((res) => {
+        setBannerData(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  const images = bannerData;
+
   const flatListRef = useRef(null);
-  const images = [
-    require("../../assets/img/onlineLearning (1).png"),
-    require("../../assets/img/slider3.png"),
-    require("../../assets/img/slider2.png"),
-  ];
+
   const onViewableItemsChanged = ({ viewableItems }) => {
     if (viewableItems && viewableItems.length > 0) {
       setActiveIndex(viewableItems[0].index || 0);
     }
   };
+
   const renderPagination = () => {
     return (
       <View style={styles.paginationContainer}>
@@ -88,68 +105,79 @@ const FreeGovermentCertificate = ({ navigation }) => {
     );
   };
 
-  const route = useRoute();
-  const { id } = route.params;
-  console.log(id,"idiochdoshcsudivhiuf")
+  const renderItem = ({ item }) => (
+    // console.log(item.banner_image, "helloooooooooo"),
+    <View style={styles.imageContainer}>
+      <Image
+        source={{ uri: item.banner_image }}
+        style={styles.image}
+        resizeMode="cover"
+        // onError={(error) => console.log("Error loading image:", error)}
+      />
+    </View>
+  );
 
- const [freecertificate, setfreecertificate] = useState([])
-  
-  async function fetchUserData(endpoint,id ,course_idd =null ,search_value =null) {
-    console.log(search_value,"********************************")
+  const [freecertificate, setfreecertificate] = useState([]);
+
+  async function fetchUserData(
+    endpoint,
+    id,
+    course_idd = null,
+    search_value = null
+  ) {
+    // console.log(search_value,"********************************")
     try {
       // const endpoint = "master/organization-course";
       const params = {
         // page: 1,
         // limit: 3,
         // service_type: serviceType.short_name,
-        service_id:id,
+        service_id: id,
         // course_id:course_idd
       };
       if (course_idd) {
         params.course_id = course_idd;
       }
-      if (search_value){
+      if (search_value) {
         params.search_value = search_value;
       }
 
-      GetfetchDataWithParams(endpoint, params)
-      .then((res)=>{
-        if(res?.status){
-          setisLoading(false)
+      GetfetchDataWithParams(endpoint, params).then((res) => {
+        if (res?.status) {
+          setisLoading(false);
         }
-        console.log("free college list api hit status" ,res.status)
-        setfreecertificate(res?.data)
-        
+        // console.log("free college list api hit status" ,res.status)
+        setfreecertificate(res?.data);
+
         // setisLoading(false)
-      })
-   
+      });
+
       // console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<",userData,params); // Handle or process the fetched user data here
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
   }
-  console.log("djjdjdojcsdcjsdlkc",freecertificate)
+  // console.log("djjdjdojcsdcjsdlkc",freecertificate)
   useEffect(() => {
-    fetchUserData("master/organization-course",id )
-  }, [id])
-  const [dropdownOption, setdropdownOption] = useState([])
+    fetchUserData("master/organization-course", id);
+  }, [id]);
+  const [dropdownOption, setdropdownOption] = useState([]);
 
-  async function fetchDropDown(endpoint,id) {
+  async function fetchDropDown(endpoint, id) {
     try {
       // const endpoint = "master/organization-course";
       const params = {
         // page: 1,
         // limit: 3,
         // service_type: serviceType.short_name,
-        service_id:id
+        service_id: id,
       };
-      GetfetchDataWithParams(endpoint, params)
-      .then((res)=>{
-        console.log("free college dropdown" ,res.status)
-        setdropdownOption(res?.data)
-        setisLoading(false)
-      })
-    
+      GetfetchDataWithParams(endpoint, params).then((res) => {
+        // console.log("free college dropdown" ,res.status)
+        setdropdownOption(res?.data);
+        setisLoading(false);
+      });
+
       // console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<",userData,params); // Handle or process the fetched user data here
     } catch (error) {
       console.error("Error fetching user data:", error);
@@ -169,9 +197,7 @@ const FreeGovermentCertificate = ({ navigation }) => {
             horizontal
             pagingEnabled
             showsHorizontalScrollIndicator={false}
-            renderItem={({ item }) => (
-              <Image style={styles.imgStyle} source={item} resizeMode="cover" />
-            )}
+            renderItem={renderItem}
             keyExtractor={(item, index) => index.toString()}
             onViewableItemsChanged={onViewableItemsChanged}
           />
@@ -257,12 +283,16 @@ const FreeGovermentCertificate = ({ navigation }) => {
 
               {isDropdownOpenclass && (
                 <View style={styles.dropdownContainer}>
-
-{dropdownOption.map((option)=>{
-                      return(
-                        <TouchableOpacity
+                  {dropdownOption.map((option) => {
+                    return (
+                      <TouchableOpacity
                         style={styles.dropdownOption}
-                        onPress={() => handleSelectOptionclass(option?.course_name ,option?.course_id)}
+                        onPress={() =>
+                          handleSelectOptionclass(
+                            option?.course_name,
+                            option?.course_id
+                          )
+                        }
                       >
                         <View
                           style={{
@@ -273,8 +303,8 @@ const FreeGovermentCertificate = ({ navigation }) => {
                           <Text>{option.course_name}</Text>
                         </View>
                       </TouchableOpacity>
-                      )
-                    })}
+                    );
+                  })}
                   {/* <TouchableOpacity
                     style={styles.dropdownOption}
                     onPress={() => handleSelectOptionclass("1")}
@@ -331,7 +361,6 @@ const FreeGovermentCertificate = ({ navigation }) => {
             </Text> */}
           </View>
         </View>
-
 
         <View style={styles.listContainer}>
           <View style={styles.listCart}>
@@ -434,141 +463,177 @@ const FreeGovermentCertificate = ({ navigation }) => {
             </View>
           </View>
           {isLoading ? (
-        <ActivityIndicator size="large" color="black" />
-      ) : (
-        freecertificate.map((value, index) => (
-          <View style={styles.listCart} key={index}>
-            <View style={styles.cardTop}>
-              <View
-                style={{
-                  backgroundColor: "rgba(255, 199, 0, 0.5)",
-                  width: 55,
-                  height: 55,
-                  borderRadius: 50,
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <Image
-                  style={{}}
-                  source={require("../../assets/img/college.png")}
-                />
-              </View>
-              <Text
-                style={{
-                  color: "rgba(55, 55, 55, 1)",
-                  fontWeight: "600",
-                  fontSize: 18,
-                }}
-              >
-                {value.organization_name}
-              </Text>
-            </View>
-            <View style={styles.course}>
-              <Text style={{ color: "#01265B", fontWeight: "600", fontSize: 14 }}>
-                Course Name -
-              </Text>
-              <Text style={{ color: "#595959", fontWeight: "600", fontSize: 14 }}>
-                {value.course_name}
-              </Text>
-            </View>
-
-            <View style={styles.aboutCourse}>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Text style={{ color: "#01265B", fontWeight: "600", fontSize: 14 }}>
-                  Course Duration
-                </Text>
-                <Text style={{ color: "#01265B", fontWeight: "600", fontSize: 14 }}>
-                  Course Fees
-                </Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Text style={{ color: "#595959", fontWeight: "700", fontSize: 12 }}>
-                  {value.course_duration} Months
-                </Text>
-                <Text style={{ color: "#595959", fontWeight: "700", fontSize: 12 }}>
-                  {value.course_fees}/-
-                </Text>
-              </View>
-            </View>
-
-            <View style={styles.cardButtons}>
-              <TouchableOpacity
-                style={styles.buttonbox}
-                onPress={() =>
-                  navigation.navigate("freeGovtDetails", {
-                    collegename: value.organization_name,
-                    courcename: value.course_name,
-                    courseid:value?.organization_course_id
-                  })
-                }
-              >
-                <Text
-                  style={{
-                    textAlign: "center",
-                    color: "#0567F5",
-                    fontWeight: "500",
-                    fontSize: 14,
-                    lineHeight: 16.41,
-                  }}
-                >
-                  View All Details
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate("freeGovAdmissionForm", {
-                    collegename: value.organization_name,
-                    courcename: value.course_name,
-                  })
-                }
-              >
-                <LinearGradient
-                  colors={["#03357D", "#0569FA"]}
-                  start={{ x: 0, y: 0.5 }}
-                  end={{ x: 1, y: 0.5 }}
-                  style={[
-                    styles.buttonbox,
-                    { justifyContent: "center", paddingHorizontal: 30 },
-                  ]}
-                >
+            <ActivityIndicator size="large" color="black" />
+          ) : (
+            freecertificate.map((value, index) => (
+              <View style={styles.listCart} key={index}>
+                <View style={styles.cardTop}>
                   <View
                     style={{
-                      justifyContent: "center",
+                      backgroundColor: "rgba(255, 199, 0, 0.5)",
+                      width: 55,
+                      height: 55,
+                      borderRadius: 50,
                       alignItems: "center",
-                      display: "flex",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Image
+                      style={{}}
+                      source={require("../../assets/img/college.png")}
+                    />
+                  </View>
+                  <Text
+                    style={{
+                      color: "rgba(55, 55, 55, 1)",
+                      fontWeight: "600",
+                      fontSize: 18,
+                    }}
+                  >
+                    {value.organization_name}
+                  </Text>
+                </View>
+                <View style={styles.course}>
+                  <Text
+                    style={{
+                      color: "#01265B",
+                      fontWeight: "600",
+                      fontSize: 14,
+                    }}
+                  >
+                    Course Name -
+                  </Text>
+                  <Text
+                    style={{
+                      color: "#595959",
+                      fontWeight: "600",
+                      fontSize: 14,
+                    }}
+                  >
+                    {value.course_name}
+                  </Text>
+                </View>
+
+                <View style={styles.aboutCourse}>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
                     }}
                   >
                     <Text
                       style={{
+                        color: "#01265B",
+                        fontWeight: "600",
                         fontSize: 14,
+                      }}
+                    >
+                      Course Duration
+                    </Text>
+                    <Text
+                      style={{
+                        color: "#01265B",
+                        fontWeight: "600",
+                        fontSize: 14,
+                      }}
+                    >
+                      Course Fees
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Text
+                      style={{
+                        color: "#595959",
+                        fontWeight: "700",
+                        fontSize: 12,
+                      }}
+                    >
+                      {value.course_duration} Months
+                    </Text>
+                    <Text
+                      style={{
+                        color: "#595959",
+                        fontWeight: "700",
+                        fontSize: 12,
+                      }}
+                    >
+                      {value.course_fees}/-
+                    </Text>
+                  </View>
+                </View>
+
+                <View style={styles.cardButtons}>
+                  <TouchableOpacity
+                    style={styles.buttonbox}
+                    onPress={() =>
+                      navigation.navigate("freeGovtDetails", {
+                        collegename: value.organization_name,
+                        courcename: value.course_name,
+                        courseid: value?.organization_course_id,
+                      })
+                    }
+                  >
+                    <Text
+                      style={{
+                        textAlign: "center",
+                        color: "#0567F5",
                         fontWeight: "500",
-                        alignItems: "center",
-                        display: "flex",
-                        justifyContent: "center",
-                        color: "white",
+                        fontSize: 14,
                         lineHeight: 16.41,
                       }}
                     >
-                      Apply Link
+                      View All Details
                     </Text>
-                  </View>
-                </LinearGradient>
-              </TouchableOpacity>
-            </View>
-          </View>
-        ))
-      )}
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() =>
+                      navigation.navigate("freeGovAdmissionForm", {
+                        collegename: value.organization_name,
+                        courcename: value.course_name,
+                      })
+                    }
+                  >
+                    <LinearGradient
+                      colors={["#03357D", "#0569FA"]}
+                      start={{ x: 0, y: 0.5 }}
+                      end={{ x: 1, y: 0.5 }}
+                      style={[
+                        styles.buttonbox,
+                        { justifyContent: "center", paddingHorizontal: 30 },
+                      ]}
+                    >
+                      <View
+                        style={{
+                          justifyContent: "center",
+                          alignItems: "center",
+                          display: "flex",
+                        }}
+                      >
+                        <Text
+                          style={{
+                            fontSize: 14,
+                            fontWeight: "500",
+                            alignItems: "center",
+                            display: "flex",
+                            justifyContent: "center",
+                            color: "white",
+                            lineHeight: 16.41,
+                          }}
+                        >
+                          Apply Link
+                        </Text>
+                      </View>
+                    </LinearGradient>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            ))
+          )}
 
           {/* dummy data  */}
           {/* <View style={styles.listCart}>
@@ -1046,11 +1111,15 @@ const styles = StyleSheet.create({
     left: 10,
     gap: 10,
   },
+  imageContainer: {
+    width: 360,
+    height: 162, // Adjust based on your requirement
+    borderRadius: 10,
+  },
   image: {
     height: 220,
     width: "100%",
   },
-  //   search
   searchContainer: {
     gap: 15,
     marginVertical: 25,

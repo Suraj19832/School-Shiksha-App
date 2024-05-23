@@ -43,8 +43,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    position: "absolute",
-    bottom: 25,
+    // position: "absolute",
+    // bottom: 25,
     alignSelf: "center",
   },
   gradient: {
