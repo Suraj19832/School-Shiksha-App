@@ -208,60 +208,58 @@ const Dashboard = ({ navigation }) => {
     setmyLoading(false);
   };
 
-  const [heading, setheading] = useState([]);
-  const [sortheading, setsortheading] = useState([]);
+  // const [heading, setheading] = useState([]);
+  // const [sortheading, setsortheading] = useState([]);
 
   const [carddata, setcarddata] = useState([]);
-  useEffect(() => {
-    const apiUrl = "master/service-type";
-    getdata(apiUrl)
-      .then((res) => {
-        const longheading = res.data.map((item) => item);
-        setcarddata([]);
-        longheading?.map(async (item) => {
-          return await fetchUserData(item);
-        });
-        setheading(longheading);
-        const st_title = res?.data?.map((item) => item.short_name);
-        setsortheading(st_title);
-      })
-      .catch((error) => {
-        console.error("Error fetching data in dashboard:", error);
-      });
+  // useEffect(() => {
+  //   const apiUrl = "master/service-type";
+  //   getdata(apiUrl)
+  //     .then((res) => {
+  //       const longheading = res.data.map((item) => item);
+  //       setcarddata([]);
+  //       longheading?.map(async (item) => {
+  //         return await fetchUserData(item);
+  //       });
+  //       setheading(longheading);
+  //       const st_title = res?.data?.map((item) => item.short_name);
+  //       setsortheading(st_title);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error fetching data in dashboard:", error);
+  //     });
 
-    getrequestwithtoken("student/profile", userToken).then((res) => {
-      if (res?.status) {
-        setname(res?.data?.name);
-        setphone(res?.data?.mobile);
-        setgender(res?.data?.gender);
-        setplan(res?.data?.subscription?.plan_name);
-      }
-    });
-  }, []);
-  const colorMap = {
+  //   getrequestwithtoken("student/profile", userToken).then((res) => {
+  //     if (res?.status) {
+  //       setname(res?.data?.name);
+  //       setphone(res?.data?.mobile);
+  //       setgender(res?.data?.gender);
+  //       setplan(res?.data?.subscription?.plan_name);
+  //     }
+  //   });
+  // }, []);
+
+  useEffect(() => {
+    fetchUserData()
+  }, [])
+  
+  const colorMap = { 
     "Secondary Pass Student's Benefits": "#C83000",
     "H.S Pass Student's Benefits": "#004F3C",
     "Graduate Pass Student's Benefits": "#951F1F",
     "Others Benefits": "#60317D",
   };
-  async function fetchUserData(serviceType) {
+  async function fetchUserData() {
     try {
-      const endpoint = "master/services";
-      const params = {
-        limit: 3,
-        service_type: serviceType.short_name,
-      };
-
-      const userData = await GetfetchDataWithParams(endpoint, params);
-      setcarddata((prev) => {
-        return [...prev, { title: serviceType.long_name, data: userData.data }];
-      });
-      console.log(userData.data, "<=====================userData.data");
+      getdata("master/service-type")
+      .then((res)=>{
+        console.log(res.status)
+        setcarddata(res?.data)
+      })
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
   }
-
   const naviagteToServices = {
     "FREE COLLEGE ADMISSION": "freeCollege",
     "PAID COLLEGE ADMISSION": "membershipPlan",
@@ -655,8 +653,8 @@ const Dashboard = ({ navigation }) => {
                 return (
                   <View key={index}>
                     <TitleDash
-                      title={item?.title}
-                      primaryColor={colorMap[carddata[index]?.title]}
+                      title={item?.long_name}
+                      primaryColor={colorMap[item?.long_name]}
                     />
                     <View style={{ alignItems: "center" }}>
                       <View
@@ -666,7 +664,7 @@ const Dashboard = ({ navigation }) => {
                           justifyContent: "center",
                         }}
                       >
-                        {carddata[index]?.data.map((cd) => {
+                        {carddata[index]?.services.map((cd) => {
                           const navigateToPage =
                             naviagteToServices[cd.service_name];
                           return (
@@ -685,7 +683,6 @@ const Dashboard = ({ navigation }) => {
                                   </View>
                                 )}
                                 <View style={styles.imgContainer}>
-                                  {/* <Image source={cards[0].image} style={styles.image} /> */}
                                   <Image
                                     style={[
                                       styles.image,
@@ -698,7 +695,6 @@ const Dashboard = ({ navigation }) => {
                                 <Text style={styles.textStyle}>
                                   {cd.service_name}
                                 </Text>
-                                {/* <Text style={styles.textStyle}>{cd.intended_for}</Text> */}
                               </TouchableOpacity>
                             </>
                           );
