@@ -14,7 +14,12 @@ import {
   useColorScheme,
   Linking,
 } from "react-native";
-import { Ionicons, Fontisto, MaterialCommunityIcons } from "@expo/vector-icons";
+import {
+  Ionicons,
+  Fontisto,
+  MaterialCommunityIcons,
+  MaterialIcons,
+} from "@expo/vector-icons";
 import TitleDash from "../../components/TitleDash";
 
 import Footer from "../../components/Footer";
@@ -207,10 +212,6 @@ const Dashboard = ({ navigation }) => {
     AsyncStorage.removeItem("userToken");
     setmyLoading(false);
   };
-
-  // const [heading, setheading] = useState([]);
-  // const [sortheading, setsortheading] = useState([]);
-
   const [carddata, setcarddata] = useState([]);
   // useEffect(() => {
   //   const apiUrl = "master/service-type";
@@ -240,10 +241,10 @@ const Dashboard = ({ navigation }) => {
   // }, []);
 
   useEffect(() => {
-    fetchUserData()
-  }, [])
-  
-  const colorMap = { 
+    fetchUserData();
+  }, []);
+
+  const colorMap = {
     "Secondary Pass Student's Benefits": "#C83000",
     "H.S Pass Student's Benefits": "#004F3C",
     "Graduate Pass Student's Benefits": "#951F1F",
@@ -251,11 +252,10 @@ const Dashboard = ({ navigation }) => {
   };
   async function fetchUserData() {
     try {
-      getdata("master/service-type")
-      .then((res)=>{
-        console.log(res.status)
-        setcarddata(res?.data)
-      })
+      getdata("master/service-type").then((res) => {
+        console.log(res.status);
+        setcarddata(res?.data);
+      });
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
@@ -398,7 +398,7 @@ const Dashboard = ({ navigation }) => {
                     style={{
                       backgroundColor: "#FFAE2B",
                       height: 20,
-                      width: 'auto',
+                      width: "auto",
                       borderRadius: 10,
                       alignItems: "center",
                       justifyContent: "center",
@@ -648,7 +648,7 @@ const Dashboard = ({ navigation }) => {
           {/* new start  */}
           <View>
             {/* data from api  */}
-            <View>
+            <View style={{paddingBottom:20}}>
               {carddata.map((item, index) => {
                 return (
                   <View key={index}>
@@ -665,7 +665,6 @@ const Dashboard = ({ navigation }) => {
                         }}
                       >
                         {carddata[index]?.services.map((cd) => {
-                         
                           // const navigateToPage =
                           //   naviagteToServices[cd.service_name];
                           return (
@@ -675,7 +674,7 @@ const Dashboard = ({ navigation }) => {
                                 onPress={() =>
                                   navigation.navigate("freeCollege", {
                                     id: cd?.id,
-                                    heading:cd?.service_name
+                                    heading: cd?.service_name,
                                   })
                                 }
                               >
@@ -713,7 +712,19 @@ const Dashboard = ({ navigation }) => {
                             })
                           }
                         >
-                          <Text style={styles.text}>{"Show More >"}</Text>
+                          <View
+                            style={{
+                              flexDirection: "row",
+                              alignItems: "center",
+                            }}
+                          >
+                            <Text style={styles.text}>Show More</Text>
+                            <MaterialIcons
+                              name="keyboard-arrow-right"
+                              size={22}
+                              color="#435354"
+                            />
+                          </View>
                         </TouchableOpacity>
                       </View>
                     </View>
@@ -1144,8 +1155,10 @@ const styles = StyleSheet.create({
     borderColor: "#DDDDDD",
   },
   text: {
-    color: "black",
-    fontSize: 16,
+    color: "#435354",
+    fontSize: 14,
+    fontWeight: "500",
+    lineHeight: 17,
   },
 });
 
