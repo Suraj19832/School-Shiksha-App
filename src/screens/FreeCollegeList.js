@@ -118,6 +118,10 @@ const FreeCollegeList = ({ navigation }) => {
         console.log("free college list api hit status", res.status);
         setFreeCollegeList(res?.data);
         setorganizationId(res?.data?.organization_id);
+        console.log(
+          res?.data,
+          "}}}}}}}}}}}}{{{{{{{{{{{{___________________________"
+        );
 
         // const organizationIds = res.data.map((item) => item.organization_id); // Extract all organization_ids
         // setorganizationId(organizationIds);
@@ -198,20 +202,23 @@ const FreeCollegeList = ({ navigation }) => {
     fetchUserData("master/organization-course", id, null, text);
   };
 
-  const whatsappclicked = () => {
-    const whatsappUrl = `whatsapp://send?phone=9088776656`;
+  const whatsappclicked = (whatsappnumber) => {
+    console.log(
+      whatsappnumber,
+      "yyyydyydydydydydydydydydyydcgsjadcchkgcjdbjckh;ghlaHKVCHDCGWJCBWHCIUGWAJXCBJSDBCXKWDGCJHBDSCJKGDCMSBGCKSDGCSDBCJHVNZVCJYSDDCMBJHLKGCKH"
+    );
+    const whatsappUrl = `whatsapp://send?phone=${whatsappnumber}`;
+    console.log(
+      "number where request is sent ",
+      `whatsapp://send?phone=${whatsappnumber}`
+    );
     Linking.openURL(whatsappUrl);
   };
+
   return (
     <SafeAreaView style={styles.container}>
       <Header title={`${heading} List`} navigateTo={navigation.goBack} />
       <ScrollView style={{ backgroundColor: "#FFFCCE", height: "100%" }}>
-        {/* <View>
-          <Image
-            style={styles.image}
-            source={require("../../assets/img/freeCollege.png")}
-          />
-        </View> */}
         <View style={{ position: "relative" }}>
           <FlatList
             ref={flatListRef}
@@ -258,7 +265,6 @@ const FreeCollegeList = ({ navigation }) => {
                   color: "#00367E",
                   fontWeight: "600",
                   fontSize: 20,
-                  // left: 17,
                 }}
               >
                 Course Name
@@ -571,6 +577,7 @@ const FreeCollegeList = ({ navigation }) => {
             <ActivityIndicator size="large" color="black" />
           ) : (
             FreeCollegeList.map((value) => {
+              console.log("@@2222222222222222222", value?.whatsapp_number);
               return (
                 <View style={styles.listCart} key={value.id}>
                   <View
@@ -668,7 +675,9 @@ const FreeCollegeList = ({ navigation }) => {
                         {value?.course_name}
                       </Text>
                     </View>
-                    <TouchableOpacity onPress={() => whatsappclicked()}>
+                    <TouchableOpacity
+                      onPress={() => whatsappclicked(value?.whatsapp_number)}
+                    >
                       <Image
                         source={require("../../assets/icons/whatsapp.png")}
                         style={{ width: 30, height: 30 }}

@@ -95,8 +95,8 @@ const Details = ({ navigation }) => {
   useEffect(() => {
     fetchUserData("master/course-details", courseid);
   }, [courseid]);
-  const whatsappclicked = () => {
-    const whatsappUrl = `tel:${3256147895}`;
+  const whatsappclicked = (phonenumber) => {
+    const whatsappUrl = `tel:${phonenumber}`;
     Linking.openURL(whatsappUrl);
   };
 
@@ -131,46 +131,44 @@ const Details = ({ navigation }) => {
                   justifyContent: "center",
                 }}
               >
-                 <Image
-                          style={{ height: 55, width: 55, borderRadius: 50 }}
-                          source={{ uri: detailsData?.logo }}
-                          resizeMode="cover"
-                        />
+                <Image
+                  style={{ height: 55, width: 55, borderRadius: 50 }}
+                  source={{ uri: detailsData?.logo }}
+                  resizeMode="cover"
+                />
               </View>
-<View style={{ gap: 10 }}>
-<Text
-                style={{
-                  color: "rgba(55, 55, 55, 1)",
-                  fontWeight: "600",
-                  fontSize: 18,
-                }}
-              >
-                {collegeName}
-              </Text>
-              <View
-                          style={{
-                            flexDirection: "row",
-                            gap: 4,
-                            alignItems: "center",
-                          }}
-                        >
-                          <Entypo name="location" size={12} color="#373737" />
-                          <View style={{}}>
-                            <Text
-                              style={{
-                                fontSize: 10,
-                                color: "#373737",
-                                fontWeight: "500",
-                              }}
-                            >
-                              {detailsData?.block_name}, {detailsData?.district_name},
-                              {detailsData?.state_name}{" "}
-                           
-                            </Text>
-                          </View>
-                        </View>
-</View>
-          
+              <View style={{ gap: 10 }}>
+                <Text
+                  style={{
+                    color: "rgba(55, 55, 55, 1)",
+                    fontWeight: "600",
+                    fontSize: 18,
+                  }}
+                >
+                  {collegeName}
+                </Text>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    gap: 4,
+                    alignItems: "center",
+                  }}
+                >
+                  <Entypo name="location" size={12} color="#373737" />
+                  <View style={{}}>
+                    <Text
+                      style={{
+                        fontSize: 10,
+                        color: "#373737",
+                        fontWeight: "500",
+                      }}
+                    >
+                      {detailsData?.block_name}, {detailsData?.district_name},
+                      {detailsData?.state_name}{" "}
+                    </Text>
+                  </View>
+                </View>
+              </View>
             </View>
 
             <View style={styles.course}>
@@ -255,7 +253,7 @@ const Details = ({ navigation }) => {
                   borderRadius: 30,
                   bottom: 5,
                 }}
-                onPress={() => whatsappclicked()}
+                onPress={() => whatsappclicked(detailsData?.mobile)}
               >
                 <View
                   style={{
