@@ -324,8 +324,8 @@ const Dashboard = ({ navigation }) => {
         <Animated.View
           style={[styles.menu, { transform: [{ translateX: menuTranslateX }] }]}
         >
-          <TouchableOpacity onPress={closeMenu} style={styles.closeIcon}>
-            <Ionicons name="close" size={35} color="white" />
+          <TouchableOpacity onPress={closeMenu} style={[styles.closeIcon ,{height:'100%',width:'19.6%',alignItems:'center',right:0}]}>
+            <Ionicons name="close" size={35} color="white" style={{justifyContent:'flex-end',paddingRight:10}}/>
           </TouchableOpacity>
           <View style={styles.menuOptionContainer}>
             <View>

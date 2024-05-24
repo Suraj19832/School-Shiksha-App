@@ -27,6 +27,7 @@ const Header = ({ navigateTo, title, titleColor }) => {
               style={{ height: 24, width: 24 }}
             />
           </TouchableOpacity>
+          <View style={{width:'89%'}}>
           <Text
             style={[
               styles.topBar_text,
@@ -35,6 +36,8 @@ const Header = ({ navigateTo, title, titleColor }) => {
           >
             {title}
           </Text>
+          </View>
+        
         </View>
       </View>
     </View>
