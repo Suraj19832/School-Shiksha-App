@@ -270,7 +270,12 @@ const Dashboard = ({ navigation }) => {
     Linking.openURL(whatsappUrl);
   };
   return (
+    
     <View style={styles.container}>
+        {isMenuOpen && (
+  <View style={{backgroundColor:'#000000B2' ,position:'absolute',width:"100%",height:"100%" ,zIndex:10 ,top:0,bottom:0}}></View>
+        )}
+    
       <StatusBar
         animated={true}
         backgroundColor={statusBarColor}
@@ -321,6 +326,7 @@ const Dashboard = ({ navigation }) => {
       </View>
 
       {isMenuOpen && (
+        
         <Animated.View
           style={[styles.menu, { transform: [{ translateX: menuTranslateX }] }]}
         >
@@ -631,6 +637,7 @@ const Dashboard = ({ navigation }) => {
       )}
       <View style={styles.hairline} />
       <ScrollView>
+        
         <View style={{ paddingTop: 18, position: "relative" }}>
           <FlatList
             ref={flatListRef}
@@ -1050,8 +1057,8 @@ const styles = StyleSheet.create({
     top: 0,
     bottom: 0,
     width: Dimensions.get("window").width,
-    backgroundColor: "#000000B2", // Set your desired background color
-    zIndex: 1,
+    // backgroundColor: "#000000B2", // Set your desired background color
+    zIndex: 14,
     elevation: 10, // For Android elevation effect
   },
   menuOptionContainer: {
