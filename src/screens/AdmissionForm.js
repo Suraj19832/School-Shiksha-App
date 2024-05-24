@@ -1109,7 +1109,7 @@ const AdmissionForm = ({ navigation }) => {
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
       <Header
-        title="Free College Admission Form"
+        title={`${collegeName} College Admission Form`}
         navigateTo={navigation?.goBack}
       />
       <ScrollView>
@@ -1130,7 +1130,7 @@ const AdmissionForm = ({ navigation }) => {
             </View>
             <View style={{ width: "80%" }}>
               <Text style={styles.profileText}>
-                Free College Admission Form
+              {collegeName} College Admission Form 
               </Text>
             </View>
           </View>

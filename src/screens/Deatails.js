@@ -6,6 +6,7 @@ import {
   ScrollView,
   FlatList,
   TouchableOpacity,
+  Linking,
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { Image } from "react-native";
