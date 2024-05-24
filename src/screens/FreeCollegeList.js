@@ -61,38 +61,10 @@ const FreeCollegeList = ({ navigation }) => {
     setInputValueclass(text);
     setDropdownOpenclass(null); // Clear selected option when user edits input
   };
-  const [activeIndex, setActiveIndex] = useState(0);
-  const flatListRef = useRef(null);
-  const images = [
-    require("../../assets/img/freeCollege.png"),
-    require("../../assets/img/slider3.png"),
-    require("../../assets/img/slider2.png"),
-  ];
-  const onViewableItemsChanged = ({ viewableItems }) => {
-    if (viewableItems && viewableItems.length > 0) {
-      setActiveIndex(viewableItems[0].index || 0);
-    }
-  };
-  const renderPagination = () => {
-    return (
-      <View style={styles.paginationContainer}>
-        <View style={styles.pagination}>
-          {images.map((_, index) => (
-            <View
-              key={index}
-              style={[
-                styles.paginationDot,
-                index === activeIndex && styles.paginationDotActive,
-              ]}
-            />
-          ))}
-        </View>
-      </View>
-    );
-  };
 
   const route = useRoute();
-  const { id } = route.params;
+  const { id ,heading } = route.params;
+  console.log(id,":::::::::::::::::::::::::::::::::")
   // console.log("checking id is comig or not", id)
   const [FreeCollegeList, setFreeCollegeList] = useState([])
   const [dropdownOption, setdropdownOption] = useState([])
@@ -148,6 +120,88 @@ const FreeCollegeList = ({ navigation }) => {
       console.error("Error fetching user data:", error);
     }
   }
+
+
+
+
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const [bannerData, setBannerData] = useState([]);
+  useEffect(() => {
+    const params = {
+      organization_id: 1,
+    };
+    GetfetchDataWithParams("master/organization-banner", params)
+      .then((res) => {
+        setBannerData(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  const images = bannerData;
+
+  const flatListRef = useRef(null);
+
+  const onViewableItemsChanged = ({ viewableItems }) => {
+    if (viewableItems && viewableItems.length > 0) {
+      setActiveIndex(viewableItems[0].index || 0);
+    }
+  };
+
+  const renderPagination = () => {
+    return (
+      <View style={styles.paginationContainer}>
+        <View style={styles.pagination}>
+          {images.map((_, index) => (
+            <View
+              key={index}
+              style={[
+                styles.paginationDot,
+                index === activeIndex && styles.paginationDotActive,
+              ]}
+            />
+          ))}
+        </View>
+      </View>
+    );
+  };
+
+  const renderItem = ({ item }) => (
+    // console.log(item.banner_image, "helloooooooooo"),
+    <View style={styles.imageContainer}>
+      <Image
+        source={{ uri: item.banner_image }}
+        style={styles.image}
+        resizeMode="cover"
+        // onError={(error) => console.log("Error loading image:", error)}
+      />
+    </View>
+  );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   useEffect(() => {
     fetchUserData("master/organization-course",id )
   }, [id])
@@ -160,7 +214,7 @@ const FreeCollegeList = ({ navigation }) => {
   }
   return (
     <SafeAreaView style={styles.container}>
-      <Header title="Free College List" navigateTo={navigation.goBack} />
+      <Header title={`${heading} List`} navigateTo={navigation.goBack} />
       <ScrollView style={{ backgroundColor: "#FFFCCE" }}>
         {/* <View>
           <Image
@@ -175,9 +229,7 @@ const FreeCollegeList = ({ navigation }) => {
             horizontal
             pagingEnabled
             showsHorizontalScrollIndicator={false}
-            renderItem={({ item }) => (
-              <Image style={styles.imgStyle} source={item} resizeMode="cover" />
-            )}
+            renderItem={renderItem}
             keyExtractor={(item, index) => index.toString()}
             onViewableItemsChanged={onViewableItemsChanged}
           />
@@ -615,7 +667,8 @@ const FreeCollegeList = ({ navigation }) => {
                       collegeName: value?.organization_name,
                       courseName: value?.course_name,
                       courseid:value?.organization_course_id,
-                      id:id
+                      id:id,
+                      heading:heading
                     })
                   }
                 >
@@ -1156,6 +1209,11 @@ const styles = StyleSheet.create({
   image: {
     height: 220,
     width: "100%",
+  },
+  imageContainer: {
+    width: 360,
+    height: 162, // Adjust based on your requirement
+    borderRadius: 10,
   },
   listContainer: {
     width: "100%",

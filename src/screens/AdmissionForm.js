@@ -32,38 +32,49 @@ import { Camera } from "expo-camera";
 // import CameraAccess from "../../components/CamraAccess";
 import * as ImagePicker from "expo-image-picker";
 import { useRoute } from "@react-navigation/native";
-import { getFileData, getdata, objectToFormData, objectToFormDataMultipleObject, objectToFormDatawithnestedObject, postDataWithFormData, postDataWithFormDataWithBaseUrl, postDataWithFormDataWithToken } from "../../Helper/Helper";
+import {
+  getFileData,
+  getdata,
+  objectToFormData,
+  objectToFormDataMultipleObject,
+  objectToFormDatawithnestedObject,
+  postDataWithFormData,
+  postDataWithFormDataWithBaseUrl,
+  postDataWithFormDataWithToken,
+} from "../../Helper/Helper";
 import { AuthContext } from "../../Utils/context/AuthContext";
 const AdmissionForm = ({ navigation }) => {
-  // State for storeing upi link of al the picture 
-const [AadharFrontUribyApi, setAadharFrontUribyApi] = useState()
-const [AadharBackUribyApi, setAadharBackUribyApi] = useState()
-const [HSmarksheetUribyApi, setHSmarksheetUribyApi] = useState()
-const [PassportUribyApi, setPassportUribyApi] = useState()
-const [IncomeCertificateUribyApi, setIncomeCertificateUribyApi] = useState()
-const [DistrictDataaa, setDistrictData] = useState()
-const [stateInfo, setStateInfo] = useState();
-const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-const { userToken } = useContext(AuthContext);
+  // State for storeing upi link of al the picture
+  const [AadharFrontUribyApi, setAadharFrontUribyApi] = useState();
+  const [AadharBackUribyApi, setAadharBackUribyApi] = useState();
+  const [HSmarksheetUribyApi, setHSmarksheetUribyApi] = useState();
+  const [PassportUribyApi, setPassportUribyApi] = useState();
+  const [IncomeCertificateUribyApi, setIncomeCertificateUribyApi] = useState();
+  const [DistrictDataaa, setDistrictData] = useState();
+  const [stateInfo, setStateInfo] = useState();
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const { userToken } = useContext(AuthContext);
 
-console.log(userToken,"hdhwedhwtoken in addmission form")
-// console.log("here is the uri come from the api af",AadharFrontUribyApi)
-// console.log("here is the uri come from the api ab",AadharBackUribyApi)
-// // console.log("here is the uri come from the api hsm",HSmarksheetUribyApi)
-// console.log("here is the uri come from the api pp",PassportUribyApi)
-// console.log("here is the uri come from the api ic" ,IncomeCertificateUribyApi)
+  console.log(userToken, "hdhwedhwtoken in addmission form");
+  console.log("here is the uri come from the api af",AadharFrontUribyApi)
+  console.log("here is the uri come from the api ab",AadharBackUribyApi)
+  // console.log("here is the uri come from the api hsm",HSmarksheetUribyApi)
+  console.log("here is the uri come from the api pp",PassportUribyApi)
+  console.log("here is the uri come from the api ic" ,IncomeCertificateUribyApi) 
 
   //States for sending the data in for file upload api
-  const [aadharFrontForUpload, setaadharFrontForUpload] = useState() 
-  // const [aadharFrontForUploads, setaadharFrontForUploadss] = useState() 
-  const [aadharBackForUpload, setaadharBackForUpload] = useState()
-  const [HSMarksheetForUpload, setHSMarksheetForUpload] = useState()
-  const [PassportPhotoForUpload, setPassportPhotoForUpload] = useState()
-  const [IncomeCertificateForUpload, setIncomeCertificateForUpload] = useState()
+  const [aadharFrontForUpload, setaadharFrontForUpload] = useState();
+  // const [aadharFrontForUploads, setaadharFrontForUploadss] = useState()
+  const [aadharBackForUpload, setaadharBackForUpload] = useState();
+  const [HSMarksheetForUpload, setHSMarksheetForUpload] = useState();
+  const [PassportPhotoForUpload, setPassportPhotoForUpload] = useState();
+  const [IncomeCertificateForUpload, setIncomeCertificateForUpload] =
+    useState();
   const [userDetails, setUserDetails] = useState({
     date_of_birth: "",
   });
   const [isChecked, setChecked] = useState(false);
+  const [isCheckedError ,setisChckedError] =useState(false)
   const showToast = (message) => {
     if (Platform.OS === "android") {
       ToastAndroid.show(message, ToastAndroid.SHORT);
@@ -73,8 +84,11 @@ console.log(userToken,"hdhwedhwtoken in addmission form")
   };
 
   const route = useRoute();
-  const { collegeName, courseName ,id } = route.params;
-  console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$",id)
+  const { collegeName, courseName, id } = route.params;
+  console.log(
+    "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$",
+    id
+  );
 
   // users data
   const [formErrors, setFormErrors] = useState({});
@@ -91,7 +105,7 @@ console.log(userToken,"hdhwedhwtoken in addmission form")
     whatsapp_number: "",
     address: "",
     police_station: "",
-    post_office:"",
+    post_office: "",
     pincode: "",
     aadhar_number: "",
     nationality: "",
@@ -101,7 +115,6 @@ console.log(userToken,"hdhwedhwtoken in addmission form")
     referral_code: "",
   });
   const [fieldTouched, setFieldTouched] = useState({});
-
 
   // email
 
@@ -121,13 +134,13 @@ console.log(userToken,"hdhwedhwtoken in addmission form")
 
   const [isDropdownOpengender, setDropdownOpengender] = useState(false);
   const [inputValuegender, setInputValuegender] = useState("");
-//for state 
-const [isDropdownOpenstate, setDropdownOpenstate] = useState(false);
-const [inputValuestate, setInputValuestate] = useState("");
+  //for state
+  const [isDropdownOpenstate, setDropdownOpenstate] = useState(false);
+  const [inputValuestate, setInputValuestate] = useState("");
 
-//for district 
-const [isDropdownOpendistrict, setDropdownOpendistict] = useState(false);
-const [inputValuedistrict, setInputValuedistrict] = useState("");
+  //for district
+  const [isDropdownOpendistrict, setDropdownOpendistict] = useState(false);
+  const [inputValuedistrict, setInputValuedistrict] = useState("");
   // for last qualification
   const [isDropdownOpenLastQuali, setDropdownOpenLastQuali] = useState(false);
   const [inputValueLastQuali, setInputValueLastQuali] = useState("");
@@ -146,15 +159,15 @@ const [inputValuedistrict, setInputValuedistrict] = useState("");
     setDropdownOpengender(!isDropdownOpengender);
   };
 
-    //handle togle for state
+  //handle togle for state
 
-    const toggleDropdownstate = () => {
-      setDropdownOpenstate(!isDropdownOpenstate);
-    };
+  const toggleDropdownstate = () => {
+    setDropdownOpenstate(!isDropdownOpenstate);
+  };
 
-    const toggleDropdowndistrict = () => {
-      setDropdownOpendistict(!isDropdownOpendistrict);
-    };
+  const toggleDropdowndistrict = () => {
+    setDropdownOpendistict(!isDropdownOpendistrict);
+  };
   // toggle last qualifiCation
 
   const toggleDropdownLastQuali = () => {
@@ -185,19 +198,18 @@ const [inputValuedistrict, setInputValuedistrict] = useState("");
     setDropdownOpengender(false);
   };
 
-  //state 
-  const handleSelectOptionstate = (option ,id) => {
+  //state
+  const handleSelectOptionstate = (option, id) => {
     setInputValuestate(option);
     setstateData(option);
     setDropdownOpenstate(false);
-    getDistrictdata(id)
-    console.log(DistrictDataaa,"jdohcusdhcushohod")
+    getDistrictdata(id);
+    console.log(DistrictDataaa, "jdohcusdhcushohod");
   };
-  const handleSelectOptiondistrict = (option ) => {
+  const handleSelectOptiondistrict = (option) => {
     setInputValuedistrict(option);
     // setDistrict(option);
     setDropdownOpendistict(false);
-   
   };
   // Last Qualification
 
@@ -292,70 +304,97 @@ const [inputValuedistrict, setInputValuedistrict] = useState("");
 
     // console.log("csccdatatatatatata",formData.name ,userDetails.date_of_birth,formData.aadhar_number,inputValuegender, email ,formData.mobile ,formData.religion,formData.address,formData.police_station ,formData.post_office ,inputValuestate ,inputValuedistrict ,formData.pincode,formData.whatsapp_number ,formData.fatherName ,formData.fatherMobile,inputValueoccupation,formData.income ,inputValueHs ,formData.percentage)
 
-    if(  formData.name && userDetails.date_of_birth &&  formData.aadhar_number && inputValuegender && email && formData.mobile && formData.religion && formData.address && formData.police_station && formData.post_office && inputValuestate &&  inputValuedistrict && formData.pincode && formData.whatsapp_number && formData.fatherName && formData.fatherMobile && inputValueoccupation && formData.income && inputValueHs && formData.percentage){
-
-      if ( AadharFrontUribyApi && AadharBackUribyApi && PassportUribyApi && IncomeCertificateUribyApi) {
-        const postData = {
-          service_id: id,
-          enquiry_details:{
-            name:formData.name,
-            Date_of_Birth:userDetails.date_of_birth,
-            aadhar_number:formData.aadhar_number,
-            gender:inputValuegender,
-            email:email,
-            mobile:formData.mobile,
-            religion:formData.religion,
-            address:formData.address,
-            policestation:formData.police_station ,
-            post_office :formData.post_office ,
-            state:inputValuestate,
-            district:inputValuedistrict,
-            pincode:formData.pincode,
-            whatsapp_number:formData.whatsapp_number,
-            guardians_name:formData.fatherName,
-            guardian_number:formData.fatherMobile,
-            occupation :inputValueoccupation,
-            income:formData.income,
-            hs_value:inputValueHs,
-            percentage:formData.percentage
-          },
-          documents :[
-            { title: "Aadhar Front", image: AadharFrontUribyApi },
-            { title: "Aadhar Back", image: AadharBackUribyApi },
-            { title: "PassPort Photo", image: PassportUribyApi },
-            { title: "Income Certificate", image: IncomeCertificateUribyApi },
-          ]
-    
-    
-    
-    
-    
-    
-    
-      
-        };
-    console.log("wwq______________________________________________")
-        const formDatablock = objectToFormDatawithnestedObject(postData);
-        console.log("dskdjcjcjdcdjcjclejiejfpierpifp",formDatablock)
-        postDataWithFormDataWithToken(
-          "student/form-submit",
-          formDatablock,
-          userToken
-        )
-        .then((res)=>{
-        console.log(res?.status,"staus is coming after submiison of form")
-        console.log(res?.message,"message is coming after submiison of formcvdfvfgghyttttttttttttttttttttttttybrgb")
-        console.log(res, "++++++++++++++++++++++++++++++++++++++")
-        })
-    
+    if (
+      formData.name &&
+      userDetails.date_of_birth &&
+      formData.aadhar_number &&
+      inputValuegender &&
+      email &&
+      formData.mobile &&
+      formData.religion &&
+      formData.address &&
+      formData.police_station &&
+      formData.post_office &&
+      inputValuestate &&
+      inputValuedistrict &&
+      formData.pincode &&
+      formData.whatsapp_number &&
+      formData.fatherName &&
+      formData.fatherMobile &&
+      inputValueoccupation &&
+      formData.income &&
+      inputValueHs &&
+      formData.percentage
+    ) {
+      if (
+        AadharFrontUribyApi &&
+        AadharBackUribyApi &&
+        PassportUribyApi &&
+        IncomeCertificateUribyApi
+      ) {
+        if (isChecked === true) {
+          setisChckedError(true)
+          
+        }
+        if(isChecked){
+          const postData = {
+            service_id: id,
+            enquiry_details: {
+              name: formData.name,
+              Date_of_Birth: userDetails.date_of_birth,
+              aadhar_number: formData.aadhar_number,
+              gender: inputValuegender,
+              email: email,
+              mobile: formData.mobile,
+              religion: formData.religion,
+              address: formData.address,
+              policestation: formData.police_station,
+              post_office: formData.post_office,
+              state: inputValuestate,
+              district: inputValuedistrict,
+              pincode: formData.pincode,
+              whatsapp_number: formData.whatsapp_number,
+              guardians_name: formData.fatherName,
+              guardian_number: formData.fatherMobile,
+              occupation: inputValueoccupation,
+              income: formData.income,
+              hs_value: inputValueHs,
+              percentage: formData.percentage,
+            },
+            documents: [
+              { title: "Aadhar Front", image: AadharFrontUribyApi },
+              { title: "Aadhar Back", image: AadharBackUribyApi },
+              { title: "PassPort Photo", image: PassportUribyApi },
+              { title: "Income Certificate", image: IncomeCertificateUribyApi },
+            ],
+          };
+          console.log("wwq______________________________________________");
+          const formDatablock = objectToFormDatawithnestedObject(postData);
+          console.log("dskdjcjcjdcdjcjclejiejfpierpifp", formDatablock);
+          postDataWithFormDataWithToken(
+            "student/form-submit",
+            formDatablock,
+            userToken
+          ).then((res) => {
+            console.log(res?.status, "staus is coming after submiison of form");
+            console.log(
+              res?.message,
+              "message is coming after submiison of formcvdfvfgghyttttttttttttttttttttttttybrgb"
+            );
+            console.log(res, "++++++++++++++++++++++++++++++++++++++");
+            if (res?.status) {
+              showToast("Form Submitted Successfully");
+            }
+          });
+        }
+     
+      }else{
+        showToast("Please Upload all Picture");
       }
-      showToast("Please Upload all Picture");
-
+      
+    } else {
+      showToast("Please Fill Up All Black Filed");
     }
-  else{
-    showToast("Please Fill Up All Black Filed");
-  }
-
   };
   const validateForm = () => {
     const errors = {};
@@ -445,27 +484,27 @@ const [inputValuedistrict, setInputValuedistrict] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [capturedImage, setCapturedImage] = useState(null);
   const cameraRef = useRef(null);
-  const [stateDataapi, setStateDataapi] = useState()
-  const getDropdownState = ()=>{
+  const [stateDataapi, setStateDataapi] = useState();
+  const getDropdownState = () => {
     const apiUrl = "master/state";
 
-  // Call the getstatedata function with the API URL
-  getdata(apiUrl)
-    .then((res) => {
-      console.log('Response from API:', res.data);
-      setStateDataapi(res?.data);
-      // Do something with the response data, e.g., update component state
-    })
-    .catch((error) => {
-      console.error("Error fetching data:", error);
-    });
-  }
+    // Call the getstatedata function with the API URL
+    getdata(apiUrl)
+      .then((res) => {
+        console.log("Response from API:", res.data);
+        setStateDataapi(res?.data);
+        // Do something with the response data, e.g., update component state
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  };
   useEffect(() => {
     (async () => {
       const { status } = await ImagePicker.requestCameraPermissionsAsync();
       setHasPermission(status === "granted");
     })();
-    getDropdownState()
+    getDropdownState();
   }, []);
 
   const closeModal = () => {
@@ -475,12 +514,12 @@ const [inputValuedistrict, setInputValuedistrict] = useState("");
     setModalVisibleAddharBack(false);
     setModalVisibleAddharfront(false);
   };
-  
+
   const takePicture = async (options) => {
     console.log(options);
 
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
-    console.log("console.log::::E::WED:W::WD::D:" ,permissionResult)
+    console.log("console.log::::E::WED:W::WD::D:", permissionResult);
     if (permissionResult.granted === false) {
       alert("Camera permission is required to take photos.");
       return;
@@ -488,49 +527,62 @@ const [inputValuedistrict, setInputValuedistrict] = useState("");
 
     try {
       const imageResult = await ImagePicker.launchCameraAsync();
-      console.log(imageResult,"fdefdefsdvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv1111")
-    
+      console.log(
+        imageResult,
+        "fdefdefsdvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv1111"
+      );
+
       // console.log("sdkfpf", imageResult);
       if (imageResult.assets[0].uri !== null) {
         if (options === "income") {
-          setIncomeCertificateForUpload(imageResult)
+          setIncomeCertificateForUpload(imageResult);
           setCapturedImage(imageResult.assets[0].uri);
           console.log("ndhlslsjvjjv;", imageResult.assets[0].uri);
           setModalVisible(false);
-          const newtry=getFileData(imageResult)
-          console.log(newtry,"sdlkfjoijohguihgiuv")
+          const newtry = getFileData(imageResult);
+          console.log(newtry, "sdlkfjoijohguihgiuv");
           const postData = {
-            image : newtry
+            image: newtry,
           };
-        // console.log("++++++++++++++++postData",postData);
-       
+          // console.log("++++++++++++++++postData",postData);
+
           const formDatablock = objectToFormData(postData);
           // console.log(formDatablock,"djeifjifgh")
-          postDataWithFormDataWithBaseUrl('https://dev.ehostingguru.com/school-shiksha/upload/index.php' ,formDatablock)
-          .then((res)=>{
-            console.log("-----------------res.status in upload----------",res.status)
-            setIncomeCertificateUribyApi(res?.data?.file_name)
-          })
+          postDataWithFormDataWithBaseUrl(
+            "https://dev.ehostingguru.com/school-shiksha/upload/index.php",
+            formDatablock
+          ).then((res) => {
+            console.log(
+              "-----------------res.status in upload----------",
+              res.status
+            );
+            setIncomeCertificateUribyApi(res?.data?.file_name);
+          });
         }
         if (options === "passport") {
-          setPassportPhotoForUpload(imageResult)
+          setPassportPhotoForUpload(imageResult);
           setCapturedImagePassport(imageResult.assets[0].uri);
           console.log("[][][]];", imageResult.assets[0].uri);
           setModalVisiblePassport(false);
-          const newtry=getFileData(imageResult)
-          console.log(newtry,"sdlkfjoijohguihgiuv")
+          const newtry = getFileData(imageResult);
+          console.log(newtry, "sdlkfjoijohguihgiuv");
           const postData = {
-            image : newtry
+            image: newtry,
           };
-        // console.log("++++++++++++++++postData",postData);
-       
+          // console.log("++++++++++++++++postData",postData);
+
           const formDatablock = objectToFormData(postData);
           // console.log(formDatablock,"djeifjifgh")
-          postDataWithFormDataWithBaseUrl('https://dev.ehostingguru.com/school-shiksha/upload/index.php' ,formDatablock)
-          .then((res)=>{
-            console.log("-----------------res.status in upload----------",res.status)
-            setPassportUribyApi(res?.data?.file_name)
-          })
+          postDataWithFormDataWithBaseUrl(
+            "https://dev.ehostingguru.com/school-shiksha/upload/index.php",
+            formDatablock
+          ).then((res) => {
+            console.log(
+              "-----------------res.status in upload----------",
+              res.status
+            );
+            setPassportUribyApi(res?.data?.file_name);
+          });
         }
         // if (options === "HSMarksheet") {
         //   setHSMarksheetForUpload(imageResult)
@@ -543,7 +595,7 @@ const [inputValuedistrict, setInputValuedistrict] = useState("");
         //     image : newtry
         //   };
         // // console.log("++++++++++++++++postData",postData);
-       
+
         //   const formDatablock = objectToFormData(postData);
         //   // console.log(formDatablock,"djeifjifgh")
         //   postDataWithFormDataWithBaseUrl('https://dev.ehostingguru.com/school-shiksha/upload/index.php' ,formDatablock)
@@ -553,50 +605,58 @@ const [inputValuedistrict, setInputValuedistrict] = useState("");
         //   })
         // }
         if (options === "AddharBack") {
-          setaadharBackForUpload(imageResult)
+          setaadharBackForUpload(imageResult);
           setCapturedImageAddharBack(imageResult.assets[0].uri);
           console.log("[][][]];", imageResult.assets[0].uri);
           setModalVisibleAddharBack(false);
 
-          const newtry=getFileData(imageResult)
-          console.log(newtry,"sdlkfjoijohguihgiuv")
+          const newtry = getFileData(imageResult);
+          console.log(newtry, "sdlkfjoijohguihgiuv");
           const postData = {
-            image : newtry
+            image: newtry,
           };
-        // console.log("++++++++++++++++postData",postData);
-       
+          // console.log("++++++++++++++++postData",postData);
+
           const formDatablock = objectToFormData(postData);
           // console.log(formDatablock,"djeifjifgh")
-          postDataWithFormDataWithBaseUrl('https://dev.ehostingguru.com/school-shiksha/upload/index.php' ,formDatablock)
-          .then((res)=>{
-            console.log("-----------------res.status in upload----------",res.status)
-            setAadharBackUribyApi(res?.data?.file_name)
-          }) 
+          postDataWithFormDataWithBaseUrl(
+            "https://dev.ehostingguru.com/school-shiksha/upload/index.php",
+            formDatablock
+          ).then((res) => {
+            console.log(
+              "-----------------res.status in upload----------",
+              res.status
+            );
+            setAadharBackUribyApi(res?.data?.file_name);
+          });
         }
         if (options === "AddharFront") {
-           setaadharFrontForUpload(imageResult)
+          setaadharFrontForUpload(imageResult);
           setCapturedImageAddharfront(imageResult.assets[0].uri);
           console.log("[][][]];", imageResult.assets[0].uri);
           setModalVisibleAddharfront(false);
-          const newtry=getFileData(imageResult)
-          console.log(newtry,"sdlkfjoijohguihgiuv")
+          const newtry = getFileData(imageResult);
+          console.log(newtry, "sdlkfjoijohguihgiuv");
           const postData = {
-            image : newtry
+            image: newtry,
           };
-        // console.log("++++++++++++++++postData",postData);
-       
+          // console.log("++++++++++++++++postData",postData);
+
           const formDatablock = objectToFormData(postData);
           // console.log(formDatablock,"djeifjifgh")
-          postDataWithFormDataWithBaseUrl('https://dev.ehostingguru.com/school-shiksha/upload/index.php' ,formDatablock)
-          .then((res)=>{
-            console.log("-----------------res.status in upload----------",res.status)
-            console.log(res?.data?.file_name,"kikiukuikmnghnghn")
-            setAadharFrontUribyApi(res?.data?.file_name)
+          postDataWithFormDataWithBaseUrl(
+            "https://dev.ehostingguru.com/school-shiksha/upload/index.php",
+            formDatablock
+          ).then((res) => {
+            console.log(
+              "-----------------res.status in upload----------",
+              res.status
+            );
+            console.log(res?.data?.file_name, "kikiukuikmnghnghn");
+            setAadharFrontUribyApi(res?.data?.file_name);
             // console.log("here is the uri come from the api af",AadharFrontUribyApi)
-          })
+          });
         }
-       
-     
       }
     } catch (error) {
       console.error("Error taking picture:", error);
@@ -608,6 +668,8 @@ const [inputValuedistrict, setInputValuedistrict] = useState("");
     if (options === "passport") {
       setCapturedImagePassport(null);
       setFileUriPassPortPhoto(null);
+      setPassportUribyApi()
+
     }
     if (options === "HSMarksheet") {
       setCapturedImageHSMarksheet(null);
@@ -616,10 +678,12 @@ const [inputValuedistrict, setInputValuedistrict] = useState("");
     if (options === "AddharBack") {
       setCapturedImageAddharBack(null);
       setFileUriAddharBack(null);
+      setAadharBackUribyApi()
     }
     if (options === "AddharFront") {
       setCapturedImageAddharfront(null);
       setFileUri(null);
+      setAadharBackUribyApi()
     }
   };
 
@@ -672,7 +736,7 @@ const [inputValuedistrict, setInputValuedistrict] = useState("");
       });
 
       console.log("File picker result:zxcvvfdfdbgb", result);
-      setaadharFrontForUpload(result)
+      setaadharFrontForUpload(result);
 
       if (
         !result.cancelled &&
@@ -682,20 +746,25 @@ const [inputValuedistrict, setInputValuedistrict] = useState("");
       ) {
         console.log("File picked:", result.assets[0].uri);
         setFileUri(result.assets[0].uri);
-        const newtry=getFileData(result)
-        console.log(newtry,"sdlkfjoijohguihgiuv")
+        const newtry = getFileData(result);
+        console.log(newtry, "sdlkfjoijohguihgiuv");
         const postData = {
-          image : newtry
+          image: newtry,
         };
-      console.log("++++++++++++++++postData",postData);
-     
+        console.log("++++++++++++++++postData", postData);
+
         const formDatablock = objectToFormData(postData);
         // console.log(formDatablock,"djeifjifgh")
-        postDataWithFormDataWithBaseUrl('https://dev.ehostingguru.com/school-shiksha/upload/index.php' ,formDatablock)
-        .then((res)=>{
-          console.log("-----------------res.status in upload----------",res.status)
-          setAadharFrontUribyApi(res?.data?.file_name)
-        })
+        postDataWithFormDataWithBaseUrl(
+          "https://dev.ehostingguru.com/school-shiksha/upload/index.php",
+          formDatablock
+        ).then((res) => {
+          console.log(
+            "-----------------res.status in upload----------",
+            res.status
+          );
+          setAadharFrontUribyApi(res?.data?.file_name);
+        });
       } else if (result.cancelled) {
         console.log("File picking cancelled");
       } else {
@@ -709,11 +778,9 @@ const [inputValuedistrict, setInputValuedistrict] = useState("");
       setIsPickingFile(false);
     }
     closeModal();
-    console.log(aadharFrontForUpload)
-
-    
+    console.log(aadharFrontForUpload);
   };
-// console.log("Addhar card front whole file for upload api  is in " , aadharFrontForUpload)
+  // console.log("Addhar card front whole file for upload api  is in " , aadharFrontForUpload)
   //For Addhar Back function
   const pickFileAddharBack = async () => {
     if (isPickingFileAddharBack) {
@@ -730,7 +797,7 @@ const [inputValuedistrict, setInputValuedistrict] = useState("");
       });
 
       console.log("File picker result???????????:", result);
-      setaadharBackForUpload(result)
+      setaadharBackForUpload(result);
 
       if (
         !result.canceled &&
@@ -740,21 +807,25 @@ const [inputValuedistrict, setInputValuedistrict] = useState("");
       ) {
         console.log("File picked:", result.assets[0].uri);
         setFileUriAddharBack(result.assets[0].uri);
-        const newtry=getFileData(result)
-        console.log(newtry,"sdlkfjoijohguihgiuv")
+        const newtry = getFileData(result);
+        console.log(newtry, "sdlkfjoijohguihgiuv");
         const postData = {
-          image : newtry
+          image: newtry,
         };
-      console.log("++++++++++++++++postData",postData);
-     
+        console.log("++++++++++++++++postData", postData);
+
         const formDatablock = objectToFormData(postData);
         // console.log(formDatablock,"djeifjifgh")
-        postDataWithFormDataWithBaseUrl('https://dev.ehostingguru.com/school-shiksha/upload/index.php' ,formDatablock)
-        .then((res)=>{
-          console.log("-----------------res.status in upload----------",res.status)
-          setAadharBackUribyApi(res?.data?.file_name)
-        })
-
+        postDataWithFormDataWithBaseUrl(
+          "https://dev.ehostingguru.com/school-shiksha/upload/index.php",
+          formDatablock
+        ).then((res) => {
+          console.log(
+            "-----------------res.status in upload----------",
+            res.status
+          );
+          setAadharBackUribyApi(res?.data?.file_name);
+        });
       } else if (result.canceled) {
         console.log("File picking cancelled");
       } else {
@@ -768,7 +839,6 @@ const [inputValuedistrict, setInputValuedistrict] = useState("");
       setIsPickingFileAddharBack(false);
     }
     closeModal();
-  
   };
 
   //For HSMarksheet function
@@ -815,7 +885,7 @@ const [inputValuedistrict, setInputValuedistrict] = useState("");
   //     image : newtry
   //   };
   // console.log("++++++++++++++++postData",postData);
- 
+
   //   const formDatablock = objectToFormData(postData);
   //   // console.log(formDatablock,"djeifjifgh")
   //   postDataWithFormDataWithBaseUrl('https://dev.ehostingguru.com/school-shiksha/upload/index.php' ,formDatablock)
@@ -824,7 +894,7 @@ const [inputValuedistrict, setInputValuedistrict] = useState("");
   //     setPassportUribyApi(res?.data?.file_name)
   //   })
   // };
-// console.log(formData.name)
+  // console.log(formData.name)
   //For PassPort Photo function
   const pickFilePassPortPhoto = async () => {
     if (isPickingFilePassPortPhoto) {
@@ -839,7 +909,7 @@ const [inputValuedistrict, setInputValuedistrict] = useState("");
       const result = await DocumentPicker.getDocumentAsync({
         type: "*/*",
       });
-      setPassportPhotoForUpload(result)
+      setPassportPhotoForUpload(result);
       console.log("File picker result:", result);
 
       if (
@@ -850,20 +920,25 @@ const [inputValuedistrict, setInputValuedistrict] = useState("");
       ) {
         console.log("File picked:", result.assets[0].uri);
         setFileUriPassPortPhoto(result.assets[0].uri);
-        const newtry=getFileData(result)
-        console.log(newtry,"sdlkfjoijohguihgiuv")
+        const newtry = getFileData(result);
+        console.log(newtry, "sdlkfjoijohguihgiuv");
         const postData = {
-          image : newtry
+          image: newtry,
         };
-      console.log("++++++++++++++++postData",postData);
-     
+        console.log("++++++++++++++++postData", postData);
+
         const formDatablock = objectToFormData(postData);
         // console.log(formDatablock,"djeifjifgh")
-        postDataWithFormDataWithBaseUrl('https://dev.ehostingguru.com/school-shiksha/upload/index.php' ,formDatablock)
-        .then((res)=>{
-          console.log("-----------------res.status in upload----------",res.status)
-          setPassportUribyApi(res?.data?.file_name)
-        })
+        postDataWithFormDataWithBaseUrl(
+          "https://dev.ehostingguru.com/school-shiksha/upload/index.php",
+          formDatablock
+        ).then((res) => {
+          console.log(
+            "-----------------res.status in upload----------",
+            res.status
+          );
+          setPassportUribyApi(res?.data?.file_name);
+        });
       } else if (result.canceled) {
         console.log("File picking cancelled");
       } else {
@@ -877,7 +952,6 @@ const [inputValuedistrict, setInputValuedistrict] = useState("");
       setIsPickingFilePassPortPhoto(false);
     }
     closeModal();
-
   };
 
   //For IncomeCertificate function
@@ -894,7 +968,7 @@ const [inputValuedistrict, setInputValuedistrict] = useState("");
       const result = await DocumentPicker.getDocumentAsync({
         type: "*/*",
       });
-      setIncomeCertificateForUpload(result)
+      setIncomeCertificateForUpload(result);
       console.log("File picker result:", result);
 
       if (
@@ -905,20 +979,25 @@ const [inputValuedistrict, setInputValuedistrict] = useState("");
       ) {
         console.log("File picked:", result.assets[0].uri);
         setFileUriIncomeCertificate(result.assets[0].uri);
-        const newtry=getFileData(result)
-        console.log(newtry,"sdlkfjoijohguihgiuv")
+        const newtry = getFileData(result);
+        console.log(newtry, "sdlkfjoijohguihgiuv");
         const postData = {
-          image : newtry
+          image: newtry,
         };
-      console.log("++++++++++++++++postData",postData);
-     
+        console.log("++++++++++++++++postData", postData);
+
         const formDatablock = objectToFormData(postData);
         // console.log(formDatablock,"djeifjifgh")
-        postDataWithFormDataWithBaseUrl('https://dev.ehostingguru.com/school-shiksha/upload/index.php' ,formDatablock)
-        .then((res)=>{
-          console.log("-----------------res.status in upload----------",res.status)
-          setIncomeCertificateUribyApi(res?.data?.file_name)
-        })
+        postDataWithFormDataWithBaseUrl(
+          "https://dev.ehostingguru.com/school-shiksha/upload/index.php",
+          formDatablock
+        ).then((res) => {
+          console.log(
+            "-----------------res.status in upload----------",
+            res.status
+          );
+          setIncomeCertificateUribyApi(res?.data?.file_name);
+        });
       } else if (result.canceled) {
         console.log("File picking cancelled");
       } else {
@@ -932,18 +1011,19 @@ const [inputValuedistrict, setInputValuedistrict] = useState("");
       setIsPickingFileIncomeCertificate(false);
     }
     closeModal();
-  
   };
 
   //Delete function for addhar front
   const deleteImage = () => {
     setFileUri(null);
     setCapturedImageAddharfront(null);
+    setAadharFrontUribyApi()
   };
   // Delete function for Addhar back
   const deleteImageAddharBack = () => {
     setFileUriAddharBack(null);
     setCapturedImageAddharBack(null);
+    setAadharBackUribyApi()
   };
   //For HSMarksheet
   const deleteImageHSMarksheet = () => {
@@ -955,77 +1035,77 @@ const [inputValuedistrict, setInputValuedistrict] = useState("");
   const deleteImagePassPortPhoto = () => {
     setFileUriPassPortPhoto(null);
     setCapturedImagePassport(null);
+    setPassportUribyApi()
+
   };
 
   //For Income Certifiate
   const deleteImageIncomeCertificate = () => {
     setFileUriIncomeCertificate(null);
     setCapturedImage(null);
+    setIncomeCertificateUribyApi()
   };
 
-//   const [statedata ,setStateData] =useState()
-// const getStateData =()=>{
-//   const apiUrl = "master/state";
+  //   const [statedata ,setStateData] =useState()
+  // const getStateData =()=>{
+  //   const apiUrl = "master/state";
 
-//     // Call the getstatedata function with the API URL
-//     getdata(apiUrl)
-//       .then((res) => {
-//         // console.log('Response from API:', res.data);
-//         setStateData(res?.data);
-//         // Do something with the response data, e.g., update component state
-//       })
-//       .catch((error) => {
-//         console.error("Error fetching data:", error);
-//       });
-// }
+  //     // Call the getstatedata function with the API URL
+  //     getdata(apiUrl)
+  //       .then((res) => {
+  //         // console.log('Response from API:', res.data);
+  //         setStateData(res?.data);
+  //         // Do something with the response data, e.g., update component state
+  //       })
+  //       .catch((error) => {
+  //         console.error("Error fetching data:", error);
+  //       });
+  // }
 
+  //   useEffect(() => {
+  //     // Define the URL you want to fetch data from
+  //   getStateData()
+  //   }, []);
 
-//   useEffect(() => {
-//     // Define the URL you want to fetch data from
-//   getStateData()
-//   }, []);
+  const getDistrictdata = (id) => {
+    const postData = {
+      state_id: id,
+    };
 
+    // Convert object data to FormData
+    const formData = objectToFormData(postData);
 
-
-
-
-const getDistrictdata=(id)=>{
-  const postData = {
-    state_id: id,
+    // Call the postDataWithFormData function with the API URL and FormData
+    postDataWithFormData("master/district", formData)
+      .then((res) => {
+        console.log(
+          "Response from API for districtcsdvdfvdvgbfgbgjnyukuimmmu:",
+          res?.data
+        );
+        setDistrictData(res?.data);
+      })
+      .catch((error) => {
+        console.error("Error posting data:", error);
+      });
   };
 
-  // Convert object data to FormData
-  const formData = objectToFormData(postData);
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
 
-  // Call the postDataWithFormData function with the API URL and FormData
-  postDataWithFormData("master/district", formData)
-    .then((res) => {
-      console.log("Response from API for districtcsdvdfvdvgbfgbgjnyukuimmmu:", res?.data);
-      setDistrictData(res?.data);
-     
-    })
-    .catch((error) => {
-      console.error("Error posting data:", error);
+  const handleConfirm = (date) => {
+    setUserDetails({
+      ...userDetails,
+      date_of_birth: date.toISOString().split("T")[0],
     });
-}
-
-
-
-
-const showDatePicker = () => {
-  setDatePickerVisibility(true);
-};
-const hideDatePicker = () => {
-  setDatePickerVisibility(false);
-};
-
-const handleConfirm = (date) => {
-  setUserDetails({
-    ...userDetails,
-    date_of_birth: date.toISOString().split("T")[0],
-  });
-  hideDatePicker();
-};
+    hideDatePicker();
+  };
+  const handleChecklist=()=>{
+    setChecked(!isChecked)
+  }
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
       <Header
@@ -1121,14 +1201,9 @@ const handleConfirm = (date) => {
                 </View>
               </View> */}
 
-<View style={styles.fields_main}>
-     
-                  <Text
-                  style={styles.inputHeading}
-                  >
-                    Date of Birth
-                  </Text>
-            
+              <View style={styles.fields_main}>
+                <Text style={styles.inputHeading}>Date of Birth</Text>
+
                 <TouchableOpacity
                   style={styles.input_box}
                   onPress={showDatePicker}
@@ -1374,7 +1449,9 @@ const handleConfirm = (date) => {
                     placeholder="Enter your Post office"
                     placeholderTextColor={"rgba(166, 166, 166, 1)"}
                     value={formData.post_office}
-                    onChangeText={(text) => handleInputChange("post_office", text)}
+                    onChangeText={(text) =>
+                      handleInputChange("post_office", text)
+                    }
                     onBlur={() => handleInputBlur("address")}
                   />
                 </View>
@@ -1398,7 +1475,9 @@ const handleConfirm = (date) => {
                     placeholder="Enter your Police station"
                     placeholderTextColor={"rgba(166, 166, 166, 1)"}
                     value={formData.police_station}
-                    onChangeText={(text) => handleInputChange("police_station", text)}
+                    onChangeText={(text) =>
+                      handleInputChange("police_station", text)
+                    }
                     onBlur={() => handleInputBlur("address")}
                   />
                 </View>
@@ -1468,13 +1547,15 @@ const handleConfirm = (date) => {
 
               {isDropdownOpenstate && (
                 <View style={styles.dropdownContainer}>
-                  {stateDataapi.map((item)=>(
-                       <TouchableOpacity
-                       style={styles.dropdownOption}
-                       onPress={() => handleSelectOptionstate(item.name ,item.id)}
-                     >
-                       <Text>{item.name}</Text>
-                     </TouchableOpacity>
+                  {stateDataapi.map((item) => (
+                    <TouchableOpacity
+                      style={styles.dropdownOption}
+                      onPress={() =>
+                        handleSelectOptionstate(item.name, item.id)
+                      }
+                    >
+                      <Text>{item.name}</Text>
+                    </TouchableOpacity>
                   ))}
                   {/* <TouchableOpacity
                     style={styles.dropdownOption}
@@ -1491,9 +1572,9 @@ const handleConfirm = (date) => {
                 </View>
               )}
 
-{/* for district  */}
-                        
-                          <View style={styles.fields_main}>
+              {/* for district  */}
+
+              <View style={styles.fields_main}>
                 <Text style={styles.inputHeading}>District</Text>
                 <TouchableOpacity onPress={toggleDropdowndistrict}>
                   <View style={styles.input_box}>
@@ -1523,14 +1604,15 @@ const handleConfirm = (date) => {
 
               {isDropdownOpendistrict && (
                 <View style={styles.dropdownContainer}>
-                  {DistrictDataaa?.length>0 && DistrictDataaa?.map((item)=>(
-                       <TouchableOpacity
-                       style={styles.dropdownOption}
-                       onPress={() => handleSelectOptiondistrict(item.name)}
-                     >
-                       <Text>{item.name}</Text>
-                     </TouchableOpacity>
-                  ))}
+                  {DistrictDataaa?.length > 0 &&
+                    DistrictDataaa?.map((item) => (
+                      <TouchableOpacity
+                        style={styles.dropdownOption}
+                        onPress={() => handleSelectOptiondistrict(item.name)}
+                      >
+                        <Text>{item.name}</Text>
+                      </TouchableOpacity>
+                    ))}
                   {/* <TouchableOpacity
                     style={styles.dropdownOption}
                     onPress={() => handleSelectOptionstate("1")}
@@ -2581,12 +2663,12 @@ const handleConfirm = (date) => {
                   close the free admission.
                 </Text>
               </View>
-              <View style={styles.condition_box_main}>
+              <View style={[styles.condition_box_main,{gap:6}]}>
                 <View style={styles.conditions_box}>
                   <Checkbox
                     style={styles.checkbox}
                     value={isChecked}
-                    onValueChange={setChecked}
+                    onValueChange={handleChecklist}
                     color={isChecked ? "rgba(0, 54, 126, 1)" : undefined}
                   />
                   <Text style={styles.text_condition}>
@@ -2595,7 +2677,10 @@ const handleConfirm = (date) => {
                       Terms & Conditions
                     </Text>
                   </Text>
+                  
                 </View>
+                {isCheckedError && <Text style={{color:'red',fontWeight:'600'}}>Please Check The CheckBox</Text>}
+                
               </View>
 
               <View style={styles.submitButton}>

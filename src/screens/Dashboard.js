@@ -665,15 +665,17 @@ const Dashboard = ({ navigation }) => {
                         }}
                       >
                         {carddata[index]?.services.map((cd) => {
-                          const navigateToPage =
-                            naviagteToServices[cd.service_name];
+                         
+                          // const navigateToPage =
+                          //   naviagteToServices[cd.service_name];
                           return (
                             <>
                               <TouchableOpacity
                                 style={styles.card}
                                 onPress={() =>
-                                  navigation.navigate(navigateToPage, {
-                                    id: cd.id,
+                                  navigation.navigate("freeCollege", {
+                                    id: cd?.id,
+                                    heading:cd?.service_name
                                   })
                                 }
                               >
@@ -686,10 +688,10 @@ const Dashboard = ({ navigation }) => {
                                   <Image
                                     style={[
                                       styles.image,
-                                      { height: 80, width: 80 },
+                                      { height: 45, width: 45 },
                                     ]}
                                     source={{ uri: cd.image }}
-                                    resizeMode="contain"
+                                    // resizeMode="contain"
                                   />
                                 </View>
                                 <Text style={styles.textStyle}>
