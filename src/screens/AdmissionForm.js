@@ -384,6 +384,9 @@ const AdmissionForm = ({ navigation }) => {
             console.log(res, "++++++++++++++++++++++++++++++++++++++");
             if (res?.status) {
               showToast("Form Submitted Successfully");
+              setTimeout(() => {
+                navigation.navigate("Dashboard");
+              }, 500);
             }
           });
         }
