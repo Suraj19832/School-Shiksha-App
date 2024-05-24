@@ -205,7 +205,7 @@ const FreeCollegeList = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <Header title={`${heading} List`} navigateTo={navigation.goBack} />
-      <ScrollView style={{ backgroundColor: "#FFFCCE" }}>
+      <ScrollView style={{ backgroundColor: "#FFFCCE", height: "100%" }}>
         {/* <View>
           <Image
             style={styles.image}
