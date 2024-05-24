@@ -10,7 +10,8 @@ import {
   TouchableOpacity,
   Dimensions,
   FlatList,
-  ActivityIndicator
+  ActivityIndicator,
+  Linking
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import DropDownPicker from "react-native-dropdown-picker";
@@ -113,7 +114,11 @@ const FreeCollegeList = ({ navigation }) => {
       .then((res)=>{
         console.log("free college list api hit status" ,res.status)
         setFreeCollegeList(res?.data)
-        setorganizationId(res?.organization_id)
+        setorganizationId(res?.data?.organization_id)
+      
+        // const organizationIds = res.data.map((item) => item.organization_id); // Extract all organization_ids
+        // setorganizationId(organizationIds);
+        // console.log("shschcudhcuwshfciuwyhiufeiufyiufiui",organizationIds)
         setisLoading(false)
       })
     
@@ -588,7 +593,8 @@ const FreeCollegeList = ({ navigation }) => {
           return (
             
             <View style={styles.listCart} key={value.id}>
-              <View style={{flexDirection:'row' ,justifyContent:'space-between',alignItems:'center'}} >
+              <View style={{flexDirection:'row' ,justifyContent:'space-between',alignItems:'center',paddingHorizontal: 20}} >
+               
                 <View style={styles.cardTop}>
                 <View
                   style={{
@@ -603,10 +609,10 @@ const FreeCollegeList = ({ navigation }) => {
                   <Image
                     style={{ height: 55, width: 55, borderRadius: 50 }}
                     source={{ uri: value?.logo }}
-                    resizeMode="contain"
+                    resizeMode="cover"
                   />
                 </View>
-
+                <View style={{gap:10}}>
                 <Text
                   style={{
                     color: "rgba(55, 55, 55, 1)",
@@ -616,16 +622,34 @@ const FreeCollegeList = ({ navigation }) => {
                 >
                   {value.organization_name}
                 </Text>
+                {/* Location here   */}
+                <View style={{flexDirection:'row' ,gap:4 ,alignItems:'center' }}>
+
+                <Entypo name="location" size={12} color="#373737" />
+                <View style={{}}>
+                <Text style={{fontSize:10 ,color:'#373737' ,fontWeight:'500'}}>{value?.block_name}, {value?.district_name},{value?.state_name} </Text>
+                
                 </View>
+               
+      
+                </View>
+                </View>
+                </View>
+
+
+             
+                
+                
            
 
-                <TouchableOpacity onPress={() => whatsappclicked()}>
+                {/* <TouchableOpacity onPress={() => whatsappclicked()}>
                 <Image
                   source={require("../../assets/icons/whatsapp.png")}
                   style={{ width: 30, height: 30 }}
                 />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
               </View>
+              <View style={{flexDirection:'row' ,justifyContent:'space-between',paddingHorizontal: 20 ,alignItems:'center'}}>
               <View style={styles.course}>
                 <Text
                   style={{ color: "#01265B", fontWeight: "600", fontSize: 14 }}
@@ -638,6 +662,14 @@ const FreeCollegeList = ({ navigation }) => {
                   {value?.course_name}
                 </Text>
               </View>
+              <TouchableOpacity onPress={() => whatsappclicked()}>
+                <Image
+                  source={require("../../assets/icons/whatsapp.png")}
+                  style={{ width: 30, height: 30 }}
+                />
+              </TouchableOpacity>
+              </View>
+           
 
               <View style={styles.aboutCourse}>
                 <View
@@ -686,7 +718,9 @@ const FreeCollegeList = ({ navigation }) => {
                       courseid:value?.organization_course_id,
                       id:id,
                       heading:heading,
-                      organization_Id:organizationId
+                      organization_Id:value?.organization_id
+
+                      // organizationId
                     })
                   }
                 >
@@ -1291,7 +1325,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 10,
     // padding: 12,
-    paddingHorizontal: 20,
+    // paddingHorizontal: 20,
     marginTop: 10,
 
   },
@@ -1299,7 +1333,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 5,
     // padding: 12,
-    paddingHorizontal: 20,
+    
   },
   aboutCourse: {
     backgroundColor: "#E2FDFF",
