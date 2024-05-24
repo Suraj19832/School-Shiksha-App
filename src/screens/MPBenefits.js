@@ -84,11 +84,7 @@ const MPBenefits = ({ navigation }) => {
               {sortheading !== "other" && (
                 <TouchableOpacity
                   style={styles.card}
-                  onPress={() =>
-                    navigation.navigate("computerCollegeList", {
-                      title: "Carrer Guidance",
-                    })
-                  }
+                  onPress={() => navigation.navigate("careerGuidance")}
                 >
                   <View style={styles.imgContainer}>
                     <Image

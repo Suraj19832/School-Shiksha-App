@@ -45,6 +45,8 @@ import ComputerCourseDetails from "../src/screens/ComputerCourseDetails";
 import PaidCertiDetails from "../src/screens/PaidCertiDetails";
 import Succesfully from "./Succesfully";
 import MembershipPayment from "../src/screens/MembershipPayment";
+import CareerGuidance from "../src/screens/CareerGuidance";
+import CareerGuidanceForm from "../src/screens/CareerGuidanceForm";
 
 const Stack = createNativeStackNavigator();
 
@@ -187,6 +189,16 @@ const Navigation = () => {
             <Stack.Screen
               name="mpBenefits"
               component={MPBenefits}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="careerGuidance"
+              component={CareerGuidance}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="careerGuidanceForm"
+              component={CareerGuidanceForm}
               options={{ headerShown: false }}
             />
             <Stack.Screen
