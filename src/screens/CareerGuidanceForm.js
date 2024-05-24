@@ -216,10 +216,7 @@ const CareerGuidanceForm = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Header
-        title="Online Course Admission Form"
-        navigateTo={navigation?.goBack}
-      />
+      <Header title="Career Guidance Form" navigateTo={navigation?.goBack} />
       <ScrollView>
         <View style={styles.main_content}>
           <View style={styles.profile}>
