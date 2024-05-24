@@ -28,6 +28,7 @@ import {
 import { Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Header from "../../components/Header";
+import { useRoute } from "@react-navigation/native";
 const FreeCollegeList = ({ navigation }) => {
   const [selectedValue, setSelectedValue] = useState(null);
   const [open, setOpen] = useState(false);
@@ -85,9 +86,11 @@ const FreeCollegeList = ({ navigation }) => {
     const whatsappUrl = `whatsapp://send?phone=9088776656`;
     Linking.openURL(whatsappUrl);
   };
+  const route = useRoute();
+  const { title } = route.params;
   return (
     <SafeAreaView style={styles.container}>
-      <Header title="Computer College List" navigateTo={navigation.goBack} />
+      <Header title={title} navigateTo={navigation.goBack} />
       <ScrollView style={{ backgroundColor: "#FFFCCE" }}>
         {/* <View>
           <Image

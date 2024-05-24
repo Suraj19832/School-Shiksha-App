@@ -84,7 +84,11 @@ const MPBenefits = ({ navigation }) => {
               {sortheading !== "other" && (
                 <TouchableOpacity
                   style={styles.card}
-                  onPress={() => navigation.navigate("computerCollegeList")}
+                  onPress={() =>
+                    navigation.navigate("computerCollegeList", {
+                      title: "Carrer Guidance",
+                    })
+                  }
                 >
                   <View style={styles.imgContainer}>
                     <Image
@@ -125,7 +129,11 @@ const MPBenefits = ({ navigation }) => {
               {sortheading !== "other" && (
                 <TouchableOpacity
                   style={styles.card}
-                  onPress={() => navigation.navigate("computerCollegeList")}
+                  onPress={() =>
+                    navigation.navigate("computerCollegeList", {
+                      title: "Exam Enquiry",
+                    })
+                  }
                 >
                   <View style={styles.imgContainer}>
                     <Image
