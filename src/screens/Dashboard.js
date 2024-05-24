@@ -398,7 +398,7 @@ const Dashboard = ({ navigation }) => {
                     style={{
                       backgroundColor: "#FFAE2B",
                       height: 20,
-                      width: 80,
+                      width: 'auto',
                       borderRadius: 10,
                       alignItems: "center",
                       justifyContent: "center",

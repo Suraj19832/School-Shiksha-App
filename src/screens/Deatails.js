@@ -14,7 +14,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import Header from "../../components/Header";
 import { useRoute } from "@react-navigation/native";
 import { GetfetchDataWithParams } from "../../Helper/Helper";
-import { Feather } from "@expo/vector-icons";
+import { Entypo, Feather } from "@expo/vector-icons";
 
 const Details = ({ navigation }) => {
   const route = useRoute();
@@ -131,13 +131,14 @@ const Details = ({ navigation }) => {
                   justifyContent: "center",
                 }}
               >
-                <Image
-                  style={{}}
-                  source={require("../../assets/img/college.png")}
-                />
+                 <Image
+                          style={{ height: 55, width: 55, borderRadius: 50 }}
+                          source={{ uri: detailsData?.logo }}
+                          resizeMode="cover"
+                        />
               </View>
-
-              <Text
+<View style={{ gap: 10 }}>
+<Text
                 style={{
                   color: "rgba(55, 55, 55, 1)",
                   fontWeight: "600",
@@ -146,6 +147,30 @@ const Details = ({ navigation }) => {
               >
                 {collegeName}
               </Text>
+              <View
+                          style={{
+                            flexDirection: "row",
+                            gap: 4,
+                            alignItems: "center",
+                          }}
+                        >
+                          <Entypo name="location" size={12} color="#373737" />
+                          <View style={{}}>
+                            <Text
+                              style={{
+                                fontSize: 10,
+                                color: "#373737",
+                                fontWeight: "500",
+                              }}
+                            >
+                              {detailsData?.block_name}, {detailsData?.district_name},
+                              {detailsData?.state_name}{" "}
+                           
+                            </Text>
+                          </View>
+                        </View>
+</View>
+          
             </View>
 
             <View style={styles.course}>
