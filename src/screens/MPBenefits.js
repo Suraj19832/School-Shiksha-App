@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Image,
   View,
@@ -7,92 +7,58 @@ import {
   ScrollView,
   TouchableOpacity,
   SafeAreaView,
+  ActivityIndicator,
+  Dimensions,
 } from "react-native";
-import { Fontisto } from "@expo/vector-icons";
 
 import Header from "../../components/Header";
-import { getdata, GetfetchDataWithParams } from "../../Helper/Helper";
+import { GetfetchDataWithParams } from "../../Helper/Helper";
 import { useRoute } from "@react-navigation/native";
 
 const MPBenefits = ({ navigation }) => {
   const route = useRoute();
   const { sortheading, heading } = route.params;
-  const cards = [
-    {
-      title: "Computer Training",
-      image: require("../../assets/img/computer.png"),
-      status: "active",
-    },
-    {
-      title: "ITI /Diplomatic any Course",
-      image: require("../../assets/img/certification.png"),
-      status: "inActive",
-    },
-    {
-      title: "Education Govt Scholarship",
-      image: require("../../assets/img/degree.png"),
-      status: "active",
-    },
-    {
-      title: "Free College Admission",
-      image: require("../../assets/img/student.png"),
-      status: "active",
-    },
-    {
-      title: "Paid College Admission",
-      image: require("../../assets/img/admission.png"),
-      status: "inActive",
-    },
-    {
-      title: "Free Govt Certificate Course",
-      image: require("../../assets/img/online-certificate.png"),
-      status: "active",
-    },
-    {
-      title: "College Admission for Higher Education",
-      image: require("../../assets/img/tuition.png"),
-      status: "active",
-    },
-    {
-      title: "Online Course",
-      image: require("../../assets/img/webinar.png"),
-      status: "active",
-    },
-    {
-      title: "Job Campusing",
-      image: require("../../assets/img/campus.png"),
-      status: "inActive",
-    },
-    {
-      title: "Private Scholarship",
-      image: require("../../assets/img/scholarship.png"),
-      status: "active",
-    },
-    {
-      title: "Entrance Scholarship",
-      image: require("../../assets/img/loan.png"),
-      status: "active",
-    },
-    {
-      title: "Merit Scholarship",
-      image: require("../../assets/img/university.png"),
-      status: "inActive",
-    },
-  ];
+  const [loading, setLoading] = useState(false);
 
   // api implementation
+  const [cardData, setCardData] = useState([]);
   useEffect(() => {
     const params = {
       service_type: sortheading,
     };
+    setLoading(true);
     GetfetchDataWithParams("master/services", params)
       .then((res) => {
-        console.log(res, ":::::::::||||||||||||||||||||||||||||||||||||");
+        setCardData(res.data);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false);
       });
   }, []);
+  const truncateMessage = (message, maxLength = 25) => {
+    if (message.length > maxLength) {
+      return message.substring(0, maxLength) + "...";
+    }
+    return message;
+  };
+  if (loading) {
+    return (
+      <View>
+        <Header
+          title={heading}
+          titleColor="#00367E"
+          navigateTo={navigation.goBack}
+        />
+        <ActivityIndicator
+          size={"large"}
+          olor={"#00367E"}
+          style={styles.loader}
+        />
+      </View>
+    );
+  }
   return (
     <SafeAreaView style={styles.container}>
       <Header
@@ -102,53 +68,71 @@ const MPBenefits = ({ navigation }) => {
       />
       <ScrollView>
         <View style={styles.mainView}>
-          <View style={{ alignItems: "center", marginTop: 15 }}>
+          <View
+            style={{
+              marginTop: 15,
+              marginHorizontal: 10,
+            }}
+          >
             <View
-              style={{ flexDirection: "row", gap: 8, justifyContent: "center" }}
+              style={{
+                flexDirection: "row",
+                flexWrap: "wrap",
+                gap: 2,
+              }}
             >
-              <TouchableOpacity
-                style={styles.card}
-                onPress={() => navigation.navigate("computerCollegeList")}
-              >
-                {cards[0].status === "inActive" && (
-                  <View style={styles.lockContainer}>
-                    <Fontisto name="locked" />
+              {sortheading !== "other" && (
+                <TouchableOpacity
+                  style={styles.card}
+                  onPress={() => navigation.navigate("computerCollegeList")}
+                >
+                  <View style={styles.imgContainer}>
+                    <Image
+                      source={require("../../assets/icons/guidance.png")}
+                      style={styles.image}
+                    />
                   </View>
-                )}
-                <View style={styles.imgContainer}>
-                  <Image source={cards[0].image} style={styles.image} />
-                </View>
-                <Text style={styles.textStyle}>{cards[0].title}</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.card}
-                onPress={() => navigation.navigate("membershipPlan")}
-              >
-                {cards[1].status === "inActive" && (
-                  <View style={styles.lockContainer}>
-                    <Fontisto name="locked" color="white" size={17} />
+                  <Text style={styles.textStyle}>Career Guidance</Text>
+                </TouchableOpacity>
+              )}
+
+              {cardData.map((item, index) => {
+                return (
+                  <TouchableOpacity
+                    style={styles.card}
+                    key={index}
+                    onPress={() => navigation.navigate("computerCollegeList")}
+                  >
+                    <View style={styles.imgContainer}>
+                      <Image
+                        source={{
+                          uri: item?.image,
+                        }}
+                        style={styles.image}
+                      />
+                    </View>
+                    <Text style={styles.textStyle}>
+                      {truncateMessage(item.service_name)}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })}
+              {sortheading !== "other" && (
+                <TouchableOpacity
+                  style={styles.card}
+                  onPress={() => navigation.navigate("computerCollegeList")}
+                >
+                  <View style={styles.imgContainer}>
+                    <Image
+                      source={require("../../assets/icons/exam_enquiry.png")}
+                      style={styles.image}
+                    />
                   </View>
-                )}
-                <View style={styles.imgContainer}>
-                  <Image source={cards[1].image} style={styles.image} />
-                </View>
-                <Text style={styles.textStyle}>{cards[1].title}</Text>
-              </TouchableOpacity>
-              <View style={styles.card}>
-                {cards[2].status === "inActive" && (
-                  <View style={styles.lockContainer}>
-                    <Fontisto name="locked" color="white" size={17} />
-                  </View>
-                )}
-                <View style={styles.imgContainer}>
-                  <Image source={cards[2].image} style={styles.image} />
-                </View>
-                <Text style={styles.textStyle}>{cards[2].title}</Text>
-              </View>
+                  <Text style={styles.textStyle}>Exam Enquiry</Text>
+                </TouchableOpacity>
+              )}
             </View>
           </View>
-
-          <View style={styles.mainContainer}></View>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -159,40 +143,14 @@ export default MPBenefits;
 const styles = StyleSheet.create({
   container: {},
   mainView: {
-    flex: 0,
-
     width: "100%",
     height: "auto",
   },
-  innerView: {
-    width: "90%",
-    height: "auto",
-    gap: 10,
-  },
-  hairline: {
-    backgroundColor: "#00367E66", // Change the color
-    height: 2,
-    width: "100%",
-    shadowColor: "#00367E66", // Shadow color
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.5, // Shadow opacity
-    shadowRadius: 2, // Shadow radius
-    elevation: 2, // Android shadow elevation
-  },
-  mainContainer: {
-    marginHorizontal: 20,
-    marginVertical: 25,
-  },
-  icon: {
-    backgroundColor: "red",
-    borderRadius: 50,
-    height: 50,
-    width: 50,
+  loader: {
+    height: Dimensions.get("window").height * 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "white",
   },
   card: {
     backgroundColor: "#03357D",
@@ -224,7 +182,8 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "white",
     fontSize: 13,
-    fontWeight: "500",
+    fontWeight: "700",
+    lineHeight: 15,
   },
   lockContainer: {
     position: "absolute",
@@ -233,29 +192,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     zIndex: 1, // Ensure the lock image is above other content
-  },
-
-  showMore: {
-    backgroundColor: "#F6B02E",
-    width: 200,
-    height: 40,
-    borderRadius: 10,
-    margin: 10,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  button: {
-    backgroundColor: "#FFFAE7",
-    width: 150,
-    height: 40,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 8,
-    borderWidth: 1, // Specify border width
-    borderColor: "#DDDDDD",
-  },
-  text: {
-    color: "black",
-    fontSize: 16,
   },
 });

@@ -30,7 +30,7 @@ const Header = ({ navigateTo, title, titleColor }) => {
           <Text
             style={[
               styles.topBar_text,
-              { color: titleColor ? titleColor : "black" },
+              { color: titleColor ? titleColor : "rgba(55, 55, 55, 1)" },
             ]}
           >
             {title}
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   topBar_text: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "500",
     lineHeight: 24,
     color: "rgba(55, 55, 55, 1)",

@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   Dimensions,
   FlatList,
+  Linking,
 } from "react-native";
 import React, { useRef, useState } from "react";
 import DropDownPicker from "react-native-dropdown-picker";
@@ -79,6 +80,10 @@ const FreeCollegeList = ({ navigation }) => {
         </View>
       </View>
     );
+  };
+  const whatsappclicked = () => {
+    const whatsappUrl = `whatsapp://send?phone=9088776656`;
+    Linking.openURL(whatsappUrl);
   };
   return (
     <SafeAreaView style={styles.container}>
@@ -265,17 +270,34 @@ const FreeCollegeList = ({ navigation }) => {
                 IEM Institute
               </Text>
             </View>
-            <View style={styles.course}>
-              <Text
-                style={{ color: "#01265B", fontWeight: "600", fontSize: 14 }}
-              >
-                Course Name -
-              </Text>
-              <Text
-                style={{ color: "#595959", fontWeight: "600", fontSize: 14 }}
-              >
-                B.C.A
-              </Text>
+            <View
+              style={[
+                styles.course,
+                { justifyContent: "space-between", alignItems: "center" },
+              ]}
+            >
+              <View style={{ flexDirection: "row" }}>
+                <Text
+                  style={{
+                    color: "rgba(1, 38, 91, 1)",
+                    fontWeight: "600",
+                    fontSize: 14,
+                  }}
+                >
+                  Course Name -
+                </Text>
+                <Text
+                  style={{ color: "#595959", fontWeight: "600", fontSize: 14 }}
+                >
+                  B.C.A
+                </Text>
+              </View>
+              <TouchableOpacity onPress={() => whatsappclicked()}>
+                <Image
+                  source={require("../../assets/icons/whatsapp.png")}
+                  style={{ width: 30, height: 30 }}
+                />
+              </TouchableOpacity>
             </View>
 
             <View style={styles.aboutCourse}>
@@ -409,17 +431,30 @@ const FreeCollegeList = ({ navigation }) => {
                 Techno India University
               </Text>
             </View>
-            <View style={styles.course}>
-              <Text
-                style={{ color: "#01265B", fontWeight: "600", fontSize: 14 }}
-              >
-                Course Name -
-              </Text>
-              <Text
-                style={{ color: "#595959", fontWeight: "600", fontSize: 14 }}
-              >
-                B.C.A
-              </Text>
+            <View
+              style={[
+                styles.course,
+                { justifyContent: "space-between", alignItems: "center" },
+              ]}
+            >
+              <View style={{ flexDirection: "row" }}>
+                <Text
+                  style={{ color: "#01265B", fontWeight: "600", fontSize: 14 }}
+                >
+                  Course Name -
+                </Text>
+                <Text
+                  style={{ color: "#595959", fontWeight: "600", fontSize: 14 }}
+                >
+                  B.C.A
+                </Text>
+              </View>
+              <TouchableOpacity onPress={() => whatsappclicked()}>
+                <Image
+                  source={require("../../assets/icons/whatsapp.png")}
+                  style={{ width: 30, height: 30 }}
+                />
+              </TouchableOpacity>
             </View>
 
             <View style={styles.aboutCourse}>
@@ -553,17 +588,30 @@ const FreeCollegeList = ({ navigation }) => {
                 The Heritage Academy
               </Text>
             </View>
-            <View style={styles.course}>
-              <Text
-                style={{ color: "#01265B", fontWeight: "600", fontSize: 14 }}
-              >
-                Course Name -
-              </Text>
-              <Text
-                style={{ color: "#595959", fontWeight: "600", fontSize: 14 }}
-              >
-                B.C.A
-              </Text>
+            <View
+              style={[
+                styles.course,
+                { justifyContent: "space-between", alignItems: "center" },
+              ]}
+            >
+              <View style={{ flexDirection: "row" }}>
+                <Text
+                  style={{ color: "#01265B", fontWeight: "600", fontSize: 14 }}
+                >
+                  Course Name -
+                </Text>
+                <Text
+                  style={{ color: "#595959", fontWeight: "600", fontSize: 14 }}
+                >
+                  B.C.A
+                </Text>
+              </View>
+              <TouchableOpacity onPress={() => whatsappclicked()}>
+                <Image
+                  source={require("../../assets/icons/whatsapp.png")}
+                  style={{ width: 30, height: 30 }}
+                />
+              </TouchableOpacity>
             </View>
 
             <View style={styles.aboutCourse}>
@@ -781,6 +829,7 @@ const styles = StyleSheet.create({
     gap: 5,
     // padding: 12,
     paddingHorizontal: 20,
+    paddingVertical: 3,
   },
   aboutCourse: {
     backgroundColor: "#E2FDFF",

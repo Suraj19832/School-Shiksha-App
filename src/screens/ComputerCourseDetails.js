@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   FlatList,
   Dimensions,
+  Linking,
 } from "react-native";
 import React, { useRef, useState } from "react";
 import {
@@ -59,6 +60,10 @@ const ComputerCourseDetails = ({ navigation }) => {
         </View>
       </View>
     );
+  };
+  const whatsappclicked = () => {
+    const whatsappUrl = `tel:${3256147895}`;
+    Linking.openURL(whatsappUrl);
   };
   return (
     <SafeAreaView style={styles.container}>
@@ -192,6 +197,41 @@ const ComputerCourseDetails = ({ navigation }) => {
             </View>
             <View style={styles.cardButtons}>
               <TouchableOpacity
+                style={{
+                  borderColor: "rgba(5, 105, 250, 1)",
+                  borderWidth: 1,
+                  paddingVertical: 15,
+                  paddingHorizontal: 20,
+                  borderRadius: 30,
+                  bottom: 5,
+                }}
+                onPress={() => whatsappclicked()}
+              >
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    gap: 5,
+                  }}
+                >
+                  <Feather
+                    name="phone-call"
+                    size={15}
+                    color="rgba(5, 103, 245, 1)"
+                  />
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      fontWeight: "500",
+                      lineHeight: 16.41,
+                      color: "rgba(5, 103, 245, 1)",
+                    }}
+                  >
+                    Call Now
+                  </Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
                 onPress={() =>
                   navigation.navigate("computerAdmissionForm", {
                     collegename,
@@ -212,7 +252,7 @@ const ComputerCourseDetails = ({ navigation }) => {
                     style={{
                       justifyContent: "center",
                       alignItems: "center",
-                      display: "flex",
+                      // display: "flex",
                     }}
                   >
                     <Text
@@ -314,7 +354,7 @@ const styles = StyleSheet.create({
   cardButtons: {
     paddingHorizontal: 24,
     flexDirection: "row",
-    justifyContent: "center",
+    justifyContent: "space-between",
     alignItems: "center",
     marginVertical: 10,
   },
