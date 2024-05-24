@@ -147,6 +147,7 @@ const Details = ({ navigation }) => {
                 {collegeName}
               </Text>
             </View>
+
             <View style={styles.course}>
               <Text
                 style={{ color: "#01265B", fontWeight: "600", fontSize: 14 }}
@@ -188,7 +189,7 @@ const Details = ({ navigation }) => {
                 <Text
                   style={{ color: "#595959", fontWeight: "700", fontSize: 12 }}
                 >
-                  4 Months
+                  {detailsData.course_duration} Months
                 </Text>
                 <Text
                   style={{ color: "#595959", fontWeight: "700", fontSize: 12 }}
@@ -287,7 +288,7 @@ const Details = ({ navigation }) => {
                         color: "white",
                       }}
                     >
-                      Apply Link
+                      Apply Now
                     </Text>
                   </View>
                 </LinearGradient>

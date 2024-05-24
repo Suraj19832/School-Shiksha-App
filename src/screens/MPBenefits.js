@@ -101,7 +101,12 @@ const MPBenefits = ({ navigation }) => {
                   <TouchableOpacity
                     style={styles.card}
                     key={index}
-                    onPress={() => navigation.navigate("computerCollegeList")}
+                    onPress={() =>
+                      navigation.navigate("freeCollege", {
+                        id: item.id,
+                        heading: item.service_name,
+                      })
+                    }
                   >
                     <View style={styles.imgContainer}>
                       <Image
