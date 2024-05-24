@@ -90,6 +90,7 @@ const FreeCollegeList = ({ navigation }) => {
     }
   }
   console.log("dropdown optionn--=-=-=-=-==-=-=-==-=-=-=-=---",dropdownOption)
+  const [organizationId, setorganizationId] = useState(null)
   async function fetchUserData(endpoint,id ,course_idd =null ,search_value =null) {
     console.log(search_value,"********************************")
     try {
@@ -112,6 +113,7 @@ const FreeCollegeList = ({ navigation }) => {
       .then((res)=>{
         console.log("free college list api hit status" ,res.status)
         setFreeCollegeList(res?.data)
+        setorganizationId(res?.organization_id)
         setisLoading(false)
       })
     
@@ -129,9 +131,9 @@ const FreeCollegeList = ({ navigation }) => {
   const [bannerData, setBannerData] = useState([]);
   useEffect(() => {
     const params = {
-      organization_id: 1,
+      service_id: id,
     };
-    GetfetchDataWithParams("master/organization-banner", params)
+    GetfetchDataWithParams("master/service-banner", params)
       .then((res) => {
         setBannerData(res.data);
       })
@@ -212,6 +214,11 @@ const FreeCollegeList = ({ navigation }) => {
     console.log(inputvlauesearch)
     fetchUserData("master/organization-course",id,null,text)
   }
+
+  const whatsappclicked = () => {
+    const whatsappUrl = `whatsapp://send?phone=9088776656`;
+    Linking.openURL(whatsappUrl);
+  };
   return (
     <SafeAreaView style={styles.container}>
       <Header title={`${heading} List`} navigateTo={navigation.goBack} />
@@ -581,7 +588,8 @@ const FreeCollegeList = ({ navigation }) => {
           return (
             
             <View style={styles.listCart} key={value.id}>
-              <View style={styles.cardTop}>
+              <View style={{flexDirection:'row' ,justifyContent:'space-between',alignItems:'center'}} >
+                <View style={styles.cardTop}>
                 <View
                   style={{
                     backgroundColor: "rgba(255, 199, 0, 0.5)",
@@ -608,6 +616,15 @@ const FreeCollegeList = ({ navigation }) => {
                 >
                   {value.organization_name}
                 </Text>
+                </View>
+           
+
+                <TouchableOpacity onPress={() => whatsappclicked()}>
+                <Image
+                  source={require("../../assets/icons/whatsapp.png")}
+                  style={{ width: 30, height: 30 }}
+                />
+              </TouchableOpacity>
               </View>
               <View style={styles.course}>
                 <Text
@@ -668,7 +685,8 @@ const FreeCollegeList = ({ navigation }) => {
                       courseName: value?.course_name,
                       courseid:value?.organization_course_id,
                       id:id,
-                      heading:heading
+                      heading:heading,
+                      organization_Id:organizationId
                     })
                   }
                 >
@@ -1275,6 +1293,7 @@ const styles = StyleSheet.create({
     // padding: 12,
     paddingHorizontal: 20,
     marginTop: 10,
+
   },
   course: {
     flexDirection: "row",

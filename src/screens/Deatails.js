@@ -32,7 +32,7 @@ import { GetfetchDataWithParams } from "../../Helper/Helper";
 
 const Details = ({ navigation }) => {
   const route = useRoute();
-  const { collegeName, courseName, courseid ,heading } = route.params;
+  const { collegeName, courseName, courseid ,heading,id } = route.params;
   const [activeIndex, setActiveIndex] = useState(0);
 
   const [bannerData, setBannerData] = useState([]);
@@ -125,7 +125,7 @@ const Details = ({ navigation }) => {
   // console.log("courseiddd", courseid);
   return (
     <SafeAreaView style={styles.container}>
-      <Header title={`${heading} List`} navigateTo={navigation.goBack} />
+      <Header title={`${heading} LIST`} navigateTo={navigation.goBack} />
       <ScrollView style={{ backgroundColor: "#FFFCCE", height: "100%" }}>
         <View style={{ position: "relative" }}>
           <FlatList
