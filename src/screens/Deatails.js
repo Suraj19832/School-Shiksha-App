@@ -13,6 +13,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import Header from "../../components/Header";
 import { useRoute } from "@react-navigation/native";
 import { GetfetchDataWithParams } from "../../Helper/Helper";
+import { Feather } from "@expo/vector-icons";
 
 const Details = ({ navigation }) => {
   const route = useRoute();
@@ -93,6 +94,10 @@ const Details = ({ navigation }) => {
   useEffect(() => {
     fetchUserData("master/course-details", courseid);
   }, [courseid]);
+  const whatsappclicked = () => {
+    const whatsappUrl = `tel:${3256147895}`;
+    Linking.openURL(whatsappUrl);
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -215,6 +220,41 @@ const Details = ({ navigation }) => {
             </View>
             <View style={styles.cardButtons}>
               <TouchableOpacity
+                style={{
+                  borderColor: "rgba(5, 105, 250, 1)",
+                  borderWidth: 1,
+                  paddingVertical: 15,
+                  paddingHorizontal: 20,
+                  borderRadius: 30,
+                  bottom: 5,
+                }}
+                onPress={() => whatsappclicked()}
+              >
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    gap: 5,
+                  }}
+                >
+                  <Feather
+                    name="phone-call"
+                    size={15}
+                    color="rgba(5, 103, 245, 1)"
+                  />
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      fontWeight: "500",
+                      lineHeight: 16.41,
+                      color: "rgba(5, 103, 245, 1)",
+                    }}
+                  >
+                    Call Now
+                  </Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
                 onPress={() =>
                   navigation.navigate("freeAdmissionForm", {
                     collegeName,
@@ -331,6 +371,7 @@ const styles = StyleSheet.create({
   },
   cardButtons: {
     paddingHorizontal: 20,
+    gap: 20,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
