@@ -50,7 +50,7 @@ const CareerGuidance = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <Header title="Career Guidance" navigateTo={navigation.goBack} />
-      <ScrollView style={{ backgroundColor: "#FFFCCE" }}>
+      <ScrollView style={{ backgroundColor: "#FFFCCE", height: "100%" }}>
         <View style={{ position: "relative" }}>
           <FlatList
             ref={flatListRef}

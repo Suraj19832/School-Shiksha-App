@@ -16,7 +16,7 @@ export async function sendPostData(endpoint, formData) {
 
 export const getdata = async (endpoint) => {
   const url = `${Configs.API_BASE_URL_V1}${endpoint}`;
-  // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", url);
+  console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", url);
   try {
     const response = await fetch(url);
 
@@ -109,8 +109,8 @@ export const postDataWithFormData = async (endpoint, formData) => {
 };
 
 export const postDataWithFormDataWithBaseUrl = async (baseurl, formData) => {
-  console.log("::::::::::::::::::::::::",baseurl)
-  console.log("::::::::::::::::::::::::",formData)
+  console.log("::::::::::::::::::::::::", baseurl);
+  console.log("::::::::::::::::::::::::", formData);
   // const url = `${Configs.API_BASE_URL_V1}/${endpoint}`;
   try {
     const response = await fetch(baseurl, {
@@ -121,7 +121,7 @@ export const postDataWithFormDataWithBaseUrl = async (baseurl, formData) => {
     //   throw new Error("Failed to post data");
     // }
     const data = await response.json();
-    console.log(data,"IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII")
+    console.log(data, "IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII");
     return data;
   } catch (error) {
     console.error("Error posting dataa:", error);
@@ -203,7 +203,6 @@ export const objectToFormData = (obj) => {
 //   return formData;
 // };
 
-
 // export const objectToFormDatawithnestedObject = (obj, formData = new FormData(), parentKey = '') => {
 //   if (obj && typeof obj === 'object' && !(obj instanceof Date) && !(obj instanceof File)) {
 //     Object.keys(obj).forEach(key => {
@@ -230,10 +229,10 @@ export const objectToFormData = (obj) => {
 export const objectToFormDatawithnestedObject = (obj) => {
   const formData = new FormData();
 
-  Object.keys(obj).forEach(key => {
+  Object.keys(obj).forEach((key) => {
     let value = obj[key];
 
-    if (key === 'enquiry_details' || key === 'documents') {
+    if (key === "enquiry_details" || key === "documents") {
       value = JSON.stringify(value);
     }
 
@@ -243,19 +242,15 @@ export const objectToFormDatawithnestedObject = (obj) => {
   return formData;
 };
 
-
-
-
-
 export const getFileData = (obj = {}) => {
-	let uri = obj?.assets ? obj?.assets[0]?.uri : obj?.uri;
+  let uri = obj?.assets ? obj?.assets[0]?.uri : obj?.uri;
 
-	let arr = uri.split("/");
-	let fileName = arr[arr.length - 1];
+  let arr = uri.split("/");
+  let fileName = arr[arr.length - 1];
 
-	return {
-		uri: uri,
-		name: fileName,
-		type: mime.lookup(fileName),
-	};
+  return {
+    uri: uri,
+    name: fileName,
+    type: mime.lookup(fileName),
+  };
 };

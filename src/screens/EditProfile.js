@@ -588,6 +588,10 @@ const EditProfile = ({ navigation }) => {
       showToast(`Please fill in the following fields: ${displayEmptyFields}`);
       return;
     }
+    if (whatsapp_number.trim().length !== 10) {
+      showToast("WhatsApp Number must be exactly 10 digits");
+      return;
+    }
     const postData = {
       id,
       name,

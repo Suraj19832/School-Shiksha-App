@@ -15,12 +15,17 @@ import Header from "../../components/Header";
 import { TextInput } from "react-native";
 import { FontAwesome5, Fontisto, Feather, AntDesign } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import { postDataWithFormDataWithToken } from "../../Helper/Helper";
+import {
+  getdata,
+  getrequestwithtoken,
+  postDataWithFormDataWithToken,
+} from "../../Helper/Helper";
 import { AuthContext } from "../../Utils/context/AuthContext";
 
 const CareerGuidanceForm = ({ navigation }) => {
   const { userToken } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
+  const [data, setData] = useState([]);
   //for Stream
   const [stream, setStream] = useState("");
   const [isStreamDropDown, setIsStreamDropDown] = useState(false);
@@ -109,6 +114,22 @@ const CareerGuidanceForm = ({ navigation }) => {
         });
     }
   };
+
+  useEffect(() => {
+    getrequestwithtoken("student/profile", userToken)
+      .then((res) => {
+        console.log(res.data, "100000 response");
+        setData(res.data);
+        setName(res.data.name || "");
+        setMobile(res.data.mobile || "");
+        setEmail(res.data.email || "");
+        setGuardianName(res.data.father_name || "");
+        setWhatsappNumber(res.data.whatsapp_number || "");
+      })
+      .catch((err) => {
+        console.log(err, "10000");
+      });
+  }, []);
 
   return (
     <View style={styles.container}>
