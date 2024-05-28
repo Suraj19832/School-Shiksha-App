@@ -36,6 +36,7 @@ import { GetfetchDataWithParams } from "../../Helper/Helper";
 const FreeCollegeList = ({ navigation }) => {
   const [selectedValue, setSelectedValue] = useState(null);
   const [open, setOpen] = useState(false);
+  const [limit, setlimit] = useState(2)
   const [isLoading, setisLoading] = useState(true);
   const items = [
     { label: "Option 1", value: "option1" },
@@ -102,7 +103,7 @@ const FreeCollegeList = ({ navigation }) => {
       // const endpoint = "master/organization-course";
       const params = {
         // page: 1,
-        // limit: 3,
+        limit: limit,
         // service_type: serviceType.short_name,
         service_id: id,
         // course_id:course_idd
@@ -214,7 +215,11 @@ const FreeCollegeList = ({ navigation }) => {
     );
     Linking.openURL(whatsappUrl);
   };
-
+const loadmore=()=>{
+  console.log("Loadmore is clicked")
+  setlimit(limit+2)
+  console.log(limit)
+}
   return (
     <SafeAreaView style={styles.container}>
       <Header title={`${heading} List`} navigateTo={navigation.goBack} />
@@ -305,9 +310,14 @@ const FreeCollegeList = ({ navigation }) => {
                   </View>
                 </TouchableOpacity>
                 {isDropdownOpenclass && (
-                  <View style={styles.dropdownContainer}>
+                  <View style={[styles.dropdownContainer,{height:110 , overflow: 'hidden' ,zIndex:1}]}>
+                     <ScrollView
+                      nestedScrollEnabled={true}
+                      style={{ maxHeight: 100 }}
+                    >
                     {dropdownOption.map((option) => {
                       return (
+                        
                         <TouchableOpacity
                           style={styles.dropdownOption}
                           onPress={() =>
@@ -328,6 +338,8 @@ const FreeCollegeList = ({ navigation }) => {
                         </TouchableOpacity>
                       );
                     })}
+                    </ScrollView>
+                   
                     {/* <TouchableOpacity
                       style={styles.dropdownOption}
                       onPress={() => handleSelectOptionclass("1")}
@@ -1244,20 +1256,35 @@ const FreeCollegeList = ({ navigation }) => {
               </TouchableOpacity>
             </View>
           </View> */}
+          <TouchableOpacity onPress={loadmore}>
           <View
             style={{
               flexDirection: "row",
               alignItems: "center",
               gap: 4,
+              borderRadius:8,
               height: 32,
               backgroundColor: "#FFFFFF",
               marginBottom: 80,
               paddingHorizontal: 10,
+              borderWidth: 1, // Specify border width
+              borderColor: "#DDDDDD",
             }}
           >
-            <Text style={{ color: "#435354" }}>Load More</Text>
-            <AntDesign name="down" size={15} color="#435354" />
+            <Text
+              style={{
+                color: "#435354",
+                fontSize: 14,
+                fontWeight: "500",
+                lineHeight: 17,
+              }}
+            >
+              Load More
+            </Text>
+            <AntDesign name="down" size={20} color="#435354" />
           </View>
+          </TouchableOpacity>
+        
         </View>
       </ScrollView>
     </SafeAreaView>
