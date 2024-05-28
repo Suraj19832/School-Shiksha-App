@@ -576,17 +576,17 @@ const Dashboard = ({ navigation }) => {
             >
               <Image
                 style={{ width: 25, height: 25, tintColor: "#435354" }}
-                source={require("../../assets/img/notification.png")}
+                source={require("../../assets/img/tracking.png")}
               />
               <TouchableOpacity
                 onPress={() =>
                   navigation.navigate(
-                    "notification",
+                    "applicationHistory",
                     setIsMenuOpen(!isMenuOpen)
                   )
                 }
               >
-                <Text style={styles.menuText}>Notifications</Text>
+                <Text style={styles.menuText}>Application History</Text>
               </TouchableOpacity>
             </View>
             <View style={styles.hairlineMenu} />

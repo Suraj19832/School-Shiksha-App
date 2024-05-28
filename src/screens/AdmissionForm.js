@@ -43,7 +43,9 @@ import {
   postDataWithFormDataWithToken,
 } from "../../Helper/Helper";
 import { AuthContext } from "../../Utils/context/AuthContext";
+import { ActivityIndicator } from "react-native";
 const AdmissionForm = ({ navigation }) => {
+  // const [pageloading, setpageloading] = useState(true)
   // State for storeing upi link of al the picture
   const [AadharFrontUribyApi, setAadharFrontUribyApi] = useState();
   const [AadharBackUribyApi, setAadharBackUribyApi] = useState();
@@ -358,7 +360,7 @@ const AdmissionForm = ({ navigation }) => {
               guardian_number: formData.fatherMobile,
               occupation: inputValueoccupation,
               income: formData.income,
-              hs_value: inputValueHs,
+              hs_Passout: inputValueHs,
               percentage: formData.percentage,
             },
             documents: [
@@ -503,6 +505,7 @@ const AdmissionForm = ({ navigation }) => {
       });
   };
   useEffect(() => {
+    
     (async () => {
       const { status } = await ImagePicker.requestCameraPermissionsAsync();
       setHasPermission(status === "granted");
@@ -1109,6 +1112,27 @@ const AdmissionForm = ({ navigation }) => {
   const handleChecklist=()=>{
     setChecked(!isChecked)
   }
+
+
+
+  // if (pageloading) {
+  //   return (
+  //     <View>
+  //       <Header
+  //         title="Application History"
+  //         navigateTo={() => navigation.goBack("Home")}
+  //       />
+  //       <View style={{justifyContent:'center' ,alignItems:'center'  ,height:'90%'}}>
+  //       <ActivityIndicator
+  //         size="large"
+  //         color="#00367E"
+  //         style={{justifyContent:'center',alignSelf:'center'}}
+  //       />
+  //       </View>
+      
+  //     </View>
+  //   );
+  // }
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
       <Header
@@ -1524,10 +1548,10 @@ const AdmissionForm = ({ navigation }) => {
                 <Text style={styles.inputHeading}>State</Text>
                 <TouchableOpacity onPress={toggleDropdownstate}>
                   <View style={styles.input_box}>
-                    <Image
-                      style={styles.iconImage}
-                      source={require("../../assets/icons/gender (1).png")}
-                    />
+                  <Image
+                        style={styles.iconImage}
+                        source={require("../../assets/icons/map.png")}
+                      />
                     <TextInput
                       style={styles.input}
                       placeholder="Select"
@@ -1581,10 +1605,10 @@ const AdmissionForm = ({ navigation }) => {
                 <Text style={styles.inputHeading}>District</Text>
                 <TouchableOpacity onPress={toggleDropdowndistrict}>
                   <View style={styles.input_box}>
-                    <Image
-                      style={styles.iconImage}
-                      source={require("../../assets/icons/gender (1).png")}
-                    />
+                  <Image
+                        style={styles.iconImage}
+                        source={require("../../assets/icons/district (1).png")}
+                      />
                     <TextInput
                       style={styles.input}
                       placeholder="Select"

@@ -47,6 +47,7 @@ import Succesfully from "./Succesfully";
 import MembershipPayment from "../src/screens/MembershipPayment";
 import CareerGuidance from "../src/screens/CareerGuidance";
 import CareerGuidanceForm from "../src/screens/CareerGuidanceForm";
+import ApplicationHistory from "../src/screens/ApplicationHistory";
 
 const Stack = createNativeStackNavigator();
 
@@ -79,6 +80,11 @@ const Navigation = () => {
             <Stack.Screen
               name="freeCollege"
               component={FreeCollegeList}
+              options={{ headerShown: false }}
+            />
+                  <Stack.Screen
+              name="applicationHistory"
+              component={ApplicationHistory}
               options={{ headerShown: false }}
             />
             <Stack.Screen
