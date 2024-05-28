@@ -8,17 +8,42 @@ import {
   Alert,
   Platform,
   ToastAndroid,
+  ActivityIndicator,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Header from "../../components/Header";
 import { TextInput } from "react-native";
 import { FontAwesome5, Fontisto, Feather, AntDesign } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { useRoute } from "@react-navigation/native";
+import { postDataWithFormDataWithToken } from "../../Helper/Helper";
+import { AuthContext } from "../../Utils/context/AuthContext";
 
 const CareerGuidanceForm = ({ navigation }) => {
-  //For gender
+  const { userToken } = useContext(AuthContext);
+  const [loading, setLoading] = useState(false);
+  //for Stream
+  const [stream, setStream] = useState("");
+  const [isStreamDropDown, setIsStreamDropDown] = useState(false);
+  const [selectedOptionStream, setSelectedOptionStream] = useState(null);
+  const [inputValueStream, setInputValueStream] = useState("");
+
+  //handle toggle for stream
+  const toggleDropdownStream = () => {
+    setIsStreamDropDown(!isStreamDropDown);
+  };
+
+  const handleSelectOptionStream = (option) => {
+    setSelectedOptionStream(option);
+    setInputValueStream(option);
+    setStream(option);
+    setIsStreamDropDown(false);
+  };
+
+  const handleInputChangeStream = (text) => {
+    setInputValueStream(text);
+    setIsStreamDropDown(null); // Clear selected option when user edits input
+  };
+
   const showToast = (message) => {
     if (Platform.OS === "android") {
       ToastAndroid.show(message, ToastAndroid.SHORT);
@@ -26,191 +51,62 @@ const CareerGuidanceForm = ({ navigation }) => {
       alert(message);
     }
   };
-  const [genderData, setGenderData] = useState("");
-  const [isDropdownOpengender, setDropdownOpengender] = useState(false);
-  const [selectedOptiongender, setSelectedOptiongender] = useState(null);
-  const [inputValuegender, setInputValuegender] = useState("");
+
+  const [name, setName] = useState("");
+  const [mobile, setMobile] = useState("");
   const [email, setEmail] = useState("");
-  const [emailError, setEmailError] = useState("");
-  //handle toggle for gender
-  const toggleDropdowngender = () => {
-    setDropdownOpengender(!isDropdownOpengender);
-  };
-  const handleSelectOptiongender = (option) => {
-    setSelectedOptiongender(option);
-    setInputValuegender(option);
-    setGenderData(option);
-    setDropdownOpengender(false);
-  };
-  const handleInputChangegender = (text) => {
-    setInputValuegender(text);
-    setDropdownOpengender(null); // Clear selected option when user edits input
-  };
+  const [guardianName, setGuardianName] = useState("");
+  const [whatsappNumber, setWhatsappNumber] = useState("");
+  const [percentage10th, setPercentage10th] = useState("");
+  const [percentage12th, setPercentage12th] = useState("");
+  const [courseName, setCourseName] = useState("");
 
-  //For datePicker
-  const [userDetails, setUserDetails] = useState({
-    date_of_birth: "",
-  });
-  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const showDatePicker = () => {
-    setDatePickerVisibility(true);
-  };
-  const hideDatePicker = () => {
-    setDatePickerVisibility(false);
-  };
+  const handleSubmit = () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  // const handleConfirm = (date) => {
-  //   setUserDetails({
-  //     ...userDetails,
-  //     date_of_birth: date.toISOString().split("T")[0],
-  //   });
-  //   hideDatePicker();
-  // };
-  const handleConfirm = (date) => {
-    setFormData({
-      ...formData,
-      date_of_birth: date.toISOString().split("T")[0],
-    });
-    hideDatePicker();
-  };
-
-  //for qualification
-  const [qualificationData, setQualification] = useState("");
-  const [isDropdownOpenQualification, setDropdownOpenQualification] =
-    useState(false);
-  const [selectedOptionQualification, setSelectedOptionQualification] =
-    useState(null);
-  const [inputValueQualification, setInputValueQualification] = useState("");
-
-  //handle toggle for qualification
-  const toggleDropdownQualification = () => {
-    setDropdownOpenQualification(!isDropdownOpenQualification);
-  };
-  const handleSelectOptionQualification = (option) => {
-    setSelectedOptionQualification(option);
-    setInputValueQualification(option);
-    setQualification(option);
-    setDropdownOpenQualification(false);
-  };
-  const handleInputChangeQualification = (text) => {
-    setInputValueQualification(text);
-    setDropdownOpenQualification(null); // Clear selected option when user edits input
-  };
-  const validateForm = () => {
-    const errors = {};
-
-    // Validate each field
-    Object.keys(formData).forEach((key) => {
-      if (formData[key] && !formData[key].trim() && fieldTouched[key]) {
-        errors[key] = `${
-          key.charAt(0).toUpperCase() + key.slice(1)
-        } is required`;
-      }
-    });
-    console.log(">>", errors);
-    // setFormErrors(errors);
-    return Object.keys(errors).length === 0;
-  };
-  const [formData, setFormData] = useState({
-    name: "",
-    date_of_birth: "",
-    roll_number: "",
-    total_number: "",
-    percentage: "",
-    fatherName: "",
-    motherName: "",
-    mobile: "",
-    fatherMobile: "",
-    whatsapp_number: "",
-    address: "",
-    police_station: "",
-    pincode: "",
-    aadhar_number: "",
-    nationality: "",
-    religion: "",
-    district_id: "",
-    password: "",
-    referral_code: "",
-  });
-  const [fieldTouched, setFieldTouched] = useState({});
-  const handleSubmission = () => {
-    if (formData.name && formData.mobile) {
-    }
-    const formsData = new FormData();
     if (
-      formData.name &&
-      formData.mobile &&
-      // formData.pincode &&
-      // formData.police_station &&
-      formData.address &&
-      formData.whatsapp_number &&
-      formData.date_of_birth &&
-      email &&
-      inputValuegender
+      name.trim() === "" ||
+      mobile.trim() === "" ||
+      email.trim() === "" ||
+      guardianName.trim() === "" ||
+      whatsappNumber.trim() === "" ||
+      percentage10th.trim() === "" ||
+      stream.trim() === "" ||
+      percentage12th.trim() === "" ||
+      courseName.trim() === ""
     ) {
-      // formsData.append("name", formData.name);
-      // formsData.append("email", email);
-      // formsData.append("mobile", formData.mobile);
-      // formsData.append("date_of_birth", userDetails.date_of_birth);
-      // formsData.append("aadhar_number", formData.aadhar_number);
-      // formsData.append("gender", genderData);
-      // formsData.append("pincode", formData.pincode);
-      // formsData.append("police_station", formData.police_station);
-      // formsData.append("district_id", districtId);
-      // formsData.append("address", formData.address);
-      // formsData.append("whatsapp_number", formData.whatsapp_number);
-      // formsData.append("password", password);
-      // formsData.append("referral_code", formData.referral_code);
-      // formsData.append("nationality", formData.nationality);
-      // formsData.append("religion", formData.religion);
-      // formsData.append("block", blockId);
-      // formsData.append("class", inputValueclass);
-      // console.log("6565655", formsData);
-      // sendPostData("register", formsData)
-      //   .then((res) => {
-      //     if (res?.status) {
-      //       showToast("Registration Successfull");
-      //       console.log("11111111", res?.status);
-      //       navigation.navigate("Dashboard");
-      //     } else {
-      //       console.log("00", res);
-      //       console.log("888", formsData);
-      //     }
-      //   })
-      //   .catch((err) => {
-      //     console.log(err, "--err");
-      //   });
-      showToast("Submitted Successfully");
+      showToast("Please fill all fields");
+    } else if (!emailRegex.test(email)) {
+      showToast("Please enter a valid email address");
+    } else if (mobile.length !== 10 || !/^\d+$/.test(mobile)) {
+      showToast("Mobile number must be a 10-digit number");
     } else {
-      // console.log("Registration failed: Required fields are missing");
-      Alert.alert("Alert", "Please Fill up All Fields");
-    }
-  };
-  const handleInputChange = (key, value) => {
-    setFormData({ ...formData, [key]: value });
-  };
-  const handleInputBlur = (key) => {
-    setFieldTouched({ ...fieldTouched, [key]: true });
-    console.log("first", key);
-    validateForm();
-    setDropdownOpengender(false);
-  };
-  const handleEmailChange = (text) => {
-    setEmail(text);
-    if (text.trim()) {
-      setEmailError("");
-    }
-  };
-  const validateEmail = () => {
-    // Regular expression pattern to validate email format
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const formData = new FormData();
+      setLoading(true);
+      formData.append("name", name);
+      formData.append("email", email);
+      formData.append("mobile", mobile);
+      formData.append("guardian_name", guardianName);
+      formData.append("whatsapp_number", whatsappNumber);
+      formData.append("mp_percentage", percentage10th);
+      formData.append("hs_percentage", percentage12th);
+      formData.append("stream", stream);
+      formData.append("interest_course_name", courseName);
 
-    if (!email.trim()) {
-      setEmailError("Email is required");
-    } else if (!emailPattern.test(email)) {
-      setEmailError("Invalid email format");
-    } else {
-      setEmailError("");
+      postDataWithFormDataWithToken(
+        "/student/carrier-guidance",
+        formData,
+        userToken
+      )
+        .then((res) => {
+          setLoading(false);
+          showToast(res.message);
+          navigation.navigate("Dashboard");
+        })
+        .catch((err) => {
+          setLoading(false);
+          console.error(err);
+        });
     }
   };
 
@@ -223,38 +119,20 @@ const CareerGuidanceForm = ({ navigation }) => {
             <View style={styles.imageContainer}>
               <Image
                 style={styles.img}
-                source={require("../../assets/img/webinar.png")}
+                source={require("../../assets/splash.png")}
               />
             </View>
             <View style={{ width: "80%" }}>
-              <Text style={styles.profileText}>Online Course</Text>
-            </View>
-          </View>
-          <View style={styles.college_details}>
-            <View>
-              <Text style={styles.college_details_text}>College name</Text>
-              <TextInput
-                style={styles.college_details_input}
-                placeholderTextColor={"rgba(166, 166, 166, 1)"}
-                editable={false}
-              />
-            </View>
-            <View>
-              <Text style={styles.college_details_text}>Course name</Text>
-              <TextInput
-                style={styles.college_details_input}
-                placeholderTextColor={"rgba(166, 166, 166, 1)"}
-                editable={false}
-              />
+              <Text style={styles.profileText}>Career Councelling</Text>
             </View>
           </View>
           <View style={styles.personal_details}>
-            <View style={styles.heading}>
-              <Text style={styles.text}>Student Details</Text>
-            </View>
             <View style={styles.input_fields}>
               <View style={styles.fields_main}>
-                <Text style={styles.inputHeading}>Name</Text>
+                <View style={{ flexDirection: "row" }}>
+                  <Text style={styles.inputHeading}>Name</Text>
+                  <Text style={{ color: "red", fontSize: 18 }}> *</Text>
+                </View>
                 <View style={styles.input_box}>
                   <FontAwesome5
                     name="user"
@@ -263,94 +141,40 @@ const CareerGuidanceForm = ({ navigation }) => {
                   />
                   <TextInput
                     style={styles.input}
-                    placeholder="Name"
-                    onChangeText={(text) => handleInputChange("name", text)}
-                    onBlur={() => handleInputBlur("name")}
+                    placeholder="Enter your name"
                     placeholderTextColor={"rgba(166, 166, 166, 1)"}
+                    onChangeText={(text) => setName(text)}
+                    value={name}
                   />
                 </View>
-                {!formData.name && fieldTouched.name && (
-                  <Text style={{ color: "red" }}>Full Name is required</Text>
-                )}
               </View>
               <View style={styles.fields_main}>
-                <Text style={styles.inputHeading}>Date of Birth</Text>
+                <View style={{ flexDirection: "row" }}>
+                  <Text style={styles.inputHeading}>Mobile Number</Text>
+                  <Text style={{ color: "red", fontSize: 18 }}> *</Text>
+                </View>
                 <View style={styles.input_box}>
-                  <Fontisto
-                    name="date"
-                    size={14}
+                  <Feather
+                    name="phone-call"
+                    size={15}
                     color="rgba(0, 54, 126, 1)"
-                    onPress={showDatePicker}
                   />
                   <TextInput
                     style={styles.input}
-                    placeholder="Date of Birth"
+                    placeholder="Enter your mobile number"
                     placeholderTextColor={"rgba(166, 166, 166, 1)"}
-                    value={formData.date_of_birth}
-                    onChangeText={(text) =>
-                      handleInputChange("date_of_birth", text)
-                    }
-                    onFocus={showDatePicker} // Show date picker when input field is focused
-                    editable={true} // Make the input field editable
-                    onBlur={() => handleInputBlur("date_of_birth")}
+                    keyboardType="numeric"
+                    maxLength={10}
+                    onChangeText={(text) => setMobile(text)}
+                    value={mobile}
                   />
                 </View>
-                {!formData.date_of_birth && fieldTouched.date_of_birth && (
-                  <Text style={{ color: "red" }}>D.O.B is required</Text>
-                )}
-                <DateTimePickerModal
-                  isVisible={isDatePickerVisible}
-                  mode="date"
-                  onConfirm={handleConfirm}
-                  onCancel={hideDatePicker}
-                />
               </View>
-
               <View style={styles.fields_main}>
-                <Text style={styles.inputHeading}>Gender</Text>
-                <TouchableOpacity onPress={toggleDropdowngender}>
-                  <View style={styles.input_box}>
-                    <Image
-                      source={require("../../assets/icons/gender.png")}
-                      style={styles.iconImage}
-                    />
-                    <TextInput
-                      style={styles.input}
-                      placeholder="Choose Option"
-                      placeholderTextColor="rgba(166, 166, 166, 1)"
-                      value={inputValuegender}
-                      onChangeText={handleInputChangegender}
-                      onBlur={() => handleSelectOptiongender(inputValuegender)}
-                      editable={false} // Allow editing only when dropdown is closed
-                    />
-                    <AntDesign
-                      name="caretdown"
-                      style={styles.arrowdown}
-                      size={15}
-                      color="rgba(0, 54, 126, 1)"
-                    />
-                  </View>
-                </TouchableOpacity>
-                {isDropdownOpengender && (
-                  <View style={styles.dropdownContainer}>
-                    <TouchableOpacity
-                      style={styles.dropdownOption}
-                      onPress={() => handleSelectOptiongender("male")}
-                    >
-                      <Text>Male</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={styles.dropdownOption}
-                      onPress={() => handleSelectOptiongender("female")}
-                    >
-                      <Text>Female</Text>
-                    </TouchableOpacity>
-                  </View>
-                )}
-              </View>
-
-              <View style={styles.fields_main}>
-                <Text style={styles.inputHeading}>Email Id</Text>
+                <View style={{ flexDirection: "row" }}>
+                  <Text style={styles.inputHeading}>Email</Text>
+                  <Text style={{ color: "red", fontSize: 18 }}> *</Text>
+                </View>
                 <View style={styles.input_box}>
                   <Fontisto
                     name="email"
@@ -361,114 +185,36 @@ const CareerGuidanceForm = ({ navigation }) => {
                     style={styles.input}
                     placeholder="Enter your email"
                     placeholderTextColor={"rgba(166, 166, 166, 1)"}
+                    onChangeText={(text) => setEmail(text)}
                     value={email}
-                    onChangeText={handleEmailChange}
-                    onBlur={validateEmail}
                   />
                 </View>
-                {emailError ? (
-                  <Text style={{ color: "red" }}>{emailError}</Text>
-                ) : null}
               </View>
               <View style={styles.fields_main}>
-                <Text style={styles.inputHeading}>Mobile Number</Text>
+                <View style={{ flexDirection: "row" }}>
+                  <Text style={styles.inputHeading}>Gurdian Name</Text>
+                  <Text style={{ color: "red", fontSize: 18 }}> *</Text>
+                </View>
                 <View style={styles.input_box}>
-                  <Feather
-                    name="phone-call"
-                    size={15}
+                  <FontAwesome5
+                    name="user"
+                    size={14}
                     color="rgba(0, 54, 126, 1)"
                   />
                   <TextInput
                     style={styles.input}
-                    placeholder="Enter your Number"
+                    placeholder="Enter your gurdian name"
                     placeholderTextColor={"rgba(166, 166, 166, 1)"}
-                    value={formData.mobile}
-                    keyboardType="numeric"
-                    onChangeText={(text) => handleInputChange("mobile", text)}
-                    onBlur={() => handleInputBlur("mobile")}
-                    maxLength={10}
+                    onChangeText={(text) => setGuardianName(text)}
+                    value={guardianName}
                   />
                 </View>
-                {formData.mobile && formData.mobile.trim().length !== 10 && (
-                  <Text style={{ color: "red" }}>
-                    Mobile number must be 10 digits
-                  </Text>
-                )}
-                {!formData.mobile && fieldTouched.mobile && (
-                  <Text style={{ color: "red" }}>
-                    Mobile Number is required
-                  </Text>
-                )}
               </View>
-
               <View style={styles.fields_main}>
-                <Text style={styles.inputHeading}>Full Address</Text>
-                <View style={styles.input_box}>
-                  <Image
-                    source={require("../../assets/icons/home (1).png")}
-                    style={styles.iconImage}
-                  />
-                  <TextInput
-                    style={styles.input}
-                    placeholder="Enter your Address"
-                    placeholderTextColor={"rgba(166, 166, 166, 1)"}
-                    value={formData.address}
-                    onChangeText={(text) => handleInputChange("address", text)}
-                    onBlur={() => handleInputBlur("address")}
-                  />
+                <View style={{ flexDirection: "row" }}>
+                  <Text style={styles.inputHeading}>WhatsApp Number</Text>
+                  <Text style={{ color: "red", fontSize: 18 }}> *</Text>
                 </View>
-                {!formData.address && fieldTouched.address && (
-                  <Text style={{ color: "red" }}>
-                    Please enter Your Address{" "}
-                  </Text>
-                )}
-              </View>
-              <View style={styles.fields_main}>
-                <Text style={styles.inputHeading}>Qualification</Text>
-                <TouchableOpacity onPress={toggleDropdownQualification}>
-                  <View style={styles.input_box}>
-                    <Image
-                      source={require("../../assets/icons/qualification.png")}
-                      style={styles.iconImage}
-                    />
-                    <TextInput
-                      style={styles.input}
-                      placeholder="Select"
-                      placeholderTextColor={"rgba(166, 166, 166, 1)"}
-                      value={inputValueQualification}
-                      onChangeText={handleInputChangeQualification}
-                      onBlur={() =>
-                        handleSelectOptionQualification(inputValueQualification)
-                      }
-                      editable={false} // Allow editing only when dropdown is closed
-                    />
-                    <AntDesign
-                      name="caretdown"
-                      style={styles.arrowdown}
-                      size={15}
-                      color="rgba(0, 54, 126, 1)"
-                    />
-                  </View>
-                </TouchableOpacity>
-                {isDropdownOpenQualification && (
-                  <View style={styles.dropdownContainer}>
-                    <TouchableOpacity
-                      style={styles.dropdownOption}
-                      onPress={() => handleSelectOptionQualification("10th")}
-                    >
-                      <Text>10th</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={styles.dropdownOption}
-                      onPress={() => handleSelectOptionQualification("H.S")}
-                    >
-                      <Text>H.S</Text>
-                    </TouchableOpacity>
-                  </View>
-                )}
-              </View>
-              <View style={styles.fields_main}>
-                <Text style={styles.inputHeading}>Whatsapp Number</Text>
                 <View style={styles.input_box}>
                   <FontAwesome5
                     name="whatsapp"
@@ -477,39 +223,118 @@ const CareerGuidanceForm = ({ navigation }) => {
                   />
                   <TextInput
                     style={styles.input}
-                    placeholder="Phone"
-                    value={formData.whatsapp_number}
+                    placeholder="Enter your whatsapp number"
                     keyboardType="numeric"
-                    onChangeText={(text) =>
-                      handleInputChange("whatsapp_number", text)
-                    }
-                    onBlur={() => handleInputBlur("whatsapp_number")}
                     maxLength={10}
                     placeholderTextColor={"rgba(166, 166, 166, 1)"}
+                    onChangeText={(text) => setWhatsappNumber(text)}
+                    value={whatsappNumber}
                   />
                 </View>
-                {formData.whatsapp_number &&
-                  formData.whatsapp_number.trim().length !== 10 && (
-                    <Text style={{ color: "red" }}>
-                      Whatsapp number must be 10 digits
-                    </Text>
-                  )}
-                {!formData.whatsapp_number && fieldTouched.whatsapp_number && (
-                  <Text style={{ color: "red" }}>
-                    Whatsapp Number is required
+              </View>
+              <View style={styles.fields_main}>
+                <View style={{ flexDirection: "row" }}>
+                  <Text style={styles.inputHeading}>
+                    Percentage (10th Class)
                   </Text>
+                  <Text style={{ color: "red", fontSize: 18 }}> *</Text>
+                </View>
+                <View style={styles.input_box}>
+                  <Image
+                    source={require("../../assets/icons/discount.png")}
+                    style={styles.iconImage}
+                  />
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Percentage"
+                    placeholderTextColor={"rgba(166, 166, 166, 1)"}
+                    onChangeText={(text) => setPercentage10th(text)}
+                    value={percentage10th}
+                  />
+                </View>
+              </View>
+              <View style={styles.fields_main}>
+                <Text style={styles.inputHeading}>Stream</Text>
+                <TouchableOpacity onPress={toggleDropdownStream}>
+                  <View style={styles.input_box}>
+                    <Image
+                      source={require("../../assets/icons/school.png")}
+                      style={styles.iconImage}
+                    />
+                    <Text style={[styles.input, { paddingVertical: 5 }]}>
+                      {selectedOptionStream || "Choose option"}
+                    </Text>
+                    <AntDesign
+                      name="caretdown"
+                      style={styles.arrowdown}
+                      size={15}
+                      color="rgba(0, 54, 126, 1)"
+                    />
+                  </View>
+                </TouchableOpacity>
+                {isStreamDropDown && (
+                  <View style={styles.dropdownContainer}>
+                    {["Science", "Commerce", "Arts"].map((option) => (
+                      <TouchableOpacity
+                        key={option}
+                        style={styles.dropdownOption}
+                        onPress={() => handleSelectOptionStream(option)}
+                      >
+                        <Text>{option}</Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
                 )}
+              </View>
+
+              <View style={styles.fields_main}>
+                <Text style={styles.inputHeading}>Percentage Marks (10+2)</Text>
+                <View style={styles.input_box}>
+                  <Image
+                    source={require("../../assets/icons/discount.png")}
+                    style={styles.iconImage}
+                  />
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Percentage"
+                    placeholderTextColor={"rgba(166, 166, 166, 1)"}
+                    onChangeText={(text) => setPercentage12th(text)}
+                    value={percentage12th}
+                  />
+                </View>
+              </View>
+              <View style={styles.fields_main}>
+                <Text style={styles.inputHeading}>
+                  Interest for Course Name
+                </Text>
+                <View style={styles.input_box}>
+                  <Image
+                    source={require("../../assets/icons/school.png")}
+                    style={styles.iconImage}
+                  />
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Course name"
+                    placeholderTextColor={"rgba(166, 166, 166, 1)"}
+                    onChangeText={(text) => setCourseName(text)}
+                    value={courseName}
+                  />
+                </View>
               </View>
             </View>
             <View style={styles.submitButton}>
-              <TouchableOpacity onPress={handleSubmission}>
+              <TouchableOpacity onPress={handleSubmit}>
                 <LinearGradient
                   colors={["rgba(3, 53, 125, 1)", "rgba(5, 105, 250, 1)"]}
                   start={{ x: 0, y: 0.5 }}
                   end={{ x: 1, y: 0.5 }}
                   style={styles.inputbox_submit}
                 >
-                  <Text style={styles.submitText}>Submit</Text>
+                  {loading ? (
+                    <ActivityIndicator size={"small"} color={"white"} />
+                  ) : (
+                    <Text style={styles.submitText}>Submit</Text>
+                  )}
                 </LinearGradient>
               </TouchableOpacity>
             </View>
@@ -604,10 +429,12 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   input: {
-    paddingRight: "35%",
     position: "relative",
     color: "black",
-    width: "80%",
+    width: "90%",
+  },
+  errorText: {
+    color: "red",
   },
   iconImage: {
     height: 17,
