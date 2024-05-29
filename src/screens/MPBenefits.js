@@ -26,8 +26,10 @@ const MPBenefits = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const [activeServices, setActiveServices] = useState([]);
   const [serviceId, setServiceId] = useState([]);
-  // api implementation
   const [cardData, setCardData] = useState([]);
+
+  console.log(serviceId, "array of serviceId");
+  console.log(activeServices, "array of active services");
 
   useEffect(() => {
     const params = {
@@ -57,6 +59,9 @@ const MPBenefits = ({ navigation }) => {
         console.log(err);
       });
   }, []);
+  const isServiceActive = (serviceId) => {
+    return activeServices.some((service) => service !== serviceId);
+  };
   const truncateMessage = (message, maxLength = 25) => {
     if (message.length > maxLength) {
       return message.substring(0, maxLength) + "...";
@@ -117,6 +122,7 @@ const MPBenefits = ({ navigation }) => {
               )}
 
               {cardData.map((item, index) => {
+                const isActive = isServiceActive(item.id);
                 return (
                   <TouchableOpacity
                     style={styles.card}
@@ -128,6 +134,17 @@ const MPBenefits = ({ navigation }) => {
                       })
                     }
                   >
+                    <View style={{ position: "absolute", top: 10, right: 5 }}>
+                      {isActive && (
+                        <Image
+                          source={require("../../assets/img/lock_frame.png")}
+                          style={{
+                            height: 20,
+                            width: 20,
+                          }}
+                        />
+                      )}
+                    </View>
                     <View style={styles.imgContainer}>
                       <Image
                         source={{
@@ -136,6 +153,7 @@ const MPBenefits = ({ navigation }) => {
                         style={styles.image}
                       />
                     </View>
+                    {/* {isActive && <Text style={styles.lockedText}>LO</Text>} */}
                     <Text style={styles.textStyle}>
                       {truncateMessage(item.service_name)}
                     </Text>
