@@ -1,38 +1,54 @@
-import { View, Text, SafeAreaView, ScrollView, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  SafeAreaView,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import Header from "../../components/Header";
 import { Image } from "react-native";
-import { getRequestWithParamsTokens, getrequestwithtoken } from "../../Helper/Helper";
+import {
+  getRequestWithParamsTokens,
+  getrequestwithtoken,
+} from "../../Helper/Helper";
 import { AuthContext } from "../../Utils/context/AuthContext";
 import { ActivityIndicator } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 
-const ApplicationHistory = ({navigation}) => {
-    const [limit, setlimit] = useState(1);
+const ApplicationHistory = ({ navigation }) => {
+  const [limit, setlimit] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
   const { userToken } = useContext(AuthContext);
   const [ApplicationHistory, setApplicationHistory] = useState([]);
-  const [pageloading, setpageloading] = useState(true)
+  const [pageloading, setpageloading] = useState(true);
   const [getdatalength, setgetdatalength] = useState([]);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-based
     const year = date.getFullYear();
     return `${day}.${month}.${year}`;
   };
   useEffect(() => {
     const params = { page: limit };
-    getRequestWithParamsTokens("master/order-history", userToken ,params).then((res) => {
-      console.log(res?.status, "dsdjkpspospojsvsjpogip[rif[gi[ir[iksois[");
-      setgetdatalength(res?.data?.length)
-       setApplicationHistory((prev)=>[...prev ,...res?.data]);
-      setpageloading(false)
-    });
-  }, [userToken ,limit]);
+    getRequestWithParamsTokens("master/order-history", userToken, params).then(
+      (res) => {
+        setgetdatalength(res?.data?.total_count);
+        console.log(
+          "))))))))))))))))))))))))##########################",
+          res?.data?.total_count
+        );
+        setApplicationHistory((prev) => [...prev, ...res?.data?.items]);
+        setIsLoading(false);
+        setpageloading(false);
+      }
+    );
+  }, [userToken, limit]);
 
-console.log("shdueud",ApplicationHistory)
+  console.log("shdueud", ApplicationHistory);
   if (pageloading) {
     return (
       <View>
@@ -40,31 +56,39 @@ console.log("shdueud",ApplicationHistory)
           title="Application History"
           navigateTo={() => navigation.goBack("Home")}
         />
-        <View style={{justifyContent:'center' ,alignItems:'center'  ,height:'90%'}}>
-        <ActivityIndicator
-          size="large"
-          color="#00367E"
-          style={{justifyContent:'center',alignSelf:'center'}}
-        />
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            height: "90%",
+          }}
+        >
+          <ActivityIndicator
+            size="large"
+            color="#00367E"
+            style={{ justifyContent: "center", alignSelf: "center" }}
+          />
         </View>
-      
       </View>
     );
   }
 
   const loadmore = () => {
+    setIsLoading(true);
     console.log("Loadmore is clicked");
     setlimit(limit + 1);
     console.log(limit);
     // fetchUserData("master/organization-course", id);
   };
   return (
-    <SafeAreaView >
-      <Header title="Application History" navigateTo={() => navigation.goBack("Home")} />
-      
+    <SafeAreaView>
+      <Header
+        title="Application History"
+        navigateTo={() => navigation.goBack("Home")}
+      />
+
       {/* <Header title="Application History" /> */}
       <ScrollView style={styles.scrollView}>
-      
         <View style={styles.reactangleCardConatainer}>
           {/* Data from Api  */}
           {ApplicationHistory?.length > 0 &&
@@ -77,10 +101,10 @@ console.log("shdueud",ApplicationHistory)
                       source={require("../../assets/img/ApplicationStatusSucess.png")}
                     />
                     <View style={{ justifyContent: "center", width: "80%" }}>
-                      <Text style={styles.text}>
-                        {item?.service_name}
+                      <Text style={styles.text}>{item?.service_name}</Text>
+                      <Text style={styles.dateText}>
+                        {formatDate(item?.created_at)}
                       </Text>
-                      <Text style={styles.dateText}>{formatDate(item?.created_at)}</Text>
                     </View>
                   </View>
                 </View>
@@ -98,11 +122,14 @@ console.log("shdueud",ApplicationHistory)
                     />
                     <View style={{ justifyContent: "center", width: "80%" }}>
                       <Text style={styles.text}>{item?.service_name}</Text>
-                      <Text style={styles.dateText}>{formatDate(item?.created_at)}</Text>
+                      <Text style={styles.dateText}>
+                        {formatDate(item?.created_at)}
+                      </Text>
                     </View>
                   </View>
                 </View>
-              ) : item?.status === "rejected" && item?.cancel_reason ===null ? (
+              ) : item?.status === "rejected" &&
+                item?.cancel_reason === null ? (
                 <View
                   style={[
                     styles.reactangleCard,
@@ -116,7 +143,9 @@ console.log("shdueud",ApplicationHistory)
                     />
                     <View style={{ justifyContent: "center", width: "80%" }}>
                       <Text style={styles.text}>{item?.service_name}</Text>
-                      <Text style={styles.dateText}>{formatDate(item?.created_at)}</Text>
+                      <Text style={styles.dateText}>
+                        {formatDate(item?.created_at)}
+                      </Text>
                     </View>
                   </View>
                 </View>
@@ -135,10 +164,10 @@ console.log("shdueud",ApplicationHistory)
                     <View
                       style={{ justifyContent: "center", width: "80%", gap: 5 }}
                     >
-                      <Text style={styles.text}>
-                      {item?.service_name}
+                      <Text style={styles.text}>{item?.service_name}</Text>
+                      <Text style={styles.dateText}>
+                        {formatDate(item?.created_at)}
                       </Text>
-                      <Text style={styles.dateText}>{formatDate(item?.created_at)}</Text>
                       <View
                         style={{
                           width: "100%",
@@ -161,7 +190,7 @@ console.log("shdueud",ApplicationHistory)
                             Reason
                           </Text>
                           <Text style={{ fontWeight: "400", fontSize: 10 }}>
-                          {item?.cancel_reason}
+                            {item?.cancel_reason}
                           </Text>
                         </View>
                       </View>
@@ -270,43 +299,52 @@ console.log("shdueud",ApplicationHistory)
             </View>
           </View> */}
         </View>
-<View >
-    {getdatalength === 10 && (
-        <TouchableOpacity style={{justifyContent:'center',alignItems:'center' ,height:'auto'}} onPress={loadmore}>
-            
-            <View
+        <View>
+          {getdatalength > ApplicationHistory?.length && (
+            <TouchableOpacity
               style={{
-                flexDirection: "row",
+                justifyContent: "center",
                 alignItems: "center",
-                gap: 4,
-                borderRadius: 8,
-                height: 42,
-                width:120,
-                backgroundColor: "#FFFFFF",
-                marginBottom: 30,
-                paddingHorizontal: 10,
-                borderWidth: 1, // Specify border width
-                borderColor: "#DDDDDD",
+                height: "auto",
               }}
+              onPress={loadmore}
             >
-              <Text
+              <View
                 style={{
-                  color: "#435354",
-                  fontSize: 14,
-                  fontWeight: "500",
-                  lineHeight: 17,
+                  flexDirection: "row",
+                  alignItems: "center",
+                  gap: 4,
+                  borderRadius: 8,
+                  height: 42,
+                  width: 120,
+                  backgroundColor: "#FFFFFF",
+                  marginBottom: 30,
+                  paddingHorizontal: 10,
+                  borderWidth: 1, // Specify border width
+                  borderColor: "#DDDDDD",
                 }}
               >
-                Load More
-              </Text>
-              <AntDesign name="down" size={20} color="#435354" />
-            </View>
-        
-        </TouchableOpacity>
-    ) }
-
-</View>
-        
+                {isLoading ? (
+                  <ActivityIndicator size="small" color="grey" style={{alignSelf:"center" ,width:'100%'}} />
+                ) : (
+                  <>
+                    <Text
+                      style={{
+                        color: "#435354",
+                        fontSize: 14,
+                        fontWeight: "500",
+                        lineHeight: 17,
+                      }}
+                    >
+                      Load More
+                    </Text>
+                    <AntDesign name="down" size={20} color="#435354" />
+                  </>
+                )}
+              </View>
+            </TouchableOpacity>
+          )}
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -314,9 +352,9 @@ console.log("shdueud",ApplicationHistory)
 
 export default ApplicationHistory;
 const styles = StyleSheet.create({
-    scrollView: {
+  scrollView: {
     // top:53
-    marginBottom:50
+    marginBottom: 50,
   },
 
   reactangleCard: {
@@ -333,8 +371,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 15,
     marginVertical: 16,
-    
-    
   },
   innerCard: {
     flexDirection: "row",

@@ -619,6 +619,7 @@ console.log("11111111111111111====",profileAllData)
       .then((res) => {
         setUpdateLoading(false);
         showToast(res?.message);
+        setprofileAllData(profileData?.gender)
         navigation.navigate("Dashboard");
       })
       .catch((err) => {
@@ -1028,8 +1029,8 @@ console.log("11111111111111111====",profileAllData)
                         placeholder="Select"
                         placeholderTextColor="rgba(166, 166, 166, 1)"
                         value={
-                          profileAllData?.charAt(0).toUpperCase() +
-                          profileAllData?.slice(1)
+                          profileData?.gender?.charAt(0).toUpperCase() +
+                          profileData?.gender?.slice(1)
                         }
                         editable={false}
                       />
@@ -1047,8 +1048,8 @@ console.log("11111111111111111====",profileAllData)
                     <TouchableOpacity
                       style={styles.dropdownOption}
                       onPress={() => {
-                        setProfileData({ ...profileData, profileAllData: "Male" });
-                        setprofileAllData("male")
+                        setProfileData({ ...profileData, gender: "male" });
+
                         toggleDropdowngender(); // Close the dropdown after selection
                       }}
                     >
@@ -1057,8 +1058,8 @@ console.log("11111111111111111====",profileAllData)
                     <TouchableOpacity
                       style={styles.dropdownOption}
                       onPress={() => {
-                        setProfileData({ ...profileData, profileAllData: "Female" });
-                        setprofileAllData("female")
+                        setProfileData({ ...profileData, gender: "female" });
+                       
                         toggleDropdowngender(); // Close the dropdown after selection
                       }}
                     >
