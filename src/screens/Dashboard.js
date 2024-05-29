@@ -723,7 +723,6 @@ const Dashboard = ({ navigation }) => {
                         }}
                       >
                         {carddata[index]?.services.map((cd) => {
-                          console.log(cd.id, "checkingggggggggggggggg");
                           const isActive = isServiceActive(cd.id);
                           return (
                             <>
