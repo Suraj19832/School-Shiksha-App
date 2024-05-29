@@ -33,7 +33,8 @@ import {
 const Dashboard = ({ navigation }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { userToken, setuserToken, setmyLoading,profileAllData } = useContext(AuthContext);
+  const { userToken, setuserToken, setmyLoading, profileAllData } =
+    useContext(AuthContext);
   const menuWidth = Dimensions.get("window").width * 0.8;
 
   const menuTranslateX = useRef(new Animated.Value(-menuWidth)).current;
@@ -247,24 +248,29 @@ const Dashboard = ({ navigation }) => {
     //     setname(res?.data?.name);
     //     setphone(res?.data?.mobile);
     //     setgender(res?.data?.gender);
-    //     setplan(res?.data?.subscription?.plan_name); 
+    //     setplan(res?.data?.subscription?.plan_name);
     //   }
     //   console.log(gender)
-    // });   
-
-  }, []);  
+    // });
+  }, []);
+  const [activeServices, setActiveServices] = useState([]);
   useEffect(() => {
-console.log("screen is redenderrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr")
-getrequestwithtoken("student/profile", userToken).then((res) => { 
-  if (res?.status) {
-    setname(res?.data?.name);
-    setphone(res?.data?.mobile);
-    setgender(res?.data?.gender);
-    setplan(res?.data?.subscription?.plan_name); 
-  }
-}); 
-  }, [gender]) 
-console.log("66666",gender)
+    getrequestwithtoken("student/profile", userToken).then((res) => {
+      console.log(res.data.subscription.plan_services, "lolololololloloo");
+      if (res?.status) {
+        setname(res?.data?.name);
+        setphone(res?.data?.mobile);
+        setgender(res?.data?.gender);
+        setplan(res?.data?.subscription?.plan_name);
+        setActiveServices(res.data.subscription.plan_services);
+      }
+    });
+  }, [gender]);
+  console.log("66666", gender);
+
+  const isServiceActive = (serviceId) => {
+    return activeServices.some((service) => service !== serviceId);
+  };
 
   const colorMap = {
     "Secondary Pass Student's Benefits": "#C83000",
@@ -292,12 +298,21 @@ console.log("66666",gender)
     Linking.openURL(whatsappUrl);
   };
   return (
-    
     <View style={styles.container}>
-        {isMenuOpen && (
-  <View style={{backgroundColor:'#000000B2' ,position:'absolute',width:"100%",height:"100%" ,zIndex:10 ,top:0,bottom:0}}></View>
-        )}
-    
+      {isMenuOpen && (
+        <View
+          style={{
+            backgroundColor: "#000000B2",
+            position: "absolute",
+            width: "100%",
+            height: "100%",
+            zIndex: 10,
+            top: 0,
+            bottom: 0,
+          }}
+        ></View>
+      )}
+
       <StatusBar
         animated={true}
         backgroundColor={statusBarColor}
@@ -348,12 +363,27 @@ console.log("66666",gender)
       </View>
 
       {isMenuOpen && (
-        
         <Animated.View
           style={[styles.menu, { transform: [{ translateX: menuTranslateX }] }]}
         >
-          <TouchableOpacity onPress={closeMenu} style={[styles.closeIcon ,{height:'100%',width:'19.6%',alignItems:'center',right:0}]}>
-            <Ionicons name="close" size={35} color="white" style={{justifyContent:'flex-end',paddingRight:10}}/>
+          <TouchableOpacity
+            onPress={closeMenu}
+            style={[
+              styles.closeIcon,
+              {
+                height: "100%",
+                width: "19.6%",
+                alignItems: "center",
+                right: 0,
+              },
+            ]}
+          >
+            <Ionicons
+              name="close"
+              size={35}
+              color="white"
+              style={{ justifyContent: "flex-end", paddingRight: 10 }}
+            />
           </TouchableOpacity>
           <View style={styles.menuOptionContainer}>
             <View>
@@ -381,7 +411,7 @@ console.log("66666",gender)
                       marginBottom: 12,
                       width: 60,
                       height: 60,
-                      resizeMode: "cover", 
+                      resizeMode: "cover",
                     }}
                     source={require("../../assets/img/human (1).png")}
                   />
@@ -659,7 +689,6 @@ console.log("66666",gender)
       )}
       <View style={styles.hairline} />
       <ScrollView>
-        
         <View style={{ paddingTop: 18, position: "relative" }}>
           <FlatList
             ref={flatListRef}
@@ -677,7 +706,7 @@ console.log("66666",gender)
           {/* new start  */}
           <View>
             {/* data from api  */}
-            <View style={{paddingBottom:20}}>
+            <View style={{ paddingBottom: 20 }}>
               {carddata.map((item, index) => {
                 return (
                   <View key={index}>
@@ -694,8 +723,8 @@ console.log("66666",gender)
                         }}
                       >
                         {carddata[index]?.services.map((cd) => {
-                          // const navigateToPage =
-                          //   naviagteToServices[cd.service_name];
+                          console.log(cd.id, "checkingggggggggggggggg");
+                          const isActive = isServiceActive(cd.id);
                           return (
                             <>
                               <TouchableOpacity
@@ -707,11 +736,23 @@ console.log("66666",gender)
                                   })
                                 }
                               >
-                                {cards[0].status === "inActive" && (
-                                  <View style={styles.lockContainer}>
-                                    <Fontisto name="locked" />
-                                  </View>
-                                )}
+                                <View
+                                  style={{
+                                    position: "absolute",
+                                    top: 10,
+                                    right: 5,
+                                  }}
+                                >
+                                  {isActive && (
+                                    <Image
+                                      source={require("../../assets/img/lock_frame.png")}
+                                      style={{
+                                        height: 20,
+                                        width: 20,
+                                      }}
+                                    />
+                                  )}
+                                </View>
                                 <View style={styles.imgContainer}>
                                   <Image
                                     style={[
@@ -719,7 +760,6 @@ console.log("66666",gender)
                                       { height: 45, width: 45 },
                                     ]}
                                     source={{ uri: cd.image }}
-                                    // resizeMode="contain"
                                   />
                                 </View>
                                 <Text style={styles.textStyle}>
