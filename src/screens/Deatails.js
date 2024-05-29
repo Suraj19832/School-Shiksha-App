@@ -138,7 +138,7 @@ const Details = ({ navigation }) => {
             />
           ))}
           <Animated.View
-            style={[styles.placeholder, { opacity, height: "45%" }]}
+            style={[styles.placeholder, { opacity, height: "45%"  ,width:'80%' ,borderRadius:20 ,alignSelf:'center'}]}
           />
         </View>
       </>
