@@ -60,7 +60,19 @@ const MPBenefits = ({ navigation }) => {
       });
   }, []);
   const isServiceActive = (serviceId) => {
-    return activeServices.some((service) => service !== serviceId);
+    return activeServices.includes(serviceId.toString());
+  };
+
+  const handleNavigate = (item) => {
+    const isActive = isServiceActive(item.id);
+    if (isActive) {
+      navigation.navigate("freeCollege", {
+        id: item.id,
+        heading: item.service_name,
+      });
+    } else {
+      navigation.navigate("membershipPlan");
+    }
   };
   const truncateMessage = (message, maxLength = 25) => {
     if (message.length > maxLength) {
@@ -122,20 +134,16 @@ const MPBenefits = ({ navigation }) => {
               )}
 
               {cardData.map((item, index) => {
-                const isActive = isServiceActive(item.id);
+                const isActive = isServiceActive(item.id.toString());
+                console.log(isActive);
                 return (
                   <TouchableOpacity
                     style={styles.card}
                     key={index}
-                    onPress={() =>
-                      navigation.navigate("freeCollege", {
-                        id: item.id,
-                        heading: item.service_name,
-                      })
-                    }
+                    onPress={() => handleNavigate(item)}
                   >
                     <View style={{ position: "absolute", top: 10, right: 5 }}>
-                      {isActive && (
+                      {!isActive && (
                         <Image
                           source={require("../../assets/img/lock_frame.png")}
                           style={{
