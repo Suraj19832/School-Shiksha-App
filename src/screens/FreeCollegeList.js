@@ -12,6 +12,7 @@ import {
   FlatList,
   ActivityIndicator,
   Linking,
+  Animated,
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import DropDownPicker from "react-native-dropdown-picker";
@@ -271,6 +272,61 @@ const FreeCollegeList = ({ navigation }) => {
     console.log(limit);
     // fetchUserData("master/organization-course", id);
   };
+
+  const CardSkeleton = () => {
+
+    const opacity = useRef(new Animated.Value(0.3)).current;
+  
+    useEffect(() => {
+        Animated.loop(
+            Animated.sequence([
+                Animated.timing(opacity, {
+                    toValue: 1,
+                    duration: 800,
+                    useNativeDriver: true,
+                }),
+                Animated.timing(opacity, {
+                    toValue: 0.3,
+                    duration: 800,
+                    useNativeDriver: true,
+                }),
+            ])
+        ).start();
+    }, [opacity]);
+  
+    return (
+      <>
+          <Header title="Payment History" navigateTo={navigation.goBack} />
+        <View style={styles.container12}>
+            {[...Array(11)].map((_, index) => (
+                <Animated.View key={index} style={[styles.placeholder, { opacity }]} />
+            ))}
+        </View>
+      </>
+  
+    );
+  };
+
+  if (isLoading) {
+    return (
+      // <View>
+      //   <Header
+      //     title="Payment History"
+      //     navigateTo={() => navigation.goBack("Home")}
+      //   />
+      //   <View style={{justifyContent:'center' ,alignItems:'center'  ,height:'90%'}}>
+      //   <ActivityIndicator
+      //     size="large"
+      //     color="#00367E"
+      //     style={{justifyContent:'center',alignSelf:'center'}}
+      //   />
+      //   </View>
+      
+      // </View>
+      <CardSkeleton/>
+    );
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <Header title={`${heading} List`} navigateTo={navigation.goBack} />
@@ -640,9 +696,7 @@ const FreeCollegeList = ({ navigation }) => {
             )
           })}
           )} */}
-          {isLoading ? (
-            <ActivityIndicator size="large" color="black" />
-          ) : (
+          {
             FreeCollegeList.map((value) => {
               console.log("@@2222222222222222222", value?.whatsapp_number);
               return (
@@ -878,7 +932,7 @@ const FreeCollegeList = ({ navigation }) => {
                 </View>
               );
             })
-          )}
+          }
 
           {/* 1st college  */}
           {/* <View style={styles.listCart}>
@@ -1552,4 +1606,17 @@ const styles = StyleSheet.create({
     height: 162,
     width: 360,
   },
+  container12: {
+    backgroundColor: '#F6F6F6',
+    borderRadius: 13,
+    padding: 16,
+    marginBottom: 16,
+    height:'80%'
+},
+placeholder: {
+    backgroundColor: '#ccc',
+    height: '15%',
+    borderRadius: 4,
+    marginBottom: 8,
+},
 });
