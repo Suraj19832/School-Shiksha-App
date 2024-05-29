@@ -269,7 +269,19 @@ const Dashboard = ({ navigation }) => {
   console.log("66666", gender);
 
   const isServiceActive = (serviceId) => {
-    return activeServices.some((service) => service !== serviceId);
+    return activeServices.includes(serviceId.toString());
+  };
+
+  const handleNavigate = (item) => {
+    const isActive = isServiceActive(item.id);
+    if (isActive) {
+      navigation.navigate("freeCollege", {
+        id: item.id,
+        heading: item.service_name,
+      });
+    } else {
+      navigation.navigate("membershipPlan");
+    }
   };
 
   const colorMap = {
@@ -723,17 +735,18 @@ const Dashboard = ({ navigation }) => {
                         }}
                       >
                         {carddata[index]?.services.map((cd) => {
-                          const isActive = isServiceActive(cd.id);
+                          const isActive = isServiceActive(cd.id.toString());
                           return (
                             <>
                               <TouchableOpacity
                                 style={styles.card}
-                                onPress={() =>
-                                  navigation.navigate("freeCollege", {
-                                    id: cd?.id,
-                                    heading: cd?.service_name,
-                                  })
-                                }
+                                onPress={() => handleNavigate(cd)}
+                                // onPress={() =>
+                                //   navigation.navigate("freeCollege", {
+                                //     id: cd?.id,
+                                //     heading: cd?.service_name,
+                                //   })
+                                // }
                               >
                                 <View
                                   style={{
@@ -742,7 +755,7 @@ const Dashboard = ({ navigation }) => {
                                     right: 5,
                                   }}
                                 >
-                                  {isActive && (
+                                  {!isActive && (
                                     <Image
                                       source={require("../../assets/img/lock_frame.png")}
                                       style={{

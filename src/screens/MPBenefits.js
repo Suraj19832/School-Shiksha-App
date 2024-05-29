@@ -168,7 +168,7 @@ const MPBenefits = ({ navigation }) => {
                   </TouchableOpacity>
                 );
               })}
-              {sortheading !== "other" && (
+              {/* {sortheading !== "other" && (
                 <TouchableOpacity
                   style={styles.card}
                   onPress={() =>
@@ -185,7 +185,7 @@ const MPBenefits = ({ navigation }) => {
                   </View>
                   <Text style={styles.textStyle}>Exam Enquiry</Text>
                 </TouchableOpacity>
-              )}
+              )} */}
             </View>
           </View>
         </View>
