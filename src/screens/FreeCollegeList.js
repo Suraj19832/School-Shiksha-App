@@ -39,6 +39,8 @@ const FreeCollegeList = ({ navigation }) => {
   const [open, setOpen] = useState(false);
   const [limit, setlimit] = useState(10);
   const [isLoading, setisLoading] = useState(true);
+  const [isLoadingpage, setisLoadingpage] = useState(true);
+  const [isLoadingcard, setisLoadingcard] = useState(true);
   const items = [
     { label: "Option 1", value: "option1" },
     { label: "Option 2", value: "option2" },
@@ -131,7 +133,7 @@ const FreeCollegeList = ({ navigation }) => {
         // const organizationIds = res.data.map((item) => item.organization_id); // Extract all organization_ids
         // setorganizationId(organizationIds);
         // console.log("shschcudhcuwshfciuwyhiufeiufyiufiui",organizationIds)
-        setisLoading(false);
+        // setisLoadingpage(false);
       });
 
       // console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<",userData,params); // Handle or process the fetched user data here
@@ -175,7 +177,7 @@ const FreeCollegeList = ({ navigation }) => {
         // const organizationIds = res.data.map((item) => item.organization_id); // Extract all organization_ids
         // setorganizationId(organizationIds);
         // console.log("shschcudhcuwshfciuwyhiufeiufyiufiui",organizationIds)
-        setisLoading(false);
+        setisLoadingcard(false);
       });
 
       // console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<",userData,params); // Handle or process the fetched user data here
@@ -194,6 +196,7 @@ const FreeCollegeList = ({ navigation }) => {
     GetfetchDataWithParams("master/service-banner", params)
       .then((res) => {
         setBannerData(res.data);
+        setisLoadingpage(false)
       })
       .catch((err) => {
         console.log(err);
@@ -296,18 +299,20 @@ const FreeCollegeList = ({ navigation }) => {
   
     return (
       <>
-          <Header title="Payment History" navigateTo={navigation.goBack} />
+          <Header title={`${heading} List`} navigateTo={navigation.goBack} />
         <View style={styles.container12}>
-            {[...Array(11)].map((_, index) => (
-                <Animated.View key={index} style={[styles.placeholder, { opacity }]} />
+            {[...Array(1)].map((_, index) => (
+                <Animated.View key={index} style={[styles.placeholder, { opacity  ,height:'25%'}]} />
             ))}
+            <Animated.View style={[styles.placeholder, { opacity }]} />
+            <Animated.View style={[styles.placeholder, { opacity ,height:'45%' }]} />
         </View>
       </>
   
     );
   };
 
-  if (isLoading) {
+  if (isLoadingpage || isLoadingcard) {
     return (
       // <View>
       //   <Header
@@ -1611,11 +1616,13 @@ const styles = StyleSheet.create({
     borderRadius: 13,
     padding: 16,
     marginBottom: 16,
-    height:'80%'
+    height:'100%',
+    width:'100%',
 },
 placeholder: {
     backgroundColor: '#ccc',
-    height: '15%',
+    height: '20%',
+    width:'100%',
     borderRadius: 4,
     marginBottom: 8,
 },
