@@ -1,16 +1,19 @@
-import { View, Text, SafeAreaView, ScrollView } from "react-native";
+import { View, Text, SafeAreaView, ScrollView, TouchableOpacity } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import Header from "../../components/Header";
 import { Image } from "react-native";
-import { getrequestwithtoken } from "../../Helper/Helper";
+import { getRequestWithParamsTokens, getrequestwithtoken } from "../../Helper/Helper";
 import { AuthContext } from "../../Utils/context/AuthContext";
 import { ActivityIndicator } from "react-native";
+import { AntDesign } from "@expo/vector-icons";
 
 const ApplicationHistory = ({navigation}) => {
+    const [limit, setlimit] = useState(1);
   const { userToken } = useContext(AuthContext);
-  const [ApplicationHistory, setApplicationHistory] = useState(null);
+  const [ApplicationHistory, setApplicationHistory] = useState([]);
   const [pageloading, setpageloading] = useState(true)
+  const [getdatalength, setgetdatalength] = useState([]);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -20,14 +23,16 @@ const ApplicationHistory = ({navigation}) => {
     return `${day}.${month}.${year}`;
   };
   useEffect(() => {
-    getrequestwithtoken("master/order-history", userToken).then((res) => {
+    const params = { page: limit };
+    getRequestWithParamsTokens("master/order-history", userToken ,params).then((res) => {
       console.log(res?.status, "dsdjkpspospojsvsjpogip[rif[gi[ir[iksois[");
-       setApplicationHistory(res?.data);
+      setgetdatalength(res?.data?.length)
+       setApplicationHistory((prev)=>[...prev ,...res?.data]);
       setpageloading(false)
     });
-  }, [userToken]);
+  }, [userToken ,limit]);
 
-
+console.log("shdueud",ApplicationHistory)
   if (pageloading) {
     return (
       <View>
@@ -46,6 +51,13 @@ const ApplicationHistory = ({navigation}) => {
       </View>
     );
   }
+
+  const loadmore = () => {
+    console.log("Loadmore is clicked");
+    setlimit(limit + 1);
+    console.log(limit);
+    // fetchUserData("master/organization-course", id);
+  };
   return (
     <SafeAreaView >
       <Header title="Application History" navigateTo={() => navigation.goBack("Home")} />
@@ -258,6 +270,43 @@ const ApplicationHistory = ({navigation}) => {
             </View>
           </View> */}
         </View>
+<View >
+    {getdatalength === 10 && (
+        <TouchableOpacity style={{justifyContent:'center',alignItems:'center' ,height:'auto'}} onPress={loadmore}>
+            
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                gap: 4,
+                borderRadius: 8,
+                height: 42,
+                width:120,
+                backgroundColor: "#FFFFFF",
+                marginBottom: 30,
+                paddingHorizontal: 10,
+                borderWidth: 1, // Specify border width
+                borderColor: "#DDDDDD",
+              }}
+            >
+              <Text
+                style={{
+                  color: "#435354",
+                  fontSize: 14,
+                  fontWeight: "500",
+                  lineHeight: 17,
+                }}
+              >
+                Load More
+              </Text>
+              <AntDesign name="down" size={20} color="#435354" />
+            </View>
+        
+        </TouchableOpacity>
+    ) }
+
+</View>
+        
       </ScrollView>
     </SafeAreaView>
   );

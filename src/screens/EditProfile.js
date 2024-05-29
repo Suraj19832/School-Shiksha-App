@@ -44,7 +44,7 @@ import Header from "../../components/Header";
 import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 import { AuthContext } from "../../Utils/context/AuthContext";
 const EditProfile = ({ navigation }) => {
-  const { userToken } = useContext(AuthContext);
+  const { userToken , profileAllData ,setprofileAllData} = useContext(AuthContext);
 
   const showToast = (message) => {
     if (Platform.OS === "android") {
@@ -251,7 +251,7 @@ const EditProfile = ({ navigation }) => {
       setDropdownOpenclass(false);
     }
   };
-
+console.log("11111111111111111====",profileAllData)
   const handleSelectOption = (districtName, id) => {
     setSelectedOption(districtName);
     setInputValue(districtName);
@@ -491,7 +491,7 @@ const EditProfile = ({ navigation }) => {
     email: "",
     date_of_birth: "",
     class_name: "",
-    gender: "",
+    gender:"",
     // religion: "",
     address: "",
     state_name: "",
@@ -1028,8 +1028,8 @@ const EditProfile = ({ navigation }) => {
                         placeholder="Select"
                         placeholderTextColor="rgba(166, 166, 166, 1)"
                         value={
-                          profileData.gender.charAt(0).toUpperCase() +
-                          profileData.gender.slice(1)
+                          profileAllData?.charAt(0).toUpperCase() +
+                          profileAllData?.slice(1)
                         }
                         editable={false}
                       />
@@ -1047,7 +1047,8 @@ const EditProfile = ({ navigation }) => {
                     <TouchableOpacity
                       style={styles.dropdownOption}
                       onPress={() => {
-                        setProfileData({ ...profileData, gender: "Male" });
+                        setProfileData({ ...profileData, profileAllData: "Male" });
+                        setprofileAllData("male")
                         toggleDropdowngender(); // Close the dropdown after selection
                       }}
                     >
@@ -1056,7 +1057,8 @@ const EditProfile = ({ navigation }) => {
                     <TouchableOpacity
                       style={styles.dropdownOption}
                       onPress={() => {
-                        setProfileData({ ...profileData, gender: "Female" });
+                        setProfileData({ ...profileData, profileAllData: "Female" });
+                        setprofileAllData("female")
                         toggleDropdowngender(); // Close the dropdown after selection
                       }}
                     >

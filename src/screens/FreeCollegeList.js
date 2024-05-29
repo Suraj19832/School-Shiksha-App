@@ -208,7 +208,6 @@ const FreeCollegeList = ({ navigation }) => {
       setActiveIndex(viewableItems[0].index || 0);
     }
   };
-console.log(getdatalength,"oopooooooooooooooooooooooooooooooooooooooooooooooo")
   const renderPagination = () => {
     return (
       <View style={styles.paginationContainer}>
@@ -239,8 +238,8 @@ console.log(getdatalength,"oopooooooooooooooooooooooooooooooooooooooooooooooo")
     </View>
   );
 
-  useEffect(() => {
-    fetchUserData("master/organization-course", id);
+  useEffect(() => { 
+    fetchUserData("master/organization-course", id); 
   }, [id, limit]);
 
   useEffect(() => {

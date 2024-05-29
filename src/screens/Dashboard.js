@@ -33,7 +33,7 @@ import {
 const Dashboard = ({ navigation }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { userToken, setuserToken, setmyLoading } = useContext(AuthContext);
+  const { userToken, setuserToken, setmyLoading,profileAllData } = useContext(AuthContext);
   const menuWidth = Dimensions.get("window").width * 0.8;
 
   const menuTranslateX = useRef(new Animated.Value(-menuWidth)).current;
@@ -242,7 +242,29 @@ const Dashboard = ({ navigation }) => {
 
   useEffect(() => {
     fetchUserData();
-  }, []);
+    // getrequestwithtoken("student/profile", userToken).then((res) => {
+    //   if (res?.status) {
+    //     setname(res?.data?.name);
+    //     setphone(res?.data?.mobile);
+    //     setgender(res?.data?.gender);
+    //     setplan(res?.data?.subscription?.plan_name); 
+    //   }
+    //   console.log(gender)
+    // });   
+
+  }, []);  
+  useEffect(() => {
+console.log("screen is redenderrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr")
+getrequestwithtoken("student/profile", userToken).then((res) => { 
+  if (res?.status) {
+    setname(res?.data?.name);
+    setphone(res?.data?.mobile);
+    setgender(res?.data?.gender);
+    setplan(res?.data?.subscription?.plan_name); 
+  }
+}); 
+  }, [gender]) 
+console.log("66666",gender)
 
   const colorMap = {
     "Secondary Pass Student's Benefits": "#C83000",
@@ -310,7 +332,7 @@ const Dashboard = ({ navigation }) => {
               borderRadius: 20,
             }}
           >
-            {gender === "female" ? (
+            {profileAllData === "female" ? (
               <Image
                 source={require("../../assets/img/human (1).png")}
                 style={styles.avatarImg}
@@ -353,13 +375,13 @@ const Dashboard = ({ navigation }) => {
                   gap: 20,
                 }}
               >
-                {gender === "female" ? (
+                {profileAllData === "female" ? (
                   <Image
                     style={{
                       marginBottom: 12,
                       width: 60,
                       height: 60,
-                      resizeMode: "cover",
+                      resizeMode: "cover", 
                     }}
                     source={require("../../assets/img/human (1).png")}
                   />

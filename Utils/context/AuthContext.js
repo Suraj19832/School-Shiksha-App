@@ -9,7 +9,7 @@ export const AuthProvider = ({children}) =>{
     const [userToken, setuserToken] = useState(null)
     const [UpiLink ,setupiLink]= useState("")
     const [orderid ,setorderid]= useState("")
-
+    const [profileAllData, setprofileAllData] = useState("")
     const isLoggedIn = async()=>{
         try {
             setmyLoading(true)
@@ -33,7 +33,7 @@ export const AuthProvider = ({children}) =>{
     },[])
 
     return (
-        <AuthContext.Provider value={{test,myLoading,userToken,setuserToken,setmyLoading,UpiLink,updateUpiLink ,updateOrderid,orderid}}>
+        <AuthContext.Provider value={{test,myLoading,userToken,setuserToken,setmyLoading,UpiLink,updateUpiLink ,updateOrderid,orderid,profileAllData,setprofileAllData}}>
             {children}
         </AuthContext.Provider>
     )
