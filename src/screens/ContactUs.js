@@ -99,20 +99,60 @@ const ContactUs = ({ navigation }) => {
     const whatsappUrl = `whatsapp://send?phone=${data.whatsapp_number}`;
     Linking.openURL(whatsappUrl);
   };
+  const CardSkeleton = () => {
 
+    const opacity = useRef(new Animated.Value(0.3)).current;
+  
+    useEffect(() => {
+        Animated.loop(
+            Animated.sequence([
+                Animated.timing(opacity, {
+                    toValue: 1,
+                    duration: 800,
+                    useNativeDriver: true,
+                }),
+                Animated.timing(opacity, {
+                    toValue: 0.3,
+                    duration: 800,
+                    useNativeDriver: true,
+                }),
+            ])
+        ).start();
+    }, [opacity]);
+  
+    return (
+      <>
+          <Header title="Contact Us" navigateTo={navigation.goBack} />
+        <View style={styles.container12}>
+         
+            {[...Array(1)].map((_, index) => (
+                <Animated.View key={index} style={[styles.placeholder, { opacity }]} >
+                  {/* <Animated.View style={[styles.placeholder2, { opacity }]}/>
+                  <Animated.View style={[styles.placeholder2, { opacity }]}/>
+                  <Animated.View style={[styles.placeholder2, { opacity }]}/> */}
+
+                  
+                </Animated.View>
+            ))}
+        </View>
+      </>
+  
+    );
+  };
   if (isLoading) {
     return (
-      <View>
-        <Header
-          title="Contact Us"
-          navigateTo={() => navigation.goBack("Home")}
-        />
-        <ActivityIndicator
-          size="large"
-          color="#00367E"
-          style={styles.loaderContainer}
-        />
-      </View>
+      // <View>
+      //   <Header
+      //     title="Contact Us"
+      //     navigateTo={() => navigation.goBack("Home")}
+      //   />
+      //   <ActivityIndicator
+      //     size="large"
+      //     color="#00367E"
+      //     style={styles.loaderContainer}
+      //   />
+      // </View>
+      <CardSkeleton/>
     );
   }
 
@@ -213,4 +253,23 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "white",
   },
+  container12: {
+    backgroundColor: '#F6F6F6',
+    borderRadius: 13,
+    padding: 16,
+    marginBottom: 16,
+    height:'80%'
+},
+placeholder: {
+    backgroundColor: '#ccc',
+    height: '60%',
+    borderRadius: 20,
+},
+
+// placeholder2: {
+//   backgroundColor: 'grey',
+//   height: '20%',
+//   borderRadius: 10,
+//   marginVertical:20
+// },
 });

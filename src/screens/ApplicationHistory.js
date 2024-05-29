@@ -4,8 +4,9 @@ import {
   SafeAreaView,
   ScrollView,
   TouchableOpacity,
+  Animated,
 } from "react-native";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { StyleSheet } from "react-native";
 import Header from "../../components/Header";
 import { Image } from "react-native";
@@ -16,6 +17,7 @@ import {
 import { AuthContext } from "../../Utils/context/AuthContext";
 import { ActivityIndicator } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
+// import { Animated } from "react-native-web";
 
 const ApplicationHistory = ({ navigation }) => {
   const [limit, setlimit] = useState(1);
@@ -49,27 +51,68 @@ const ApplicationHistory = ({ navigation }) => {
   }, [userToken, limit]);
 
   console.log("shdueud", ApplicationHistory);
+
+
+
+  //skeleton design
+const CardSkeleton = () => {
+  const opacity = useRef(new Animated.Value(0.3)).current;
+
+  useEffect(() => {
+      Animated.loop(
+          Animated.sequence([
+              Animated.timing(opacity, {
+                  toValue: 1,
+                  duration: 800,
+                  useNativeDriver: true,
+              }),
+              Animated.timing(opacity, {
+                  toValue: 0.3,
+                  duration: 800,
+                  useNativeDriver: true,
+              }),
+              
+          ])
+      ).start();
+  }, [opacity]);
+
+  return (
+    <>
+       <Header
+        title="Application History"
+        navigateTo={() => navigation.goBack("Home")}
+      />
+            <View style={styles.container}>
+          {[...Array(11)].map((_, index) => (
+              <Animated.View key={index} style={[styles.placeholder, { opacity }]} />
+          ))}
+      </View>
+    </>
+
+  );
+};
   if (pageloading) {
     return (
-      <View>
-        <Header
-          title="Application History"
-          navigateTo={() => navigation.goBack("Home")}
-        />
-        <View
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            height: "90%",
-          }}
-        >
-          <ActivityIndicator
-            size="large"
-            color="#00367E"
-            style={{ justifyContent: "center", alignSelf: "center" }}
-          />
-        </View>
-      </View>
+      // <View>
+      //   <Header
+      //     title="Application History"
+      //     navigateTo={() => navigation.goBack("Home")}
+      //   />
+      //   <View
+      //     style={{
+      //       justifyContent: "center",
+      //       alignItems: "center",
+      //       height: "90%",
+      //     }}
+      //   >
+      //     <ActivityIndicator
+      //       size="large"
+      //       color="#00367E"
+      //       style={{ justifyContent: "center", alignSelf: "center" }}
+      //     />
+      //   </View>
+      // </View>
+      <CardSkeleton /> 
     );
   }
 
@@ -94,7 +137,7 @@ const ApplicationHistory = ({ navigation }) => {
           {ApplicationHistory?.length > 0 &&
             ApplicationHistory.map((item, index) => {
               return item?.status === "completed" ? (
-                <View style={styles.reactangleCard}>
+                <View style={styles.reactangleCard} key={index}>
                   <View style={styles.innerCard}>
                     <Image
                       style={{ height: 45, width: 45 }}
@@ -393,6 +436,19 @@ const styles = StyleSheet.create({
     gap: 10,
     width: "89%",
   },
+  container: {
+    backgroundColor: '#F6F6F6',
+    borderRadius: 13,
+    padding: 16,
+    marginBottom: 16,
+    height:'80%'
+},
+placeholder: {
+    backgroundColor: '#ccc',
+    height: '10%',
+    borderRadius: 4,
+    marginBottom: 8,
+},
 });
 
-//if i have three state cancel, pending and completed how can i render diffrent diffrent jsx based pn condition using ternamry operator because i only know that to use ternary operator using two condition how to deal 3 cndition using ternary oprator i dont know i can use if status== complete?(one jsx for complete ):(one jsx for not complete) i can do that but i want that if ststus complete render complete jsx ,if ststus pending then another jsx and if cancel then another jsx and then whole function is runninf in map return
+

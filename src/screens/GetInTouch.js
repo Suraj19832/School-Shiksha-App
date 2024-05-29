@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import {
   View,
   Text,
@@ -11,6 +11,7 @@ import {
   ToastAndroid,
   ScrollView,
   ActivityIndicator,
+  Animated,
 } from "react-native";
 import Header from "../../components/Header";
 import { AuthContext } from "../../Utils/context/AuthContext";
@@ -123,22 +124,60 @@ setpageloading(false)
         console.error("Error fetching data:", error);
       });
   }, []);
+
+  const CardSkeleton = () => {
+
+    const opacity = useRef(new Animated.Value(0.3)).current;
+  
+    useEffect(() => {
+        Animated.loop(
+            Animated.sequence([
+                Animated.timing(opacity, {
+                    toValue: 1,
+                    duration: 800,
+                    useNativeDriver: true,
+                }),
+                Animated.timing(opacity, {
+                    toValue: 0.3,
+                    duration: 800,
+                    useNativeDriver: true,
+                }),
+            ])
+        ).start();
+    }, [opacity]);
+  
+    return (
+      <>
+          <Header title="Query" navigateTo={navigation.goBack} />
+        <View style={styles.container12}>
+         
+            {[...Array(1)].map((_, index) => (
+                <Animated.View key={index} style={[styles.placeholder, { opacity }]} />
+            ))}
+        </View>
+      </>
+  
+    );
+  };
+
+
   if (pageloading) {
     return (
-      <View>
-        <Header
-          title="Query"
-          navigateTo={() => navigation.goBack("Home")}
-        />
-        <View style={{justifyContent:'center' ,alignItems:'center'  ,height:'90%'}}>
-        <ActivityIndicator
-          size="large"
-          color="#00367E"
-          style={{justifyContent:'center',alignSelf:'center'}}
-        />
-        </View>
+      // <View>
+      //   <Header
+      //     title="Query"
+      //     navigateTo={() => navigation.goBack("Home")}
+      //   />
+      //   <View style={{justifyContent:'center' ,alignItems:'center'  ,height:'90%'}}>
+      //   <ActivityIndicator
+      //     size="large"
+      //     color="#00367E"
+      //     style={{justifyContent:'center',alignSelf:'center'}}
+      //   />
+      //   </View>
       
-      </View>
+      // </View>
+      <CardSkeleton/>
     );
   }
   return (
@@ -260,4 +299,17 @@ const styles = StyleSheet.create({
     lineHeight: 16,
     textAlign: "center",
   },
+  container12: {
+    backgroundColor: '#F6F6F6',
+    borderRadius: 13,
+    padding: 16,
+    marginBottom: 16,
+    height:'80%'
+},
+placeholder: {
+    backgroundColor: '#ccc',
+    height: '100%',
+    borderRadius: 20,
+},
+
 });
