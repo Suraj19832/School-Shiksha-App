@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Image,
   View,
@@ -12,16 +12,23 @@ import {
 } from "react-native";
 
 import Header from "../../components/Header";
-import { GetfetchDataWithParams } from "../../Helper/Helper";
+import {
+  GetfetchDataWithParams,
+  getrequestwithtoken,
+} from "../../Helper/Helper";
 import { useRoute } from "@react-navigation/native";
+import { AuthContext } from "../../Utils/context/AuthContext";
 
 const MPBenefits = ({ navigation }) => {
+  const { userToken } = useContext(AuthContext);
   const route = useRoute();
   const { sortheading, heading } = route.params;
   const [loading, setLoading] = useState(false);
-
+  const [activeServices, setActiveServices] = useState([]);
+  const [serviceId, setServiceId] = useState([]);
   // api implementation
   const [cardData, setCardData] = useState([]);
+
   useEffect(() => {
     const params = {
       service_type: sortheading,
@@ -30,11 +37,24 @@ const MPBenefits = ({ navigation }) => {
     GetfetchDataWithParams("master/services", params)
       .then((res) => {
         setCardData(res.data);
+        const value = res.data.map((item) => item.id);
+        setServiceId(value);
         setLoading(false);
       })
       .catch((err) => {
         console.log(err);
         setLoading(false);
+      });
+  }, []);
+
+  useEffect(() => {
+    getrequestwithtoken("student/profile", userToken)
+      .then((res) => {
+        console.log(res.data.subscription.plan_services, "yuppp");
+        setActiveServices(res.data.subscription.plan_services);
+      })
+      .catch((err) => {
+        console.log(err);
       });
   }, []);
   const truncateMessage = (message, maxLength = 25) => {
