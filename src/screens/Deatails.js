@@ -7,6 +7,7 @@ import {
   FlatList,
   TouchableOpacity,
   Linking,
+  Animated,
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { Image } from "react-native";
@@ -23,6 +24,8 @@ const Details = ({ navigation }) => {
 
   const [activeIndex, setActiveIndex] = useState(0);
   const [bannerData, setBannerData] = useState([]);
+  const [isLoadingpage, setisLoadingpage] = useState(true);
+  const [isLoadingcard, setisLoadingcard] = useState(true);
 
   useEffect(() => {
     const params = {
@@ -31,6 +34,7 @@ const Details = ({ navigation }) => {
     GetfetchDataWithParams("master/organization-banner", params)
       .then((res) => {
         setBannerData(res.data);
+        setisLoadingpage(false)
         console.log(res.data, "Banner Data");
       })
       .catch((err) => {
@@ -86,6 +90,7 @@ const Details = ({ navigation }) => {
 
       GetfetchDataWithParams(endpoint, params).then((res) => {
         setDetailsData(res?.data);
+        setisLoadingcard(false)
       });
     } catch (error) {
       console.error("Error fetching user data:", error);
@@ -99,6 +104,66 @@ const Details = ({ navigation }) => {
     const whatsappUrl = `tel:${phonenumber}`;
     Linking.openURL(whatsappUrl);
   };
+
+
+
+  const CardSkeleton = () => {
+    const opacity = useRef(new Animated.Value(0.3)).current;
+
+    useEffect(() => {
+      Animated.loop(
+        Animated.sequence([
+          Animated.timing(opacity, {
+            toValue: 1,
+            duration: 800,
+            useNativeDriver: true,
+          }),
+          Animated.timing(opacity, {
+            toValue: 0.3,
+            duration: 800,
+            useNativeDriver: true,
+          }),
+        ])
+      ).start();
+    }, [opacity]);
+
+    return (
+      <>
+        <Header title={`${heading} List`} navigateTo={navigation.goBack} />
+        <View style={styles.container12}>
+          {[...Array(1)].map((_, index) => (
+            <Animated.View
+              key={index}
+              style={[styles.placeholder, { opacity, height: "25%" }]}
+            />
+          ))}
+          <Animated.View
+            style={[styles.placeholder, { opacity, height: "45%" }]}
+          />
+        </View>
+      </>
+    );
+  };
+
+  if (isLoadingpage || isLoadingcard) {
+    return (
+      // <View>
+      //   <Header
+      //     title="Payment History"
+      //     navigateTo={() => navigation.goBack("Home")}
+      //   />
+      //   <View style={{justifyContent:'center' ,alignItems:'center'  ,height:'90%'}}>
+      //   <ActivityIndicator
+      //     size="large"
+      //     color="#00367E"
+      //     style={{justifyContent:'center',alignSelf:'center'}}
+      //   />
+      //   </View>
+
+      // </View>
+      <CardSkeleton />
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -443,5 +508,20 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     alignItems: "center",
+  },
+  container12: {
+    backgroundColor: "#F6F6F6",
+    borderRadius: 13,
+    padding: 16,
+    marginBottom: 16,
+    height: "100%",
+    width: "100%",
+  },
+  placeholder: {
+    backgroundColor: "#ccc",
+    height: "20%",
+    width: "100%",
+    borderRadius: 4,
+    marginBottom: 8,
   },
 });

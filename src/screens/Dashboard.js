@@ -31,6 +31,8 @@ import {
   getrequestwithtoken,
 } from "../../Helper/Helper";
 const Dashboard = ({ navigation }) => {
+  const [isLoadingpage, setisLoadingpage] = useState(true);
+  const [isLoadingcard, setisLoadingcard] = useState(true);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { userToken, setuserToken, setmyLoading, profileAllData } =
@@ -119,6 +121,7 @@ const Dashboard = ({ navigation }) => {
     getrequestwithtoken("master/dashboard-banner", userToken)
       .then((res) => {
         setBannerData(res.data);
+        setisLoadingpage(false)
       })
       .catch((err) => {
         console.log(err);
@@ -295,6 +298,7 @@ const Dashboard = ({ navigation }) => {
       getdata("master/service-type").then((res) => {
         console.log(res.status);
         setcarddata(res?.data);
+        setisLoadingcard(false)
       });
     } catch (error) {
       console.error("Error fetching user data:", error);
@@ -309,6 +313,90 @@ const Dashboard = ({ navigation }) => {
     const whatsappUrl = `whatsapp://send?phone=9088776656`;
     Linking.openURL(whatsappUrl);
   };
+
+
+// Skeleton?
+
+// const CardSkeleton = () => {
+//   const opacity = useRef(new Animated.Value(0.3)).current;
+
+//   useEffect(() => {
+//     Animated.loop(
+//       Animated.sequence([
+//         Animated.timing(opacity, {
+//           toValue: 1,
+//           duration: 800,
+//           useNativeDriver: true,
+//         }),
+//         Animated.timing(opacity, {
+//           toValue: 0.3,
+//           duration: 800,
+//           useNativeDriver: true,
+//         }),
+//       ])
+//     ).start();
+//   }, [opacity]);
+
+//   return (
+//     <>
+
+//       <View style={styles.container12}>
+//         {[...Array(1)].map((_, index) => (
+//           <>
+//  <Animated.View
+//                   key={index}
+//                   style={[styles.placeholder, { opacity, height: "7%" }]}
+//                 />
+
+//           <Animated.View
+//             key={index}
+//             style={[styles.placeholder, { opacity, height: "20%" }]}
+//           />
+//           </>
+                 
+//         ))}
+//          <Animated.View
+//                   style={[styles.placeholder, { opacity, height: "7%" }]}
+//                 />
+//         <Animated.View
+//           style={[styles.placeholder, { opacity, height: "35%" }]}
+//         />
+//             <Animated.View
+//                   style={[styles.placeholder, { opacity, height: "7%" }]}
+//                 />
+//         <Animated.View
+//           style={[styles.placeholder, { opacity, height: "35%" }]}
+//         />
+//       </View>
+//     </>
+//   );
+// };
+
+// if (isLoadingpage || isLoadingcard) {
+//   return (
+//     // <View>
+//     //   <Header
+//     //     title="Payment History"
+//     //     navigateTo={() => navigation.goBack("Home")}
+//     //   />
+//     //   <View style={{justifyContent:'center' ,alignItems:'center'  ,height:'90%'}}>
+//     //   <ActivityIndicator
+//     //     size="large"
+//     //     color="#00367E"
+//     //     style={{justifyContent:'center',alignSelf:'center'}}
+//     //   />
+//     //   </View>
+
+//     // </View>
+//     <CardSkeleton />
+//   );
+// }
+
+// Skeleton End ?
+
+
+
+
   return (
     <View style={styles.container}>
       {isMenuOpen && (
@@ -1240,6 +1328,21 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "500",
     lineHeight: 17,
+  },
+  container12: {
+    backgroundColor: "#F6F6F6",
+    borderRadius: 13,
+    padding: 16,
+    marginBottom: 16,
+    height: "100%",
+    width: "100%",
+  },
+  placeholder: {
+    backgroundColor: "#ccc",
+    height: "20%",
+    width: "100%",
+    borderRadius: 4,
+    marginBottom: 8,
   },
 });
 
