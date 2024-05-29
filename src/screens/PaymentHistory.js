@@ -24,23 +24,31 @@ import {
 import { AuthContext } from "../../Utils/context/AuthContext";
 import { Image } from "react-native";
 import Header from "../../components/Header";
-import { getrequestwithtoken } from "../../Helper/Helper";
+import { getRequestWithParamsTokens, getrequestwithtoken } from "../../Helper/Helper";
 import { ActivityIndicator } from "react-native";
 
 const PaymentHistory = ({ navigation }) => {
   const { userToken } = useContext(AuthContext);
   // console.log(userToken);
   const [orderHistory, setorderHistory] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [getdatalength, setgetdatalength] = useState();
   const [pageloading, setpageloading] = useState(true)
+  const [limit, setlimit] = useState(1);
   const getInfoData = async()=>{
    
     const url = "student/order-details"; 
-    await getrequestwithtoken(url, userToken)
+    const params = { page: limit };
+    await getRequestWithParamsTokens(url, userToken ,params)
        .then((res) => {
          // console.log("iiohhuh",res.data)
          // console.log("tytytyytytytytttytyyytytytytytytytyyt", res?.status);
-         const order = res.data.map((item,index) => item);
-         setorderHistory(order);   
+         const order = res.data?.items.map((item,index) => item);
+        //  setorderHistory(order);   
+        setorderHistory((prev) => [...prev, ...order]);   
+        //  (prev) => [...prev, ...res?.data?.items]
+        setgetdatalength(res?.data?.total_count);
+        setIsLoading(false)
          setpageloading(false)
         //  console.log("+++++++>>",res.status) 
         //  console.log("+++++++<<",res?.data) 
@@ -56,7 +64,7 @@ const PaymentHistory = ({ navigation }) => {
   useEffect(() => {
     
     getInfoData()
-  }, [userToken]);
+  }, [userToken,limit]);  
 
 // console.log(to)
 
@@ -100,7 +108,13 @@ if (pageloading) {
     </View>
   );
 }
-
+const loadmore = () => {
+  setIsLoading(true);
+  console.log("Loadmore is clicked");
+  setlimit(limit + 1);
+  console.log(limit);
+  // fetchUserData("master/organization-course", id);
+};
   
   return (
     <SafeAreaView style={styles.container}>
@@ -118,6 +132,7 @@ if (pageloading) {
                     justifyContent: "space-between",
                     width: "85%",
                   }}
+                  key={key}
                 >
                   <View
                     style={{
@@ -172,9 +187,53 @@ if (pageloading) {
            
           ))}
 
+
           {/* end  */}
 
-
+          {getdatalength > orderHistory?.length && (
+            <TouchableOpacity
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+                height: "auto",
+              }}
+              onPress={loadmore}
+            >
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  gap: 4,
+                  borderRadius: 8,
+                  height: 42,
+                  width: 120,
+                  backgroundColor: "#FFFFFF",
+                  marginBottom: 30,
+                  paddingHorizontal: 10,
+                  borderWidth: 1, // Specify border width
+                  borderColor: "#DDDDDD",
+                }}
+              >
+                {isLoading ? (
+                  <ActivityIndicator size="small" color="grey" style={{alignSelf:"center" ,width:'100%'}} />
+                ) : (
+                  <>
+                    <Text
+                      style={{
+                        color: "#435354",
+                        fontSize: 14,
+                        fontWeight: "500",
+                        lineHeight: 17,
+                      }}
+                    >
+                      Load More
+                    </Text>
+                    <AntDesign name="down" size={20} color="#435354" />
+                  </>
+                )}
+              </View>
+            </TouchableOpacity>
+          )}
           {/* dummy  */}
           {/* <View
             style={{
