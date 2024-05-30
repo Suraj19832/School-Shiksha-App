@@ -40,6 +40,10 @@ const PaymentHistory = ({ navigation }) => {
    
     const url = "student/order-details"; 
     const params = { page: limit };
+    if (limit ===1) {
+      setorderHistory([]);    
+      
+    }
     await getRequestWithParamsTokens(url, userToken ,params)
        .then((res) => {
          // console.log("iiohhuh",res.data)

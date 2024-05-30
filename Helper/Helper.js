@@ -65,7 +65,7 @@ export const getRequestWithParamsTokens = async (endpoint, token, params) => {
     );
   }
 
-  console.log("6666", url.toString(), token);
+  // console.log("6666", url.toString(), token);
 
   try {
     const response = await fetch(url.toString(), {
@@ -74,14 +74,14 @@ export const getRequestWithParamsTokens = async (endpoint, token, params) => {
       },
     });
 
-    console.log("554545", response);
+    // console.log("554545", response);
 
     // if (!response.ok) {
     //   throw new Error("Failed to fetch data");
     // }
 
     const data = await response.json();
-    console.log("220202", data);
+    // console.log("220202", data);
 
     return data;
   } catch (error) {

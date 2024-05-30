@@ -61,6 +61,7 @@ const FreeCollegeList = ({ navigation }) => {
     setInputValueclass(option);
     setDropdownOpenclass(false);
     console.log("############################");
+    fetchUserAllData("master/organization-course", id, courseid)
     fetchUserData("master/organization-course", id, courseid);
   };
   const handleInputChangeclass = (text) => {
@@ -169,6 +170,19 @@ const FreeCollegeList = ({ navigation }) => {
         setFreeCollegeList(res?.data);
         // console.log(res?.data.length() ,)
         setorganizationId(res?.data?.organization_id);
+
+
+
+
+
+
+
+
+
+
+
+
+
         console.log(
           res?.data,
           "}}}}}}}}}}}}{{{{{{{{{{{{___________________________"
@@ -254,6 +268,7 @@ const FreeCollegeList = ({ navigation }) => {
   const handleinputtextfield = (text) => {
     setinputvlauesearch(text);
     console.log(inputvlauesearch);
+    fetchUserAllData("master/organization-course", id , null, text);
     fetchUserData("master/organization-course", id, null, text);
   };
 

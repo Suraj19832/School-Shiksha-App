@@ -12,11 +12,12 @@ import {
   Easing,
   SafeAreaView,
 } from "react-native";
-import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { AntDesign, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import Header from "../../components/Header";
-import { getrequestwithtoken } from "../../Helper/Helper";
+import { getRequestWithParamsTokens, getrequestwithtoken } from "../../Helper/Helper";
 import { AuthContext } from "../../Utils/context/AuthContext";
 import moment from "moment";
+import { ActivityIndicator } from "react-native";
 
 const formatNotificationTime = (dateString) => {
   const now = moment();
@@ -121,17 +122,37 @@ const NotificationContainer = (props) => {
 
 const Notification = ({ navigation }) => {
   const [notifiData, setNotifiData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [limit, setlimit] = useState(1);
   const { userToken } = useContext(AuthContext);
+  const [getdatalength, setgetdatalength] = useState([]);
   useEffect(() => {
-    getrequestwithtoken("student/notifications", userToken)
+    const params = { page: limit };
+    if (limit === 1) {
+      setNotifiData([])   
+     }
+     
+    getRequestWithParamsTokens("student/notifications", userToken ,params)
+   
       .then((res) => {
-        const objData = res.data.map((item) => item);
-        setNotifiData(objData);
+        setgetdatalength(res?.data?.total_count)
+
+        const objData = res?.data?.items.map((item) => item);
+        // setNotifiData(objData);
+        setNotifiData((prev) => [...prev, ...objData])
+        setIsLoading(false);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [userToken ,limit]);
+  const loadmore = () => {
+    setIsLoading(true);
+    console.log("Loadmore is clicked");
+    setlimit(limit + 1);
+    console.log(limit);
+    // fetchUserData("master/organization-course", id);
+  };
   return (
     <SafeAreaView style={styles.container}>
       <Header title="Notifications" navigateTo={navigation.goBack} />
@@ -139,7 +160,7 @@ const Notification = ({ navigation }) => {
         <View style={styles.mainView}>
           <View style={styles.innerView}></View>
 
-          <View>
+          <View style={{marginBottom:20}}>
             {notifiData.map((item, index) => {
               return (
                 <View key={index}>
@@ -154,6 +175,50 @@ const Notification = ({ navigation }) => {
               );
             })}
           </View>
+          {getdatalength > notifiData?.length && (
+            <TouchableOpacity
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+                height: "auto",
+              }}
+              onPress={loadmore}
+            >
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  gap: 4,
+                  borderRadius: 8,
+                  height: 42,
+                  width: 120,
+                  backgroundColor: "#FFFFFF",
+                  marginBottom: 30,
+                  paddingHorizontal: 10,
+                  borderWidth: 1, // Specify border width
+                  borderColor: "#DDDDDD",
+                }}
+              >
+                {isLoading ? (
+                  <ActivityIndicator size="small" color="grey" style={{alignSelf:"center" ,width:'100%'}} />
+                ) : (
+                  <>
+                    <Text
+                      style={{
+                        color: "#435354",
+                        fontSize: 14,
+                        fontWeight: "500",
+                        lineHeight: 17,
+                      }}
+                    >
+                      Load More
+                    </Text>
+                    <AntDesign name="down" size={20} color="#435354" />
+                  </>
+                )}
+              </View>
+            </TouchableOpacity>
+         )} 
         </View>
       </ScrollView>
     </SafeAreaView>

@@ -36,6 +36,9 @@ const ApplicationHistory = ({ navigation }) => {
   };
   useEffect(() => {
     const params = { page: limit };
+ if (limit === 1) {
+  setApplicationHistory([])    
+ }
     getRequestWithParamsTokens("master/order-history", userToken, params).then(
       (res) => {
         setgetdatalength(res?.data?.total_count);
@@ -43,8 +46,9 @@ const ApplicationHistory = ({ navigation }) => {
           "))))))))))))))))))))))))##########################",
           res?.data?.total_count
         );
+       
         setApplicationHistory((prev) => [...prev, ...res?.data?.items]);
-        setIsLoading(false);
+        setIsLoading(false); 
         setpageloading(false);
       }
     );
