@@ -823,6 +823,7 @@ const FreeCollegeList = ({ navigation }) => {
                           color: "#01265B",
                           fontWeight: "600",
                           fontSize: 14,
+                          alignSelf:'center'
                         }}
                       >
                         Exam Name -
@@ -833,6 +834,7 @@ const FreeCollegeList = ({ navigation }) => {
                           color: "#01265B",
                           fontWeight: "600",
                           fontSize: 14,
+                          alignSelf:'center'
                         }}
                       >
                         Course Name -
@@ -844,6 +846,7 @@ const FreeCollegeList = ({ navigation }) => {
                         color: "#595959",
                         fontWeight: "600",
                         fontSize: 14,
+                        width:'55%'
                       }}
                     >
                       {value?.course_name}
