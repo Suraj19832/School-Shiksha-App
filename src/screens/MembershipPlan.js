@@ -10,18 +10,14 @@ import {
   SafeAreaView,
   useColorScheme,
   StatusBar,
+  ActivityIndicator,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import GradientText from "../../components/GradientText";
 import { BorderGradient } from "../../components/BoderGradient";
 import { getdata, getrequestwithtoken } from "../../Helper/Helper";
 import { AuthContext } from "../../Utils/context/AuthContext";
-
-// const SpanText = (props) => {
-//   return (
-
-//   );
-// };
+import { Header } from "react-native/Libraries/NewAppScreen";
 
 const MembershipPlan = ({ navigation }) => {
   const { userToken } = useContext(AuthContext);
@@ -29,7 +25,10 @@ const MembershipPlan = ({ navigation }) => {
   const statusBarColor = colorScheme === "dark" ? "black" : "white";
   const [cardData, setCardData] = useState([]);
   const [planId, setPlanId] = useState(null);
+  const [loadingPage, setLoadingPage] = useState(false);
   const [activePlanAmount, setActivePlanAmount] = useState(null);
+
+  console.log(planId, "here is plan id frssom membership plan");
 
   useEffect(() => {
     getrequestwithtoken("student/profile", userToken)
@@ -43,14 +42,59 @@ const MembershipPlan = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
+    setLoadingPage(true);
     getdata("master/plan")
       .then((res) => {
         setCardData(res.data);
+        setLoadingPage(false);
       })
       .catch((err) => {
+        setLoadingPage(false);
         console.log(err, "===========>error from membership api");
       });
   }, []);
+
+  const sortedCardData = cardData.sort((a, b) => (a.id === planId ? -1 : 1));
+
+  if (loadingPage) {
+    return (
+      <View style={{}}>
+        <View
+          style={{
+            paddingHorizontal: 20,
+            flexDirection: "row",
+            gap: 10,
+            paddingVertical: 15,
+            alignItems: "center",
+            backgroundColor: "white",
+          }}
+        >
+          <TouchableOpacity onPress={navigation.goBack}>
+            <Image
+              source={require("../../assets/icons/arrow.png")}
+              style={{ height: 24, width: 24 }}
+            />
+          </TouchableOpacity>
+          <Text
+            style={{
+              fontSize: 18,
+              fontWeight: "500",
+              lineHeight: 27,
+              color: "rgba(55, 55, 55, 1)",
+            }}
+          >
+            Membership Plan
+          </Text>
+        </View>
+        {/* <Header title="Membership Plan" navigateTo={navigation.goBack} /> */}
+        <ActivityIndicator
+          size={"large"}
+          color={"#00367E"}
+          style={styles.loader}
+        />
+      </View>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -88,7 +132,8 @@ const MembershipPlan = ({ navigation }) => {
             />
           </View>
           <View style={{ gap: 30, marginBottom: 70 }}>
-            {cardData.map((cards, index) => {
+            {sortedCardData.map((cards, index) => {
+              console.log(cards.id, "getting id from map");
               const descriptionData = JSON.parse(
                 cards.plan_description || "[]"
               );
@@ -280,173 +325,6 @@ const MembershipPlan = ({ navigation }) => {
               );
             })}
           </View>
-          {/* <View>
-            <View style={[styles.card, { backgroundColor: "#00367E" }]}>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <View
-                  style={{
-                    flexDirection: "row",
-                    gap: 10,
-                    alignItems: "center",
-                  }}
-                >
-                  <Image
-                    source={require("../../assets/img/crown.png")}
-                    style={styles.image}
-                  />
-                  <Text
-                    style={{
-                      color: "#FFAE2B",
-                      fontSize: 25,
-                      fontWeight: "500",
-                    }}
-                  >
-                    Premium
-                  </Text>
-                </View>
-              </View>
-
-              <View
-                style={{ flexDirection: "row", gap: 5, alignItems: "baseline" }}
-              >
-                <Text
-                  style={{ fontSize: 20, fontWeight: "600", color: "white" }}
-                >
-                  Rs.
-                </Text>
-                <Text
-                  style={{ fontSize: 48, fontWeight: "900", color: "white" }}
-                >
-                  299
-                </Text>
-                <Text
-                  style={{ fontSize: 65, fontWeight: "900", color: "white" }}
-                >
-                  /-{" "}
-                </Text>
-              </View>
-              <Text
-                style={{ color: "#C9C9C9", fontWeight: "400", fontSize: 16 }}
-              >
-                (3 years validity)
-              </Text>
-              <View style={{ paddingVertical: 15, paddingHorizontal: 8 }}>
-                <SpanText textColor="#FFFFFF" text="Paid College Admission" />
-                <View
-                  style={[
-                    styles.hairlineMenu,
-                    { backgroundColor: "#D9D9D933" },
-                  ]}
-                />
-                <SpanText textColor="#FFFFFF" text="Paid Certificate Course" />
-                <View
-                  style={[
-                    styles.hairlineMenu,
-                    { backgroundColor: "#D9D9D933" },
-                  ]}
-                />
-                <SpanText
-                  textColor="#FFFFFF"
-                  text="Education Government Scholarship"
-                />
-                <View
-                  style={[
-                    styles.hairlineMenu,
-                    { backgroundColor: "#D9D9D933" },
-                  ]}
-                />
-              </View>
-              <BorderGradient text="Buy Plan" />
-            </View>
-          </View>
-          <View>
-            <View style={[styles.card, { backgroundColor: "#00367E" }]}>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <View
-                  style={{
-                    flexDirection: "row",
-                    gap: 10,
-                    alignItems: "center",
-                  }}
-                >
-                  <Image
-                    source={require("../../assets/img/member.png")}
-                    style={styles.image}
-                  />
-                  <Text
-                    style={{
-                      color: "#FFAE2B",
-                      fontSize: 25,
-                      fontWeight: "500",
-                    }}
-                  >
-                    Ultra Premium
-                  </Text>
-                </View>
-              </View>
-
-              <View
-                style={{ flexDirection: "row", gap: 5, alignItems: "baseline" }}
-              >
-                <Text
-                  style={{ fontSize: 20, fontWeight: "600", color: "white" }}
-                >
-                  Rs.
-                </Text>
-                <Text
-                  style={{ fontSize: 48, fontWeight: "900", color: "white" }}
-                >
-                  499
-                </Text>
-                <Text
-                  style={{ fontSize: 65, fontWeight: "900", color: "white" }}
-                >
-                  /-{" "}
-                </Text>
-              </View>
-              <Text
-                style={{ color: "#C9C9C9", fontWeight: "400", fontSize: 16 }}
-              >
-                (3 years validity)
-              </Text>
-              <View style={{ paddingVertical: 15, paddingHorizontal: 8 }}>
-                <SpanText textColor="#FFFFFF" text="Entrance Scholarship" />
-                <View
-                  style={[
-                    styles.hairlineMenu,
-                    { backgroundColor: "#D9D9D933" },
-                  ]}
-                />
-                <SpanText textColor="#FFFFFF" text="Merit Scholarship" />
-                <View
-                  style={[
-                    styles.hairlineMenu,
-                    { backgroundColor: "#D9D9D933" },
-                  ]}
-                />
-                <SpanText textColor="#FFFFFF" text="Education Loan" />
-                <View
-                  style={[
-                    styles.hairlineMenu,
-                    { backgroundColor: "#D9D9D933" },
-                  ]}
-                />
-              </View>
-              <BorderGradient text="Buy Plan" />
-            </View>
-          </View> */}
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -456,16 +334,13 @@ const MembershipPlan = ({ navigation }) => {
 export default MembershipPlan;
 
 const styles = StyleSheet.create({
-  container: {
-    // marginTop: 28,
-  },
+  container: {},
   mainView: {
     flex: 0,
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
     height: "auto",
-    // backgroundColor: "red",
   },
   innerView: {
     width: "90%",
@@ -475,43 +350,47 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 12,
   },
+  loader: {
+    height: Dimensions.get("window").height * 1,
+    // width: Dimensions.get("window").width * 0.7,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "white",
+  },
   hairline: {
-    backgroundColor: "#00367E66", // Change the color
+    backgroundColor: "#00367E66",
     height: 1,
     width: "100%",
     marginTop: 15,
-    shadowColor: "#00367E66", // Shadow color
+    shadowColor: "#00367E66",
     shadowOffset: {
       width: 0,
       height: 2,
     },
-    shadowOpacity: 0.5, // Shadow opacity
-    shadowRadius: 2, // Shadow radius
-    elevation: 2, // Android shadow elevation
+    shadowOpacity: 0.5,
+    shadowRadius: 2,
+    elevation: 2,
   },
   buttonbox: {
-    width: 100, // Adjust width according to your requirement
-    height: 40, // Adjust height according to your requirement
-    borderRadius: 10, // Adjust border radius according to your requirement
-    overflow: "hidden", // Ensure that gradient doesn't overflow the button
+    width: 100,
+    height: 40,
+    borderRadius: 10,
+    overflow: "hidden",
   },
   gradientText: {
-    color: "white", // Text color
-    textAlign: "center", // Text alignment
-    // You can add more styles to the text if needed
+    color: "white",
+    textAlign: "center",
   },
   card: {
     backgroundColor: "white",
     width: Dimensions.get("screen").width * 0.88,
     height: Dimensions.get("screen").height * 0.55,
-    // width:318,
-    // height:440,
     borderRadius: 10,
     margin: 15,
     paddingTop: 20,
     paddingBottom: 30,
     paddingHorizontal: 15,
-    position: "relative", // To allow absolute positioning of lock image
+    position: "relative",
     borderWidth: 1,
   },
   card_main: {

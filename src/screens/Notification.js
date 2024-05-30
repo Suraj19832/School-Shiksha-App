@@ -12,9 +12,16 @@ import {
   Easing,
   SafeAreaView,
 } from "react-native";
-import { AntDesign, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import {
+  AntDesign,
+  Ionicons,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
 import Header from "../../components/Header";
-import { getRequestWithParamsTokens, getrequestwithtoken } from "../../Helper/Helper";
+import {
+  getRequestWithParamsTokens,
+  getrequestwithtoken,
+} from "../../Helper/Helper";
 import { AuthContext } from "../../Utils/context/AuthContext";
 import moment from "moment";
 import { ActivityIndicator } from "react-native";
@@ -126,26 +133,28 @@ const Notification = ({ navigation }) => {
   const [limit, setlimit] = useState(1);
   const { userToken } = useContext(AuthContext);
   const [getdatalength, setgetdatalength] = useState([]);
+  const [loadingPage, setLoadingPage] = useState(false);
   useEffect(() => {
     const params = { page: limit };
     if (limit === 1) {
-      setNotifiData([])   
-     }
-     
-    getRequestWithParamsTokens("student/notifications", userToken ,params)
-   
+      setNotifiData([]);
+    }
+    setLoadingPage(true);
+    getRequestWithParamsTokens("student/notifications", userToken, params)
       .then((res) => {
-        setgetdatalength(res?.data?.total_count)
+        setgetdatalength(res?.data?.total_count);
 
         const objData = res?.data?.items.map((item) => item);
         // setNotifiData(objData);
-        setNotifiData((prev) => [...prev, ...objData])
+        setNotifiData((prev) => [...prev, ...objData]);
         setIsLoading(false);
+        setLoadingPage(false);
       })
       .catch((err) => {
         console.log(err);
+        setLoadingPage(false);
       });
-  }, [userToken ,limit]);
+  }, [userToken, limit]);
   const loadmore = () => {
     setIsLoading(true);
     console.log("Loadmore is clicked");
@@ -153,6 +162,19 @@ const Notification = ({ navigation }) => {
     console.log(limit);
     // fetchUserData("master/organization-course", id);
   };
+
+  if (loadingPage) {
+    return (
+      <View>
+        <Header title="Notifications" navigateTo={navigation.goBack} />
+        <ActivityIndicator
+          size={"large"}
+          color={"#00367E"}
+          style={styles.loader}
+        />
+      </View>
+    );
+  }
   return (
     <SafeAreaView style={styles.container}>
       <Header title="Notifications" navigateTo={navigation.goBack} />
@@ -160,7 +182,7 @@ const Notification = ({ navigation }) => {
         <View style={styles.mainView}>
           <View style={styles.innerView}></View>
 
-          <View style={{marginBottom:20}}>
+          <View style={{ marginBottom: 20 }}>
             {notifiData.map((item, index) => {
               return (
                 <View key={index}>
@@ -200,7 +222,11 @@ const Notification = ({ navigation }) => {
                 }}
               >
                 {isLoading ? (
-                  <ActivityIndicator size="small" color="grey" style={{alignSelf:"center" ,width:'100%'}} />
+                  <ActivityIndicator
+                    size="small"
+                    color="grey"
+                    style={{ alignSelf: "center", width: "100%" }}
+                  />
                 ) : (
                   <>
                     <Text
@@ -218,7 +244,7 @@ const Notification = ({ navigation }) => {
                 )}
               </View>
             </TouchableOpacity>
-         )} 
+          )}
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -244,6 +270,13 @@ const styles = StyleSheet.create({
     gap: 10,
     // justifyContent:'center',
     // alignItems:'center'
+  },
+  loader: {
+    height: Dimensions.get("window").height * 1,
+    // width: Dimensions.get("window").width * 0.7,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#FFFCCE",
   },
   hairline: {
     backgroundColor: "#00367E66", // Change the color

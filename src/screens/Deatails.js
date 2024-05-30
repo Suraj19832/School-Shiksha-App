@@ -22,6 +22,8 @@ const Details = ({ navigation }) => {
   const { collegeName, courseName, courseid, heading, id, organization_Id } =
     route.params;
 
+  console.log(heading, "this is name of headingggggggggggg");
+
   const [activeIndex, setActiveIndex] = useState(0);
   const [bannerData, setBannerData] = useState([]);
   const [isLoadingpage, setisLoadingpage] = useState(true);
@@ -34,7 +36,7 @@ const Details = ({ navigation }) => {
     GetfetchDataWithParams("master/organization-banner", params)
       .then((res) => {
         setBannerData(res.data);
-        setisLoadingpage(false)
+        setisLoadingpage(false);
         console.log(res.data, "Banner Data");
       })
       .catch((err) => {
@@ -90,7 +92,7 @@ const Details = ({ navigation }) => {
 
       GetfetchDataWithParams(endpoint, params).then((res) => {
         setDetailsData(res?.data);
-        setisLoadingcard(false)
+        setisLoadingcard(false);
       });
     } catch (error) {
       console.error("Error fetching user data:", error);
@@ -104,8 +106,6 @@ const Details = ({ navigation }) => {
     const whatsappUrl = `tel:${phonenumber}`;
     Linking.openURL(whatsappUrl);
   };
-
-
 
   const CardSkeleton = () => {
     const opacity = useRef(new Animated.Value(0.3)).current;
@@ -138,7 +138,16 @@ const Details = ({ navigation }) => {
             />
           ))}
           <Animated.View
-            style={[styles.placeholder, { opacity, height: "45%"  ,width:'80%' ,borderRadius:20 ,alignSelf:'center'}]}
+            style={[
+              styles.placeholder,
+              {
+                opacity,
+                height: "45%",
+                width: "80%",
+                borderRadius: 20,
+                alignSelf: "center",
+              },
+            ]}
           />
         </View>
       </>
@@ -202,7 +211,7 @@ const Details = ({ navigation }) => {
                   resizeMode="cover"
                 />
               </View>
-              <View style={{ gap: 10 }}>
+              <View style={{ gap: 10, paddingRight: 50 }}>
                 <Text
                   style={{
                     color: "rgba(55, 55, 55, 1)",
@@ -220,7 +229,7 @@ const Details = ({ navigation }) => {
                   }}
                 >
                   <Entypo name="location" size={12} color="#373737" />
-                  <View style={{}}>
+                  <View style={{ paddingRight: 20 }}>
                     <Text
                       style={{
                         fontSize: 10,
@@ -237,11 +246,19 @@ const Details = ({ navigation }) => {
             </View>
 
             <View style={styles.course}>
-              <Text
-                style={{ color: "#01265B", fontWeight: "600", fontSize: 14 }}
-              >
-                Course Name -
-              </Text>
+              {heading === "Exam Equiry" ? (
+                <Text
+                  style={{ color: "#01265B", fontWeight: "600", fontSize: 14 }}
+                >
+                  Exam Name -
+                </Text>
+              ) : (
+                <Text
+                  style={{ color: "#01265B", fontWeight: "600", fontSize: 14 }}
+                >
+                  Course Name -
+                </Text>
+              )}
               <Text
                 style={{ color: "#595959", fontWeight: "600", fontSize: 14 }}
               >

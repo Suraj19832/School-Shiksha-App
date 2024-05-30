@@ -30,6 +30,9 @@ const MembershipPayment = ({ navigation }) => {
   const [timerEnded, setTimerEnded] = useState(false);
   const [orderId, setOrderId] = useState("");
 
+  console.log(plan_id, "here is plan id mention here");
+  // console.log(orderId, "here is order id mention here");
+
   useEffect(() => {
     const countdownInterval = setInterval(() => {
       if (!timerEnded) {
@@ -67,21 +70,21 @@ const MembershipPayment = ({ navigation }) => {
       });
   }, [plan_id, userToken]);
 
-  const payviaApps = () => {
-    if (upiLink) {
-      Linking.openURL(upiLink).catch((err) => {
-        console.error("Failed to open UPI link:", err);
-        Alert.alert("Error", "Failed to open UPI link. Please try again.");
-      });
-    } else {
-      Alert.alert("Error", "UPI link is not available.");
-    }
-  };
+  // const payviaApps = () => {
+  //   if (upiLink) {
+  //     Linking.openURL(upiLink).catch((err) => {
+  //       console.error("Failed to open UPI link:", err);
+  //       Alert.alert("Error", "Failed to open UPI link. Please try again.");
+  //     });
+  //   } else {
+  //     Alert.alert("Error", "UPI link is not available.");
+  //   }
+  // };
 
   useEffect(() => {
     const interval = setInterval(() => {
-      checkPaymentStatus();
-    }, 4000); // Check every 4 seconds
+      if (orderId) checkPaymentStatus();
+    }, 4000);
 
     return () => clearInterval(interval);
   }, [orderId, userToken]);
@@ -102,8 +105,10 @@ const MembershipPayment = ({ navigation }) => {
       if (res?.data?.status === "SUCCESS") {
         setTimerEnded(true);
         showToast("Payment Successful");
-        // Navigate to success screen or perform other actions
         navigation.navigate("sucessfully");
+        setTimeout(() => {
+          navigation.navigate("Dashboard");
+        }, 2000);
       } else if (res?.data?.status === "PENDING") {
         console.log("Payment is pending. Making another API call.", res);
       }

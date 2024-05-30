@@ -44,7 +44,8 @@ import Header from "../../components/Header";
 import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 import { AuthContext } from "../../Utils/context/AuthContext";
 const EditProfile = ({ navigation }) => {
-  const { userToken , profileAllData ,setprofileAllData} = useContext(AuthContext);
+  const { userToken, profileAllData, setprofileAllData } =
+    useContext(AuthContext);
 
   const showToast = (message) => {
     if (Platform.OS === "android") {
@@ -251,7 +252,7 @@ const EditProfile = ({ navigation }) => {
       setDropdownOpenclass(false);
     }
   };
-console.log("11111111111111111====",profileAllData)
+  console.log("11111111111111111====", profileAllData);
   const handleSelectOption = (districtName, id) => {
     setSelectedOption(districtName);
     setInputValue(districtName);
@@ -491,7 +492,7 @@ console.log("11111111111111111====",profileAllData)
     email: "",
     date_of_birth: "",
     class_name: "",
-    gender:"",
+    gender: "",
     // religion: "",
     address: "",
     state_name: "",
@@ -570,14 +571,6 @@ console.log("11111111111111111====",profileAllData)
       "district_id",
       "class_id",
     ];
-    // const emptyFields = requiredFields.filter((field) => !profileData[field]);
-
-    // if (emptyFields.length > 0) {
-    //   showToast(
-    //     `Please fill in the following fields: ${emptyFields.join(", ")}`
-    //   );
-    //   return;
-    // }
 
     const emptyFields = requiredFields.filter((field) => !profileData[field]);
 
@@ -619,7 +612,7 @@ console.log("11111111111111111====",profileAllData)
       .then((res) => {
         setUpdateLoading(false);
         showToast(res?.message);
-        setprofileAllData(profileData?.gender)
+        setprofileAllData(profileData?.gender);
         navigation.navigate("Dashboard");
       })
       .catch((err) => {
@@ -1059,7 +1052,7 @@ console.log("11111111111111111====",profileAllData)
                       style={styles.dropdownOption}
                       onPress={() => {
                         setProfileData({ ...profileData, gender: "female" });
-                       
+
                         toggleDropdowngender(); // Close the dropdown after selection
                       }}
                     >

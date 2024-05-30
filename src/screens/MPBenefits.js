@@ -161,7 +161,6 @@ const MPBenefits = ({ navigation }) => {
                         style={styles.image}
                       />
                     </View>
-                    {/* {isActive && <Text style={styles.lockedText}>LO</Text>} */}
                     <Text style={styles.textStyle}>
                       {truncateMessage(item.service_name)}
                     </Text>

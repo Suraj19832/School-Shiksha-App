@@ -8,19 +8,26 @@ import {
   FlatList,
   Linking,
 } from "react-native";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Header from "../../components/Header";
+import { getdata, postDataWithFormData } from "../../Helper/Helper";
 const CareerGuidance = ({ navigation }) => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [imageData, setImageData] = useState([]);
+  const [bannerType, setBannerType] = useState([]);
+
+  const images = imageData;
+
   const flatListRef = useRef(null);
-  const images = [
-    require("../../assets/img/onlinecourselist.png"),
-    require("../../assets/img/slider3.png"),
-    require("../../assets/img/slider2.png"),
-  ];
+
+  // const images = [
+  //   require("../../assets/img/onlinecourselist.png"),
+  //   require("../../assets/img/slider3.png"),
+  //   require("../../assets/img/slider2.png"),
+  // ];
   const onViewableItemsChanged = ({ viewableItems }) => {
     if (viewableItems && viewableItems.length > 0) {
       setActiveIndex(viewableItems[0].index || 0);
@@ -43,6 +50,47 @@ const CareerGuidance = ({ navigation }) => {
       </View>
     );
   };
+
+  const renderItem = ({ item }) => (
+    // console.log(item.banner_image, "helloooooooooo"),
+    <View style={styles.imageContainer}>
+      <Image
+        source={{ uri: item.image }}
+        style={styles.image}
+        resizeMode="cover"
+        // onError={(error) => console.log("Error loading image:", error)}
+      />
+    </View>
+  );
+
+  useEffect(() => {
+    getdata("master/banner-types")
+      .then((res) => {
+        const values = res.data.map((item) => item.type);
+        setBannerType(values, "bnnere tyoe is here");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  useEffect(() => {
+    const formData = new FormData();
+    bannerType.forEach((element) => {
+      if (element === "career_guidance") {
+        formData.append("type", element);
+      }
+    });
+    postDataWithFormData("master/career-guidance-banner", formData)
+      .then((res) => {
+        setImageData(res.data);
+        console.log(res.data, "image data we got from here");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [bannerType]);
+
   const whatsappclicked = () => {
     const whatsappUrl = `whatsapp://send?phone=${7908154725}`;
     Linking.openURL(whatsappUrl);
@@ -58,9 +106,7 @@ const CareerGuidance = ({ navigation }) => {
             horizontal
             pagingEnabled
             showsHorizontalScrollIndicator={false}
-            renderItem={({ item }) => (
-              <Image style={styles.imgStyle} source={item} resizeMode="cover" />
-            )}
+            renderItem={renderItem}
             keyExtractor={(item, index) => index.toString()}
             onViewableItemsChanged={onViewableItemsChanged}
           />
@@ -307,6 +353,15 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     alignItems: "center",
+  },
+  imageContainer: {
+    width: 360,
+    height: 162,
+    borderRadius: 10,
+  },
+  image: {
+    height: 220,
+    width: "100%",
   },
   imgStyle: {
     height: 172,
