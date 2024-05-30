@@ -155,7 +155,7 @@ const CardSkeleton = () => {
                     </View>
                   </View>
                 </View>
-              ) : item.status === "pending" ? (
+              ) : item?.status === "pending" ? (
                 <View
                   style={[
                     styles.reactangleCard,

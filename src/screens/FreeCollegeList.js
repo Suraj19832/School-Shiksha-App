@@ -918,6 +918,7 @@ const FreeCollegeList = ({ navigation }) => {
                         id: id,
                         heading: heading,
                         organization_Id: value?.organization_id,
+                        Location:requiredFields?.is_location_required
 
                         // organizationId
                       })

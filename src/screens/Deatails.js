@@ -19,8 +19,15 @@ import { Entypo, Feather } from "@expo/vector-icons";
 
 const Details = ({ navigation }) => {
   const route = useRoute();
-  const { collegeName, courseName, courseid, heading, id, organization_Id } =
-    route.params;
+  const {
+    collegeName,
+    courseName,
+    courseid,
+    heading,
+    id,
+    organization_Id,
+    Location,
+  } = route.params;
 
   console.log(heading, "this is name of headingggggggggggg");
 
@@ -221,27 +228,30 @@ const Details = ({ navigation }) => {
                 >
                   {collegeName}
                 </Text>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    gap: 4,
-                    alignItems: "center",
-                  }}
-                >
-                  <Entypo name="location" size={12} color="#373737" />
-                  <View style={{ paddingRight: 20 }}>
-                    <Text
-                      style={{
-                        fontSize: 10,
-                        color: "#373737",
-                        fontWeight: "500",
-                      }}
-                    >
-                      {detailsData?.block_name}, {detailsData?.district_name},
-                      {detailsData?.state_name}{" "}
-                    </Text>
+
+                {Location === "yes" && (
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      gap: 4,
+                      alignItems: "center",
+                    }}
+                  >
+                    <Entypo name="location" size={12} color="#373737" />
+                    <View style={{ paddingRight: 20 }}>
+                      <Text
+                        style={{
+                          fontSize: 10,
+                          color: "#373737",
+                          fontWeight: "500",
+                        }}
+                      >
+                        {detailsData?.block_name}, {detailsData?.district_name},
+                        {detailsData?.state_name}{" "}
+                      </Text>
+                    </View>
                   </View>
-                </View>
+                )}
               </View>
             </View>
 
