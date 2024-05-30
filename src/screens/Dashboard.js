@@ -282,9 +282,7 @@ const Dashboard = ({ navigation }) => {
       navigation.navigate("freeCollege", {
         id: item.id,
         heading: item.service_name,
-        searchrequired:requiredFields?.is_search_required
-
-
+        searchrequired: requiredFields?.is_search_required,
       });
     } else {
       navigation.navigate("membershipPlan");
@@ -396,6 +394,13 @@ const Dashboard = ({ navigation }) => {
   // }
 
   // Skeleton End ?
+
+  const truncateMessage = (message, maxLength = 25) => {
+    if (message.length > maxLength) {
+      return message.substring(0, maxLength) + "...";
+    }
+    return message;
+  };
 
   return (
     <View style={styles.container}>
@@ -863,7 +868,7 @@ const Dashboard = ({ navigation }) => {
                                   />
                                 </View>
                                 <Text style={styles.textStyle}>
-                                  {cd.service_name}
+                                  {truncateMessage(cd.service_name)}
                                 </Text>
                               </TouchableOpacity>
                             </>

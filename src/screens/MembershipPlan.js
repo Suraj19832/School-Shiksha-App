@@ -86,7 +86,6 @@ const MembershipPlan = ({ navigation }) => {
             Membership Plan
           </Text>
         </View>
-        {/* <Header title="Membership Plan" navigateTo={navigation.goBack} /> */}
         <ActivityIndicator
           size={"large"}
           color={"#00367E"}
@@ -287,10 +286,13 @@ const MembershipPlan = ({ navigation }) => {
                               alignItems: "center",
                             }}
                           >
-                            <Image
-                              style={{ width: 20, height: 20 }}
-                              source={require("../../assets/img/correct.png")}
-                            />
+                            {item.length > 0 && (
+                              <Image
+                                style={{ width: 20, height: 20 }}
+                                source={require("../../assets/img/correct.png")}
+                              />
+                            )}
+
                             <Text
                               style={{
                                 fontWeight: "400",

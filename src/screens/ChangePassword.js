@@ -23,16 +23,10 @@ import {
 import {
   getrequestwithtoken,
   objectToFormData,
-  postDataWithFormData,
   postDataWithFormDataWithToken,
-  sendPostData,
 } from "../../Helper/Helper";
 import { AuthContext } from "../../Utils/context/AuthContext";
-// import { useRoute } from "@react-navigation/native";
 const ChangePassword = ({ navigation }) => {
-  // const route = useRoute();
-  // const { email } = route.params;
-
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [currentPassword, setcurrentPassword] = useState("");
@@ -50,7 +44,6 @@ const ChangePassword = ({ navigation }) => {
   const handleConfirmPasswordChange = (text) => {
     setConfirmPassword(text);
     checkPasswordsMatch(newPassword, text);
-    // console.log(confirmPassword)
   };
 
   const checkPasswordsMatch = (newPassword, confirmPassword) => {
@@ -60,36 +53,10 @@ const ChangePassword = ({ navigation }) => {
   function showToast(message) {
     ToastAndroid.show(message, ToastAndroid.SHORT);
   }
-
-  //   const handleConfirmPassword = () => {
-  //     setIsLoading(true);
-
-  //     const formData = new FormData();
-  //     formData.append("new_password", newPassword);
-  //     formData.append("confirm_password", confirmPassword);
-  //     formData.append("email", email);
-
-  //     sendPostData("auth/reset-password", formData)
-  //       .then((res) => {
-  //         setIsLoading(false);
-  //         if (res?.status) {
-  //           showToast(res.message);
-  //           navigation.navigate("Login");
-  //         } else {
-  //           showToast(res.errors?.confirm_password);
-  //         }
-  //       })
-  //       .catch((err) => {
-  //         setIsLoading(false);
-  //         console.error(err, "error message from login side");
-  //       });
-  //   };
-
   const [changePasswordServerMessage, setchangePasswordServerMessage] =
     useState("");
   const { userToken } = useContext(AuthContext);
   const handleResetPassword = async () => {
-    console.log("reset password button was clicked");
     setIsLoading(true);
     const postData = {
       mobile: LoginUserNumber,
@@ -97,7 +64,6 @@ const ChangePassword = ({ navigation }) => {
       new_password: newPassword,
       confirm_password: confirmPassword,
     };
-    // Convert object data to FormData
     const formDatablock = objectToFormData(postData);
 
     postDataWithFormDataWithToken(
@@ -106,21 +72,12 @@ const ChangePassword = ({ navigation }) => {
       userToken
     )
       .then((res) => {
-        console.log("Response from API for block:", res);
         setchangePasswordServerMessage(res?.message);
-        // Do something with the response data, if needed
         if (res?.status) {
-          console.log("====================================", res?.message);
           showToast("Password Reset Successfull");
           setIsLoading(false);
+          navigation.navigate("Dashboard");
         } else {
-          console.log(
-            "jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj",
-            res
-          );
-
-          console.log(res);
-          // showToast("Passord Not Match");
           Alert.alert("Alert", "Password Not Match");
           setIsLoading(false);
         }
@@ -144,14 +101,7 @@ const ChangePassword = ({ navigation }) => {
     // Call the getstatedata function with the API URL
     getrequestwithtoken(apiUrl, userToken)
       .then((res) => {
-        // console.log('Response from API:', res.data);
-        // setStateData(res?.data);
-        console.log(
-          ".................................................",
-          res?.data?.mobile
-        );
         setLoginUserNumber(res?.data?.mobile);
-        // Do something with the response data, e.g., update component state
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -319,7 +269,8 @@ const ChangePassword = ({ navigation }) => {
 export default ChangePassword;
 const styles = StyleSheet.create({
   container: {
-    marginTop: 10,
+    paddingTop: 10,
+    backgroundColor: "white",
   },
   main_content: {
     marginHorizontal: 20,
@@ -335,6 +286,7 @@ const styles = StyleSheet.create({
   img: {
     height: 219,
     width: 236,
+    backgroundColor: "white",
   },
   welcome_texts: {
     marginTop: 30,
@@ -375,7 +327,6 @@ const styles = StyleSheet.create({
   },
   inputbox_submit: {
     marginTop: 10,
-    // borderWidth: 2,
     borderColor: "rgba(3, 53, 125, 1)",
     padding: 18,
     paddingHorizontal: 20,
