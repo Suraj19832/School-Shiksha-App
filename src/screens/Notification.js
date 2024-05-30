@@ -50,8 +50,8 @@ const formatNotificationTime = (dateString) => {
 };
 
 const truncateMessage = (message, maxLength = 35) => {
-  if (message.length > maxLength) {
-    return message.substring(0, maxLength) + "...";
+  if (message?.length > maxLength) {
+    return message?.substring(0, maxLength) + "...";
   }
   return message;
 };
@@ -86,8 +86,8 @@ const NotificationContainer = (props) => {
             alignItems: "center",
           }}
         >
-          <View style={[styles.icon, { backgroundColor: props.iconColor }]}>
-            <Text>{props.iconName}</Text>
+          <View style={[styles.icon, { backgroundColor: props?.iconColor }]}>
+            <Text>{props?.iconName}</Text>
           </View>
           {/* <View>
           // </View> */}
@@ -101,7 +101,7 @@ const NotificationContainer = (props) => {
                 lineHeight: 18,
               }}
             >
-              <Text>{props.subjectMsg}</Text>
+              <Text>{props?.subjectMsg}</Text>
             </View>
             <Text
               style={{
@@ -113,12 +113,12 @@ const NotificationContainer = (props) => {
                 fontWeight: "500",
               }}
             >
-              {truncateMessage(props.NotificationMsg)}
+              {truncateMessage(props?.NotificationMsg)}
             </Text>
           </View>
           <View style={{ position: "absolute", bottom: 0, right: 0 }}>
             <Text style={{ fontSize: 11, color: "#A6A6A6" }}>
-              {formatNotificationTime(props.msgTime)}
+              {formatNotificationTime(props?.msgTime)}
             </Text>
           </View>
         </View>
@@ -183,13 +183,13 @@ const Notification = ({ navigation }) => {
           <View style={styles.innerView}></View>
 
           <View style={{ marginBottom: 20 }}>
-            {notifiData.map((item, index) => {
+            {notifiData?.map((item, index) => {
               return (
                 <View key={index}>
                   <NotificationContainer
-                    subjectMsg={item.subject}
-                    NotificationMsg={item.message}
-                    msgTime={item.created_at}
+                    subjectMsg={item?.subject}
+                    NotificationMsg={item?.message}
+                    msgTime={item?.created_at}
                     iconColor="#C5F2EC"
                     iconName="SS"
                   />
