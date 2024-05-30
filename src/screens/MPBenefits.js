@@ -28,9 +28,6 @@ const MPBenefits = ({ navigation }) => {
   const [serviceId, setServiceId] = useState([]);
   const [cardData, setCardData] = useState([]);
 
-  console.log(serviceId, "array of serviceId");
-  console.log(activeServices, "array of active services");
-
   useEffect(() => {
     const params = {
       service_type: sortheading,
@@ -39,7 +36,7 @@ const MPBenefits = ({ navigation }) => {
     GetfetchDataWithParams("master/services", params)
       .then((res) => {
         setCardData(res.data);
-        const value = res.data.map((item) => item.id);
+        const value = res?.data?.map((item) => item.id);
         setServiceId(value);
         setLoading(false);
       })
@@ -52,25 +49,25 @@ const MPBenefits = ({ navigation }) => {
   useEffect(() => {
     getrequestwithtoken("student/profile", userToken)
       .then((res) => {
-        console.log(res.data.subscription.plan_services, "yuppp");
-        setActiveServices(res.data.subscription.plan_services);
+        console.log(res?.data?.subscription?.plan_services, "yuppp");
+        setActiveServices(res?.data?.subscription?.plan_services);
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
   const isServiceActive = (serviceId) => {
-    return activeServices.includes(serviceId.toString());
+    return activeServices?.includes(serviceId.toString());
   };
 
   const handleNavigate = (item) => {
-    const isActive = isServiceActive(item.id);
+    const isActive = isServiceActive(item?.id);
     const requiredFields = JSON.parse(item?.required_field);
     if (isActive) {
       navigation.navigate("freeCollege", {
         id: item.id,
         heading: item.service_name,
-        searchrequired:requiredFields?.is_search_required
+        searchrequired: requiredFields?.is_search_required,
       });
     } else {
       navigation.navigate("membershipPlan");
@@ -111,6 +108,7 @@ const MPBenefits = ({ navigation }) => {
             style={{
               marginTop: 15,
               marginHorizontal: 10,
+              marginBottom: 60,
             }}
           >
             <View
@@ -136,8 +134,7 @@ const MPBenefits = ({ navigation }) => {
               )}
 
               {cardData.map((item, index) => {
-                const isActive = isServiceActive(item.id.toString());
-                console.log(isActive);
+                const isActive = isServiceActive(item?.id.toString());
                 return (
                   <TouchableOpacity
                     style={styles.card}
@@ -169,24 +166,6 @@ const MPBenefits = ({ navigation }) => {
                   </TouchableOpacity>
                 );
               })}
-              {/* {sortheading !== "other" && (
-                <TouchableOpacity
-                  style={styles.card}
-                  onPress={() =>
-                    navigation.navigate("computerCollegeList", {
-                      title: "Exam Enquiry",
-                    })
-                  }
-                >
-                  <View style={styles.imgContainer}>
-                    <Image
-                      source={require("../../assets/icons/exam_enquiry.png")}
-                      style={styles.image}
-                    />
-                  </View>
-                  <Text style={styles.textStyle}>Exam Enquiry</Text>
-                </TouchableOpacity>
-              )} */}
             </View>
           </View>
         </View>

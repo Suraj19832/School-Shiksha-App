@@ -9,7 +9,6 @@ import {
   Linking,
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
-
 import { Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Header from "../../components/Header";
@@ -20,16 +19,10 @@ const CareerGuidance = ({ navigation }) => {
   const [bannerType, setBannerType] = useState([]);
 
   const images = imageData;
-
   const flatListRef = useRef(null);
 
-  // const images = [
-  //   require("../../assets/img/onlinecourselist.png"),
-  //   require("../../assets/img/slider3.png"),
-  //   require("../../assets/img/slider2.png"),
-  // ];
   const onViewableItemsChanged = ({ viewableItems }) => {
-    if (viewableItems && viewableItems.length > 0) {
+    if (viewableItems && viewableItems?.length > 0) {
       setActiveIndex(viewableItems[0].index || 0);
     }
   };
@@ -37,7 +30,7 @@ const CareerGuidance = ({ navigation }) => {
     return (
       <View style={styles.paginationContainer}>
         <View style={styles.pagination}>
-          {images.map((_, index) => (
+          {images?.map((_, index) => (
             <View
               key={index}
               style={[
@@ -52,13 +45,11 @@ const CareerGuidance = ({ navigation }) => {
   };
 
   const renderItem = ({ item }) => (
-    // console.log(item.banner_image, "helloooooooooo"),
     <View style={styles.imageContainer}>
       <Image
-        source={{ uri: item.image }}
+        source={{ uri: item?.image }}
         style={styles.image}
         resizeMode="cover"
-        // onError={(error) => console.log("Error loading image:", error)}
       />
     </View>
   );
@@ -66,8 +57,8 @@ const CareerGuidance = ({ navigation }) => {
   useEffect(() => {
     getdata("master/banner-types")
       .then((res) => {
-        const values = res.data.map((item) => item.type);
-        setBannerType(values, "bnnere tyoe is here");
+        const values = res?.data?.map((item) => item.type);
+        setBannerType(values);
       })
       .catch((err) => {
         console.log(err);
@@ -76,15 +67,14 @@ const CareerGuidance = ({ navigation }) => {
 
   useEffect(() => {
     const formData = new FormData();
-    bannerType.forEach((element) => {
+    bannerType?.forEach((element) => {
       if (element === "career_guidance") {
         formData.append("type", element);
       }
     });
     postDataWithFormData("master/career-guidance-banner", formData)
       .then((res) => {
-        setImageData(res.data);
-        console.log(res.data, "image data we got from here");
+        setImageData(res?.data);
       })
       .catch((err) => {
         console.log(err);

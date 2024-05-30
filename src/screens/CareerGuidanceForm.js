@@ -105,7 +105,7 @@ const CareerGuidanceForm = ({ navigation }) => {
       )
         .then((res) => {
           setLoading(false);
-          showToast(res.message);
+          showToast(res?.message);
           navigation.navigate("Dashboard");
         })
         .catch((err) => {
@@ -118,13 +118,12 @@ const CareerGuidanceForm = ({ navigation }) => {
   useEffect(() => {
     getrequestwithtoken("student/profile", userToken)
       .then((res) => {
-        console.log(res.data, "100000 response");
-        setData(res.data);
-        setName(res.data.name || "");
-        setMobile(res.data.mobile || "");
-        setEmail(res.data.email || "");
-        setGuardianName(res.data.father_name || "");
-        setWhatsappNumber(res.data.whatsapp_number || "");
+        setData(res?.data);
+        setName(res?.data?.name || "");
+        setMobile(res?.data?.mobile || "");
+        setEmail(res?.data?.email || "");
+        setGuardianName(res?.data?.father_name || "");
+        setWhatsappNumber(res?.data?.whatsapp_number || "");
       })
       .catch((err) => {
         console.log(err, "10000");
