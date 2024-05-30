@@ -457,7 +457,7 @@ const EditProfile = ({ navigation }) => {
     const apiUrl = "master/plan";
     getdata(apiUrl)
       .then((res) => {
-        const planNames = res.data.map((item) => item.plan_name);
+        const planNames = res?.data?.map((item) => item?.plan_name);
         setplan(planNames);
       })
       .catch((error) => {
@@ -572,9 +572,9 @@ const EditProfile = ({ navigation }) => {
       "class_id",
     ];
 
-    const emptyFields = requiredFields.filter((field) => !profileData[field]);
+    const emptyFields = requiredFields?.filter((field) => !profileData[field]);
 
-    if (emptyFields.length > 0) {
+    if (emptyFields?.length > 0) {
       const displayEmptyFields = emptyFields
         .map((field) => fieldDisplayNames[field])
         .join(", ");
@@ -669,7 +669,7 @@ const EditProfile = ({ navigation }) => {
                     style={styles.input}
                     placeholder="Enter your full name"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
-                    value={profileData.name || ""}
+                    value={profileData?.name || ""}
                     onChangeText={(text) =>
                       setProfileData({ ...profileData, name: text })
                     }
@@ -677,7 +677,7 @@ const EditProfile = ({ navigation }) => {
                   />
                 </View>
                 {formErrors.name && fieldTouched.name && (
-                  <Text style={{ color: "red" }}>{formErrors.name}</Text>
+                  <Text style={{ color: "red" }}>{formErrors?.name}</Text>
                 )}
                 {/* {!formErrors.name && !formData.name && fieldTouched.name && (
                   <Text style={{ color: "red" }}>Full Name is required</Text>
@@ -704,7 +704,7 @@ const EditProfile = ({ navigation }) => {
                     style={styles.input}
                     placeholder="Enter your guardian's name"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
-                    value={profileData.father_name || ""}
+                    value={profileData?.father_name || ""}
                     onChangeText={(text) =>
                       setProfileData({ ...profileData, father_name: text })
                     }
@@ -753,7 +753,7 @@ const EditProfile = ({ navigation }) => {
                     keyboardType="numeric"
                     placeholder="Enter your mobile number"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
-                    value={profileData.mobile || ""}
+                    value={profileData?.mobile || ""}
                     onChangeText={(text) =>
                       setProfileData({ ...profileData, mobile: text })
                     }
@@ -762,7 +762,7 @@ const EditProfile = ({ navigation }) => {
                     editable={mobileInActivity ? false : true}
                   />
                 </View>
-                {formErrors.mobile && fieldTouched.mobile && (
+                {formErrors?.mobile && fieldTouched?.mobile && (
                   <Text style={{ color: "red" }}>Mobile Number required</Text>
                 )}
                 {!formErrors.mobile &&
@@ -800,7 +800,7 @@ const EditProfile = ({ navigation }) => {
                     placeholder="Enter your whatsapp number"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
                     // value={formData.whatsapp_number}
-                    value={profileData.whatsapp_number || ""}
+                    value={profileData?.whatsapp_number || ""}
                     onChangeText={(text) =>
                       setProfileData({ ...profileData, whatsapp_number: text })
                     }
@@ -840,7 +840,7 @@ const EditProfile = ({ navigation }) => {
                     style={(styles.input, { width: "100%" })}
                     placeholder="Enter your email id"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
-                    value={profileData.email || ""}
+                    value={profileData?.email || ""}
                     onChangeText={(text) =>
                       setProfileData({ ...profileData, email: text })
                     }
@@ -877,7 +877,7 @@ const EditProfile = ({ navigation }) => {
                     style={styles.input}
                     placeholder="YYYY/MM/DD"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
-                    value={profileData.date_of_birth || ""}
+                    value={profileData?.date_of_birth || ""}
                     onChangeText={(text) =>
                       setProfileData({ ...profileData, date_of_birth: text })
                     }
@@ -932,7 +932,7 @@ const EditProfile = ({ navigation }) => {
                         style={styles.input}
                         placeholder="Select"
                         placeholderTextColor="rgba(166, 166, 166, 1)"
-                        value={profileData.class_name || ""}
+                        value={profileData?.class_name || ""}
                         editable={false}
                       />
                       <AntDesign
@@ -955,7 +955,7 @@ const EditProfile = ({ navigation }) => {
                       borderRadius: 4,
                     }}
                   >
-                    {classData.map((values, index) => {
+                    {classData?.map((values, index) => {
                       return (
                         <TouchableOpacity
                           key={index}
@@ -1161,14 +1161,14 @@ const EditProfile = ({ navigation }) => {
                     style={styles.input}
                     placeholder="Enter your address"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
-                    value={profileData.address || ""}
+                    value={profileData?.address || ""}
                     onChangeText={(text) =>
                       setProfileData({ ...profileData, address: text })
                     }
                     onBlur={() => handleInputBlur("address")}
                   />
                 </View>
-                {formErrors.address &&
+                {formErrors?.address &&
                   !formData.address &&
                   fieldTouched.address && (
                     <Text style={{ color: "red" }}>
@@ -1215,7 +1215,7 @@ const EditProfile = ({ navigation }) => {
                         style={styles.input}
                         placeholder="Select"
                         placeholderTextColor="rgba(166, 166, 166, 1)"
-                        value={profileData.state_name || ""}
+                        value={profileData?.state_name || ""}
                         editable={false}
                       />
                       <AntDesign
@@ -1289,8 +1289,8 @@ const EditProfile = ({ navigation }) => {
                         placeholder="Select"
                         placeholderTextColor="rgba(166, 166, 166, 1)"
                         value={
-                          profileData.district_name.charAt(0).toUpperCase() +
-                          profileData.district_name.slice(1)
+                          profileData?.district_name?.charAt(0).toUpperCase() +
+                          profileData?.district_name?.slice(1)
                         }
                         editable={false}
                       />
@@ -1351,7 +1351,7 @@ const EditProfile = ({ navigation }) => {
                     style={styles.input}
                     placeholder="Enter your police station"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
-                    value={profileData.police_station || ""}
+                    value={profileData?.police_station || ""}
                     onChangeText={(text) =>
                       setProfileData({ ...profileData, police_station: text })
                     }
@@ -1359,7 +1359,7 @@ const EditProfile = ({ navigation }) => {
                     // editable={false}
                   />
                 </View>
-                {formErrors.police_station &&
+                {formErrors?.police_station &&
                   !formData.police_station &&
                   fieldTouched.police_station && (
                     <Text style={{ color: "red" }}>
@@ -1390,7 +1390,7 @@ const EditProfile = ({ navigation }) => {
                     style={styles.input}
                     placeholder="Enter pincode"
                     placeholderTextColor="rgba(166, 166, 166, 1)"
-                    value={profileData.pincode || ""}
+                    value={profileData?.pincode || ""}
                     onChangeText={(text) =>
                       setProfileData({ ...profileData, pincode: text })
                     }
@@ -1398,7 +1398,7 @@ const EditProfile = ({ navigation }) => {
                     keyboardType="numeric"
                   />
                 </View>
-                {formErrors.pincode &&
+                {formErrors?.pincode &&
                   !formData.pincode &&
                   fieldTouched.pincode && (
                     <Text style={{ color: "red" }}>
