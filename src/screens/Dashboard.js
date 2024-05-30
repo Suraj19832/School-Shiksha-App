@@ -276,11 +276,15 @@ const Dashboard = ({ navigation }) => {
   };
 
   const handleNavigate = (item) => {
+    const requiredFields = JSON.parse(item?.required_field);
     const isActive = isServiceActive(item.id);
     if (isActive) {
       navigation.navigate("freeCollege", {
         id: item.id,
         heading: item.service_name,
+        searchrequired:requiredFields?.is_search_required
+
+
       });
     } else {
       navigation.navigate("membershipPlan");

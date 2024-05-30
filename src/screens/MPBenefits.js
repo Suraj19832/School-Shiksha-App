@@ -65,10 +65,12 @@ const MPBenefits = ({ navigation }) => {
 
   const handleNavigate = (item) => {
     const isActive = isServiceActive(item.id);
+    const requiredFields = JSON.parse(item?.required_field);
     if (isActive) {
       navigation.navigate("freeCollege", {
         id: item.id,
         heading: item.service_name,
+        searchrequired:requiredFields?.is_search_required
       });
     } else {
       navigation.navigate("membershipPlan");

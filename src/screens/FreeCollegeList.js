@@ -41,7 +41,7 @@ const FreeCollegeList = ({ navigation }) => {
   const [isLoading, setisLoading] = useState(true);
   const [isLoadingpage, setisLoadingpage] = useState(true);
   const [isLoadingcard, setisLoadingcard] = useState(true);
-  const [isField, setisField] = useState()
+  const [isField, setisField] = useState();
   // const [isSearch, setisSearch] = useState("")
   const items = [
     { label: "Option 1", value: "option1" },
@@ -72,7 +72,11 @@ const FreeCollegeList = ({ navigation }) => {
   };
 
   const route = useRoute();
-  const { id, heading } = route.params;
+  const { id, heading, searchrequired } = route.params;
+  console.log(
+    "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+    searchrequired
+  );
   console.log(id, ":::::::::::::::::::::::::::::::::");
   // console.log("checking id is comig or not", id)
   const [FreeCollegeList, setFreeCollegeList] = useState([]);
@@ -168,9 +172,12 @@ const FreeCollegeList = ({ navigation }) => {
       }
 
       GetfetchDataWithParams(endpoint, params).then((res) => {
-        console.log("free college list api hit statusdeqrewrwerwerwewrerwrwerwerwe", res.status);
+        console.log(
+          "free college list api hit statusdeqrewrwerwerwewrerwrwerwerwe",
+          res.status
+        );
         setFreeCollegeList(res?.data);
-        // const requiredFields=JSON.parse(res?.data?.required_field)   
+        // const requiredFields=JSON.parse(res?.data?.required_field)
         //  setisField(requiredFields)
 
         // console.log(res?.data.length() ,)
@@ -371,20 +378,22 @@ const FreeCollegeList = ({ navigation }) => {
                 alignSelf: "center",
               }}
             >
-              Search Free College Admission{" "}
+              Search College For Admission{" "}
             </Text>
             <View style={styles.inputbox_main_container1}>
-              <View style={styles.inputbox_container}>
-                <TextInput
-                  style={styles.input}
-                  value={inputvlauesearch}
-                  onChangeText={handleinputtextfield}
-                  placeholder="Search"
-                  placeholderTextColor="rgba(166, 166, 166, 1)"
-                />
+              {searchrequired === "yes" && (
+                <View style={styles.inputbox_container}>
+                  <TextInput
+                    style={styles.input}
+                    value={inputvlauesearch}
+                    onChangeText={handleinputtextfield}
+                    placeholder="Search"
+                    placeholderTextColor="rgba(166, 166, 166, 1)"
+                  />
 
-                <AntDesign name="search1" size={16} color="#A6A6A6" />
-              </View>
+                  <AntDesign name="search1" size={16} color="#A6A6A6" />
+                </View>
+              )}
             </View>
 
             <View style={{ gap: 15, alignSelf: "center" }}>
@@ -714,12 +723,14 @@ const FreeCollegeList = ({ navigation }) => {
           )} */}
           {FreeCollegeList.map((value) => {
             // console.log("@@2222222222222222222", value?.required_field?.is_location_required);
-           
-              var requiredFields = JSON.parse(value.required_field);
-              // console.log(JSON.parse(value.required_field),"hrthrhrhhtyhtyjytjhtyjutyjgyjtygj")
-     
-            
-            console.log("@@2222222222222222222", requiredFields.is_location_required);
+
+            var requiredFields = JSON.parse(value.required_field);
+            // console.log(JSON.parse(value.required_field),"hrthrhrhhtyhtyjytjhtyjutyjgyjtygj")
+
+            console.log(
+              "@@2222222222222222222",
+              requiredFields.is_location_required
+            );
             return (
               <View style={styles.listCart} key={value.id}>
                 <View
@@ -747,7 +758,7 @@ const FreeCollegeList = ({ navigation }) => {
                         resizeMode="cover"
                       />
                     </View>
-                    <View style={{ gap: 10,width:'80%' }}>
+                    <View style={{ gap: 10, width: "80%" }}>
                       <Text
                         style={{
                           color: "rgba(55, 55, 55, 1)",
@@ -759,30 +770,29 @@ const FreeCollegeList = ({ navigation }) => {
                         {value.organization_name}
                       </Text>
                       {/* Location here   */}
-                   {requiredFields?.is_location_required === "yes" && (
-                    <View
-                        style={{
-                          flexDirection: "row",
-                          gap: 4,
-                          alignItems: "center",
-                        }}
-                      >
-                        <Entypo name="location" size={12} color="#373737" />
-                        <View style={{}}>
-                          <Text
-                            style={{
-                              fontSize: 10,
-                              color: "#373737",
-                              fontWeight: "500",
-                            }}
-                          >
-                            {value?.block_name}, {value?.district_name},
-                            {value?.state_name}{" "}
-                          </Text>
+                      {requiredFields?.is_location_required === "yes" && (
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            gap: 4,
+                            alignItems: "center",
+                          }}
+                        >
+                          <Entypo name="location" size={12} color="#373737" />
+                          <View style={{}}>
+                            <Text
+                              style={{
+                                fontSize: 10,
+                                color: "#373737",
+                                fontWeight: "500",
+                              }}
+                            >
+                              {value?.block_name}, {value?.district_name},
+                              {value?.state_name}{" "}
+                            </Text>
+                          </View>
                         </View>
-                      </View>
-                   )}
-                      
+                      )}
                     </View>
                   </View>
 
@@ -839,7 +849,7 @@ const FreeCollegeList = ({ navigation }) => {
                   >
                     <Image
                       source={require("../../assets/icons/whatsapp.png")}
-                      style={{ width: 30, height: 30 }} 
+                      style={{ width: 30, height: 30 }}
                     />
                   </TouchableOpacity>
                 </View>
@@ -931,9 +941,9 @@ const FreeCollegeList = ({ navigation }) => {
                         collegeName: value?.organization_name,
                         courseName: value?.course_name,
                         id: id,
-                        aadharRequired:requiredFields?.is_aadhar_required,
-                        IncomeCertificateRequired:requiredFields?.is_income_required
-
+                        aadharRequired: requiredFields?.is_aadhar_required,
+                        IncomeCertificateRequired:
+                          requiredFields?.is_income_required,
                       })
                     }
                   >
