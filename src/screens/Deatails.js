@@ -27,6 +27,8 @@ const Details = ({ navigation }) => {
     id,
     organization_Id,
     Location,
+    IncomeCertificateRequired,
+    aadharRequired
   } = route.params;
 
   console.log(heading, "this is name of headingggggggggggg");
@@ -150,7 +152,7 @@ const Details = ({ navigation }) => {
               {
                 opacity,
                 height: "45%",
-                width: "80%",
+                width: "100%",
                 borderRadius: 20,
                 alignSelf: "center",
               },
@@ -377,6 +379,9 @@ const Details = ({ navigation }) => {
                     collegeName,
                     courseName,
                     id,
+                    IncomeCertificateRequired,
+                    aadharRequired
+
                   })
                 }
               >
