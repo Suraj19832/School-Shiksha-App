@@ -84,7 +84,7 @@ const Dashboard = ({ navigation }) => {
   const flatListRef = useRef(null);
 
   const onViewableItemsChanged = ({ viewableItems }) => {
-    if (viewableItems && viewableItems.length > 0) {
+    if (viewableItems && viewableItems?.length > 0) {
       setActiveIndex(viewableItems[0].index || 0);
     }
   };
@@ -93,7 +93,7 @@ const Dashboard = ({ navigation }) => {
     return (
       <View style={styles.paginationContainer}>
         <View style={styles.pagination}>
-          {images.map((_, index) => (
+          {images?.map((_, index) => (
             <View
               key={index}
               style={[
@@ -110,7 +110,7 @@ const Dashboard = ({ navigation }) => {
   const renderItem = ({ item }) => (
     <View style={styles.imageContainer}>
       <Image
-        source={{ uri: item.banner }} // Ensure this URi is correct
+        source={{ uri: item?.banner }} // Ensure this URi is correct
         style={styles.image}
         resizeMode="cover"
       />
@@ -121,14 +121,14 @@ const Dashboard = ({ navigation }) => {
     getrequestwithtoken("master/dashboard-banner", userToken)
       .then((res) => {
         setBannerData(res.data);
-        setisLoadingpage(false)
+        setisLoadingpage(false);
       })
       .catch((err) => {
         console.log(err);
       });
   }, [userToken]);
 
-  const lastIndex = images.length - 1;
+  const lastIndex = images?.length - 1;
 
   const setLoopedActiveIndex = (index) => {
     if (index < 0) {
@@ -298,7 +298,7 @@ const Dashboard = ({ navigation }) => {
       getdata("master/service-type").then((res) => {
         console.log(res.status);
         setcarddata(res?.data);
-        setisLoadingcard(false)
+        setisLoadingcard(false);
       });
     } catch (error) {
       console.error("Error fetching user data:", error);
@@ -314,88 +314,84 @@ const Dashboard = ({ navigation }) => {
     Linking.openURL(whatsappUrl);
   };
 
+  // Skeleton?
 
-// Skeleton?
+  // const CardSkeleton = () => {
+  //   const opacity = useRef(new Animated.Value(0.3)).current;
 
-// const CardSkeleton = () => {
-//   const opacity = useRef(new Animated.Value(0.3)).current;
+  //   useEffect(() => {
+  //     Animated.loop(
+  //       Animated.sequence([
+  //         Animated.timing(opacity, {
+  //           toValue: 1,
+  //           duration: 800,
+  //           useNativeDriver: true,
+  //         }),
+  //         Animated.timing(opacity, {
+  //           toValue: 0.3,
+  //           duration: 800,
+  //           useNativeDriver: true,
+  //         }),
+  //       ])
+  //     ).start();
+  //   }, [opacity]);
 
-//   useEffect(() => {
-//     Animated.loop(
-//       Animated.sequence([
-//         Animated.timing(opacity, {
-//           toValue: 1,
-//           duration: 800,
-//           useNativeDriver: true,
-//         }),
-//         Animated.timing(opacity, {
-//           toValue: 0.3,
-//           duration: 800,
-//           useNativeDriver: true,
-//         }),
-//       ])
-//     ).start();
-//   }, [opacity]);
+  //   return (
+  //     <>
 
-//   return (
-//     <>
+  //       <View style={styles.container12}>
+  //         {[...Array(1)].map((_, index) => (
+  //           <>
+  //  <Animated.View
+  //                   key={index}
+  //                   style={[styles.placeholder, { opacity, height: "7%" }]}
+  //                 />
 
-//       <View style={styles.container12}>
-//         {[...Array(1)].map((_, index) => (
-//           <>
-//  <Animated.View
-//                   key={index}
-//                   style={[styles.placeholder, { opacity, height: "7%" }]}
-//                 />
+  //           <Animated.View
+  //             key={index}
+  //             style={[styles.placeholder, { opacity, height: "20%" }]}
+  //           />
+  //           </>
 
-//           <Animated.View
-//             key={index}
-//             style={[styles.placeholder, { opacity, height: "20%" }]}
-//           />
-//           </>
-                 
-//         ))}
-//          <Animated.View
-//                   style={[styles.placeholder, { opacity, height: "7%" }]}
-//                 />
-//         <Animated.View
-//           style={[styles.placeholder, { opacity, height: "35%" }]}
-//         />
-//             <Animated.View
-//                   style={[styles.placeholder, { opacity, height: "7%" }]}
-//                 />
-//         <Animated.View
-//           style={[styles.placeholder, { opacity, height: "35%" }]}
-//         />
-//       </View>
-//     </>
-//   );
-// };
+  //         ))}
+  //          <Animated.View
+  //                   style={[styles.placeholder, { opacity, height: "7%" }]}
+  //                 />
+  //         <Animated.View
+  //           style={[styles.placeholder, { opacity, height: "35%" }]}
+  //         />
+  //             <Animated.View
+  //                   style={[styles.placeholder, { opacity, height: "7%" }]}
+  //                 />
+  //         <Animated.View
+  //           style={[styles.placeholder, { opacity, height: "35%" }]}
+  //         />
+  //       </View>
+  //     </>
+  //   );
+  // };
 
-// if (isLoadingpage || isLoadingcard) {
-//   return (
-//     // <View>
-//     //   <Header
-//     //     title="Payment History"
-//     //     navigateTo={() => navigation.goBack("Home")}
-//     //   />
-//     //   <View style={{justifyContent:'center' ,alignItems:'center'  ,height:'90%'}}>
-//     //   <ActivityIndicator
-//     //     size="large"
-//     //     color="#00367E"
-//     //     style={{justifyContent:'center',alignSelf:'center'}}
-//     //   />
-//     //   </View>
+  // if (isLoadingpage || isLoadingcard) {
+  //   return (
+  //     // <View>
+  //     //   <Header
+  //     //     title="Payment History"
+  //     //     navigateTo={() => navigation.goBack("Home")}
+  //     //   />
+  //     //   <View style={{justifyContent:'center' ,alignItems:'center'  ,height:'90%'}}>
+  //     //   <ActivityIndicator
+  //     //     size="large"
+  //     //     color="#00367E"
+  //     //     style={{justifyContent:'center',alignSelf:'center'}}
+  //     //   />
+  //     //   </View>
 
-//     // </View>
-//     <CardSkeleton />
-//   );
-// }
+  //     // </View>
+  //     <CardSkeleton />
+  //   );
+  // }
 
-// Skeleton End ?
-
-
-
+  // Skeleton End ?
 
   return (
     <View style={styles.container}>
@@ -807,7 +803,7 @@ const Dashboard = ({ navigation }) => {
           <View>
             {/* data from api  */}
             <View style={{ paddingBottom: 20 }}>
-              {carddata.map((item, index) => {
+              {carddata?.map((item, index) => {
                 return (
                   <View key={index}>
                     <TitleDash
@@ -822,7 +818,7 @@ const Dashboard = ({ navigation }) => {
                           justifyContent: "center",
                         }}
                       >
-                        {carddata[index]?.services.map((cd) => {
+                        {carddata[index]?.services?.map((cd) => {
                           const isActive = isServiceActive(cd.id.toString());
                           return (
                             <>
