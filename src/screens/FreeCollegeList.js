@@ -77,7 +77,7 @@ const FreeCollegeList = ({ navigation }) => {
     "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
     searchrequired
   );
-  console.log(id, ":::::::::::::::::::::::::::::::::");
+  console.log(id, ":::::::::::::::::::::::::::::::::"); 
   // console.log("checking id is comig or not", id)
   const [FreeCollegeList, setFreeCollegeList] = useState([]);
   const [dropdownOption, setdropdownOption] = useState([]);
@@ -176,12 +176,17 @@ const FreeCollegeList = ({ navigation }) => {
           "free college list api hit statusdeqrewrwerwerwewrerwrwerwerwe",
           res.status
         );
-        setFreeCollegeList(res?.data);
+        if(res?.data?.length >0){
+          setFreeCollegeList(res?.data);
+          setorganizationId(res?.data?.organization_id);
+          setisLoadingcard(false);
+        }
+      
         // const requiredFields=JSON.parse(res?.data?.required_field)
         //  setisField(requiredFields)
 
         // console.log(res?.data.length() ,)
-        setorganizationId(res?.data?.organization_id);
+        // setorganizationId(res?.data?.organization_id);
 
         // console.log(
         //   res?.data,
@@ -191,7 +196,7 @@ const FreeCollegeList = ({ navigation }) => {
         // const organizationIds = res.data.map((item) => item.organization_id); // Extract all organization_ids
         // setorganizationId(organizationIds);
         // console.log("shschcudhcuwshfciuwyhiufeiufyiufiui",organizationIds)
-        setisLoadingcard(false);
+        // setisLoadingcard(false);
       });
 
       // console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<",userData,params); // Handle or process the fetched user data here
@@ -721,16 +726,16 @@ const FreeCollegeList = ({ navigation }) => {
             )
           })}
           )} */}
-          {FreeCollegeList?.map((value) => {
+          { FreeCollegeList?.length >0 && FreeCollegeList?.map((value) => {
             // console.log("@@2222222222222222222", value?.required_field?.is_location_required);
 
             var requiredFields = JSON.parse(value?.required_field);
             // console.log(JSON.parse(value.required_field),"hrthrhrhhtyhtyjytjhtyjutyjgyjtygj")
 
-            console.log(
-              "@@2222222222222222222",
-              requiredFields.is_location_required
-            );
+            // console.log(
+            //   "@@2222222222222222222",
+            //   requiredFields.is_location_required
+            // );
             return (
               <View style={styles.listCart} key={value.id}>
                 <View
@@ -1420,7 +1425,7 @@ const FreeCollegeList = ({ navigation }) => {
             </View>
           </View> */}
           <TouchableOpacity onPress={loadmore}>
-            {getdatalength > FreeCollegeList.length && (
+            {getdatalength > FreeCollegeList?.length && (
               <View
                 style={{
                   flexDirection: "row",
