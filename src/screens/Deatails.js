@@ -28,7 +28,7 @@ const Details = ({ navigation }) => {
     organization_Id,
     Location,
     IncomeCertificateRequired,
-    aadharRequired
+    aadharRequired,
   } = route.params;
 
   console.log(heading, "this is name of headingggggggggggg");
@@ -380,8 +380,7 @@ const Details = ({ navigation }) => {
                     courseName,
                     id,
                     IncomeCertificateRequired,
-                    aadharRequired
-
+                    aadharRequired,
                   })
                 }
               >
@@ -482,6 +481,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 5,
     paddingHorizontal: 20,
+    width: "70%",
+    // flexWrap: "wrap",
   },
   aboutCourse: {
     backgroundColor: "#E2FDFF",
