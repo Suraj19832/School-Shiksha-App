@@ -209,7 +209,7 @@ const FreeCollegeList = ({ navigation }) => {
     };
     GetfetchDataWithParams("master/service-banner", params)
       .then((res) => {
-        setBannerData(res.data);
+        setBannerData(res?.data);
         setisLoadingpage(false);
       })
       .catch((err) => {
@@ -222,7 +222,7 @@ const FreeCollegeList = ({ navigation }) => {
   const flatListRef = useRef(null);
 
   const onViewableItemsChanged = ({ viewableItems }) => {
-    if (viewableItems && viewableItems.length > 0) {
+    if (viewableItems && viewableItems?.length > 0) {
       setActiveIndex(viewableItems[0].index || 0);
     }
   };
@@ -230,7 +230,7 @@ const FreeCollegeList = ({ navigation }) => {
     return (
       <View style={styles.paginationContainer}>
         <View style={styles.pagination}>
-          {images.map((_, index) => (
+          {images?.map((_, index) => (
             <View
               key={index}
               style={[
@@ -248,7 +248,7 @@ const FreeCollegeList = ({ navigation }) => {
     // console.log(item.banner_image, "helloooooooooo"),
     <View style={styles.imageContainer}>
       <Image
-        source={{ uri: item.banner_image }}
+        source={{ uri: item?.banner_image }}
         style={styles.image}
         resizeMode="cover"
         // onError={(error) => console.log("Error loading image:", error)}
@@ -452,7 +452,7 @@ const FreeCollegeList = ({ navigation }) => {
                       nestedScrollEnabled={true}
                       style={{ maxHeight: 100 }}
                     >
-                      {dropdownOption.map((option) => {
+                      {dropdownOption?.map((option) => {
                         return (
                           <TouchableOpacity
                             style={styles.dropdownOption}
@@ -721,10 +721,10 @@ const FreeCollegeList = ({ navigation }) => {
             )
           })}
           )} */}
-          {FreeCollegeList.map((value) => {
+          {FreeCollegeList?.map((value) => {
             // console.log("@@2222222222222222222", value?.required_field?.is_location_required);
 
-            var requiredFields = JSON.parse(value.required_field);
+            var requiredFields = JSON.parse(value?.required_field);
             // console.log(JSON.parse(value.required_field),"hrthrhrhhtyhtyjytjhtyjutyjgyjtygj")
 
             console.log(
@@ -767,7 +767,7 @@ const FreeCollegeList = ({ navigation }) => {
                           width: "93%",
                         }}
                       >
-                        {value.organization_name}
+                        {value?.organization_name}
                       </Text>
                       {/* Location here   */}
                       {requiredFields?.is_location_required === "yes" && (
@@ -893,7 +893,7 @@ const FreeCollegeList = ({ navigation }) => {
                         fontSize: 12,
                       }}
                     >
-                      {value.course_duration} Months
+                      {value?.course_duration} Months
                     </Text>
                     <Text
                       style={{
@@ -918,7 +918,10 @@ const FreeCollegeList = ({ navigation }) => {
                         id: id,
                         heading: heading,
                         organization_Id: value?.organization_id,
-                        Location:requiredFields?.is_location_required
+                        Location: requiredFields?.is_location_required,
+                        aadharRequired: requiredFields?.is_aadhar_required,
+                        IncomeCertificateRequired:
+                          requiredFields?.is_income_required,
 
                         // organizationId
                       })
