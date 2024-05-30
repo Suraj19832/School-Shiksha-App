@@ -41,6 +41,8 @@ const FreeCollegeList = ({ navigation }) => {
   const [isLoading, setisLoading] = useState(true);
   const [isLoadingpage, setisLoadingpage] = useState(true);
   const [isLoadingcard, setisLoadingcard] = useState(true);
+  const [isField, setisField] = useState()
+  // const [isSearch, setisSearch] = useState("")
   const items = [
     { label: "Option 1", value: "option1" },
     { label: "Option 2", value: "option2" },
@@ -61,7 +63,7 @@ const FreeCollegeList = ({ navigation }) => {
     setInputValueclass(option);
     setDropdownOpenclass(false);
     console.log("############################");
-    fetchUserAllData("master/organization-course", id, courseid)
+    fetchUserAllData("master/organization-course", id, courseid);
     fetchUserData("master/organization-course", id, courseid);
   };
   const handleInputChangeclass = (text) => {
@@ -166,27 +168,18 @@ const FreeCollegeList = ({ navigation }) => {
       }
 
       GetfetchDataWithParams(endpoint, params).then((res) => {
-        console.log("free college list api hit status", res.status);
+        console.log("free college list api hit statusdeqrewrwerwerwewrerwrwerwerwe", res.status);
         setFreeCollegeList(res?.data);
+        // const requiredFields=JSON.parse(res?.data?.required_field)   
+        //  setisField(requiredFields)
+
         // console.log(res?.data.length() ,)
         setorganizationId(res?.data?.organization_id);
 
-
-
-
-
-
-
-
-
-
-
-
-
-        console.log(
-          res?.data,
-          "}}}}}}}}}}}}{{{{{{{{{{{{___________________________"
-        );
+        // console.log(
+        //   res?.data,
+        //   "}}}}}}}}}}}}{{{{{{{{{{{{___________________________"
+        // );
 
         // const organizationIds = res.data.map((item) => item.organization_id); // Extract all organization_ids
         // setorganizationId(organizationIds);
@@ -268,7 +261,7 @@ const FreeCollegeList = ({ navigation }) => {
   const handleinputtextfield = (text) => {
     setinputvlauesearch(text);
     console.log(inputvlauesearch);
-    fetchUserAllData("master/organization-course", id , null, text);
+    fetchUserAllData("master/organization-course", id, null, text);
     fetchUserData("master/organization-course", id, null, text);
   };
 
@@ -720,7 +713,13 @@ const FreeCollegeList = ({ navigation }) => {
           })}
           )} */}
           {FreeCollegeList.map((value) => {
-            console.log("@@2222222222222222222", value?.whatsapp_number);
+            // console.log("@@2222222222222222222", value?.required_field?.is_location_required);
+           
+              var requiredFields = JSON.parse(value.required_field);
+              // console.log(JSON.parse(value.required_field),"hrthrhrhhtyhtyjytjhtyjutyjgyjtygj")
+     
+            
+            console.log("@@2222222222222222222", requiredFields.is_location_required);
             return (
               <View style={styles.listCart} key={value.id}>
                 <View
@@ -748,7 +747,7 @@ const FreeCollegeList = ({ navigation }) => {
                         resizeMode="cover"
                       />
                     </View>
-                    <View style={{ gap: 10 }}>
+                    <View style={{ gap: 10,width:'80%' }}>
                       <Text
                         style={{
                           color: "rgba(55, 55, 55, 1)",
@@ -760,7 +759,8 @@ const FreeCollegeList = ({ navigation }) => {
                         {value.organization_name}
                       </Text>
                       {/* Location here   */}
-                      <View
+                   {requiredFields?.is_location_required === "yes" && (
+                    <View
                         style={{
                           flexDirection: "row",
                           gap: 4,
@@ -781,6 +781,8 @@ const FreeCollegeList = ({ navigation }) => {
                           </Text>
                         </View>
                       </View>
+                   )}
+                      
                     </View>
                   </View>
 
@@ -808,7 +810,7 @@ const FreeCollegeList = ({ navigation }) => {
                           fontSize: 14,
                         }}
                       >
-                        Name -
+                        Exam Name -
                       </Text>
                     ) : (
                       <Text
@@ -837,7 +839,7 @@ const FreeCollegeList = ({ navigation }) => {
                   >
                     <Image
                       source={require("../../assets/icons/whatsapp.png")}
-                      style={{ width: 30, height: 30 }}
+                      style={{ width: 30, height: 30 }} 
                     />
                   </TouchableOpacity>
                 </View>
@@ -929,6 +931,9 @@ const FreeCollegeList = ({ navigation }) => {
                         collegeName: value?.organization_name,
                         courseName: value?.course_name,
                         id: id,
+                        aadharRequired:requiredFields?.is_aadhar_required,
+                        IncomeCertificateRequired:requiredFields?.is_income_required
+
                       })
                     }
                   >

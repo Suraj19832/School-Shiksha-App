@@ -120,6 +120,7 @@ export const postDataWithFormDataWithBaseUrl = async (baseurl, formData) => {
     // if (!response.ok) {
     //   throw new Error("Failed to post data");
     // }
+    console.log(response ,"djoidjeiodjeoifjorhfjkerhoehgogothgoujgiegierjgpejgerjglehrnblhij")
     const data = await response.json();
     console.log(data, "IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII");
     return data;
