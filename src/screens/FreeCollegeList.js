@@ -1001,6 +1001,7 @@ const FreeCollegeList = ({ navigation }) => {
                             aadharRequired: requiredFields?.is_aadhar_required,
                             IncomeCertificateRequired:
                               requiredFields?.is_income_required,
+                              logo:value?.logo
                           })
                         }
                       >

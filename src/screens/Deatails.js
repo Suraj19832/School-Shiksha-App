@@ -393,6 +393,7 @@ const Details = ({ navigation }) => {
                     id,
                     IncomeCertificateRequired,
                     aadharRequired,
+                    logo :detailsData?.logo
                   })
                 }
               >

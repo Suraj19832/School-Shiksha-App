@@ -96,6 +96,7 @@ const AdmissionForm = ({ navigation }) => {
     id,
     aadharRequired,
     IncomeCertificateRequired,
+    logo
   } = route.params;
   console.log(
     "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$",
@@ -1197,13 +1198,15 @@ const AdmissionForm = ({ navigation }) => {
               style={{
                 width: 70,
                 height: 70,
-                backgroundColor: "#03357D",
+                // backgroundColor: "#03357D",
                 borderRadius: 50,
               }}
             >
               <Image
-                style={styles.img}
-                source={require("../../assets/img/student.png")}
+               style={{ height: 70, width: 70, borderRadius: 50 }}
+                // source={require("../../assets/img/student.png")}
+                source={{ uri:logo }}
+                resizeMode="cover"
               />
             </View>
             <View style={{ width: "80%" }}>
@@ -2837,6 +2840,7 @@ const styles = StyleSheet.create({
     height: 50,
     width: 50,
     margin: 10,
+    borderRadius:50
   },
   profileText: {
     fontSize: 25,
