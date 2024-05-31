@@ -77,7 +77,7 @@ const FreeCollegeList = ({ navigation }) => {
     "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
     searchrequired
   );
-  console.log(id, ":::::::::::::::::::::::::::::::::"); 
+  console.log(id, ":::::::::::::::::::::::::::::::::");
   // console.log("checking id is comig or not", id)
   const [FreeCollegeList, setFreeCollegeList] = useState([]);
   const [dropdownOption, setdropdownOption] = useState([]);
@@ -176,12 +176,12 @@ const FreeCollegeList = ({ navigation }) => {
           "free college list api hit statusdeqrewrwerwerwewrerwrwerwerwe",
           res.status
         );
-        if(res?.data?.length >0){
+        if (res?.data?.length > 0) {
           setFreeCollegeList(res?.data);
           setorganizationId(res?.data?.organization_id);
           setisLoadingcard(false);
         }
-      
+
         // const requiredFields=JSON.parse(res?.data?.required_field)
         //  setisField(requiredFields)
 
@@ -726,16 +726,312 @@ const FreeCollegeList = ({ navigation }) => {
             )
           })}
           )} */}
-          { FreeCollegeList?.length >0 && FreeCollegeList?.map((value) => {
-            // console.log("@@2222222222222222222", value?.required_field?.is_location_required);
+
+          {/* old one  */}
+          {FreeCollegeList?.length > 0 &&
+            FreeCollegeList?.map((value) => {
+              var requiredFields = JSON.parse(value?.required_field);
+              var extraFields = JSON.parse(value?.extra_data);
+              console.log(
+                extraFields,
+                "dweijoefoeruhhohgoughjoiejfpkposdicposdkcpoij:::::::::::::::::::::::::::::"
+              );
+
+              return (
+                <View style={styles.listCart} key={value.id}>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      paddingHorizontal: 20,
+                    }}
+                  >
+                    <View style={styles.cardTop}>
+                      <View
+                        style={{
+                          backgroundColor: "rgba(255, 199, 0, 0.5)",
+                          width: 55,
+                          height: 55,
+                          borderRadius: 50,
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <Image
+                          style={{ height: 55, width: 55, borderRadius: 50 }}
+                          source={{ uri: value?.logo }}
+                          resizeMode="cover"
+                        />
+                      </View>
+                      <View style={{ gap: 10, width: "80%" }}>
+                        <Text
+                          style={{
+                            color: "rgba(55, 55, 55, 1)",
+                            fontWeight: "600",
+                            fontSize: 18,
+                            width: "93%",
+                          }}
+                        >
+                          {value?.organization_name}
+                        </Text>
+
+                        {requiredFields?.is_location_required === "yes" && (
+                          <View
+                            style={{
+                              flexDirection: "row",
+                              gap: 4,
+                              alignItems: "center",
+                            }}
+                          >
+                            <Entypo name="location" size={12} color="#373737" />
+                            <View style={{}}>
+                              <Text
+                                style={{
+                                  fontSize: 10,
+                                  color: "#373737",
+                                  fontWeight: "500",
+                                }}
+                              >
+                                {value?.block_name}, {value?.district_name},
+                                {value?.state_name}{" "}
+                              </Text>
+                            </View>
+                          </View>
+                        )}
+                      </View>
+                    </View>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      paddingHorizontal: 20,
+                      alignItems: "center",
+                    }}
+                  >
+                    <View style={styles.course}>
+                      {heading === "Exam Equiry" ? (
+                        <Text
+                          style={{
+                            color: "#01265B",
+                            fontWeight: "600",
+                            fontSize: 14,
+                            alignSelf: "center",
+                          }}
+                        >
+                          Exam Name -
+                        </Text>
+                      ) : (
+                        <Text
+                          style={{
+                            color: "#01265B",
+                            fontWeight: "600",
+                            fontSize: 14,
+                            alignSelf: "center",
+                          }}
+                        >
+                          Course Name -
+                        </Text>
+                      )}
+
+                      <Text
+                        style={{
+                          color: "#595959",
+                          fontWeight: "600",
+                          fontSize: 14,
+                          width: "55%",
+                        }}
+                      >
+                        {value?.course_name}
+                      </Text>
+                    </View>
+                    <TouchableOpacity
+                      onPress={() => whatsappclicked(value?.whatsapp_number)}
+                    >
+                      <Image
+                        source={require("../../assets/icons/whatsapp.png")}
+                        style={{ width: 30, height: 30 }}
+                      />
+                    </TouchableOpacity>
+                  </View>
+
+                  {/* <View style={styles.aboutCourse}>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Text
+                      style={{
+                        color: "#01265B",
+                        fontWeight: "600",
+                        fontSize: 14,
+                      }}
+                    >
+                      Course Duration
+                    </Text>
+                    <Text
+                      style={{
+                        color: "#01265B",
+                        fontWeight: "600",
+                        fontSize: 14,
+                      }}
+                    >
+                      Last Submission Date{" "}
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Text
+                      style={{
+                        color: "#595959",
+                        fontWeight: "700",
+                        fontSize: 12,
+                      }}
+                    >
+                      {value?.course_duration} Months
+                    </Text>
+                    <Text
+                      style={{
+                        color: "#595959",
+                        fontWeight: "700",
+                        fontSize: 12,
+                      }}
+                    >
+                      22.04.2024
+                    </Text>
+                  </View>
+                </View> */}
+
+                  {extraFields && (
+                    <View style={styles.aboutCourse}>
+                      {extraFields &&
+                        typeof extraFields === "object" &&
+                        Object.entries(extraFields).map(([key, val], index) => (
+                          <View
+                            key={index}
+                            style={{
+                              flexDirection: "row",
+                              justifyContent: "space-between",
+                            }}
+                          >
+                            <Text
+                              style={{
+                                color: "#01265B",
+                                fontWeight: "600",
+                                fontSize: 14,
+                                width: "60%",
+                                alignSelf: "center",
+                              }}
+                            >
+                              {key}
+                            </Text>
+                            <Text
+                              style={{
+                                color: "#595959",
+                                fontWeight: "700",
+                                fontSize: 12,
+                              }}
+                            >
+                              {val}
+                            </Text>
+                          </View>
+                        ))}
+                    </View>
+                  )}
+
+                  <View style={styles.cardButtons}>
+                    <TouchableOpacity
+                      style={styles.buttonbox}
+                      onPress={() =>
+                        navigation.navigate("details", {
+                          collegeName: value?.organization_name,
+                          courseName: value?.course_name,
+                          courseid: value?.organization_course_id,
+                          id: id,
+                          heading: heading,
+                          organization_Id: value?.organization_id,
+                          Location: requiredFields?.is_location_required,
+                          aadharRequired: requiredFields?.is_aadhar_required,
+                          IncomeCertificateRequired:
+                            requiredFields?.is_income_required,
+                        })
+                      }
+                    >
+                      <Text
+                        style={{
+                          textAlign: "center",
+                          color: "#0567F5",
+                          fontWeight: "500",
+                          fontSize: 14,
+                          lineHeight: 16.41,
+                        }}
+                      >
+                        View All Details
+                      </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate("freeAdmissionForm", {
+                          collegeName: value?.organization_name,
+                          courseName: value?.course_name,
+                          id: id,
+                          aadharRequired: requiredFields?.is_aadhar_required,
+                          IncomeCertificateRequired:
+                            requiredFields?.is_income_required,
+                        })
+                      }
+                    >
+                      <LinearGradient
+                        colors={["#03357D", "#0569FA"]}
+                        start={{ x: 0, y: 0.5 }}
+                        end={{ x: 1, y: 0.5 }}
+                        style={[
+                          styles.buttonbox,
+                          { justifyContent: "center", paddingHorizontal: 30 },
+                        ]}
+                      >
+                        <View
+                          style={{
+                            justifyContent: "center",
+                            alignItems: "center",
+                            display: "flex",
+                          }}
+                        >
+                          <Text
+                            style={{
+                              fontSize: 14,
+                              fontWeight: "500",
+                              alignItems: "center",
+                              display: "flex",
+                              justifyContent: "center",
+                              color: "white",
+                              lineHeight: 16.41,
+                            }}
+                          >
+                            Apply Now
+                          </Text>
+                        </View>
+                      </LinearGradient>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              );
+            })}
+          {/* end here  */}
+
+          {/* new attempt  */}
+
+          {/* { FreeCollegeList?.length >0 && FreeCollegeList?.map((value) => {
 
             var requiredFields = JSON.parse(value?.required_field);
-            // console.log(JSON.parse(value.required_field),"hrthrhrhhtyhtyjytjhtyjutyjgyjtygj")
-
-            // console.log(
-            //   "@@2222222222222222222",
-            //   requiredFields.is_location_required
-            // );
+            var extraFields = JSON.parse(value?.extra_data);
             return (
               <View style={styles.listCart} key={value.id}>
                 <View
@@ -774,7 +1070,7 @@ const FreeCollegeList = ({ navigation }) => {
                       >
                         {value?.organization_name}
                       </Text>
-                      {/* Location here   */}
+
                       {requiredFields?.is_location_required === "yes" && (
                         <View
                           style={{
@@ -801,12 +1097,7 @@ const FreeCollegeList = ({ navigation }) => {
                     </View>
                   </View>
 
-                  {/* <TouchableOpacity onPress={() => whatsappclicked()}>
-                <Image
-                  source={require("../../assets/icons/whatsapp.png")}
-                  style={{ width: 30, height: 30 }}
-                />
-              </TouchableOpacity> */}
+           
                 </View>
                 <View
                   style={{
@@ -863,12 +1154,15 @@ const FreeCollegeList = ({ navigation }) => {
                 </View>
 
                 <View style={styles.aboutCourse}>
+                {Object.entries(extraFields).map(([key, val], index) => (
                   <View
+                  key={index} 
                     style={{
                       flexDirection: "row",
                       justifyContent: "space-between",
                     }}
                   >
+                    <View style={{gap: 10,}}>
                     <Text
                       style={{
                         color: "#01265B",
@@ -876,24 +1170,8 @@ const FreeCollegeList = ({ navigation }) => {
                         fontSize: 14,
                       }}
                     >
-                      Course Duration
+                      {key}
                     </Text>
-                    <Text
-                      style={{
-                        color: "#01265B",
-                        fontWeight: "600",
-                        fontSize: 14,
-                      }}
-                    >
-                      Last Submission Date{" "}
-                    </Text>
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                    }}
-                  >
                     <Text
                       style={{
                         color: "#595959",
@@ -902,18 +1180,40 @@ const FreeCollegeList = ({ navigation }) => {
                       }}
                     >
                       {value?.course_duration} Months
+                    
+                    </Text>
+                    </View>
+                 <View style={{position:'relative'}}>
+                 <Text
+                      style={{
+                        color: "#01265B",
+                        fontWeight: "600",
+                        fontSize: 14,
+                      }}
+                    >
+                      Last Submission Date{" "}
                     </Text>
                     <Text
                       style={{
                         color: "#595959",
                         fontWeight: "700",
                         fontSize: 12,
+                        position:'absolute',
+                        right:3,
+                        bottom:0
                       }}
                     >
                       22.04.2024
                     </Text>
+                 </View>
+                   
                   </View>
+             ))}
                 </View>
+             
+
+
+           
 
                 <View style={styles.cardButtons}>
                   <TouchableOpacity
@@ -931,7 +1231,7 @@ const FreeCollegeList = ({ navigation }) => {
                         IncomeCertificateRequired:
                           requiredFields?.is_income_required,
 
-                        // organizationId
+                          
                       })
                     }
                   >
@@ -994,7 +1294,9 @@ const FreeCollegeList = ({ navigation }) => {
                 </View>
               </View>
             );
-          })}
+          })} */}
+
+          {/* new attempt end here  */}
 
           {/* 1st college  */}
           {/* <View style={styles.listCart}>

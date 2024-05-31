@@ -298,9 +298,13 @@ const Dashboard = ({ navigation }) => {
   async function fetchUserData() {
     try {
       getdata("master/service-type").then((res) => {
-        console.log(res.status);
-        setcarddata(res?.data);
-        setisLoadingcard(false);
+        if(res?.status){
+          console.log(res.status);
+          setcarddata(res?.data);
+          setisLoadingcard(false);
+          // setmyLoading(false)
+        }
+      
       });
     } catch (error) {
       console.error("Error fetching user data:", error);
@@ -318,80 +322,80 @@ const Dashboard = ({ navigation }) => {
 
   // Skeleton?
 
-  // const CardSkeleton = () => {
-  //   const opacity = useRef(new Animated.Value(0.3)).current;
+  const CardSkeleton = () => {
+    const opacity = useRef(new Animated.Value(0.3)).current;
 
-  //   useEffect(() => {
-  //     Animated.loop(
-  //       Animated.sequence([
-  //         Animated.timing(opacity, {
-  //           toValue: 1,
-  //           duration: 800,
-  //           useNativeDriver: true,
-  //         }),
-  //         Animated.timing(opacity, {
-  //           toValue: 0.3,
-  //           duration: 800,
-  //           useNativeDriver: true,
-  //         }),
-  //       ])
-  //     ).start();
-  //   }, [opacity]);
+    useEffect(() => {
+      Animated.loop(
+        Animated.sequence([
+          Animated.timing(opacity, {
+            toValue: 1,
+            duration: 800,
+            useNativeDriver: true,
+          }),
+          Animated.timing(opacity, {
+            toValue: 0.3,
+            duration: 800,
+            useNativeDriver: true,
+          }),
+        ])
+      ).start();
+    }, [opacity]);
 
-  //   return (
-  //     <>
+    return (
+      <>
 
-  //       <View style={styles.container12}>
-  //         {[...Array(1)].map((_, index) => (
-  //           <>
-  //  <Animated.View
-  //                   key={index}
-  //                   style={[styles.placeholder, { opacity, height: "7%" }]}
-  //                 />
+        <View style={styles.container12}>
+          {[...Array(1)].map((_, index) => (
+            <>
+   <Animated.View
+                    key={index}
+                    style={[styles.placeholder, { opacity, height: "7%" }]}
+                  />
 
-  //           <Animated.View
-  //             key={index}
-  //             style={[styles.placeholder, { opacity, height: "20%" }]}
-  //           />
-  //           </>
+            <Animated.View
+              key={index}
+              style={[styles.placeholder, { opacity, height: "20%" }]}
+            />
+            </>
 
-  //         ))}
-  //          <Animated.View
-  //                   style={[styles.placeholder, { opacity, height: "7%" }]}
-  //                 />
-  //         <Animated.View
-  //           style={[styles.placeholder, { opacity, height: "35%" }]}
-  //         />
-  //             <Animated.View
-  //                   style={[styles.placeholder, { opacity, height: "7%" }]}
-  //                 />
-  //         <Animated.View
-  //           style={[styles.placeholder, { opacity, height: "35%" }]}
-  //         />
-  //       </View>
-  //     </>
-  //   );
-  // };
+          ))}
+           <Animated.View
+                    style={[styles.placeholder, { opacity, height: "7%" }]}
+                  />
+          <Animated.View
+            style={[styles.placeholder, { opacity, height: "35%" }]}
+          />
+              <Animated.View
+                    style={[styles.placeholder, { opacity, height: "7%" }]}
+                  />
+          <Animated.View
+            style={[styles.placeholder, { opacity, height: "35%" }]}
+          />
+        </View>
+      </>
+    );
+  };
 
-  // if (isLoadingpage || isLoadingcard) {
-  //   return (
-  //     // <View>
-  //     //   <Header
-  //     //     title="Payment History"
-  //     //     navigateTo={() => navigation.goBack("Home")}
-  //     //   />
-  //     //   <View style={{justifyContent:'center' ,alignItems:'center'  ,height:'90%'}}>
-  //     //   <ActivityIndicator
-  //     //     size="large"
-  //     //     color="#00367E"
-  //     //     style={{justifyContent:'center',alignSelf:'center'}}
-  //     //   />
-  //     //   </View>
+  if (isLoadingpage || isLoadingcard) {
+    return (
+      // <View>
+      //   <Header
+      //     title="Payment History"
+      //     navigateTo={() => navigation.goBack("Home")}
+      //   />
+      //   <View style={{justifyContent:'center' ,alignItems:'center'  ,height:'90%'}}>
+      //   <ActivityIndicator
+      //     size="large"
+      //     color="#00367E"
+      //     style={{justifyContent:'center',alignSelf:'center'}}
+      //   />
+      //   </View>
 
-  //     // </View>
-  //     <CardSkeleton />
-  //   );
-  // }
+      // </View>
+      <CardSkeleton />
+    );
+  }
 
   // Skeleton End ?
 
@@ -642,7 +646,7 @@ const Dashboard = ({ navigation }) => {
                   )
                 }
               >
-                <Text style={styles.menuText}>Transection History</Text>
+                <Text style={styles.menuText}>Transaction History</Text>
               </TouchableOpacity>
             </View>
             <View style={styles.hairlineMenu} />
