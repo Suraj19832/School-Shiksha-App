@@ -260,14 +260,62 @@ const EditProfile = ({ navigation }) => {
     setInputValueblock("");
     setDropdownOpen(false);
   };
-  const handleSelectOptionstate = (stateName, stateId) => {
-    setSelectedOptionstate(stateName);
-    setInputValuestate(stateName);
-    // setStateInfo(stateId);
-    setInputValue("");
-    setInputValueblock("");
-    setDistrictId();
+  // const handleSelectOptionstate = (stateName, stateId) => {
+  //   setSelectedOptionstate(stateName);
+  //   setInputValuestate(stateName);
+  //   // setStateInfo(stateId);
+  //   setInputValue("");
+  //   setInputValueblock("");
+  //   setDistrictId();
+  //   setDropdownOpenstate(false);
+  // };
+  const getDistrictdata = (id) => {
+    const postData = {
+      state_id: id,
+    };
+
+    // Convert object data to FormData
+    const formData = objectToFormData(postData);
+
+    // Call the postDataWithFormData function with the API URL and FormData
+    postDataWithFormData("master/district", formData)
+      .then((res) => {
+        console.log(
+          "Response from API for districtcsdvdfvdvgbfgbgjnyukuimmmu:",
+          res?.data
+        );
+        setDistrictData(res?.data);
+      })
+      .catch((error) => {
+        console.error("Error posting data:", error);
+      });
+  };
+  const [showState, setShowState] = useState("");
+  const handleSelectOptionstate = (option, id) => {
+    setInputValuestate(option);
+    // setstateData(option);
+    setShowState(option);
     setDropdownOpenstate(false);
+
+    // setProfileData({
+    //   ...profileData,
+    //   state_name: option,
+    // });
+    // profileData?.state_name
+    console.log("55454545454", profileData);
+    setProfileData((prevProfileData) => ({
+      ...prevProfileData,
+      state_name: option,
+    }));
+    setProfileData({
+      ...profileData,
+      district_name: "",
+    });
+    console.log("87877877", profileData);
+    getDistrictdata(id);
+    console.log("54545454a7ds8sad", option);
+    // setProfileData({ ...profileData, name: "" });
+    // console.log(DistrictDataaa, "jdohcusdhcushohod");
   };
   // console.log("[][]", stateInfo);
   const handleInputChangedistrict = (text) => {
@@ -1215,7 +1263,9 @@ const EditProfile = ({ navigation }) => {
                         style={styles.input}
                         placeholder="Select"
                         placeholderTextColor="rgba(166, 166, 166, 1)"
-                        value={profileData?.state_name || ""}
+                        value={showState ? showState : profileData?.state_name}
+                        // value={inputValuestate}
+                        // value={showState}
                         editable={false}
                       />
                       <AntDesign
@@ -1229,24 +1279,25 @@ const EditProfile = ({ navigation }) => {
                 {/* Dropdown menu */}
                 {isDropdownOpenstate && (
                   <View style={styles.dropdownContainer}>
-                    {stateData.map((state, index) => {
-                      return (
-                        <TouchableOpacity
-                          key={index}
-                          style={styles.dropdownOption}
-                          onPress={() => {
-                            setProfileData({
-                              ...profileData,
-                              state_name: state.name,
-                              state_id: state.id,
-                            });
-                            toggleDropdownstate(); // Close the dropdown after selection
-                          }}
-                        >
-                          <Text>{state.name}</Text>
-                        </TouchableOpacity>
-                      );
-                    })}
+                    {stateData?.length > 0 &&
+                      stateData?.map((state, index) => {
+                        return (
+                          <TouchableOpacity
+                            key={index}
+                            style={styles.dropdownOption}
+                            onPress={() => {
+                              setProfileData({
+                                ...profileData,
+                                state_name: state.name,
+                                state_id: state.id,
+                              });
+                              handleSelectOptionstate(state.name, state.id); // Close the dropdown after selection
+                            }}
+                          >
+                            <Text>{state.name}</Text>
+                          </TouchableOpacity>
+                        );
+                      })}
                   </View>
                 )}
               </View>
