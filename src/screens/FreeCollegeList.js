@@ -976,7 +976,89 @@ const FreeCollegeList = ({ navigation }) => {
                         View All Details
                       </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity
+                    {value?.register_through === "internal_form_submit" ? (
+                      <TouchableOpacity
+                        onPress={() =>
+                          navigation.navigate("freeAdmissionForm", {
+                            collegeName: value?.organization_name,
+                            courseName: value?.course_name,
+                            id: id,
+                            aadharRequired: requiredFields?.is_aadhar_required,
+                            IncomeCertificateRequired:
+                              requiredFields?.is_income_required,
+                          })
+                        }
+                      >
+                        <LinearGradient
+                          colors={["#03357D", "#0569FA"]}
+                          start={{ x: 0, y: 0.5 }}
+                          end={{ x: 1, y: 0.5 }}
+                          style={[
+                            styles.buttonbox,
+                            { justifyContent: "center", paddingHorizontal: 30 },
+                          ]}
+                        >
+                          <View
+                            style={{
+                              justifyContent: "center",
+                              alignItems: "center",
+                              display: "flex",
+                            }}
+                          >
+                            <Text
+                              style={{
+                                fontSize: 14,
+                                fontWeight: "500",
+                                alignItems: "center",
+                                display: "flex",
+                                justifyContent: "center",
+                                color: "white",
+                                lineHeight: 16.41,
+                              }}
+                            >
+                              Apply Now
+                            </Text>
+                          </View>
+                        </LinearGradient>
+                      </TouchableOpacity>
+                    ) : (
+                      <TouchableOpacity
+                        onPress={() => Linking.openURL("https://google.com")}
+                      >
+                        <LinearGradient
+                          colors={["#03357D", "#0569FA"]}
+                          start={{ x: 0, y: 0.5 }}
+                          end={{ x: 1, y: 0.5 }}
+                          style={[
+                            styles.buttonbox,
+                            { justifyContent: "center", paddingHorizontal: 30 },
+                          ]}
+                        >
+                          <View
+                            style={{
+                              justifyContent: "center",
+                              alignItems: "center",
+                              display: "flex",
+                            }}
+                          >
+                            <Text
+                              style={{
+                                fontSize: 14,
+                                fontWeight: "500",
+                                alignItems: "center",
+                                display: "flex",
+                                justifyContent: "center",
+                                color: "white",
+                                lineHeight: 16.41,
+                              }}
+                            >
+                              Apply Now
+                            </Text>
+                          </View>
+                        </LinearGradient>
+                      </TouchableOpacity>
+                    )}
+                    {/* <TouchableOpacity
                       onPress={() =>
                         navigation.navigate("freeAdmissionForm", {
                           collegeName: value?.organization_name,
@@ -1019,7 +1101,7 @@ const FreeCollegeList = ({ navigation }) => {
                           </Text>
                         </View>
                       </LinearGradient>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                   </View>
                 </View>
               );
