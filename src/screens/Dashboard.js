@@ -89,6 +89,20 @@ const Dashboard = ({ navigation }) => {
     }
   };
 
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setActiveIndex((prevIndex) => {
+        const nextIndex = (prevIndex + 1) % images.length;
+        if (flatListRef.current) {
+          flatListRef.current.scrollToIndex({ index: nextIndex, animated: true });
+        }
+        return nextIndex;
+      });
+    }, 2000); // 2000ms for 2 seconds
+
+    return () => clearInterval(intervalId);
+  }, [images.length])
+
   const renderPagination = () => {
     return (
       <View style={styles.paginationContainer}>

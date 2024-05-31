@@ -231,6 +231,21 @@ const FreeCollegeList = ({ navigation }) => {
       setActiveIndex(viewableItems[0].index || 0);
     }
   };
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setActiveIndex((prevIndex) => {
+        const nextIndex = (prevIndex + 1) % images.length;
+        if (flatListRef.current) {
+          flatListRef.current.scrollToIndex({ index: nextIndex, animated: true });
+        }
+        return nextIndex;
+      });
+    }, 2000); // 2000ms for 2 seconds
+
+    return () => clearInterval(intervalId);
+  }, [images.length])
+  
   const renderPagination = () => {
     return (
       <View style={styles.paginationContainer}>
@@ -1923,16 +1938,14 @@ const styles = StyleSheet.create({
     textAlign: "center",
     // alignItems: "center",
     // justifyContent: "space-between",
-    borderWidth: 1,
-    borderColor: "white",
     backgroundColor: "white",
     // paddingVertical: 12,
     // paddingHorizontal: 20,
     borderRadius: 20,
     width: "89%",
     gap: 15,
-    height: "auto",
-    marginBottom: 20,
+    // height: "auto",
+    marginBottom: Dimensions.get("window").height *0.03
   },
   cardTop: {
     flexDirection: "row",
