@@ -2517,7 +2517,7 @@ const AdmissionForm = ({ navigation }) => {
               <View>
                 {!capturedImagePassport && !fileUriPassPortPhoto && (
                   <View style={styles.fields_main}>
-                    <Text style={styles.inputHeading}>Passport Photo</Text>
+                    <Text style={styles.inputHeading}>Passport Size Photo</Text>
                     <TouchableOpacity
                       style={styles.uploadBox}
                       onPress={() => setModalVisiblePassport(true)}
@@ -2545,7 +2545,7 @@ const AdmissionForm = ({ navigation }) => {
                         },
                       ]}
                     >
-                      <Text style={styles.inputHeading}>PassPort Photo</Text>
+                      <Text style={styles.inputHeading}>PassPort Size Photo</Text>
                       <TouchableOpacity
                         onPress={() => deleteDocuments("passport")}
                       >
@@ -2572,7 +2572,7 @@ const AdmissionForm = ({ navigation }) => {
                         },
                       ]}
                     >
-                      <Text style={styles.inputHeading}>Passport Photo</Text>
+                      <Text style={styles.inputHeading}>Passport Size Photo</Text>
                       <TouchableOpacity onPress={deleteImagePassPortPhoto}>
                         <AntDesign name="delete" size={20} color="#FF0000" />
                       </TouchableOpacity>
