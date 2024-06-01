@@ -158,7 +158,7 @@ const Dashboard = ({ navigation }) => {
   useEffect(() => {
     getrequestwithtoken("master/dashboard-banner", userToken)
       .then((res) => {
-        setBannerData(res.data);
+        setBannerData(res?.data);
         setisLoadingpage(false);
       })
       .catch((err) => {
@@ -305,7 +305,7 @@ const Dashboard = ({ navigation }) => {
         setphone(res?.data?.mobile);
         setgender(res?.data?.gender);
         setplan(res?.data?.subscription?.plan_name);
-        setActiveServices(res.data.subscription.plan_services);
+        setActiveServices(res?.data.subscription?.plan_services);
       }
     });
   }, [gender]);
@@ -361,8 +361,8 @@ const Dashboard = ({ navigation }) => {
 
   useEffect(()=>{
     getrequestwithtoken("student/notifications/count",userToken).then((res)=>{
-      console.log(res.data.unread_count,"totoal count is her ")
-      setUnreadMsgCount(res.data.unread_count)
+      console.log(res?.data?.unread_count,"totoal count is her ")
+      setUnreadMsgCount(res?.data?.unread_count)
     }).catch((err)=>{
       console.log(err,"error is cout")
     })

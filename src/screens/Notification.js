@@ -69,16 +69,16 @@ const NotificationContainer = (props) => {
   const [isRead, setIsRead] = useState(props.is_read);
 
   useEffect(() => {
-    setIsRead(props.is_read);
+    setIsRead(props?.is_read);
   }, [props.is_read]);
   const readMessage = () => {
     
     const params = {
-      id :props.id
+      id :props?.id
     }
     getRequestWithParamsTokens("student/notification/view",userToken,params).then((res)=>{
-      setIsRead(res.data.is_read)
-      console.log(res.data.is_read)
+      setIsRead(res?.data?.is_read)
+      console.log(res?.data?.is_read)
     }).catch((err)=>[
       console.log(err,"error from notification api view")
     ])
@@ -95,7 +95,7 @@ const NotificationContainer = (props) => {
       >
         <View style={styles.modalView}>
           <View style={styles.modalContent}>
-            <Text style={{textAlign:'center',fontWeight:'600',paddingVertical:5}}>{props?.subjectMsg}</Text>
+            <Text style={{textAlign:'center',fontWeight:'600',paddingVertical:10,fontSize:18}}>{props?.subjectMsg}</Text>
             <Text>{props?.NotificationMsg}</Text>
             <TouchableOpacity
               onPress={() => setModalVisible(false)}
@@ -143,9 +143,12 @@ const NotificationContainer = (props) => {
                 fontSize: 14,
                 fontWeight: "500",
                 lineHeight: 18,
+                flexDirection:'row',
+                gap:5
               }}
             >
-              <Text style={{color: isRead == 0 ? "red" : "#435354",fontWeight:'500',fontSize:14}}>{props?.subjectMsg}</Text>
+              <Text style={{color:"#435354",fontWeight:'500',fontSize:15}}>{props?.subjectMsg}</Text>
+              {isRead == 0 ? <View style={{height:5,width:5,backgroundColor:'red',borderRadius:50}}></View> : <View></View>}
             </View>
             <Text
               style={{
@@ -184,9 +187,7 @@ const Notification = ({ navigation }) => {
     setLoadingPage(true);
     getRequestWithParamsTokens("student/notifications", userToken, params)
       .then((res) => {
-        // console.log(res,"LLLLLLLLLLLLLLLLLLL")
         setgetdatalength(res?.data?.total_count);
-
         const objData = res?.data?.items.map((item) => item);
         // setNotifiData(objData);
         setNotifiData((prev) => [...prev, ...objData]);
