@@ -30,10 +30,91 @@ import {
   getdata,
   getrequestwithtoken,
 } from "../../Helper/Helper";
+
+
+
+
+
+
+const BannerCarousel = ({bannerData}) => {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const images = bannerData;
+
+  const flatListRef = useRef(null);
+
+  const onViewableItemsChanged = ({ viewableItems }) => {
+    if (viewableItems && viewableItems?.length > 0) {
+      setActiveIndex(viewableItems[0].index || 0);
+    }
+  };
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setActiveIndex((prevIndex) => {
+        const nextIndex = (prevIndex + 1) % images.length;
+        if (flatListRef.current) {
+          flatListRef.current.scrollToIndex({ index: nextIndex, animated: true });
+        }
+        return nextIndex;
+      });
+    }, 2000); // 2000ms for 2 seconds
+
+    return () => clearInterval(intervalId);
+  }, [images.length])
+
+  const renderPagination = () => {
+    return (
+      <View style={styles.paginationContainer}>
+        <View style={styles.pagination}>
+          {images?.map((_, index) => (
+            <View
+              key={index}
+              style={[
+                styles.paginationDot,
+                index === activeIndex && styles.paginationDotActive,
+              ]}
+            />
+          ))}
+        </View>
+      </View>
+    );
+  };
+
+  const renderItem = ({ item }) => (
+    <View style={styles.imageContainer}>
+      <Image
+        source={{ uri: item?.banner }} // Ensure this URi is correct
+        style={styles.image}
+        resizeMode="cover"
+      />
+    </View>
+  );
+  return(
+    <View style={{ paddingTop: 18, position: "relative" }}>
+          <FlatList
+            ref={flatListRef}
+            data={images}
+            horizontal
+            pagingEnabled
+            showsHorizontalScrollIndicator={false}
+            renderItem={renderItem}
+            keyExtractor={(item, index) => index.toString()}
+            onViewableItemsChanged={onViewableItemsChanged}
+          />
+          {renderPagination()}
+        </View>
+  )
+}
+
+
+
+
+
+
+
 const Dashboard = ({ navigation }) => {
   const [isLoadingpage, setisLoadingpage] = useState(true);
   const [isLoadingcard, setisLoadingcard] = useState(true);
-  const [activeIndex, setActiveIndex] = useState(0);
+ 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { userToken, setuserToken, setmyLoading, profileAllData } =
     useContext(AuthContext);
@@ -79,57 +160,11 @@ const Dashboard = ({ navigation }) => {
     }).start();
   };
 
-  const images = bannerData;
+ 
 
-  const flatListRef = useRef(null);
 
-  const onViewableItemsChanged = ({ viewableItems }) => {
-    if (viewableItems && viewableItems?.length > 0) {
-      setActiveIndex(viewableItems[0].index || 0);
-    }
-  };
 
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setActiveIndex((prevIndex) => {
-        const nextIndex = (prevIndex + 1) % images.length;
-        if (flatListRef.current) {
-          flatListRef.current.scrollToIndex({ index: nextIndex, animated: true });
-        }
-        return nextIndex;
-      });
-    }, 2000); // 2000ms for 2 seconds
-
-    return () => clearInterval(intervalId);
-  }, [images.length])
-
-  const renderPagination = () => {
-    return (
-      <View style={styles.paginationContainer}>
-        <View style={styles.pagination}>
-          {images?.map((_, index) => (
-            <View
-              key={index}
-              style={[
-                styles.paginationDot,
-                index === activeIndex && styles.paginationDotActive,
-              ]}
-            />
-          ))}
-        </View>
-      </View>
-    );
-  };
-
-  const renderItem = ({ item }) => (
-    <View style={styles.imageContainer}>
-      <Image
-        source={{ uri: item?.banner }} // Ensure this URi is correct
-        style={styles.image}
-        resizeMode="cover"
-      />
-    </View>
-  );
+ 
 
   useEffect(() => {
     getrequestwithtoken("master/dashboard-banner", userToken)
@@ -141,6 +176,8 @@ const Dashboard = ({ navigation }) => {
         console.log(err);
       });
   }, [userToken]);
+
+  const images = bannerData;
 
   const lastIndex = images?.length - 1;
 
@@ -812,19 +849,7 @@ const Dashboard = ({ navigation }) => {
       )}
       <View style={styles.hairline} />
       <ScrollView>
-        <View style={{ paddingTop: 18, position: "relative" }}>
-          <FlatList
-            ref={flatListRef}
-            data={images}
-            horizontal
-            pagingEnabled
-            showsHorizontalScrollIndicator={false}
-            renderItem={renderItem}
-            keyExtractor={(item, index) => index.toString()}
-            onViewableItemsChanged={onViewableItemsChanged}
-          />
-          {renderPagination()}
-        </View>
+      <BannerCarousel bannerData={bannerData} />
         <View>
           {/* new start  */}
           <View>

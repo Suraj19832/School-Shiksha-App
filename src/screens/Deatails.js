@@ -17,45 +17,11 @@ import { useRoute } from "@react-navigation/native";
 import { GetfetchDataWithParams } from "../../Helper/Helper";
 import { Entypo, Feather } from "@expo/vector-icons";
 
-const Details = ({ navigation }) => {
-  const route = useRoute();
-  const {
-    collegeName,
-    courseName,
-    courseid,
-    heading,
-    id,
-    organization_Id,
-    Location,
-    IncomeCertificateRequired,
-    aadharRequired,
-  } = route.params;
 
-  console.log(heading, "this is name of headingggggggggggg");
-
+const BannerCarousel = ({bannerData}) => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [bannerData, setBannerData] = useState([]);
-  const [isLoadingpage, setisLoadingpage] = useState(true);
-  const [isLoadingcard, setisLoadingcard] = useState(true);
-
-  useEffect(() => {
-    const params = {
-      organization_id: organization_Id,
-    };
-    GetfetchDataWithParams("master/organization-banner", params)
-      .then((res) => {
-        setBannerData(res.data);
-        setisLoadingpage(false);
-        console.log(res.data, "Banner Data");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [organization_Id]);
-
-  const images = bannerData;
-
   const flatListRef = useRef(null);
+   const images = bannerData;
 
   const onViewableItemsChanged = ({ viewableItems }) => {
     if (viewableItems && viewableItems.length > 0) {
@@ -103,7 +69,56 @@ const Details = ({ navigation }) => {
       />
     </View>
   );
+  return(
 
+<View style={{ position: "relative" }}>
+          <FlatList
+            ref={flatListRef}
+            data={images}
+            horizontal
+            pagingEnabled
+            showsHorizontalScrollIndicator={false}
+            renderItem={renderItem}
+            keyExtractor={(item, index) => index.toString()}
+            onViewableItemsChanged={onViewableItemsChanged}
+          />
+          {renderPagination()}
+        </View>
+  )
+}
+const Details = ({ navigation }) => {
+  const route = useRoute();
+  const {
+    collegeName,
+    courseName,
+    courseid,
+    heading,
+    id,
+    organization_Id,
+    Location,
+    IncomeCertificateRequired,
+    aadharRequired,
+  } = route.params;
+
+  const [bannerData, setBannerData] = useState([]);
+  const [isLoadingpage, setisLoadingpage] = useState(true);
+  const [isLoadingcard, setisLoadingcard] = useState(true);
+
+  useEffect(() => {
+    const params = {
+      organization_id: organization_Id,
+    };
+    GetfetchDataWithParams("master/organization-banner", params)
+      .then((res) => {
+        setBannerData(res.data);
+        setisLoadingpage(false);
+        console.log(res.data, "Banner Data");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [organization_Id]);
+  
   const [detailsData, setDetailsData] = useState([]);
   async function fetchUserData(endpoint, id) {
     try {
@@ -123,11 +138,11 @@ const Details = ({ navigation }) => {
   useEffect(() => {
     fetchUserData("master/course-details", courseid);
   }, [courseid]);
+
   const whatsappclicked = (phonenumber) => {
     const whatsappUrl = `tel:${phonenumber}`;
     Linking.openURL(whatsappUrl);
   };
-
   const CardSkeleton = () => {
     const opacity = useRef(new Animated.Value(0.3)).current;
 
@@ -177,20 +192,6 @@ const Details = ({ navigation }) => {
 
   if (isLoadingpage || isLoadingcard) {
     return (
-      // <View>
-      //   <Header
-      //     title="Payment History"
-      //     navigateTo={() => navigation.goBack("Home")}
-      //   />
-      //   <View style={{justifyContent:'center' ,alignItems:'center'  ,height:'90%'}}>
-      //   <ActivityIndicator
-      //     size="large"
-      //     color="#00367E"
-      //     style={{justifyContent:'center',alignSelf:'center'}}
-      //   />
-      //   </View>
-
-      // </View>
       <CardSkeleton />
     );
   }
@@ -199,19 +200,7 @@ const Details = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       <Header title={`${heading} LIST`} navigateTo={navigation.goBack} />
       <ScrollView style={{ backgroundColor: "#FFFCCE", height: "100%" }}>
-        <View style={{ position: "relative" }}>
-          <FlatList
-            ref={flatListRef}
-            data={images}
-            horizontal
-            pagingEnabled
-            showsHorizontalScrollIndicator={false}
-            renderItem={renderItem}
-            keyExtractor={(item, index) => index.toString()}
-            onViewableItemsChanged={onViewableItemsChanged}
-          />
-          {renderPagination()}
-        </View>
+      <BannerCarousel bannerData={bannerData} />
         <View style={styles.listContainer}>
           {/* card */}
           <View style={styles.listCard}>
