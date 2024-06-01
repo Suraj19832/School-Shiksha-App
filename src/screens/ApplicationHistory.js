@@ -41,15 +41,21 @@ const ApplicationHistory = ({ navigation }) => {
  }
     getRequestWithParamsTokens("master/order-history", userToken, params).then(
       (res) => {
-        setgetdatalength(res?.data?.total_count);
-        console.log(
-          "))))))))))))))))))))))))##########################",
-          res?.data?.total_count
-        );
-       
-        setApplicationHistory((prev) => [...prev, ...res?.data?.items]);
-        setIsLoading(false); 
-        setpageloading(false);
+
+        if (res.status) {
+          setgetdatalength(res?.data?.total_count);
+          console.log(
+            "))))))))))))))))))))))))##########################",
+            res?.data?.total_count
+          );
+         
+          setApplicationHistory((prev) => [...prev, ...res?.data?.items]);
+          setIsLoading(false); 
+          setpageloading(false);
+        }else{
+          Alert.alert("Alert", "Error!!!!")
+        }
+    
       }
     );
   }, [userToken, limit]);
