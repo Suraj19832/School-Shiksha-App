@@ -14,7 +14,7 @@ import {
   Linking,
   Animated,
 } from "react-native";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import DropDownPicker from "react-native-dropdown-picker";
 import {
   FontAwesome,
@@ -293,9 +293,25 @@ const FreeCollegeList = ({ navigation }) => {
   const handleinputtextfield = (text) => {
     setinputvlauesearch(text);
     console.log(inputvlauesearch);
+    // fetchUserAllData("master/organization-course", id, null, text);
+    // fetchUserData("master/organization-course", id, null, text);
+    debouncedFetchUserData(text);
+  };
+
+  const debouncedFetchUserData = useCallback(debounce((text) => {
     fetchUserAllData("master/organization-course", id, null, text);
     fetchUserData("master/organization-course", id, null, text);
-  };
+  }, 500), []);
+
+  
+  function debounce(func, wait) {
+    let timeout;
+    return function (...args) {
+      const context = this;
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func.apply(context, args), wait);
+    };
+  }
 
   const whatsappclicked = (whatsappnumber) => {
     console.log(
