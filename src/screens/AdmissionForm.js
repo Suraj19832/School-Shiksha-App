@@ -96,17 +96,18 @@ const AdmissionForm = ({ navigation }) => {
     id,
     aadharRequired,
     IncomeCertificateRequired,
-    logo
+    logo,
   } = route.params;
   console.log(
     "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$",
-    id ,   aadharRequired,
+    id,
+    aadharRequired,
     IncomeCertificateRequired
   );
 
   // users data
   const [formErrors, setFormErrors] = useState({});
-  const [iswarning , setiswarning] =useState(true)
+  const [iswarning, setiswarning] = useState(true);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -133,16 +134,14 @@ const AdmissionForm = ({ navigation }) => {
 
   // email
 
-
   const handleInputChangeNumber = (key, value) => {
     if (/^[0-9]*$/.test(value) || value === "") {
       setFormData({ ...formData, [key]: value });
     }
     // setFormData({ ...formData, [key]: value });
   };
-  
+
   const handleInputChange = (key, value) => {
-  
     setFormData({ ...formData, [key]: value });
   };
   const handleInputBlur = (key) => {
@@ -264,12 +263,10 @@ const AdmissionForm = ({ navigation }) => {
     if (!email.trim()) {
       setEmailError("Email is required");
     } else if (!emailPattern.test(email)) {
-      
       setEmailError("Invalid email format");
-
     } else {
-      // setEmailError("");  
-      setEmailError(null)
+      // setEmailError("");
+      setEmailError(null);
     }
   };
 
@@ -277,12 +274,12 @@ const AdmissionForm = ({ navigation }) => {
     setEmail(text);
     if (text.trim()) {
       // setEmailError("");
-      setEmailError(null)
+      setEmailError(null);
     }
   };
   const handleSubmission = () => {
     // setisChckedError(true);
-    setIsLoading(true)
+    setIsLoading(true);
     if (
       formData.name &&
       userDetails.date_of_birth &&
@@ -315,21 +312,24 @@ const AdmissionForm = ({ navigation }) => {
         PassportUribyApi &&
         (IncomeCertificateRequired === "no" || IncomeCertificateUribyApi)
         // IncomeCertificateUribyApi
-      ) 
-      {
-
-        if ((!formErrors.mobile &&
-          formData.mobile &&
-          formData.mobile.trim().length !== 10) ||  (emailError !== null) ||( !formErrors.whatsapp_number &&
-          formData.whatsapp_number &&
-          formData.whatsapp_number.trim().length !== 10) || (!formErrors.fatherMobile &&
-          formData.fatherMobile &&
-          formData.fatherMobile.trim().length !== 10) || (!formErrors.aadhar_number &&
+      ) {
+        if (
+          (!formErrors.mobile &&
+            formData.mobile &&
+            formData.mobile.trim().length !== 10) ||
+          emailError !== null ||
+          (!formErrors.whatsapp_number &&
+            formData.whatsapp_number &&
+            formData.whatsapp_number.trim().length !== 10) ||
+          (!formErrors.fatherMobile &&
+            formData.fatherMobile &&
+            formData.fatherMobile.trim().length !== 10) ||
+          (!formErrors.aadhar_number &&
             formData.aadhar_number &&
-            formData.aadhar_number.trim().length !== 12)) {
-            showToast("Failed!Preview your Deatails")
-            setIsLoading(false)
-          
+            formData.aadhar_number.trim().length !== 12)
+        ) {
+          showToast("Failed!Preview your Deatails");
+          setIsLoading(false);
         } else {
           if (isChecked === false) {
             setisChckedError(true);
@@ -363,33 +363,39 @@ const AdmissionForm = ({ navigation }) => {
               hs_Passout: inputValueHs,
               percentage: formData.percentage,
             };
-  
+
             if (IncomeCertificateRequired === "yes") {
               enquiryDetails.income = formData.income;
             }
             if (aadharRequired === "yes") {
               enquiryDetails.aadhar_number = formData.aadhar_number;
             }
-  
+
             let documents = [];
-  
+
             if (aadharRequired === "yes") {
               documents.push({
                 title: "Aadhar Front",
                 image: AadharFrontUribyApi,
               });
-              documents.push({ title: "Aadhar Back", image: AadharBackUribyApi });
+              documents.push({
+                title: "Aadhar Back",
+                image: AadharBackUribyApi,
+              });
             }
-  
-            documents.push({ title: "PassPort Photo", image: PassportUribyApi });
-  
+
+            documents.push({
+              title: "PassPort Photo",
+              image: PassportUribyApi,
+            });
+
             if (IncomeCertificateRequired === "yes") {
               documents.push({
                 title: "Income Certificate",
                 image: IncomeCertificateUribyApi,
               });
             }
-  
+
             const postData = {
               service_id: id,
               // enquiry_details: {
@@ -445,7 +451,7 @@ const AdmissionForm = ({ navigation }) => {
               //     : []),
               //   // { title: "Income Certificate", image: IncomeCertificateUribyApi },
               // ],
-              documents: documents
+              documents: documents,
             };
             console.log("wwq______________________________________________");
             const formDatablock = objectToFormDatawithnestedObject(postData);
@@ -455,8 +461,10 @@ const AdmissionForm = ({ navigation }) => {
               formDatablock,
               userToken
             ).then((res) => {
-  
-              console.log(res?.status, "staus is coming after submiison of form");
+              console.log(
+                res?.status,
+                "staus is coming after submiison of form"
+              );
               console.log(
                 res?.message,
                 "message is coming after submiison of formcvdfvfgghyttttttttttttttttttttttttybrgb"
@@ -464,30 +472,26 @@ const AdmissionForm = ({ navigation }) => {
               console.log(res, "++++++++++++++++++++++++++++++++++++++");
               if (res?.status) {
                 showToast("Form Submitted Successfully");
-                setIsLoading(false)
+                setIsLoading(false);
                 setTimeout(() => {
                   navigation.navigate("Dashboard");
                 }, 500);
-                
-              }else{
+              } else {
                 showToast("Internal Server Error");
-                setIsLoading(false)
+                setIsLoading(false);
               }
-           
             });
-          }else{
-            setIsLoading(false)
+          } else {
+            setIsLoading(false);
           }
         }
-       
-      } 
-      else {
+      } else {
         showToast("Please Upload all Picture");
-        setIsLoading(false)
+        setIsLoading(false);
       }
     } else {
       showToast("Fill up all the fields");
-      setIsLoading(false)
+      setIsLoading(false);
     }
   };
   const validateForm = () => {
@@ -504,9 +508,6 @@ const AdmissionForm = ({ navigation }) => {
 
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
-
-
-
   };
 
   const isFormValid = () => {
@@ -1227,7 +1228,7 @@ const AdmissionForm = ({ navigation }) => {
   //     </View>
   //   );
   // }
-  const truncateMessage = (message, maxLength = 25) => {
+  const truncateMessage = (message, maxLength = 35) => {
     if (message?.length > maxLength) {
       return message?.substring(0, maxLength) + "...";
     }
@@ -1251,13 +1252,13 @@ const AdmissionForm = ({ navigation }) => {
               }}
             >
               <Image
-               style={{ height: 70, width: 70, borderRadius: 50 }}
+                style={{ height: 70, width: 70, borderRadius: 50 }}
                 // source={require("../../assets/img/student.png")}
-                source={{ uri:logo }}
+                source={{ uri: logo }}
                 resizeMode="cover"
               />
             </View>
-            <View style={{ width: "80%" ,height:'auto' }}>
+            <View style={{ width: "80%", height: "auto" }}>
               <Text style={styles.profileText}>
                 {/* {collegeName}  */}
                 {truncateMessage(collegeName)}
@@ -1271,9 +1272,7 @@ const AdmissionForm = ({ navigation }) => {
                 style={styles.college_details_input}
                 placeholder="Anandamohan College"
                 placeholderTextColor={"rgba(166, 166, 166, 1)"}
-
-                
-                value={truncateMessage(collegeName ,42)}
+                value={truncateMessage(collegeName, 40)}
                 editable={false}
               />
             </View>
@@ -1314,10 +1313,8 @@ const AdmissionForm = ({ navigation }) => {
                   <Text style={{ color: "red" }}>{formErrors.name}</Text>
                 )}
                 {!formErrors.name && !formData.name && fieldTouched.name && (
-                  
                   <Text style={{ color: "red" }}>Full Name is required</Text>
                 )}
-                
               </View>
               {/* D.O.B */}
               {/* <View style={styles.fields_main}>
@@ -1484,7 +1481,9 @@ const AdmissionForm = ({ navigation }) => {
                     keyboardType="numeric"
                     placeholderTextColor={"rgba(166, 166, 166, 1)"}
                     value={formData.mobile}
-                    onChangeText={(text) => handleInputChangeNumber("mobile", text)}
+                    onChangeText={(text) =>
+                      handleInputChangeNumber("mobile", text)
+                    }
                     onBlur={() => handleInputBlur("mobile")}
                     maxLength={10}
                   />
@@ -2598,7 +2597,9 @@ const AdmissionForm = ({ navigation }) => {
                         },
                       ]}
                     >
-                      <Text style={styles.inputHeading}>PassPort Size Photo</Text>
+                      <Text style={styles.inputHeading}>
+                        PassPort Size Photo
+                      </Text>
                       <TouchableOpacity
                         onPress={() => deleteDocuments("passport")}
                       >
@@ -2625,7 +2626,9 @@ const AdmissionForm = ({ navigation }) => {
                         },
                       ]}
                     >
-                      <Text style={styles.inputHeading}>Passport Size Photo</Text>
+                      <Text style={styles.inputHeading}>
+                        Passport Size Photo
+                      </Text>
                       <TouchableOpacity onPress={deleteImagePassPortPhoto}>
                         <AntDesign name="delete" size={20} color="#FF0000" />
                       </TouchableOpacity>
@@ -2847,11 +2850,10 @@ const AdmissionForm = ({ navigation }) => {
                     style={styles.inputbox_submit}
                   >
                     {isLoading ? (
-                    <ActivityIndicator size="small" color="#ffffff" />
-                  ) : (
-<Text style={styles.submitText}>Submit</Text>
-                  )}
-                    
+                      <ActivityIndicator size="small" color="#ffffff" />
+                    ) : (
+                      <Text style={styles.submitText}>Submit</Text>
+                    )}
                   </LinearGradient>
                 </TouchableOpacity>
               </View>
@@ -2874,7 +2876,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   profile: {
-    height: 'auto',
+    height: "auto",
     flexDirection: "row",
     width: "90%",
     alignItems: "center",
@@ -2893,14 +2895,14 @@ const styles = StyleSheet.create({
     height: 50,
     width: 50,
     margin: 10,
-    borderRadius:50
+    borderRadius: 50,
   },
   profileText: {
     fontSize: 25,
     lineHeight: 37.5,
     fontWeight: "600",
     color: "rgba(55, 55, 55, 1)",
-    height:'auto'
+    height: "auto",
   },
   college_details: {
     marginVertical: 20,
