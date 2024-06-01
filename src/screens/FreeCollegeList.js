@@ -977,9 +977,9 @@ const FreeCollegeList = ({ navigation }) => {
                           heading: heading,
                           organization_Id: value?.organization_id,
                           Location: requiredFields?.is_location_required,
-                          aadharRequired: requiredFields?.is_aadhar_required,
+                          aadharRequired:  requiredFields?.is_aadhar_required != null ? requiredFields?.is_aadhar_required  : "no",
                           IncomeCertificateRequired:
-                            requiredFields?.is_income_required,
+                            requiredFields?.is_income_required != null ? requiredFields?.is_income_required:"no",
                         })
                       }
                     >
@@ -1002,9 +1002,9 @@ const FreeCollegeList = ({ navigation }) => {
                             collegeName: value?.organization_name,
                             courseName: value?.course_name,
                             id: id,
-                            aadharRequired: requiredFields?.is_aadhar_required,
+                            aadharRequired: requiredFields?.is_aadhar_required != null ? requiredFields?.is_aadhar_required  : "no",
                             IncomeCertificateRequired:
-                              requiredFields?.is_income_required,
+                            requiredFields?.is_income_required != null ? requiredFields?.is_income_required:"no",
                             logo: value?.logo,
                           })
                         }

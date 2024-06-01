@@ -266,7 +266,7 @@ const AdmissionForm = ({ navigation }) => {
     } else if (!emailPattern.test(email)) {
       
       setEmailError("Invalid email format");
-      
+
     } else {
       // setEmailError("");  
       setEmailError(null)
@@ -324,8 +324,10 @@ const AdmissionForm = ({ navigation }) => {
           formData.whatsapp_number &&
           formData.whatsapp_number.trim().length !== 10) || (!formErrors.fatherMobile &&
           formData.fatherMobile &&
-          formData.fatherMobile.trim().length !== 10)) {
-            showToast("Fill Check the warnings")
+          formData.fatherMobile.trim().length !== 10) || (!formErrors.aadhar_number &&
+            formData.aadhar_number &&
+            formData.aadhar_number.trim().length !== 12)) {
+            showToast("Failed!Preview your Deatails")
             setIsLoading(false)
           
         } else {
@@ -484,7 +486,7 @@ const AdmissionForm = ({ navigation }) => {
         setIsLoading(false)
       }
     } else {
-      showToast("Please Fill Up All Black Fields");
+      showToast("Fill up all the fields");
       setIsLoading(false)
     }
   };
@@ -1225,6 +1227,12 @@ const AdmissionForm = ({ navigation }) => {
   //     </View>
   //   );
   // }
+  const truncateMessage = (message, maxLength = 25) => {
+    if (message?.length > maxLength) {
+      return message?.substring(0, maxLength) + "...";
+    }
+    return message;
+  };
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
       <Header
@@ -1249,9 +1257,10 @@ const AdmissionForm = ({ navigation }) => {
                 resizeMode="cover"
               />
             </View>
-            <View style={{ width: "80%" }}>
+            <View style={{ width: "80%" ,height:'auto' }}>
               <Text style={styles.profileText}>
-                {collegeName} College Admission Form
+                {/* {collegeName}  */}
+                {truncateMessage(collegeName)}
               </Text>
             </View>
           </View>
@@ -1262,7 +1271,9 @@ const AdmissionForm = ({ navigation }) => {
                 style={styles.college_details_input}
                 placeholder="Anandamohan College"
                 placeholderTextColor={"rgba(166, 166, 166, 1)"}
-                value={collegeName}
+
+                
+                value={truncateMessage(collegeName ,42)}
                 editable={false}
               />
             </View>
@@ -2863,7 +2874,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   profile: {
-    height: 76,
+    height: 'auto',
     flexDirection: "row",
     width: "90%",
     alignItems: "center",
@@ -2889,6 +2900,7 @@ const styles = StyleSheet.create({
     lineHeight: 37.5,
     fontWeight: "600",
     color: "rgba(55, 55, 55, 1)",
+    height:'auto'
   },
   college_details: {
     marginVertical: 20,
