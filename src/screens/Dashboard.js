@@ -31,12 +31,7 @@ import {
   getrequestwithtoken,
 } from "../../Helper/Helper";
 
-
-
-
-
-
-const BannerCarousel = ({bannerData}) => {
+const BannerCarousel = ({ bannerData }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const images = bannerData;
 
@@ -52,14 +47,17 @@ const BannerCarousel = ({bannerData}) => {
       setActiveIndex((prevIndex) => {
         const nextIndex = (prevIndex + 1) % images.length;
         if (flatListRef.current) {
-          flatListRef.current.scrollToIndex({ index: nextIndex, animated: true });
+          flatListRef.current.scrollToIndex({
+            index: nextIndex,
+            animated: true,
+          });
         }
         return nextIndex;
       });
     }, 2000); // 2000ms for 2 seconds
 
     return () => clearInterval(intervalId);
-  }, [images.length])
+  }, [images.length]);
 
   const renderPagination = () => {
     return (
@@ -88,33 +86,27 @@ const BannerCarousel = ({bannerData}) => {
       />
     </View>
   );
-  return(
+  return (
     <View style={{ paddingTop: 18, position: "relative" }}>
-          <FlatList
-            ref={flatListRef}
-            data={images}
-            horizontal
-            pagingEnabled
-            showsHorizontalScrollIndicator={false}
-            renderItem={renderItem}
-            keyExtractor={(item, index) => index.toString()}
-            onViewableItemsChanged={onViewableItemsChanged}
-          />
-          {renderPagination()}
-        </View>
-  )
-}
-
-
-
-
-
-
+      <FlatList
+        ref={flatListRef}
+        data={images}
+        horizontal
+        pagingEnabled
+        showsHorizontalScrollIndicator={false}
+        renderItem={renderItem}
+        keyExtractor={(item, index) => index.toString()}
+        onViewableItemsChanged={onViewableItemsChanged}
+      />
+      {renderPagination()}
+    </View>
+  );
+};
 
 const Dashboard = ({ navigation }) => {
   const [isLoadingpage, setisLoadingpage] = useState(true);
   const [isLoadingcard, setisLoadingcard] = useState(true);
- 
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { userToken, setuserToken, setmyLoading, profileAllData } =
     useContext(AuthContext);
@@ -159,12 +151,6 @@ const Dashboard = ({ navigation }) => {
       useNativeDriver: true,
     }).start();
   };
-
- 
-
-
-
- 
 
   useEffect(() => {
     getrequestwithtoken("master/dashboard-banner", userToken)
@@ -349,13 +335,12 @@ const Dashboard = ({ navigation }) => {
   async function fetchUserData() {
     try {
       getdata("master/service-type").then((res) => {
-        if(res?.status){
+        if (res?.status) {
           console.log(res.status);
           setcarddata(res?.data);
           setisLoadingcard(false);
           // setmyLoading(false)
         }
-      
       });
     } catch (error) {
       console.error("Error fetching user data:", error);
@@ -395,31 +380,29 @@ const Dashboard = ({ navigation }) => {
 
     return (
       <>
-
         <View style={styles.container12}>
           {[...Array(1)].map((_, index) => (
             <>
-   <Animated.View
-                    key={index}
-                    style={[styles.placeholder, { opacity, height: "7%" }]}
-                  />
+              <Animated.View
+                key={index}
+                style={[styles.placeholder, { opacity, height: "7%" }]}
+              />
 
-            <Animated.View
-              key={index}
-              style={[styles.placeholder, { opacity, height: "20%" }]}
-            />
+              <Animated.View
+                key={index}
+                style={[styles.placeholder, { opacity, height: "20%" }]}
+              />
             </>
-
           ))}
-           <Animated.View
-                    style={[styles.placeholder, { opacity, height: "7%" }]}
-                  />
+          <Animated.View
+            style={[styles.placeholder, { opacity, height: "7%" }]}
+          />
           <Animated.View
             style={[styles.placeholder, { opacity, height: "35%" }]}
           />
-              <Animated.View
-                    style={[styles.placeholder, { opacity, height: "7%" }]}
-                  />
+          <Animated.View
+            style={[styles.placeholder, { opacity, height: "7%" }]}
+          />
           <Animated.View
             style={[styles.placeholder, { opacity, height: "35%" }]}
           />
@@ -849,7 +832,7 @@ const Dashboard = ({ navigation }) => {
       )}
       <View style={styles.hairline} />
       <ScrollView>
-      <BannerCarousel bannerData={bannerData} />
+        {bannerData?.length > 0 && <BannerCarousel bannerData={bannerData} />}
         <View>
           {/* new start  */}
           <View>

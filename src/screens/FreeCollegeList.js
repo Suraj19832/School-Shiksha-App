@@ -35,10 +35,10 @@ import { GetfetchDataWithParams } from "../../Helper/Helper";
 // import { ActivityIndicator } from "react-native-paper";
 // import { FlatList } from "react-native-web";
 
-const BannerCarousel = ({bannerData}) => {
+const BannerCarousel = ({ bannerData }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const flatListRef = useRef(null);
-   const images = bannerData;
+  const images = bannerData;
 
   const onViewableItemsChanged = ({ viewableItems }) => {
     if (viewableItems && viewableItems.length > 0) {
@@ -50,14 +50,17 @@ const BannerCarousel = ({bannerData}) => {
       setActiveIndex((prevIndex) => {
         const nextIndex = (prevIndex + 1) % images.length;
         if (flatListRef.current) {
-          flatListRef.current.scrollToIndex({ index: nextIndex, animated: true });
+          flatListRef.current.scrollToIndex({
+            index: nextIndex,
+            animated: true,
+          });
         }
         return nextIndex;
       });
     }, 2000); // 2000ms for 2 seconds
 
     return () => clearInterval(intervalId);
-  }, [images.length])
+  }, [images.length]);
   const renderPagination = () => {
     return (
       <View style={styles.paginationContainer}>
@@ -86,23 +89,22 @@ const BannerCarousel = ({bannerData}) => {
       />
     </View>
   );
-  return(
-
-<View style={{ position: "relative" }}>
-          <FlatList
-            ref={flatListRef}
-            data={images}
-            horizontal
-            pagingEnabled
-            showsHorizontalScrollIndicator={false}
-            renderItem={renderItem}
-            keyExtractor={(item, index) => index.toString()}
-            onViewableItemsChanged={onViewableItemsChanged}
-          />
-          {renderPagination()}
-        </View>
-  )
-}
+  return (
+    <View style={{ position: "relative" }}>
+      <FlatList
+        ref={flatListRef}
+        data={images}
+        horizontal
+        pagingEnabled
+        showsHorizontalScrollIndicator={false}
+        renderItem={renderItem}
+        keyExtractor={(item, index) => index.toString()}
+        onViewableItemsChanged={onViewableItemsChanged}
+      />
+      {renderPagination()}
+    </View>
+  );
+};
 const FreeCollegeList = ({ navigation }) => {
   const [selectedValue, setSelectedValue] = useState(null);
   const [open, setOpen] = useState(false);
@@ -195,7 +197,6 @@ const FreeCollegeList = ({ navigation }) => {
         // console.log(res?.data.length() ,)
         setorganizationId(res?.data?.organization_id);
       });
-
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
@@ -257,7 +258,6 @@ const FreeCollegeList = ({ navigation }) => {
     }
   }
 
-
   const [bannerData, setBannerData] = useState([]);
   useEffect(() => {
     const params = {
@@ -266,20 +266,13 @@ const FreeCollegeList = ({ navigation }) => {
     GetfetchDataWithParams("master/service-banner", params)
       .then((res) => {
         setBannerData(res?.data);
+        console.log("cmccmmcmcmc" ,res?.data)
         setisLoadingpage(false);
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
-
- 
-
- 
-
-  
-  
-  
 
   useEffect(() => {
     fetchUserData("master/organization-course", id);
@@ -298,12 +291,14 @@ const FreeCollegeList = ({ navigation }) => {
     debouncedFetchUserData(text);
   };
 
-  const debouncedFetchUserData = useCallback(debounce((text) => {
-    fetchUserAllData("master/organization-course", id, null, text);
-    fetchUserData("master/organization-course", id, null, text);
-  }, 500), []);
+  const debouncedFetchUserData = useCallback(
+    debounce((text) => {
+      fetchUserAllData("master/organization-course", id, null, text);
+      fetchUserData("master/organization-course", id, null, text);
+    }, 500),
+    []
+  );
 
-  
   function debounce(func, wait) {
     let timeout;
     return function (...args) {
@@ -395,8 +390,8 @@ const FreeCollegeList = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       <Header title={`${heading} List`} navigateTo={navigation.goBack} />
       <ScrollView style={{ backgroundColor: "#FFFCCE", height: "100%" }}>
-      <BannerCarousel bannerData={bannerData} />
-
+        {bannerData?.length>0 && <BannerCarousel bannerData={bannerData} />
+}
         <View style={styles.searchContainer}>
           <View style={{ gap: 15 }}>
             <Text
@@ -1010,7 +1005,7 @@ const FreeCollegeList = ({ navigation }) => {
                             aadharRequired: requiredFields?.is_aadhar_required,
                             IncomeCertificateRequired:
                               requiredFields?.is_income_required,
-                              logo:value?.logo
+                            logo: value?.logo,
                           })
                         }
                       >
@@ -1955,7 +1950,7 @@ const styles = StyleSheet.create({
     width: "89%",
     gap: 15,
     // height: "auto",
-    marginBottom: Dimensions.get("window").height *0.03
+    marginBottom: Dimensions.get("window").height * 0.03,
   },
   cardTop: {
     flexDirection: "row",

@@ -200,7 +200,8 @@ const Details = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       <Header title={`${heading} LIST`} navigateTo={navigation.goBack} />
       <ScrollView style={{ backgroundColor: "#FFFCCE", height: "100%" }}>
-      <BannerCarousel bannerData={bannerData} />
+        {bannerData?.length>0 &&   <BannerCarousel bannerData={bannerData} />}
+    
         <View style={styles.listContainer}>
           {/* card */}
           <View style={styles.listCard}>

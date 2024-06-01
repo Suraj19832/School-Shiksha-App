@@ -266,8 +266,9 @@ const AdmissionForm = ({ navigation }) => {
     } else if (!emailPattern.test(email)) {
       
       setEmailError("Invalid email format");
+      
     } else {
-      // setEmailError("");
+      // setEmailError("");  
       setEmailError(null)
     }
   };
