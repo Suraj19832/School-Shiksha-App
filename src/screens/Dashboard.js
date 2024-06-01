@@ -122,6 +122,7 @@ const Dashboard = ({ navigation }) => {
   const [gender, setgender] = useState();
   const [plan, setplan] = useState();
   const [bannerData, setBannerData] = useState([]);
+  const [unreadMsgCount, setUnreadMsgCount] = useState(null)
 
   const toggleMenu = () => {
     getrequestwithtoken("student/profile", userToken).then((res) => {
@@ -151,6 +152,8 @@ const Dashboard = ({ navigation }) => {
       useNativeDriver: true,
     }).start();
   };
+
+
 
   useEffect(() => {
     getrequestwithtoken("master/dashboard-banner", userToken)
@@ -356,6 +359,15 @@ const Dashboard = ({ navigation }) => {
     Linking.openURL(whatsappUrl);
   };
 
+  useEffect(()=>{
+    getrequestwithtoken("student/notifications/count",userToken).then((res)=>{
+      console.log(res.data.unread_count,"totoal count is her ")
+      setUnreadMsgCount(res.data.unread_count)
+    }).catch((err)=>{
+      console.log(err,"error is cout")
+    })
+  },[userToken,unreadMsgCount])
+
   // Skeleton?
 
   const CardSkeleton = () => {
@@ -477,7 +489,10 @@ const Dashboard = ({ navigation }) => {
               source={require("../../assets/icons/notification.png")}
               style={{ width: 25, height: 25, position: "relative" }}
             />
-            <View style={styles.online}></View>
+            {
+              unreadMsgCount > 0 ? (<View style={styles.online}></View>):(<View style={{}}></View>)
+            }
+            
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => navigation.navigate("editProfile")}

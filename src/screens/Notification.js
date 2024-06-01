@@ -57,14 +57,32 @@ const truncateMessage = (message, maxLength = 35) => {
 };
 
 const NotificationContainer = (props) => {
+  // console.log(props.is_read,"kkkkkkkkkkkkkkkkkkk")
+  const { userToken } = useContext(AuthContext);
+  // console.log(props,"props checking")
   const imgPath = {
     // "phone-call": require("../../assets/img/phone-call.png"),
     email: require("../../assets/img/email.png"),
     whatsapp: require("../../assets/img/whatsappIcon.png"),
   };
-
   const [modalVisible, setModalVisible] = useState(false);
+  const [isRead, setIsRead] = useState(props.is_read);
 
+  useEffect(() => {
+    setIsRead(props.is_read);
+  }, [props.is_read]);
+  const readMessage = () => {
+    
+    const params = {
+      id :props.id
+    }
+    getRequestWithParamsTokens("student/notification/view",userToken,params).then((res)=>{
+      setIsRead(res.data.is_read)
+      console.log(res.data.is_read)
+    }).catch((err)=>[
+      console.log(err,"error from notification api view")
+    ])
+  }
   return (
     <View>
       <Modal
@@ -89,7 +107,10 @@ const NotificationContainer = (props) => {
         </View>
       </Modal>
       <TouchableOpacity
-        onPress={() => setModalVisible(true)}
+        onPress={() => {
+          setModalVisible(true);
+          readMessage()
+        }}
         style={{
           flexDirection: "row",
           justifyContent: "space-between",
@@ -119,21 +140,19 @@ const NotificationContainer = (props) => {
               style={{
                 position: "absolute",
                 bottom: 22,
-                fontSize: 10,
+                fontSize: 14,
                 fontWeight: "500",
                 lineHeight: 18,
               }}
             >
-              <Text>{props?.subjectMsg}</Text>
+              <Text style={{color: isRead == 0 ? "red" : "#435354",fontWeight:'500',fontSize:14}}>{props?.subjectMsg}</Text>
             </View>
             <Text
               style={{
                 marginTop: 5,
                 color: "#435354",
-                fontSize: 14,
+                fontSize: 12,
                 fontWeight: "400",
-                // maxWidth: Dimensions.get("screen").width * 0.6,
-                fontWeight: "500",
               }}
             >
               {truncateMessage(props?.NotificationMsg)}
@@ -165,6 +184,7 @@ const Notification = ({ navigation }) => {
     setLoadingPage(true);
     getRequestWithParamsTokens("student/notifications", userToken, params)
       .then((res) => {
+        // console.log(res,"LLLLLLLLLLLLLLLLLLL")
         setgetdatalength(res?.data?.total_count);
 
         const objData = res?.data?.items.map((item) => item);
@@ -178,11 +198,12 @@ const Notification = ({ navigation }) => {
         setLoadingPage(false);
       });
   }, [userToken, limit]);
+
   const loadmore = () => {
     setIsLoading(true);
-    console.log("Loadmore is clicked");
+    // console.log("Loadmore is clicked");
     setlimit(limit + 1);
-    console.log(limit);
+    // console.log(limit);
     // fetchUserData("master/organization-course", id);
   };
 
@@ -207,12 +228,15 @@ const Notification = ({ navigation }) => {
 
           <View style={{ marginBottom: 20 }}>
             {notifiData?.map((item, index) => {
+              // console.log(item,"????????????")
               return (
                 <View key={index}>
                   <NotificationContainer
                     subjectMsg={item?.subject}
                     NotificationMsg={item?.message}
                     msgTime={item?.created_at}
+                    id={item?.id}
+                    is_read={item?.is_read}
                     iconColor="#C5F2EC"
                     iconName="SS"
                   />
