@@ -131,7 +131,16 @@ const AdmissionForm = ({ navigation }) => {
 
   // email
 
+
+  const handleInputChangeNumber = (key, value) => {
+    if (/^[0-9]*$/.test(value) || value === "") {
+      setFormData({ ...formData, [key]: value });
+    }
+    // setFormData({ ...formData, [key]: value });
+  };
+  
   const handleInputChange = (key, value) => {
+  
     setFormData({ ...formData, [key]: value });
   };
   const handleInputBlur = (key) => {
@@ -447,7 +456,7 @@ const AdmissionForm = ({ navigation }) => {
         setIsLoading(false)
       }
     } else {
-      showToast("Please Fill Up All Black Filed");
+      showToast("Please Fill Up All Black Fields");
       setIsLoading(false)
     }
   };
@@ -1431,7 +1440,7 @@ const AdmissionForm = ({ navigation }) => {
                     keyboardType="numeric"
                     placeholderTextColor={"rgba(166, 166, 166, 1)"}
                     value={formData.mobile}
-                    onChangeText={(text) => handleInputChange("mobile", text)}
+                    onChangeText={(text) => handleInputChangeNumber("mobile", text)}
                     onBlur={() => handleInputBlur("mobile")}
                     maxLength={10}
                   />
@@ -1754,7 +1763,7 @@ const AdmissionForm = ({ navigation }) => {
                     placeholderTextColor={"rgba(166, 166, 166, 1)"}
                     value={formData.whatsapp_number}
                     onChangeText={(text) =>
-                      handleInputChange("whatsapp_number", text)
+                      handleInputChangeNumber("whatsapp_number", text)
                     }
                     onBlur={() => handleInputBlur("whatsapp_number")}
                     maxLength={10}
@@ -1847,7 +1856,7 @@ const AdmissionForm = ({ navigation }) => {
                     placeholderTextColor={"rgba(166, 166, 166, 1)"}
                     value={formData.fatherMobile}
                     onChangeText={(text) =>
-                      handleInputChange("fatherMobile", text)
+                      handleInputChangeNumber("fatherMobile", text)
                     }
                     onBlur={() => handleInputBlur("fatherMobile")}
                     maxLength={10}
