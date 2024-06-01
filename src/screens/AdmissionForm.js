@@ -100,11 +100,13 @@ const AdmissionForm = ({ navigation }) => {
   } = route.params;
   console.log(
     "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$",
-    id
+    id ,   aadharRequired,
+    IncomeCertificateRequired
   );
 
   // users data
   const [formErrors, setFormErrors] = useState({});
+  const [iswarning , setiswarning] =useState(true)
 
   const [formData, setFormData] = useState({
     name: "",
@@ -150,7 +152,7 @@ const AdmissionForm = ({ navigation }) => {
   };
   // email
   const [email, setEmail] = useState("");
-  const [emailError, setEmailError] = useState("");
+  const [emailError, setEmailError] = useState(null);
 
   // for gender
 
@@ -262,16 +264,19 @@ const AdmissionForm = ({ navigation }) => {
     if (!email.trim()) {
       setEmailError("Email is required");
     } else if (!emailPattern.test(email)) {
+      
       setEmailError("Invalid email format");
     } else {
-      setEmailError("");
+      // setEmailError("");
+      setEmailError(null)
     }
   };
 
   const handleEmailChange = (text) => {
     setEmail(text);
     if (text.trim()) {
-      setEmailError("");
+      // setEmailError("");
+      setEmailError(null)
     }
   };
   const handleSubmission = () => {
@@ -309,149 +314,171 @@ const AdmissionForm = ({ navigation }) => {
         PassportUribyApi &&
         (IncomeCertificateRequired === "no" || IncomeCertificateUribyApi)
         // IncomeCertificateUribyApi
-      ) {
-        if (isChecked === false) {
-          setisChckedError(true);
-        }
-        if (isChecked) {
-          const enquiryDetails = {
-            name: formData.name,
-            Date_of_Birth: userDetails.date_of_birth,
-            // ...(aadharRequired === "no" && {
-            //   aadhar_number: formData.aadhar_number,
-            // }),
-            // aadhar_number: formData.aadhar_number,
-            gender: inputValuegender,
-            email: email,
-            mobile: formData.mobile,
-            religion: formData.religion,
-            address: formData.address,
-            policestation: formData.police_station,
-            post_office: formData.post_office,
-            state: inputValuestate,
-            district: inputValuedistrict,
-            pincode: formData.pincode,
-            whatsapp_number: formData.whatsapp_number,
-            guardians_name: formData.fatherName,
-            guardian_number: formData.fatherMobile,
-            occupation: inputValueoccupation,
-            // ...(IncomeCertificateRequired === "no" && {
-            //   income: formData.income,
-            // }),
-            // income: formData.income,
-            hs_Passout: inputValueHs,
-            percentage: formData.percentage,
-          };
+      ) 
+      {
 
-          if (IncomeCertificateRequired === "yes") {
-            enquiryDetails.income = formData.income;
+        if ((!formErrors.mobile &&
+          formData.mobile &&
+          formData.mobile.trim().length !== 10) ||  (emailError !== null) ||( !formErrors.whatsapp_number &&
+          formData.whatsapp_number &&
+          formData.whatsapp_number.trim().length !== 10) || (!formErrors.fatherMobile &&
+          formData.fatherMobile &&
+          formData.fatherMobile.trim().length !== 10)) {
+            showToast("Fill Check the warnings")
+            setIsLoading(false)
+          
+        } else {
+          if (isChecked === false) {
+            setisChckedError(true);
           }
-          if (aadharRequired === "yes") {
-            enquiryDetails.aadhar_number = formData.aadhar_number;
-          }
-
-          let documents = [];
-
-          if (aadharRequired === "yes") {
-            documents.push({
-              title: "Aadhar Front",
-              image: AadharFrontUribyApi,
-            });
-            documents.push({ title: "Aadhar Back", image: AadharBackUribyApi });
-          }
-
-          documents.push({ title: "PassPort Photo", image: PassportUribyApi });
-
-          if (IncomeCertificateRequired === "yes") {
-            documents.push({
-              title: "Income Certificate",
-              image: IncomeCertificateUribyApi,
-            });
-          }
-
-          const postData = {
-            service_id: id,
-            // enquiry_details: {
-            //   name: formData.name,
-            //   Date_of_Birth: userDetails.date_of_birth,
-            //   ...(aadharRequired === "no" && {
-            //     aadhar_number: formData.aadhar_number,
-            //   }),
-            //   // aadhar_number: formData.aadhar_number,
-            //   gender: inputValuegender,
-            //   email: email,
-            //   mobile: formData.mobile,
-            //   religion: formData.religion,
-            //   address: formData.address,
-            //   policestation: formData.police_station,
-            //   post_office: formData.post_office,
-            //   state: inputValuestate,
-            //   district: inputValuedistrict,
-            //   pincode: formData.pincode,
-            //   whatsapp_number: formData.whatsapp_number,
-            //   guardians_name: formData.fatherName,
-            //   guardian_number: formData.fatherMobile,
-            //   occupation: inputValueoccupation,
-            //   ...(IncomeCertificateRequired === "no" && {
-            //     income: formData.income,
-            //   }),
-            //   // income: formData.income,
-            //   hs_Passout: inputValueHs,
-            //   percentage: formData.percentage,
-            // },
-            enquiry_details: enquiryDetails,
-            // documents: [
-            //   { title: "Aadhar Front", image: AadharFrontUribyApi },
-            //   { title: "Aadhar Back", image: AadharBackUribyApi },
-            //   { title: "PassPort Photo", image: PassportUribyApi },
-            //   { title: "Income Certificate", image: IncomeCertificateUribyApi },
-            // ],
-            // documents: [
-            //   ...(aadharRequired === "no"
-            //     ? [{ title: "Aadhar Front", image: AadharFrontUribyApi }]
-            //     : []),
-            //   ...(aadharRequired === "no"
-            //     ? [{ title: "Aadhar Back", image: AadharBackUribyApi }]
-            //     : []),
-            //   { title: "PassPort Photo", image: PassportUribyApi },
-            //   ...(IncomeCertificateRequired === "no"
-            //     ? [
-            //         {
-            //           title: "Income Certificate",
-            //           image: IncomeCertificateUribyApi,
-            //         },
-            //       ]
-            //     : []),
-            //   // { title: "Income Certificate", image: IncomeCertificateUribyApi },
-            // ],
-            documents: documents
-          };
-          console.log("wwq______________________________________________");
-          const formDatablock = objectToFormDatawithnestedObject(postData);
-          console.log("dskdjcjcjdcdjcjclejiejfpierpifp", formDatablock);
-          postDataWithFormDataWithToken(
-            "student/form-submit",
-            formDatablock,
-            userToken
-          ).then((res) => {
-
-            console.log(res?.status, "staus is coming after submiison of form");
-            console.log(
-              res?.message,
-              "message is coming after submiison of formcvdfvfgghyttttttttttttttttttttttttybrgb"
-            );
-            console.log(res, "++++++++++++++++++++++++++++++++++++++");
-            if (res?.status) {
-              showToast("Form Submitted Successfully");
-              setIsLoading(false)
-              setTimeout(() => {
-                navigation.navigate("Dashboard");
-              }, 500);
-              
+          if (isChecked) {
+            const enquiryDetails = {
+              name: formData.name,
+              Date_of_Birth: userDetails.date_of_birth,
+              // ...(aadharRequired === "no" && {
+              //   aadhar_number: formData.aadhar_number,
+              // }),
+              // aadhar_number: formData.aadhar_number,
+              gender: inputValuegender,
+              email: email,
+              mobile: formData.mobile,
+              religion: formData.religion,
+              address: formData.address,
+              policestation: formData.police_station,
+              post_office: formData.post_office,
+              state: inputValuestate,
+              district: inputValuedistrict,
+              pincode: formData.pincode,
+              whatsapp_number: formData.whatsapp_number,
+              guardians_name: formData.fatherName,
+              guardian_number: formData.fatherMobile,
+              occupation: inputValueoccupation,
+              // ...(IncomeCertificateRequired === "no" && {
+              //   income: formData.income,
+              // }),
+              // income: formData.income,
+              hs_Passout: inputValueHs,
+              percentage: formData.percentage,
+            };
+  
+            if (IncomeCertificateRequired === "yes") {
+              enquiryDetails.income = formData.income;
             }
-          });
+            if (aadharRequired === "yes") {
+              enquiryDetails.aadhar_number = formData.aadhar_number;
+            }
+  
+            let documents = [];
+  
+            if (aadharRequired === "yes") {
+              documents.push({
+                title: "Aadhar Front",
+                image: AadharFrontUribyApi,
+              });
+              documents.push({ title: "Aadhar Back", image: AadharBackUribyApi });
+            }
+  
+            documents.push({ title: "PassPort Photo", image: PassportUribyApi });
+  
+            if (IncomeCertificateRequired === "yes") {
+              documents.push({
+                title: "Income Certificate",
+                image: IncomeCertificateUribyApi,
+              });
+            }
+  
+            const postData = {
+              service_id: id,
+              // enquiry_details: {
+              //   name: formData.name,
+              //   Date_of_Birth: userDetails.date_of_birth,
+              //   ...(aadharRequired === "no" && {
+              //     aadhar_number: formData.aadhar_number,
+              //   }),
+              //   // aadhar_number: formData.aadhar_number,
+              //   gender: inputValuegender,
+              //   email: email,
+              //   mobile: formData.mobile,
+              //   religion: formData.religion,
+              //   address: formData.address,
+              //   policestation: formData.police_station,
+              //   post_office: formData.post_office,
+              //   state: inputValuestate,
+              //   district: inputValuedistrict,
+              //   pincode: formData.pincode,
+              //   whatsapp_number: formData.whatsapp_number,
+              //   guardians_name: formData.fatherName,
+              //   guardian_number: formData.fatherMobile,
+              //   occupation: inputValueoccupation,
+              //   ...(IncomeCertificateRequired === "no" && {
+              //     income: formData.income,
+              //   }),
+              //   // income: formData.income,
+              //   hs_Passout: inputValueHs,
+              //   percentage: formData.percentage,
+              // },
+              enquiry_details: enquiryDetails,
+              // documents: [
+              //   { title: "Aadhar Front", image: AadharFrontUribyApi },
+              //   { title: "Aadhar Back", image: AadharBackUribyApi },
+              //   { title: "PassPort Photo", image: PassportUribyApi },
+              //   { title: "Income Certificate", image: IncomeCertificateUribyApi },
+              // ],
+              // documents: [
+              //   ...(aadharRequired === "no"
+              //     ? [{ title: "Aadhar Front", image: AadharFrontUribyApi }]
+              //     : []),
+              //   ...(aadharRequired === "no"
+              //     ? [{ title: "Aadhar Back", image: AadharBackUribyApi }]
+              //     : []),
+              //   { title: "PassPort Photo", image: PassportUribyApi },
+              //   ...(IncomeCertificateRequired === "no"
+              //     ? [
+              //         {
+              //           title: "Income Certificate",
+              //           image: IncomeCertificateUribyApi,
+              //         },
+              //       ]
+              //     : []),
+              //   // { title: "Income Certificate", image: IncomeCertificateUribyApi },
+              // ],
+              documents: documents
+            };
+            console.log("wwq______________________________________________");
+            const formDatablock = objectToFormDatawithnestedObject(postData);
+            console.log("dskdjcjcjdcdjcjclejiejfpierpifp", formDatablock);
+            postDataWithFormDataWithToken(
+              "student/form-submit",
+              formDatablock,
+              userToken
+            ).then((res) => {
+  
+              console.log(res?.status, "staus is coming after submiison of form");
+              console.log(
+                res?.message,
+                "message is coming after submiison of formcvdfvfgghyttttttttttttttttttttttttybrgb"
+              );
+              console.log(res, "++++++++++++++++++++++++++++++++++++++");
+              if (res?.status) {
+                showToast("Form Submitted Successfully");
+                setIsLoading(false)
+                setTimeout(() => {
+                  navigation.navigate("Dashboard");
+                }, 500);
+                
+              }else{
+                showToast("Internal Server Error");
+                setIsLoading(false)
+              }
+           
+            });
+          }else{
+            setIsLoading(false)
+          }
         }
-      } else {
+       
+      } 
+      else {
         showToast("Please Upload all Picture");
         setIsLoading(false)
       }
@@ -474,6 +501,9 @@ const AdmissionForm = ({ navigation }) => {
 
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
+
+
+
   };
 
   const isFormValid = () => {
@@ -1272,8 +1302,10 @@ const AdmissionForm = ({ navigation }) => {
                   <Text style={{ color: "red" }}>{formErrors.name}</Text>
                 )}
                 {!formErrors.name && !formData.name && fieldTouched.name && (
+                  
                   <Text style={{ color: "red" }}>Full Name is required</Text>
                 )}
+                
               </View>
               {/* D.O.B */}
               {/* <View style={styles.fields_main}>
@@ -1776,7 +1808,7 @@ const AdmissionForm = ({ navigation }) => {
                   formData.whatsapp_number &&
                   formData.whatsapp_number.trim().length !== 10 && (
                     <Text style={{ color: "red" }}>
-                      Mobile number must be 10 digits
+                      Whatsapp number must be 10 digits
                     </Text>
                   )}
               </View>
