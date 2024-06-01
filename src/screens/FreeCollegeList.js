@@ -34,6 +34,75 @@ import { useRoute } from "@react-navigation/native";
 import { GetfetchDataWithParams } from "../../Helper/Helper";
 // import { ActivityIndicator } from "react-native-paper";
 // import { FlatList } from "react-native-web";
+
+const BannerCarousel = ({bannerData}) => {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const flatListRef = useRef(null);
+   const images = bannerData;
+
+  const onViewableItemsChanged = ({ viewableItems }) => {
+    if (viewableItems && viewableItems.length > 0) {
+      setActiveIndex(viewableItems[0].index || 0);
+    }
+  };
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setActiveIndex((prevIndex) => {
+        const nextIndex = (prevIndex + 1) % images.length;
+        if (flatListRef.current) {
+          flatListRef.current.scrollToIndex({ index: nextIndex, animated: true });
+        }
+        return nextIndex;
+      });
+    }, 2000); // 2000ms for 2 seconds
+
+    return () => clearInterval(intervalId);
+  }, [images.length])
+  const renderPagination = () => {
+    return (
+      <View style={styles.paginationContainer}>
+        <View style={styles.pagination}>
+          {images?.length > 0 &&
+            images.map((_, index) => (
+              <View
+                key={index}
+                style={[
+                  styles.paginationDot,
+                  index === activeIndex && styles.paginationDotActive,
+                ]}
+              />
+            ))}
+        </View>
+      </View>
+    );
+  };
+
+  const renderItem = ({ item }) => (
+    <View style={styles.imageContainer}>
+      <Image
+        source={{ uri: item.banner_image }}
+        style={styles.image}
+        resizeMode="cover"
+      />
+    </View>
+  );
+  return(
+
+<View style={{ position: "relative" }}>
+          <FlatList
+            ref={flatListRef}
+            data={images}
+            horizontal
+            pagingEnabled
+            showsHorizontalScrollIndicator={false}
+            renderItem={renderItem}
+            keyExtractor={(item, index) => index.toString()}
+            onViewableItemsChanged={onViewableItemsChanged}
+          />
+          {renderPagination()}
+        </View>
+  )
+}
 const FreeCollegeList = ({ navigation }) => {
   const [selectedValue, setSelectedValue] = useState(null);
   const [open, setOpen] = useState(false);
@@ -73,11 +142,6 @@ const FreeCollegeList = ({ navigation }) => {
 
   const route = useRoute();
   const { id, heading, searchrequired } = route.params;
-  console.log(
-    "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
-    searchrequired
-  );
-  console.log(id, ":::::::::::::::::::::::::::::::::");
   // console.log("checking id is comig or not", id)
   const [FreeCollegeList, setFreeCollegeList] = useState([]);
   const [dropdownOption, setdropdownOption] = useState([]);
@@ -101,7 +165,6 @@ const FreeCollegeList = ({ navigation }) => {
       console.error("Error fetching user data:", error);
     }
   }
-  console.log("dropdown optionn--=-=-=-=-==-=-=-==-=-=-=-=---", dropdownOption);
   const [organizationId, setorganizationId] = useState(null);
 
   async function fetchUserAllData(
@@ -110,7 +173,6 @@ const FreeCollegeList = ({ navigation }) => {
     course_idd = null,
     search_value = null
   ) {
-    console.log(search_value, "********************************");
     try {
       // const endpoint = "master/organization-course";
       const params = {
@@ -132,18 +194,8 @@ const FreeCollegeList = ({ navigation }) => {
         setgetdatalength(res?.data?.length);
         // console.log(res?.data.length() ,)
         setorganizationId(res?.data?.organization_id);
-        console.log(
-          res?.data,
-          "}}}}}}}}}}}}{{{{{{{{{{{{___________________________"
-        );
-
-        // const organizationIds = res.data.map((item) => item.organization_id); // Extract all organization_ids
-        // setorganizationId(organizationIds);
-        // console.log("shschcudhcuwshfciuwyhiufeiufyiufiui",organizationIds)
-        // setisLoadingpage(false);
       });
 
-      // console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<",userData,params); // Handle or process the fetched user data here
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
@@ -205,7 +257,6 @@ const FreeCollegeList = ({ navigation }) => {
     }
   }
 
-  const [activeIndex, setActiveIndex] = useState(0);
 
   const [bannerData, setBannerData] = useState([]);
   useEffect(() => {
@@ -222,59 +273,13 @@ const FreeCollegeList = ({ navigation }) => {
       });
   }, []);
 
-  const images = bannerData;
+ 
 
-  const flatListRef = useRef(null);
+ 
 
-  const onViewableItemsChanged = ({ viewableItems }) => {
-    if (viewableItems && viewableItems?.length > 0) {
-      setActiveIndex(viewableItems[0].index || 0);
-    }
-  };
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setActiveIndex((prevIndex) => {
-        const nextIndex = (prevIndex + 1) % images.length;
-        if (flatListRef.current) {
-          flatListRef.current.scrollToIndex({ index: nextIndex, animated: true });
-        }
-        return nextIndex;
-      });
-    }, 2000); // 2000ms for 2 seconds
-
-    return () => clearInterval(intervalId);
-  }, [images.length])
   
-  const renderPagination = () => {
-    return (
-      <View style={styles.paginationContainer}>
-        <View style={styles.pagination}>
-          {images?.map((_, index) => (
-            <View
-              key={index}
-              style={[
-                styles.paginationDot,
-                index === activeIndex && styles.paginationDotActive,
-              ]}
-            />
-          ))}
-        </View>
-      </View>
-    );
-  };
-
-  const renderItem = ({ item }) => (
-    // console.log(item.banner_image, "helloooooooooo"),
-    <View style={styles.imageContainer}>
-      <Image
-        source={{ uri: item?.banner_image }}
-        style={styles.image}
-        resizeMode="cover"
-        // onError={(error) => console.log("Error loading image:", error)}
-      />
-    </View>
-  );
+  
+  
 
   useEffect(() => {
     fetchUserData("master/organization-course", id);
@@ -374,19 +379,7 @@ const FreeCollegeList = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       <Header title={`${heading} List`} navigateTo={navigation.goBack} />
       <ScrollView style={{ backgroundColor: "#FFFCCE", height: "100%" }}>
-        <View style={{ position: "relative" }}>
-          <FlatList
-            ref={flatListRef}
-            data={images}
-            horizontal
-            pagingEnabled
-            showsHorizontalScrollIndicator={false}
-            renderItem={renderItem}
-            keyExtractor={(item, index) => index.toString()}
-            onViewableItemsChanged={onViewableItemsChanged}
-          />
-          {renderPagination()}
-        </View>
+      <BannerCarousel bannerData={bannerData} />
 
         <View style={styles.searchContainer}>
           <View style={{ gap: 15 }}>
