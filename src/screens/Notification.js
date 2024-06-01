@@ -11,6 +11,7 @@ import {
   Animated,
   Easing,
   SafeAreaView,
+  Modal,
 } from "react-native";
 import {
   AntDesign,
@@ -30,7 +31,6 @@ const formatNotificationTime = (dateString) => {
   const now = moment();
   const date = moment(dateString);
   const duration = moment.duration(now.diff(date));
-
   const minutes = duration.asMinutes();
   const hours = duration.asHours();
   const days = duration.asDays();
@@ -63,9 +63,33 @@ const NotificationContainer = (props) => {
     whatsapp: require("../../assets/img/whatsappIcon.png"),
   };
 
+  const [modalVisible, setModalVisible] = useState(false);
+
   return (
     <View>
-      <View
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(false);
+        }}
+      >
+        <View style={styles.modalView}>
+          <View style={styles.modalContent}>
+            <Text style={{textAlign:'center',fontWeight:'600',paddingVertical:5}}>{props?.subjectMsg}</Text>
+            <Text>{props?.NotificationMsg}</Text>
+            <TouchableOpacity
+              onPress={() => setModalVisible(false)}
+              style={styles.closeButton}
+            >
+              <Text style={styles.textStyle}>Close Message</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+      <TouchableOpacity
+        onPress={() => setModalVisible(true)}
         style={{
           flexDirection: "row",
           justifyContent: "space-between",
@@ -89,8 +113,7 @@ const NotificationContainer = (props) => {
           <View style={[styles.icon, { backgroundColor: props?.iconColor }]}>
             <Text>{props?.iconName}</Text>
           </View>
-          {/* <View>
-          // </View> */}
+         
           <View style={{ position: "relative" }}>
             <View
               style={{
@@ -122,7 +145,7 @@ const NotificationContainer = (props) => {
             </Text>
           </View>
         </View>
-      </View>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -301,5 +324,29 @@ const styles = StyleSheet.create({
     width: 50,
     justifyContent: "center",
     alignItems: "center",
+  },
+  modalView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  modalContent: {
+    backgroundColor: "white",
+    padding: 20,
+    borderRadius: 20,
+    elevation: 5,
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  closeButton: {
+    backgroundColor: "#2196F3",
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    marginTop: 10,
   },
 });
