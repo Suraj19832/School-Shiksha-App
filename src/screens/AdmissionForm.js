@@ -54,7 +54,7 @@ const AdmissionForm = ({ navigation }) => {
   const [IncomeCertificateUribyApi, setIncomeCertificateUribyApi] = useState();
   const [DistrictDataaa, setDistrictData] = useState();
   const [stateInfo, setStateInfo] = useState();
-  
+
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { userToken } = useContext(AuthContext);
@@ -1017,6 +1017,7 @@ const AdmissionForm = ({ navigation }) => {
         result.assets[0].uri
       ) {
         // console.log("File picked:", result.assets[0].uri);
+        // showToast("Wait For Picture Upload");
 
         const newtry = getFileData(result);
         // console.log(newtry, "sdlkfjoijohguihgiuv");
@@ -1024,6 +1025,7 @@ const AdmissionForm = ({ navigation }) => {
           image: newtry,
         };
         // console.log("++++++++++++++++postData++++++++++++++++++++++++++++++++++", postData);
+
         setFileUriPassPortPhoto(result.assets[0].uri);
         const formDatablock = objectToFormData(postData);
         console.log(
@@ -1043,7 +1045,7 @@ const AdmissionForm = ({ navigation }) => {
             "0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0"
           );
           setPassportUribyApi(res?.data?.file_name);
-          showToast("Picture Upload Successfully")
+          // showToast("Picture Upload Successfully");
         });
       } else if (result.canceled) {
         console.log("File picking cancelled");
@@ -2267,10 +2269,24 @@ const AdmissionForm = ({ navigation }) => {
                         </TouchableOpacity>
                       </View>
                       <View style={styles.imageContainer}>
-                        <Image
-                          source={{ uri: fileUri }}
-                          style={styles.uploadedImage}
-                        />
+                        {AadharFrontUribyApi ? (
+                          <Image
+                            source={{ uri: fileUri }}
+                            style={styles.uploadedImage}
+                          />
+                        ) : (
+                          <View
+                            style={[
+                              styles.uploadedImage,
+                              { justifyContent: "center" },
+                            ]}
+                          >
+                            <ActivityIndicator
+                              size="medium"
+                              color="rgba(0, 54, 126, 1)"
+                            />
+                          </View>
+                        )}
                       </View>
                     </View>
                   )}
@@ -2292,10 +2308,24 @@ const AdmissionForm = ({ navigation }) => {
                         </TouchableOpacity>
                       </View>
                       <View style={styles.imageContainer}>
-                        <Image
-                          source={{ uri: capturedImageAddharfront }}
-                          style={styles.uploadedImage}
-                        />
+                        {AadharFrontUribyApi ? (
+                          <Image
+                            source={{ uri: capturedImageAddharfront }}
+                            style={styles.uploadedImage}
+                          />
+                        ) : (
+                          <View
+                            style={[
+                              styles.uploadedImage,
+                              { justifyContent: "center" },
+                            ]}
+                          >
+                            <ActivityIndicator
+                              size="medium"
+                              color="rgba(0, 54, 126, 1)"
+                            />
+                          </View>
+                        )}
                       </View>
                     </View>
                   )}
@@ -2380,10 +2410,24 @@ const AdmissionForm = ({ navigation }) => {
                         </TouchableOpacity>
                       </View>
                       <View style={styles.imageContainer}>
-                        <Image
-                          source={{ uri: fileUriAddharBack }}
-                          style={styles.uploadedImage}
-                        />
+                        {AadharBackUribyApi ? (
+                          <Image
+                            source={{ uri: fileUriAddharBack }}
+                            style={styles.uploadedImage}
+                          />
+                        ) : (
+                          <View
+                            style={[
+                              styles.uploadedImage,
+                              { justifyContent: "center" },
+                            ]}
+                          >
+                            <ActivityIndicator
+                              size="medium"
+                              color="rgba(0, 54, 126, 1)"
+                            />
+                          </View>
+                        )}
                       </View>
                     </View>
                   )}
@@ -2405,10 +2449,24 @@ const AdmissionForm = ({ navigation }) => {
                         </TouchableOpacity>
                       </View>
                       <View style={styles.imageContainer}>
-                        <Image
-                          source={{ uri: capturedImageAddharBack }}
-                          style={styles.uploadedImage}
-                        />
+                        {AadharBackUribyApi ? (
+                          <Image
+                            source={{ uri: capturedImageAddharBack }}
+                            style={styles.uploadedImage}
+                          />
+                        ) : (
+                          <View
+                            style={[
+                              styles.uploadedImage,
+                              { justifyContent: "center" },
+                            ]}
+                          >
+                            <ActivityIndicator
+                              size="medium"
+                              color="rgba(0, 54, 126, 1)"
+                            />
+                          </View>
+                        )}
                       </View>
                     </View>
                   )}
@@ -2569,7 +2627,6 @@ const AdmissionForm = ({ navigation }) => {
 
               {/* Passport photo */}
 
-              
               <View>
                 {!capturedImagePassport && !fileUriPassPortPhoto && (
                   <View style={styles.fields_main}>
@@ -2589,7 +2646,7 @@ const AdmissionForm = ({ navigation }) => {
                     </TouchableOpacity>
                   </View>
                 )}
-                {fileUriPassPortPhoto  && (
+                {fileUriPassPortPhoto && (
                   <View>
                     <View
                       style={[
@@ -2611,10 +2668,24 @@ const AdmissionForm = ({ navigation }) => {
                       </TouchableOpacity>
                     </View>
                     <View style={styles.imageContainer}>
-                      <Image
-                        source={{ uri: fileUriPassPortPhoto }}
-                        style={styles.uploadedImage}
-                      />
+                      {PassportUribyApi ? (
+                        <Image
+                          source={{ uri: fileUriPassPortPhoto }}
+                          style={styles.uploadedImage}
+                        />
+                      ) : (
+                        <View
+                          style={[
+                            styles.uploadedImage,
+                            { justifyContent: "center" },
+                          ]}
+                        >
+                          <ActivityIndicator
+                            size="medium"
+                            color="rgba(0, 54, 126, 1)"
+                          />
+                        </View>
+                      )}
                     </View>
                   </View>
                 )}
@@ -2639,10 +2710,21 @@ const AdmissionForm = ({ navigation }) => {
                       </TouchableOpacity>
                     </View>
                     <View style={styles.imageContainer}>
-                      <Image
-                        source={{ uri: capturedImagePassport }}
-                        style={styles.uploadedImage}
-                      />
+                      {PassportUribyApi ? (
+                        <Image
+                          source={{ uri: capturedImagePassport }}
+                          style={styles.uploadedImage}
+                        />
+                      ) : (
+                        <View
+                          style={[
+                            styles.uploadedImage,
+                            { justifyContent: "center" },
+                          ]}
+                        >
+                          <ActivityIndicator size="medium" color="#black" />
+                        </View>
+                      )}
                     </View>
                   </View>
                 )}
@@ -2731,10 +2813,21 @@ const AdmissionForm = ({ navigation }) => {
                         </TouchableOpacity>
                       </View>
                       <View style={styles.imageContainer}>
-                        <Image
-                          source={{ uri: fileUriIncomeCertificate }}
-                          style={styles.uploadedImage}
-                        />
+                        {IncomeCertificateUribyApi ? (
+                          <Image
+                            source={{ uri: fileUriIncomeCertificate }}
+                            style={styles.uploadedImage}
+                          />
+                        ) : (
+                          <View
+                            style={[
+                              styles.uploadedImage,
+                              { justifyContent: "center" },
+                            ]}
+                          >
+                            <ActivityIndicator size="medium" color="#black" />
+                          </View>
+                        )}
                       </View>
                     </View>
                   )}
@@ -2760,10 +2853,21 @@ const AdmissionForm = ({ navigation }) => {
                         </TouchableOpacity>
                       </View>
                       <View style={styles.imageContainer}>
-                        <Image
-                          source={{ uri: capturedImage }}
-                          style={styles.uploadedImage}
-                        />
+                        {IncomeCertificateUribyApi ? (
+                          <Image
+                            source={{ uri: capturedImage }}
+                            style={styles.uploadedImage}
+                          />
+                        ) : (
+                          <View
+                            style={[
+                              styles.uploadedImage,
+                              { justifyContent: "center" },
+                            ]}
+                          >
+                            <ActivityIndicator size="medium" color="#black" />
+                          </View>
+                        )}
                       </View>
                     </View>
                   )}
