@@ -476,6 +476,10 @@ placeholder: {
     borderRadius: 4,
     marginBottom: 8,
 },
+img: {
+  height: 236,
+  width: 236,
+},
 });
 
 

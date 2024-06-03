@@ -281,7 +281,24 @@ const Notification = ({ navigation }) => {
           <View style={styles.innerView}></View>
 
           <View style={{ marginBottom: 20 }}>
-            {notifiData?.map((item, index) => {
+          {notifiData?.length===0 && (
+            <View  style={{width:'100%' ,height:'90%' ,justifyContent:'center' ,alignItems:'center'}}>
+                <Image
+              source={require("../../assets/img/planet.png")}
+              style={styles.img}
+            />
+            <View style={{flexDirection:'row' ,justifyContent:'center' ,alignItems:'center', gap:10}}>
+            <Text style={{fontWeight:'600' ,fontSize:27 ,alignItems:'center'}}>No Alerts</Text>
+            {/* <Image
+              source={require("../../assets/img/sad-face.png")}
+              style={{width:37 ,height:37}}
+            /> */}
+            </View>
+
+            </View>
+          
+          )}
+            { notifiData?.length!=0 && notifiData?.map((item, index) => {
               // console.log(item,"????????????")
               return (
                 <View key={index}>
@@ -298,7 +315,7 @@ const Notification = ({ navigation }) => {
               );
             })}
           </View>
-          {getdatalength > notifiData?.length || notifiData?.length<=0 && (
+          {getdatalength > notifiData?.length && notifiData?.length!=0 && (
             <TouchableOpacity
               style={{
                 justifyContent: "center",
@@ -427,5 +444,9 @@ const styles = StyleSheet.create({
     padding: 10,
     elevation: 2,
     marginTop: 10,
+  },
+  img: {
+    height: 236,
+    width: 236,
   },
 });
