@@ -108,7 +108,7 @@ const Dashboard = ({ navigation }) => {
   const [isLoadingcard, setisLoadingcard] = useState(true);
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { userToken, setuserToken, setmyLoading, profileAllData } =
+  const { userToken, setuserToken, setmyLoading, profileAllData ,setprofileAllData} =
     useContext(AuthContext);
   const menuWidth = Dimensions.get("window").width * 0.8;
 
@@ -131,8 +131,33 @@ const Dashboard = ({ navigation }) => {
         setphone(res?.data?.mobile);
         setgender(res?.data?.gender);
         setplan(res?.data?.subscription?.plan_name);
+        setprofileAllData(res?.data?.gender);
       }
     });
+
+
+
+    setIsMenuOpen(!isMenuOpen);
+    Animated.timing(menuTranslateX, {
+      toValue: isMenuOpen ? -menuWidth : 0,
+      duration: 100,
+      easing: Easing.ease,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const togglegender = () => {
+    getrequestwithtoken("student/profile", userToken).then((res) => {
+      if (res?.status) {
+        // setname(res?.data?.name);
+        // setphone(res?.data?.mobile);
+        // setgender(res?.data?.gender);
+        // setplan(res?.data?.subscription?.plan_name);
+        setprofileAllData(res?.data?.gender);
+      }
+    });
+
+    
 
     setIsMenuOpen(!isMenuOpen);
     Animated.timing(menuTranslateX, {
@@ -286,15 +311,17 @@ const Dashboard = ({ navigation }) => {
 
   useEffect(() => {
     fetchUserData();
-    // getrequestwithtoken("student/profile", userToken).then((res) => {
-    //   if (res?.status) {
-    //     setname(res?.data?.name);
-    //     setphone(res?.data?.mobile);
-    //     setgender(res?.data?.gender);
-    //     setplan(res?.data?.subscription?.plan_name);
-    //   }
-    //   console.log(gender)
-    // });
+    
+    getrequestwithtoken("student/profile", userToken).then((res) => {
+      if (res?.status) {
+        // setname(res?.data?.name);
+        // setphone(res?.data?.mobile);
+        // setgender(res?.data?.gender);
+        // setplan(res?.data?.subscription?.plan_name);
+        setprofileAllData(res?.data?.gender);
+      }
+      console.log(gender)
+    });
   }, []);
   const [activeServices, setActiveServices] = useState([]);
   useEffect(() => {
@@ -451,6 +478,9 @@ const Dashboard = ({ navigation }) => {
     }
     return message;
   };
+
+
+  console.log(profileAllData,"dfjkfdkfoksksdoks;lk[s;lk[###########################################################################")
 
   return (
     <View style={styles.container}>
