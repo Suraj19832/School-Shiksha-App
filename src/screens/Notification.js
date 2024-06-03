@@ -344,7 +344,6 @@ const styles = StyleSheet.create({
   },
   loader: {
     height: Dimensions.get("window").height * 1,
-    // width: Dimensions.get("window").width * 0.7,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#FFFCCE",

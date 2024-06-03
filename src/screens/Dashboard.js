@@ -13,6 +13,7 @@ import {
   StatusBar,
   useColorScheme,
   Linking,
+  RefreshControl,
 } from "react-native";
 import {
   Ionicons,
@@ -108,8 +109,13 @@ const Dashboard = ({ navigation }) => {
   const [isLoadingcard, setisLoadingcard] = useState(true);
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { userToken, setuserToken, setmyLoading, profileAllData ,setprofileAllData} =
-    useContext(AuthContext);
+  const {
+    userToken,
+    setuserToken,
+    setmyLoading,
+    profileAllData,
+    setprofileAllData,
+  } = useContext(AuthContext);
   const menuWidth = Dimensions.get("window").width * 0.8;
 
   const menuTranslateX = useRef(new Animated.Value(-menuWidth)).current;
@@ -122,7 +128,8 @@ const Dashboard = ({ navigation }) => {
   const [gender, setgender] = useState();
   const [plan, setplan] = useState();
   const [bannerData, setBannerData] = useState([]);
-  const [unreadMsgCount, setUnreadMsgCount] = useState(null)
+  const [unreadMsgCount, setUnreadMsgCount] = useState(null);
+  const [refreshing, setRefreshing] = useState(false);
 
   const toggleMenu = () => {
     getrequestwithtoken("student/profile", userToken).then((res) => {
@@ -134,8 +141,6 @@ const Dashboard = ({ navigation }) => {
         setprofileAllData(res?.data?.gender);
       }
     });
-
-
 
     setIsMenuOpen(!isMenuOpen);
     Animated.timing(menuTranslateX, {
@@ -157,8 +162,6 @@ const Dashboard = ({ navigation }) => {
       }
     });
 
-    
-
     setIsMenuOpen(!isMenuOpen);
     Animated.timing(menuTranslateX, {
       toValue: isMenuOpen ? -menuWidth : 0,
@@ -177,8 +180,6 @@ const Dashboard = ({ navigation }) => {
       useNativeDriver: true,
     }).start();
   };
-
-
 
   useEffect(() => {
     getrequestwithtoken("master/dashboard-banner", userToken)
@@ -282,45 +283,13 @@ const Dashboard = ({ navigation }) => {
     setmyLoading(false);
   };
   const [carddata, setcarddata] = useState([]);
-  // useEffect(() => {
-  //   const apiUrl = "master/service-type";
-  //   getdata(apiUrl)
-  //     .then((res) => {
-  //       const longheading = res.data.map((item) => item);
-  //       setcarddata([]);
-  //       longheading?.map(async (item) => {
-  //         return await fetchUserData(item);
-  //       });
-  //       setheading(longheading);
-  //       const st_title = res?.data?.map((item) => item.short_name);
-  //       setsortheading(st_title);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error fetching data in dashboard:", error);
-  //     });
-
-  //   getrequestwithtoken("student/profile", userToken).then((res) => {
-  //     if (res?.status) {
-  //       setname(res?.data?.name);
-  //       setphone(res?.data?.mobile);
-  //       setgender(res?.data?.gender);
-  //       setplan(res?.data?.subscription?.plan_name);
-  //     }
-  //   });
-  // }, []);
-
   useEffect(() => {
     fetchUserData();
-    
     getrequestwithtoken("student/profile", userToken).then((res) => {
       if (res?.status) {
-        // setname(res?.data?.name);
-        // setphone(res?.data?.mobile);
-        // setgender(res?.data?.gender);
-        // setplan(res?.data?.subscription?.plan_name);
         setprofileAllData(res?.data?.gender);
       }
-      console.log(gender)
+      console.log(gender);
     });
   }, []);
   const [activeServices, setActiveServices] = useState([]);
@@ -369,7 +338,6 @@ const Dashboard = ({ navigation }) => {
           console.log(res.status);
           setcarddata(res?.data);
           setisLoadingcard(false);
-          // setmyLoading(false)
         }
       });
     } catch (error) {
@@ -386,14 +354,16 @@ const Dashboard = ({ navigation }) => {
     Linking.openURL(whatsappUrl);
   };
 
-  useEffect(()=>{
-    getrequestwithtoken("student/notifications/count",userToken).then((res)=>{
-      console.log(res?.data?.unread_count,"totoal count is her ")
-      setUnreadMsgCount(res?.data?.unread_count)
-    }).catch((err)=>{
-      console.log(err,"error is cout")
-    })
-  },[userToken,unreadMsgCount])
+  useEffect(() => {
+    getrequestwithtoken("student/notifications/count", userToken)
+      .then((res) => {
+        console.log(res?.data?.unread_count, "totoal count is her ");
+        setUnreadMsgCount(res?.data?.unread_count);
+      })
+      .catch((err) => {
+        console.log(err, "error is cout");
+      });
+  }, [userToken, unreadMsgCount]);
 
   // Skeleton?
 
@@ -450,24 +420,23 @@ const Dashboard = ({ navigation }) => {
     );
   };
 
-  if (isLoadingpage || isLoadingcard) {
-    return (
-      // <View>
-      //   <Header
-      //     title="Payment History"
-      //     navigateTo={() => navigation.goBack("Home")}
-      //   />
-      //   <View style={{justifyContent:'center' ,alignItems:'center'  ,height:'90%'}}>
-      //   <ActivityIndicator
-      //     size="large"
-      //     color="#00367E"
-      //     style={{justifyContent:'center',alignSelf:'center'}}
-      //   />
-      //   </View>
+  const handleRefresh = () => {
+    setRefreshing(true);
+    getrequestwithtoken("student/notifications/count", userToken)
+      .then((res) => {
+        console.log(res?.data?.unread_count, "totoal count is her ");
+        setUnreadMsgCount(res?.data?.unread_count);
+      })
+      .catch((err) => {
+        console.log(err, "error is cout");
+      })
+      .finally(() => {
+        setRefreshing(false);
+      });
+  };
 
-      // </View>
-      <CardSkeleton />
-    );
+  if (isLoadingpage || isLoadingcard) {
+    return <CardSkeleton />;
   }
 
   // Skeleton End ?
@@ -479,8 +448,10 @@ const Dashboard = ({ navigation }) => {
     return message;
   };
 
-
-  console.log(profileAllData,"dfjkfdkfoksksdoks;lk[s;lk[###########################################################################")
+  console.log(
+    profileAllData,
+    "dfjkfdkfoksksdoks;lk[s;lk[###########################################################################"
+  );
 
   return (
     <View style={styles.container}>
@@ -519,10 +490,11 @@ const Dashboard = ({ navigation }) => {
               source={require("../../assets/icons/notification.png")}
               style={{ width: 25, height: 25, position: "relative" }}
             />
-            {
-              unreadMsgCount > 0 ? (<View style={styles.online}></View>):(<View style={{}}></View>)
-            }
-            
+            {unreadMsgCount > 0 ? (
+              <View style={styles.online}></View>
+            ) : (
+              <View style={{}}></View>
+            )}
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => navigation.navigate("editProfile")}
@@ -876,7 +848,11 @@ const Dashboard = ({ navigation }) => {
         </Animated.View>
       )}
       <View style={styles.hairline} />
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+        }
+      >
         {bannerData?.length > 0 && <BannerCarousel bannerData={bannerData} />}
         <View>
           {/* new start  */}

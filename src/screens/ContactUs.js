@@ -1,4 +1,4 @@
-import { Linking, ActivityIndicator } from "react-native";
+import { Linking, ActivityIndicator, RefreshControl } from "react-native";
 import React, { useState, useRef, useEffect } from "react";
 import {
   Image,
@@ -6,14 +6,11 @@ import {
   Text,
   StyleSheet,
   Dimensions,
-  FlatList,
   ScrollView,
   TouchableOpacity,
   Animated,
-  Easing,
   SafeAreaView,
 } from "react-native";
-import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import Header from "../../components/Header";
 import { LinearGradient } from "expo-linear-gradient";
 import { getdata } from "../../Helper/Helper";
@@ -71,19 +68,34 @@ const ContactContainer = (props) => {
 const ContactUs = ({ navigation }) => {
   const [data, setData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false); // State for refreshing
 
   useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = () => {
     getdata("master/contact-details")
       .then((res) => {
-        // console.log(res?.data);
         setData(res?.data);
-        setIsLoading(false); // Set loading to false when data is fetched
+        setIsLoading(false);
       })
       .catch((err) => {
-        // console.log("dkjhkjghk");
-        setIsLoading(false); // Set loading to false if there's an error
+        setIsLoading(false);
       });
-  }, []);
+  };
+
+  const handleRefresh = () => {
+    setRefreshing(true);
+    getdata("master/contact-details")
+      .then((res) => {
+        setData(res?.data);
+      })
+      .catch((err) => {})
+      .finally(() => {
+        setRefreshing(false);
+      });
+  };
 
   const handleCall = (phoneNumber) => {
     const contactUrl = `tel:${data.mobile}`;
@@ -99,70 +111,56 @@ const ContactUs = ({ navigation }) => {
     const whatsappUrl = `whatsapp://send?phone=${data.whatsapp_number}`;
     Linking.openURL(whatsappUrl);
   };
-  const CardSkeleton = () => {
 
+  const CardSkeleton = () => {
     const opacity = useRef(new Animated.Value(0.3)).current;
-  
+
     useEffect(() => {
-        Animated.loop(
-            Animated.sequence([
-                Animated.timing(opacity, {
-                    toValue: 1,
-                    duration: 800,
-                    useNativeDriver: true,
-                }),
-                Animated.timing(opacity, {
-                    toValue: 0.3,
-                    duration: 800,
-                    useNativeDriver: true,
-                }),
-            ])
-        ).start();
+      Animated.loop(
+        Animated.sequence([
+          Animated.timing(opacity, {
+            toValue: 1,
+            duration: 800,
+            useNativeDriver: true,
+          }),
+          Animated.timing(opacity, {
+            toValue: 0.3,
+            duration: 800,
+            useNativeDriver: true,
+          }),
+        ])
+      ).start();
     }, [opacity]);
-  
+
     return (
       <>
-          <Header title="Contact Us" navigateTo={navigation.goBack} />
+        <Header title="Contact Us" navigateTo={navigation.goBack} />
         <View style={styles.container12}>
-         
-            {[...Array(1)].map((_, index) => (
-                <Animated.View key={index} style={[styles.placeholder, { opacity }]} >
-                  {/* <Animated.View style={[styles.placeholder2, { opacity }]}/>
-                  <Animated.View style={[styles.placeholder2, { opacity }]}/>
-                  <Animated.View style={[styles.placeholder2, { opacity }]}/> */}
-
-                  
-                </Animated.View>
-            ))}
+          {[...Array(1)].map((_, index) => (
+            <Animated.View
+              key={index}
+              style={[styles.placeholder, { opacity }]}
+            />
+          ))}
         </View>
       </>
-  
     );
   };
+
   if (isLoading) {
-    return (
-      // <View>
-      //   <Header
-      //     title="Contact Us"
-      //     navigateTo={() => navigation.goBack("Home")}
-      //   />
-      //   <ActivityIndicator
-      //     size="large"
-      //     color="#00367E"
-      //     style={styles.loaderContainer}
-      //   />
-      // </View>
-      <CardSkeleton/>
-    );
+    return <CardSkeleton />;
   }
 
   return (
     <SafeAreaView style={styles.container}>
       <Header title="Contact Us" navigateTo={() => navigation.goBack("Home")} />
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+        }
+      >
         <View style={styles.mainView}>
           <View style={styles.innerView}></View>
-
           <View style={styles.mainContainer}>
             <View>
               <Text
@@ -208,9 +206,7 @@ const ContactUs = ({ navigation }) => {
 export default ContactUs;
 
 const styles = StyleSheet.create({
-  container: {
-    // marginTop: 52,
-  },
+  container: {},
   mainView: {
     flex: 0,
     width: "100%",
@@ -254,22 +250,22 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   container12: {
-    backgroundColor: '#F6F6F6',
+    backgroundColor: "#F6F6F6",
     borderRadius: 13,
     padding: 16,
     marginBottom: 16,
-    height:'80%'
-},
-placeholder: {
-    backgroundColor: '#ccc',
-    height: '60%',
+    height: "80%",
+  },
+  placeholder: {
+    backgroundColor: "#ccc",
+    height: "60%",
     borderRadius: 20,
-},
+  },
 
-// placeholder2: {
-//   backgroundColor: 'grey',
-//   height: '20%',
-//   borderRadius: 10,
-//   marginVertical:20
-// },
+  // placeholder2: {
+  //   backgroundColor: 'grey',
+  //   height: '20%',
+  //   borderRadius: 10,
+  //   marginVertical:20
+  // },
 });
