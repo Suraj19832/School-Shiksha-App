@@ -9,6 +9,7 @@ import {
   SafeAreaView,
   ActivityIndicator,
   Dimensions,
+  RefreshControl,
 } from "react-native";
 
 import Header from "../../components/Header";
@@ -27,8 +28,14 @@ const MPBenefits = ({ navigation }) => {
   const [activeServices, setActiveServices] = useState([]);
   const [serviceId, setServiceId] = useState([]);
   const [cardData, setCardData] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
+    handleFetch();
+  }, []);
+
+  const handleFetch = () => {
+    //for services
     const params = {
       service_type: sortheading,
     };
@@ -44,9 +51,8 @@ const MPBenefits = ({ navigation }) => {
         console.log(err);
         setLoading(false);
       });
-  }, []);
 
-  useEffect(() => {
+    //student profile
     getrequestwithtoken("student/profile", userToken)
       .then((res) => {
         console.log(res?.data?.subscription?.plan_services, "yuppp");
@@ -55,7 +61,8 @@ const MPBenefits = ({ navigation }) => {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  };
+
   const isServiceActive = (serviceId) => {
     return activeServices?.includes(serviceId.toString());
   };
@@ -72,6 +79,11 @@ const MPBenefits = ({ navigation }) => {
     } else {
       navigation.navigate("membershipPlan");
     }
+  };
+  const handleRefresh = () => {
+    setRefreshing(true);
+    handleFetch();
+    setRefreshing(false);
   };
   const truncateMessage = (message, maxLength = 25) => {
     if (message.length > maxLength) {
@@ -102,7 +114,11 @@ const MPBenefits = ({ navigation }) => {
         titleColor="#00367E"
         navigateTo={navigation.goBack}
       />
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+        }
+      >
         <View style={styles.mainView}>
           <View
             style={{
