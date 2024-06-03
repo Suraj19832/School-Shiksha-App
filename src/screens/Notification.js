@@ -298,7 +298,7 @@ const Notification = ({ navigation }) => {
               );
             })}
           </View>
-          {getdatalength > notifiData?.length && (
+          {getdatalength > notifiData?.length || notifiData?.length<=0 && (
             <TouchableOpacity
               style={{
                 justifyContent: "center",
