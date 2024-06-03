@@ -2722,7 +2722,10 @@ const AdmissionForm = ({ navigation }) => {
                             { justifyContent: "center" },
                           ]}
                         >
-                          <ActivityIndicator size="medium" color="#black" />
+                          <ActivityIndicator
+                            size="medium"
+                            color="rgba(0, 54, 126, 1)"
+                          />
                         </View>
                       )}
                     </View>
@@ -2825,7 +2828,10 @@ const AdmissionForm = ({ navigation }) => {
                               { justifyContent: "center" },
                             ]}
                           >
-                            <ActivityIndicator size="medium" color="#black" />
+                            <ActivityIndicator
+                              size="medium"
+                              color="rgba(0, 54, 126, 1)"
+                            />
                           </View>
                         )}
                       </View>
@@ -2865,7 +2871,10 @@ const AdmissionForm = ({ navigation }) => {
                               { justifyContent: "center" },
                             ]}
                           >
-                            <ActivityIndicator size="medium" color="#black" />
+                            <ActivityIndicator
+                              size="medium"
+                              color="rgba(0, 54, 126, 1)"
+                            />
                           </View>
                         )}
                       </View>
