@@ -13,6 +13,7 @@ import {
   ActivityIndicator,
   Linking,
   Animated,
+  RefreshControl,
 } from "react-native";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import DropDownPicker from "react-native-dropdown-picker";
@@ -113,7 +114,8 @@ const FreeCollegeList = ({ navigation }) => {
   const [isLoadingpage, setisLoadingpage] = useState(true);
   const [isLoadingcard, setisLoadingcard] = useState(true);
   const [isField, setisField] = useState();
-  // const [isSearch, setisSearch] = useState("")
+  const [refreshing, setRefreshing] = useState(false);
+
   const items = [
     { label: "Option 1", value: "option1" },
     { label: "Option 2", value: "option2" },
@@ -260,13 +262,14 @@ const FreeCollegeList = ({ navigation }) => {
 
   const [bannerData, setBannerData] = useState([]);
   useEffect(() => {
+    console.log("111111111111111111111111111111111111111111111111");
     const params = {
       service_id: id,
     };
     GetfetchDataWithParams("master/service-banner", params)
       .then((res) => {
         setBannerData(res?.data);
-        console.log("cmccmmcmcmc" ,res?.data)
+        console.log("cmccmmcmcmc", res?.data);
         setisLoadingpage(false);
       })
       .catch((err) => {
@@ -279,6 +282,7 @@ const FreeCollegeList = ({ navigation }) => {
   }, [id, limit]);
 
   useEffect(() => {
+    console.log("222222222222222222222222222222222222222");
     fetchUserAllData("master/organization-course", id);
   }, [id]);
   // console.log("00000000000000000000000000000000000000000000",FreeCollegeList)
@@ -309,15 +313,8 @@ const FreeCollegeList = ({ navigation }) => {
   }
 
   const whatsappclicked = (whatsappnumber) => {
-    console.log(
-      whatsappnumber,
-      "yyyydyydydydydydydydydydyydcgsjadcchkgcjdbjckh;ghlaHKVCHDCGWJCBWHCIUGWAJXCBJSDBCXKWDGCJHBDSCJKGDCMSBGCKSDGCSDBCJHVNZVCJYSDDCMBJHLKGCKH"
-    );
     const whatsappUrl = `whatsapp://send?phone=${whatsappnumber}`;
-    console.log(
-      "number where request is sent ",
-      `whatsapp://send?phone=${whatsappnumber}`
-    );
+
     Linking.openURL(whatsappUrl);
   };
   const loadmore = () => {
@@ -367,31 +364,26 @@ const FreeCollegeList = ({ navigation }) => {
   };
 
   if (isLoadingpage || isLoadingcard) {
-    return (
-      // <View>
-      //   <Header
-      //     title="Payment History"
-      //     navigateTo={() => navigation.goBack("Home")}
-      //   />
-      //   <View style={{justifyContent:'center' ,alignItems:'center'  ,height:'90%'}}>
-      //   <ActivityIndicator
-      //     size="large"
-      //     color="#00367E"
-      //     style={{justifyContent:'center',alignSelf:'center'}}
-      //   />
-      //   </View>
-
-      // </View>
-      <CardSkeleton />
-    );
+    return <CardSkeleton />;
   }
 
   return (
     <SafeAreaView style={styles.container}>
       <Header title={`${heading} List`} navigateTo={navigation.goBack} />
-      <ScrollView style={{ backgroundColor: "#FFFCCE", height: "100%" }}>
-        {bannerData?.length>0 && <BannerCarousel bannerData={bannerData} />
-}
+      <ScrollView
+        style={{ backgroundColor: "#FFFCCE", height: "100%" }}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={() => {
+              setRefreshing(true);
+              fetchUserData("master/organization-course", id);
+              setRefreshing(false);
+            }}
+          />
+        }
+      >
+        {bannerData?.length > 0 && <BannerCarousel bannerData={bannerData} />}
         <View style={styles.searchContainer}>
           <View style={{ gap: 15 }}>
             <Text
@@ -977,9 +969,14 @@ const FreeCollegeList = ({ navigation }) => {
                           heading: heading,
                           organization_Id: value?.organization_id,
                           Location: requiredFields?.is_location_required,
-                          aadharRequired:  requiredFields?.is_aadhar_required != null ? requiredFields?.is_aadhar_required  : "no",
+                          aadharRequired:
+                            requiredFields?.is_aadhar_required != null
+                              ? requiredFields?.is_aadhar_required
+                              : "no",
                           IncomeCertificateRequired:
-                            requiredFields?.is_income_required != null ? requiredFields?.is_income_required:"no",
+                            requiredFields?.is_income_required != null
+                              ? requiredFields?.is_income_required
+                              : "no",
                         })
                       }
                     >
@@ -1002,9 +999,14 @@ const FreeCollegeList = ({ navigation }) => {
                             collegeName: value?.organization_name,
                             courseName: value?.course_name,
                             id: id,
-                            aadharRequired: requiredFields?.is_aadhar_required != null ? requiredFields?.is_aadhar_required  : "no",
+                            aadharRequired:
+                              requiredFields?.is_aadhar_required != null
+                                ? requiredFields?.is_aadhar_required
+                                : "no",
                             IncomeCertificateRequired:
-                            requiredFields?.is_income_required != null ? requiredFields?.is_income_required:"no",
+                              requiredFields?.is_income_required != null
+                                ? requiredFields?.is_income_required
+                                : "no",
                             logo: value?.logo,
                           })
                         }

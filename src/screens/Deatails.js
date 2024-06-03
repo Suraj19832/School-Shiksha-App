@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Linking,
   Animated,
+  RefreshControl,
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { Image } from "react-native";
@@ -17,11 +18,10 @@ import { useRoute } from "@react-navigation/native";
 import { GetfetchDataWithParams } from "../../Helper/Helper";
 import { Entypo, Feather } from "@expo/vector-icons";
 
-
-const BannerCarousel = ({bannerData}) => {
+const BannerCarousel = ({ bannerData }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const flatListRef = useRef(null);
-   const images = bannerData;
+  const images = bannerData;
 
   const onViewableItemsChanged = ({ viewableItems }) => {
     if (viewableItems && viewableItems.length > 0) {
@@ -33,14 +33,17 @@ const BannerCarousel = ({bannerData}) => {
       setActiveIndex((prevIndex) => {
         const nextIndex = (prevIndex + 1) % images.length;
         if (flatListRef.current) {
-          flatListRef.current.scrollToIndex({ index: nextIndex, animated: true });
+          flatListRef.current.scrollToIndex({
+            index: nextIndex,
+            animated: true,
+          });
         }
         return nextIndex;
       });
     }, 2000); // 2000ms for 2 seconds
 
     return () => clearInterval(intervalId);
-  }, [images.length])
+  }, [images.length]);
   const renderPagination = () => {
     return (
       <View style={styles.paginationContainer}>
@@ -69,23 +72,22 @@ const BannerCarousel = ({bannerData}) => {
       />
     </View>
   );
-  return(
-
-<View style={{ position: "relative" }}>
-          <FlatList
-            ref={flatListRef}
-            data={images}
-            horizontal
-            pagingEnabled
-            showsHorizontalScrollIndicator={false}
-            renderItem={renderItem}
-            keyExtractor={(item, index) => index.toString()}
-            onViewableItemsChanged={onViewableItemsChanged}
-          />
-          {renderPagination()}
-        </View>
-  )
-}
+  return (
+    <View style={{ position: "relative" }}>
+      <FlatList
+        ref={flatListRef}
+        data={images}
+        horizontal
+        pagingEnabled
+        showsHorizontalScrollIndicator={false}
+        renderItem={renderItem}
+        keyExtractor={(item, index) => index.toString()}
+        onViewableItemsChanged={onViewableItemsChanged}
+      />
+      {renderPagination()}
+    </View>
+  );
+};
 const Details = ({ navigation }) => {
   const route = useRoute();
   const {
@@ -103,8 +105,10 @@ const Details = ({ navigation }) => {
   const [bannerData, setBannerData] = useState([]);
   const [isLoadingpage, setisLoadingpage] = useState(true);
   const [isLoadingcard, setisLoadingcard] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
+    console.log("1111111111111111111111");
     const params = {
       organization_id: organization_Id,
     };
@@ -118,9 +122,10 @@ const Details = ({ navigation }) => {
         console.log(err);
       });
   }, [organization_Id]);
-  
+
   const [detailsData, setDetailsData] = useState([]);
   async function fetchUserData(endpoint, id) {
+    console.log("22222222222222222222222222");
     try {
       const params = {
         organization_course_id: id,
@@ -136,12 +141,26 @@ const Details = ({ navigation }) => {
   }
 
   useEffect(() => {
+    console.log("33333333333333333333333333");
     fetchUserData("master/course-details", courseid);
   }, [courseid]);
 
   const whatsappclicked = (phonenumber) => {
     const whatsappUrl = `tel:${phonenumber}`;
     Linking.openURL(whatsappUrl);
+  };
+
+  const handleRefresh = () => {
+    console.log("redreeeeeeeeeeeeeeeeeeeeeee");
+    setRefreshing(true);
+    fetchUserData("master/course-details", courseid)
+      .then(() => {
+        setRefreshing(false);
+      })
+      .catch((error) => {
+        console.error("Error refreshing data:", error);
+        setRefreshing(false);
+      });
   };
   const CardSkeleton = () => {
     const opacity = useRef(new Animated.Value(0.3)).current;
@@ -191,17 +210,20 @@ const Details = ({ navigation }) => {
   };
 
   if (isLoadingpage || isLoadingcard) {
-    return (
-      <CardSkeleton />
-    );
+    return <CardSkeleton />;
   }
 
   return (
     <SafeAreaView style={styles.container}>
       <Header title={`${heading} LIST`} navigateTo={navigation.goBack} />
-      <ScrollView style={{ backgroundColor: "#FFFCCE", height: "100%" }}>
-        {bannerData?.length>0 &&   <BannerCarousel bannerData={bannerData} />}
-    
+      <ScrollView
+        style={{ backgroundColor: "#FFFCCE", height: "100%" }}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+        }
+      >
+        {bannerData?.length > 0 && <BannerCarousel bannerData={bannerData} />}
+
         <View style={styles.listContainer}>
           {/* card */}
           <View style={styles.listCard}>
@@ -383,7 +405,7 @@ const Details = ({ navigation }) => {
                     id,
                     IncomeCertificateRequired,
                     aadharRequired,
-                    logo :detailsData?.logo
+                    logo: detailsData?.logo,
                   })
                 }
               >
