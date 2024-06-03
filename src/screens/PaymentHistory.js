@@ -9,6 +9,7 @@ import {
   Modal,
   TouchableOpacity,
   Animated,
+  RefreshControl,
 } from "react-native";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import {
@@ -25,7 +26,10 @@ import {
 import { AuthContext } from "../../Utils/context/AuthContext";
 import { Image } from "react-native";
 import Header from "../../components/Header";
-import { getRequestWithParamsTokens, getrequestwithtoken } from "../../Helper/Helper";
+import {
+  getRequestWithParamsTokens,
+  getrequestwithtoken,
+} from "../../Helper/Helper";
 import { ActivityIndicator } from "react-native";
 
 const PaymentHistory = ({ navigation }) => {
@@ -34,218 +38,239 @@ const PaymentHistory = ({ navigation }) => {
   const [orderHistory, setorderHistory] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [getdatalength, setgetdatalength] = useState();
-  const [pageloading, setpageloading] = useState(true)
+  const [pageloading, setpageloading] = useState(true);
   const [limit, setlimit] = useState(1);
-  const getInfoData = async()=>{
-   
-    const url = "student/order-details"; 
+  const [refreshing, setRefreshing] = useState(false);
+  const getInfoData = async () => {
+    const url = "student/order-details";
     const params = { page: limit };
-    if (limit ===1) {
-      setorderHistory([]);    
-      
+    if (limit === 1) {
+      setorderHistory([]);
     }
-    await getRequestWithParamsTokens(url, userToken ,params)
-       .then((res) => {
-         // console.log("iiohhuh",res.data)
-         // console.log("tytytyytytytytttytyyytytytytytytytyyt", res?.status);
-         const order = res.data?.items.map((item,index) => item);
-        //  setorderHistory(order);   
-        setorderHistory((prev) => [...prev, ...order]);   
+    await getRequestWithParamsTokens(url, userToken, params)
+      .then((res) => {
+        // console.log("iiohhuh",res.data)
+        // console.log("tytytyytytytytttytyyytytytytytytytyyt", res?.status);
+        const order = res.data?.items.map((item, index) => item);
+        //  setorderHistory(order);
+        setorderHistory((prev) => [...prev, ...order]);
         //  (prev) => [...prev, ...res?.data?.items]
         setgetdatalength(res?.data?.total_count);
-        setIsLoading(false)
-         setpageloading(false)
-        //  console.log("+++++++>>",res.status) 
-        //  console.log("+++++++<<",res?.data) 
+        setIsLoading(false);
+        setpageloading(false);
+        //  console.log("+++++++>>",res.status)
+        //  console.log("+++++++<<",res?.data)
         //  console.log("+++++++)))",res?.data[0]?.item_description)
-        // console.log("55555",order) 
-       })
-       .catch((error) => {
-         console.error("Error posting css", error?.message);
-        
-         // setIsLoading(false);
-       });
-  }
-  useEffect(() => {
-    
-    getInfoData()
-  }, [userToken,limit]);  
+        // console.log("55555",order)
+      })
+      .catch((error) => {
+        console.error("Error posting css", error?.message);
 
-// console.log(to)
-
-console.log("cdcjdoijcodijcoisdjcojscsouhiufhvfdhviuh",orderHistory)
-const formatDate = (dateString) => {
-  const date = new Date(dateString);
-
-  // Manually format the date part to "DD.MM.YYYY"
-  const day = String(date.getDate()).padStart(2, '0');
-  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
-  const year = date.getFullYear();
-
-  const formattedDate = `${day}.${month}.${year}`;
-
-  // Format the time part to "h:mm AM/PM"
-  const options = {
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true
+        // setIsLoading(false);
+      });
   };
-  const formattedTime = date.toLocaleString('en-US', options);
-
-  return `${formattedDate} ${formattedTime}`;
-};
-const CardSkeleton = () => {
-
-  const opacity = useRef(new Animated.Value(0.3)).current;
-
   useEffect(() => {
+    getInfoData();
+  }, [userToken, limit]);
+
+  // console.log(to)
+
+  const handleRefresh = () => {
+    setRefreshing(true);
+    getInfoData();
+    setRefreshing(false);
+  };
+
+  console.log("cdcjdoijcodijcoisdjcojscsouhiufhvfdhviuh", orderHistory);
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+
+    // Manually format the date part to "DD.MM.YYYY"
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-based
+    const year = date.getFullYear();
+
+    const formattedDate = `${day}.${month}.${year}`;
+
+    // Format the time part to "h:mm AM/PM"
+    const options = {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    };
+    const formattedTime = date.toLocaleString("en-US", options);
+
+    return `${formattedDate} ${formattedTime}`;
+  };
+  const CardSkeleton = () => {
+    const opacity = useRef(new Animated.Value(0.3)).current;
+
+    useEffect(() => {
       Animated.loop(
-          Animated.sequence([
-              Animated.timing(opacity, {
-                  toValue: 1,
-                  duration: 800,
-                  useNativeDriver: true,
-              }),
-              Animated.timing(opacity, {
-                  toValue: 0.3,
-                  duration: 800,
-                  useNativeDriver: true,
-              }),
-          ])
+        Animated.sequence([
+          Animated.timing(opacity, {
+            toValue: 1,
+            duration: 800,
+            useNativeDriver: true,
+          }),
+          Animated.timing(opacity, {
+            toValue: 0.3,
+            duration: 800,
+            useNativeDriver: true,
+          }),
+        ])
       ).start();
-  }, [opacity]);
+    }, [opacity]);
 
-  return (
-    <>
+    return (
+      <>
         <Header title="Payment History" navigateTo={navigation.goBack} />
-      <View style={styles.container12}>
+        <View style={styles.container12}>
           {[...Array(11)].map((_, index) => (
-              <Animated.View key={index} style={[styles.placeholder, { opacity }]} />
+            <Animated.View
+              key={index}
+              style={[styles.placeholder, { opacity }]}
+            />
           ))}
-      </View>
-    </>
+        </View>
+      </>
+    );
+  };
+  if (pageloading) {
+    return (
+      // <View>
+      //   <Header
+      //     title="Payment History"
+      //     navigateTo={() => navigation.goBack("Home")}
+      //   />
+      //   <View style={{justifyContent:'center' ,alignItems:'center'  ,height:'90%'}}>
+      //   <ActivityIndicator
+      //     size="large"
+      //     color="#00367E"
+      //     style={{justifyContent:'center',alignSelf:'center'}}
+      //   />
+      //   </View>
 
-  );
-};
-if (pageloading) {
-  return (
-    // <View>
-    //   <Header
-    //     title="Payment History"
-    //     navigateTo={() => navigation.goBack("Home")}
-    //   />
-    //   <View style={{justifyContent:'center' ,alignItems:'center'  ,height:'90%'}}>
-    //   <ActivityIndicator
-    //     size="large"
-    //     color="#00367E"
-    //     style={{justifyContent:'center',alignSelf:'center'}}
-    //   />
-    //   </View>
-    
-    // </View>
-    <CardSkeleton/>
-  );
-}
-const loadmore = () => {
-  setIsLoading(true);
-  console.log("Loadmore is clicked");
-  setlimit(limit + 1);
-  console.log(limit);
-  // fetchUserData("master/organization-course", id);
-};
-  // skeleton effect 
-
-
-
+      // </View>
+      <CardSkeleton />
+    );
+  }
+  const loadmore = () => {
+    setIsLoading(true);
+    console.log("Loadmore is clicked");
+    setlimit(limit + 1);
+    console.log(limit);
+    // fetchUserData("master/organization-course", id);
+  };
+  // skeleton effect
 
   return (
     <SafeAreaView style={styles.container}>
       <Header title="Payment History" navigateTo={navigation.goBack} />
-      <ScrollView> 
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+        }
+      >
         <View style={{ alignItems: "center", marginTop: 20 }}>
           {/* By api implementation  */}
-          {orderHistory?.length===0 && (
-            <View  style={{width:'100%' ,height:'100%' ,justifyContent:'center' ,alignItems:'center'}}>
-                <Image
-              source={require("../../assets/img/planet.png")}
-              style={styles.img}
-            />
-            <View style={{flexDirection:'row' ,justifyContent:'center' ,alignItems:'center', gap:10}}>
-            <Text style={{fontWeight:'600' ,fontSize:27 ,alignItems:'center'}}>No Record Found</Text>
-            {/* <Image
+          {orderHistory?.length === 0 && (
+            <View
+              style={{
+                width: "100%",
+                height: "100%",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Image
+                source={require("../../assets/img/planet.png")}
+                style={styles.img}
+              />
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  gap: 10,
+                }}
+              >
+                <Text
+                  style={{
+                    fontWeight: "600",
+                    fontSize: 27,
+                    alignItems: "center",
+                  }}
+                >
+                  No Record Found
+                </Text>
+                {/* <Image
               source={require("../../assets/img/sad-face.png")}
               style={{width:37 ,height:37}}
             /> */}
+              </View>
             </View>
-
-            </View>
-          
           )}
           {orderHistory?.map((items, key) => (
-           
-    <>
-         <View
+            <>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  width: "85%",
+                }}
+                key={key}
+              >
+                <View
                   style={{
                     flexDirection: "row",
                     alignItems: "center",
-                    justifyContent: "space-between",
-                    width: "85%",
+                    gap: 10,
+                    marginBottom: 20,
                   }}
-                  key={key}
                 >
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      alignItems: "center",
-                      gap: 10,
-                      marginBottom: 20,
-                    }}
-                  >
-                    <Image
-                      style={styles.image}
-                      source={require("../../assets/img/Group 68.png")}
-                    />
-                    <View>
-                      <Text
-                        style={{
-                          color: "#1A1A1A",
-                          fontWeight: "500",
-                          fontSize: 14,
-                        }}
-                      >
-                        {items.item_description}
-                      </Text>
-                      <Text
-                        style={{
-                          color: "#A6A6A6",
-                          fontWeight: "400",
-                          fontSize: 10,
-                        }}
-                      >
-                        {formatDate(items.created_at)}
-                      </Text>
-                    </View>
-                  </View>
+                  <Image
+                    style={styles.image}
+                    source={require("../../assets/img/Group 68.png")}
+                  />
                   <View>
                     <Text
                       style={{
-                        color: "#BE0000",
+                        color: "#1A1A1A",
                         fontWeight: "500",
                         fontSize: 14,
                       }}
                     >
-                      -{items.total}
+                      {items.item_description}
+                    </Text>
+                    <Text
+                      style={{
+                        color: "#A6A6A6",
+                        fontWeight: "400",
+                        fontSize: 10,
+                      }}
+                    >
+                      {formatDate(items.created_at)}
                     </Text>
                   </View>
                 </View>
+                <View>
+                  <Text
+                    style={{
+                      color: "#BE0000",
+                      fontWeight: "500",
+                      fontSize: 14,
+                    }}
+                  >
+                    -{items.total}
+                  </Text>
+                </View>
+              </View>
 
-                <View style={styles.hairlineMenu} />
-             
-    </>
-           
-           
+              <View style={styles.hairlineMenu} />
+            </>
           ))}
-
 
           {/* end  */}
 
@@ -274,7 +299,11 @@ const loadmore = () => {
                 }}
               >
                 {isLoading ? (
-                  <ActivityIndicator size="small" color="grey" style={{alignSelf:"center" ,width:'100%'}} />
+                  <ActivityIndicator
+                    size="small"
+                    color="grey"
+                    style={{ alignSelf: "center", width: "100%" }}
+                  />
                 ) : (
                   <>
                     <Text
@@ -682,20 +711,20 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   container12: {
-    backgroundColor: '#F6F6F6',
+    backgroundColor: "#F6F6F6",
     borderRadius: 13,
     padding: 16,
     marginBottom: 16,
-    height:'80%'
-},
-placeholder: {
-    backgroundColor: '#ccc',
-    height: '15%',
+    height: "80%",
+  },
+  placeholder: {
+    backgroundColor: "#ccc",
+    height: "15%",
     borderRadius: 4,
     marginBottom: 8,
-},
-img: {
-  height: 236,
-  width: 236,
-},
+  },
+  img: {
+    height: 236,
+    width: 236,
+  },
 });

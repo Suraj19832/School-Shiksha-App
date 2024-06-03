@@ -12,6 +12,7 @@ import {
   ScrollView,
   ActivityIndicator,
   Animated,
+  RefreshControl,
 } from "react-native";
 import Header from "../../components/Header";
 import { AuthContext } from "../../Utils/context/AuthContext";
@@ -26,13 +27,9 @@ const GetInTouch = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [mobile, setMobile] = useState("");
   const [message, setMessage] = useState("");
-  const [pageloading, setpageloading] = useState(true)
-  console.log("name-->", name);
-  console.log("email-->", email);
-  console.log("mobile-->", mobile);
-  console.log("message-->", message);
+  const [pageloading, setpageloading] = useState(true);
   const { userToken } = useContext(AuthContext);
-  console.log(userToken);
+  const [refreshing, setRefreshing] = useState(false);
 
   const validateEmail = (email) => {
     // Regular expression for email validation
@@ -59,10 +56,6 @@ const GetInTouch = ({ navigation }) => {
       setIsLoading(false);
       return;
     }
-
-    // All validations passed, proceed with sending the message
-    // You can implement your send message logic here
-    // For now, let's just display the entered data
     const postData = {
       name: name,
       email: email,
@@ -76,12 +69,11 @@ const GetInTouch = ({ navigation }) => {
       userToken
     )
       .then((res) => {
-        console.log("skskskeodkkdjfkejnljflvnn", res?.status);
         if (res?.status) {
           showToast("Query Send Successfully");
           setIsLoading(false);
           setTimeout(() => {
-            navigation.navigate("Dashboard")
+            navigation.navigate("Dashboard");
           }, 500);
         }
       })
@@ -90,7 +82,6 @@ const GetInTouch = ({ navigation }) => {
 
         setIsLoading(false);
       });
-
   };
   const handlechangenumber = (text) => {
     if (/^[0-9]*$/.test(text) || text === "") {
@@ -100,90 +91,76 @@ const GetInTouch = ({ navigation }) => {
   function showToast(message) {
     ToastAndroid.show(message, ToastAndroid.SHORT);
   }
-  useEffect(() => {
-    // Define the URL you want to fetch data from
+  const fetchData = () => {
     const apiUrl = "/student/profile";
-
-    // Call the getstatedata function with the API URL
     getrequestwithtoken(apiUrl, userToken)
       .then((res) => {
-        // console.log('Response from API:', res.data);
-        // setStateData(res?.data);
-        console.log(
-          ".................................................",
-          res?.data?.mobile
-        );
         setMobile(res?.data?.mobile);
         setName(res?.data?.name);
-        setEmail(res?.data.email)
-setpageloading(false)
-        
-        // Do something with the response data, e.g., update component state
+        setEmail(res?.data.email);
+        setpageloading(false);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
+  };
+
+  useEffect(() => {
+    fetchData();
   }, []);
 
-  const CardSkeleton = () => {
+  const handleRefresh = () => {
+    setRefreshing(true);
+    fetchData();
+    setRefreshing(false);
+  };
 
+  const CardSkeleton = () => {
     const opacity = useRef(new Animated.Value(0.3)).current;
-  
+
     useEffect(() => {
-        Animated.loop(
-            Animated.sequence([
-                Animated.timing(opacity, {
-                    toValue: 1,
-                    duration: 800,
-                    useNativeDriver: true,
-                }),
-                Animated.timing(opacity, {
-                    toValue: 0.3,
-                    duration: 800,
-                    useNativeDriver: true,
-                }),
-            ])
-        ).start();
+      Animated.loop(
+        Animated.sequence([
+          Animated.timing(opacity, {
+            toValue: 1,
+            duration: 800,
+            useNativeDriver: true,
+          }),
+          Animated.timing(opacity, {
+            toValue: 0.3,
+            duration: 800,
+            useNativeDriver: true,
+          }),
+        ])
+      ).start();
     }, [opacity]);
-  
+
     return (
       <>
-          <Header title="Query" navigateTo={navigation.goBack} />
+        <Header title="Query" navigateTo={navigation.goBack} />
         <View style={styles.container12}>
-         
-            {[...Array(1)].map((_, index) => (
-                <Animated.View key={index} style={[styles.placeholder, { opacity }]} />
-            ))}
+          {[...Array(1)].map((_, index) => (
+            <Animated.View
+              key={index}
+              style={[styles.placeholder, { opacity }]}
+            />
+          ))}
         </View>
       </>
-  
     );
   };
 
-
   if (pageloading) {
-    return (
-      // <View>
-      //   <Header
-      //     title="Query"
-      //     navigateTo={() => navigation.goBack("Home")}
-      //   />
-      //   <View style={{justifyContent:'center' ,alignItems:'center'  ,height:'90%'}}>
-      //   <ActivityIndicator
-      //     size="large"
-      //     color="#00367E"
-      //     style={{justifyContent:'center',alignSelf:'center'}}
-      //   />
-      //   </View>
-      
-      // </View>
-      <CardSkeleton/>
-    );
+    return <CardSkeleton />;
   }
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
       <Header navigateTo={navigation.goBack} title="Query" />
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+        }
+      >
         <View style={styles.main_container}>
           <View>
             <Text style={styles.heading}>Get In Touch</Text>
@@ -300,16 +277,15 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   container12: {
-    backgroundColor: '#F6F6F6',
+    backgroundColor: "#F6F6F6",
     borderRadius: 13,
     padding: 16,
     marginBottom: 16,
-    height:'80%'
-},
-placeholder: {
-    backgroundColor: '#ccc',
-    height: '100%',
+    height: "80%",
+  },
+  placeholder: {
+    backgroundColor: "#ccc",
+    height: "100%",
     borderRadius: 20,
-},
-
+  },
 });

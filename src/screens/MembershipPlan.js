@@ -11,6 +11,7 @@ import {
   useColorScheme,
   StatusBar,
   ActivityIndicator,
+  RefreshControl,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import GradientText from "../../components/GradientText";
@@ -27,21 +28,33 @@ const MembershipPlan = ({ navigation }) => {
   const [planId, setPlanId] = useState(null);
   const [loadingPage, setLoadingPage] = useState(false);
   const [activePlanAmount, setActivePlanAmount] = useState(null);
+  const [refreshing, setRefreshing] = useState(false);
 
   console.log(planId, "here is plan id frssom membership plan");
 
   useEffect(() => {
+    handleProfileDate();
+  }, []);
+
+  useEffect(() => {
+    handlePlanData();
+  }, []);
+
+  const handleProfileDate = () => {
+    setLoadingPage(true);
     getrequestwithtoken("student/profile", userToken)
       .then((res) => {
         setPlanId(res.data.subscription.plan_id);
         setActivePlanAmount(res.data.subscription.plan_amount);
+        setLoadingPage(false);
       })
       .catch((err) => {
         console.log(err, "===========>error from membership for plan ID");
+        setLoadingPage(false);
       });
-  }, []);
+  };
 
-  useEffect(() => {
+  const handlePlanData = () => {
     setLoadingPage(true);
     getdata("master/plan")
       .then((res) => {
@@ -52,9 +65,16 @@ const MembershipPlan = ({ navigation }) => {
         setLoadingPage(false);
         console.log(err, "===========>error from membership api");
       });
-  }, []);
+  };
 
   const sortedCardData = cardData.sort((a, b) => (a.id === planId ? -1 : 1));
+
+  const handleRefresh = () => {
+    setRefreshing(true);
+    handleProfileDate();
+    handlePlanData();
+    setRefreshing(false);
+  };
 
   if (loadingPage) {
     return (
@@ -102,7 +122,11 @@ const MembershipPlan = ({ navigation }) => {
         backgroundColor={statusBarColor}
         barStyle={colorScheme === "dark" ? "light-content" : "dark-content"}
       />
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+        }
+      >
         <View style={styles.mainView}>
           <View style={styles.innerView}>
             <TouchableOpacity onPress={navigation.goBack}>
