@@ -12,6 +12,7 @@ import {
   Easing,
   SafeAreaView,
   Modal,
+  RefreshControl,
 } from "react-native";
 import {
   AntDesign,
@@ -202,6 +203,7 @@ const Notification = ({ navigation }) => {
   const { userToken } = useContext(AuthContext);
   const [getdatalength, setgetdatalength] = useState([]);
   const [loadingPage, setLoadingPage] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   useEffect(() => {
     const params = { page: limit };
     if (limit === 1) {
@@ -222,6 +224,26 @@ const Notification = ({ navigation }) => {
         setLoadingPage(false);
       });
   }, [userToken, limit]);
+
+  const handleRefreshing = () => {
+    setRefreshing(true);
+    const params = { page: limit };
+    if (limit === 1) {
+      setNotifiData([]);
+    }
+    getRequestWithParamsTokens("student/notifications", userToken, params)
+      .then((res) => {
+        setgetdatalength(res?.data?.total_count);
+        const objData = res?.data?.items.map((item) => item);
+        setNotifiData((prev) => [...prev, ...objData]);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setRefreshing(false);
+      });
+  };
 
   const loadmore = () => {
     setIsLoading(true);
@@ -246,7 +268,15 @@ const Notification = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <Header title="Notifications" navigateTo={navigation.goBack} />
-      <ScrollView>
+      <ScrollView
+        crollView
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={handleRefreshing}
+          />
+        }
+      >
         <View style={styles.mainView}>
           <View style={styles.innerView}></View>
 
