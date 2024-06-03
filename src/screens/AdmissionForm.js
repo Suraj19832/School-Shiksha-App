@@ -54,6 +54,7 @@ const AdmissionForm = ({ navigation }) => {
   const [IncomeCertificateUribyApi, setIncomeCertificateUribyApi] = useState();
   const [DistrictDataaa, setDistrictData] = useState();
   const [stateInfo, setStateInfo] = useState();
+  
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { userToken } = useContext(AuthContext);
@@ -1042,6 +1043,7 @@ const AdmissionForm = ({ navigation }) => {
             "0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0"
           );
           setPassportUribyApi(res?.data?.file_name);
+          showToast("Picture Upload Successfully")
         });
       } else if (result.canceled) {
         console.log("File picking cancelled");
@@ -2566,6 +2568,8 @@ const AdmissionForm = ({ navigation }) => {
               </View> */}
 
               {/* Passport photo */}
+
+              
               <View>
                 {!capturedImagePassport && !fileUriPassPortPhoto && (
                   <View style={styles.fields_main}>
@@ -2585,7 +2589,7 @@ const AdmissionForm = ({ navigation }) => {
                     </TouchableOpacity>
                   </View>
                 )}
-                {fileUriPassPortPhoto && (
+                {fileUriPassPortPhoto  && (
                   <View>
                     <View
                       style={[
@@ -2614,6 +2618,7 @@ const AdmissionForm = ({ navigation }) => {
                     </View>
                   </View>
                 )}
+
                 {capturedImagePassport && (
                   <View>
                     <View
@@ -2668,7 +2673,7 @@ const AdmissionForm = ({ navigation }) => {
                         onPress={pickFilePassPortPhoto}
                       >
                         <Text style={styles.modalOptionText}>
-                          Choose from Librarys
+                          Choose from Library
                         </Text>
                       </TouchableOpacity>
                       <TouchableOpacity
