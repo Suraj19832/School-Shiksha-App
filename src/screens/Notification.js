@@ -72,17 +72,16 @@ const NotificationContainer = (props) => {
     setIsRead(props?.is_read);
   }, [props.is_read]);
   const readMessage = () => {
-    
     const params = {
-      id :props?.id
-    }
-    getRequestWithParamsTokens("student/notification/view",userToken,params).then((res)=>{
-      setIsRead(res?.data?.is_read)
-      console.log(res?.data?.is_read)
-    }).catch((err)=>[
-      console.log(err,"error from notification api view")
-    ])
-  }
+      id: props?.id,
+    };
+    getRequestWithParamsTokens("student/notification/view", userToken, params)
+      .then((res) => {
+        setIsRead(res?.data?.is_read);
+        console.log(res?.data?.is_read);
+      })
+      .catch((err) => [console.log(err, "error from notification api view")]);
+  };
   return (
     <View>
       <Modal
@@ -95,8 +94,17 @@ const NotificationContainer = (props) => {
       >
         <View style={styles.modalView}>
           <View style={styles.modalContent}>
-            <Text style={{textAlign:'center',fontWeight:'600',paddingVertical:10,fontSize:18}}>{props?.subjectMsg}</Text>
-            <Text>{props?.NotificationMsg}</Text>
+            <Text
+              style={{
+                textAlign: "center",
+                fontWeight: "600",
+                paddingVertical: 10,
+                fontSize: 18,
+              }}
+            >
+              {props?.subjectMsg}
+            </Text>
+            <Text style={{ color: "#435354" }}>{props?.NotificationMsg}</Text>
             <TouchableOpacity
               onPress={() => setModalVisible(false)}
               style={styles.closeButton}
@@ -109,7 +117,7 @@ const NotificationContainer = (props) => {
       <TouchableOpacity
         onPress={() => {
           setModalVisible(true);
-          readMessage()
+          readMessage();
         }}
         style={{
           flexDirection: "row",
@@ -134,7 +142,7 @@ const NotificationContainer = (props) => {
           <View style={[styles.icon, { backgroundColor: props?.iconColor }]}>
             <Text>{props?.iconName}</Text>
           </View>
-         
+
           <View style={{ position: "relative" }}>
             <View
               style={{
@@ -143,12 +151,27 @@ const NotificationContainer = (props) => {
                 fontSize: 14,
                 fontWeight: "500",
                 lineHeight: 18,
-                flexDirection:'row',
-                gap:5
+                flexDirection: "row",
+                gap: 5,
               }}
             >
-              <Text style={{color:"#435354",fontWeight:'500',fontSize:15}}>{props?.subjectMsg}</Text>
-              {isRead == 0 ? <View style={{height:5,width:5,backgroundColor:'red',borderRadius:50}}></View> : <View></View>}
+              <Text
+                style={{ color: "#435354", fontWeight: "500", fontSize: 15 }}
+              >
+                {props?.subjectMsg}
+              </Text>
+              {isRead == 0 ? (
+                <View
+                  style={{
+                    height: 5,
+                    width: 5,
+                    backgroundColor: "red",
+                    borderRadius: 50,
+                  }}
+                ></View>
+              ) : (
+                <View></View>
+              )}
             </View>
             <Text
               style={{
@@ -335,9 +358,9 @@ const styles = StyleSheet.create({
       width: 0,
       height: 2,
     },
-    shadowOpacity: 0.5, // Shadow opacity
-    shadowRadius: 2, // Shadow radius
-    elevation: 2, // Android shadow elevation
+    shadowOpacity: 0.5,
+    shadowRadius: 2,
+    elevation: 2,
   },
   mainContainer: {
     marginHorizontal: 20,
@@ -354,7 +377,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22,
+    marginTop: 20,
+    width: "80%",
+    alignSelf: "center",
   },
   modalContent: {
     backgroundColor: "white",
