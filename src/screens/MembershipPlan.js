@@ -119,7 +119,7 @@ const MembershipPlan = ({ navigation }) => {
                 color: "rgba(55, 55, 55, 1)",
               }}
             >
-              Membership Plan
+              Membership Plann
             </Text>
           </View>
           <View style={styles.hairline} />

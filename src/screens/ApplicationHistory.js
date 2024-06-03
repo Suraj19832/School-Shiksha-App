@@ -143,6 +143,23 @@ const CardSkeleton = () => {
       {/* <Header title="Application History" /> */}
       <ScrollView style={styles.scrollView}>
         <View style={styles.reactangleCardConatainer}>
+        {ApplicationHistory?.length===0 && (
+            <View  style={{width:'100%' ,height:'100%' ,justifyContent:'center' ,alignItems:'center'}}>
+                <Image
+              source={require("../../assets/img/planet.png")}
+              style={styles.img}
+            />
+            <View style={{flexDirection:'row' ,justifyContent:'center' ,alignItems:'center', gap:10}}>
+            <Text style={{fontWeight:'600' ,fontSize:27 ,alignItems:'center'}}>No Record Found</Text>
+            {/* <Image
+              source={require("../../assets/img/sad-face.png")}
+              style={{width:37 ,height:37}}
+            /> */}
+            </View>
+
+            </View>
+          
+          )}
           {/* Data from Api  */}
           {ApplicationHistory?.length > 0 &&
             ApplicationHistory.map((item, index) => {

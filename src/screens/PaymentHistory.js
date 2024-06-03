@@ -164,7 +164,24 @@ const loadmore = () => {
       <ScrollView> 
         <View style={{ alignItems: "center", marginTop: 20 }}>
           {/* By api implementation  */}
-          {orderHistory.map((items, key) => (
+          {orderHistory?.length===0 && (
+            <View  style={{width:'100%' ,height:'100%' ,justifyContent:'center' ,alignItems:'center'}}>
+                <Image
+              source={require("../../assets/img/planet.png")}
+              style={styles.img}
+            />
+            <View style={{flexDirection:'row' ,justifyContent:'center' ,alignItems:'center', gap:10}}>
+            <Text style={{fontWeight:'600' ,fontSize:27 ,alignItems:'center'}}>No Record Found</Text>
+            {/* <Image
+              source={require("../../assets/img/sad-face.png")}
+              style={{width:37 ,height:37}}
+            /> */}
+            </View>
+
+            </View>
+          
+          )}
+          {orderHistory?.map((items, key) => (
            
     <>
          <View
@@ -676,5 +693,9 @@ placeholder: {
     height: '15%',
     borderRadius: 4,
     marginBottom: 8,
+},
+img: {
+  height: 236,
+  width: 236,
 },
 });

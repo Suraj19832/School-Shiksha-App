@@ -622,6 +622,7 @@ const Dashboard = ({ navigation }) => {
                       justifyContent: "center",
                       flexDirection: "row",
                       gap: 4,
+                      padding:4
                     }}
                   >
                     <MaterialCommunityIcons
