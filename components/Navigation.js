@@ -48,6 +48,7 @@ import MembershipPayment from "../src/screens/MembershipPayment";
 import CareerGuidance from "../src/screens/CareerGuidance";
 import CareerGuidanceForm from "../src/screens/CareerGuidanceForm";
 import ApplicationHistory from "../src/screens/ApplicationHistory";
+import ID_card from "../src/screens/ID_card";
 
 const Stack = createNativeStackNavigator();
 
@@ -69,6 +70,11 @@ const Navigation = () => {
             <Stack.Screen
               name="Dashboard"
               component={Dashboard}
+              options={{ headerShown: false }}
+            />
+             <Stack.Screen
+              name="id"
+              component={ID_card}
               options={{ headerShown: false }}
             />
             <Stack.Screen

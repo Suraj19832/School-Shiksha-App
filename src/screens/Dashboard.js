@@ -452,6 +452,7 @@ const Dashboard = ({ navigation }) => {
     profileAllData,
     "dfjkfdkfoksksdoks;lk[s;lk[###########################################################################"
   );
+ 
 
   return (
     <View style={styles.container}>
@@ -555,6 +556,8 @@ const Dashboard = ({ navigation }) => {
                 }}
                 source={require("../../assets/img/waves.png")}
               />
+
+             
               <View
                 style={{
                   alignItems: "center",
@@ -565,6 +568,7 @@ const Dashboard = ({ navigation }) => {
                   gap: 20,
                 }}
               >
+                <TouchableOpacity onPress={() => navigation.navigate("id")}>
                 {profileAllData === "female" ? (
                   <Image
                     style={{
@@ -586,6 +590,8 @@ const Dashboard = ({ navigation }) => {
                     source={require("../../assets/img/man (1).png")}
                   />
                 )}
+                </TouchableOpacity>
+             
 
                 <View style={{ marginBottom: 15 }}>
                   <Text
@@ -1398,5 +1404,3 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
 });
-
-//i will tell you the senario there is 2 api from first api will give the title and second api will take the title name and give data corresponsing to the title . i show tell you  the design first title is render and then data belong to that title is render and again another title and then data regarding second title and show on how xan i achive that
