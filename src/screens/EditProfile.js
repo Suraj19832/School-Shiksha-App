@@ -103,17 +103,25 @@ const EditProfile = ({ navigation }) => {
 
   // email validation
   const validateEmail = () => {
-    // Regular expression pattern to validate email format
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    // console.log(
+    //   emailError,
+    //   "*********************************************************************************"
+    // );
 
-    if (!email.trim()) {
+    if (!profileData?.email.trim()) {
       setEmailError("Email is required");
-    } else if (!emailPattern.test(email)) {
+    } else if (!emailPattern.test(profileData?.email)) {
       setEmailError("Invalid email format");
     } else {
       setEmailError("");
     }
   };
+
+  console.log(
+    emailError,
+    "*********************************************************************************"
+  );
 
   const handleEmailChange = (text) => {
     setEmail(text);
@@ -633,6 +641,11 @@ const EditProfile = ({ navigation }) => {
       showToast("WhatsApp Number must be exactly 10 digits");
       return;
     }
+    if (emailError !== "") {
+      showToast("invalid email");
+      return;
+    }
+
     const postData = {
       id,
       name,
@@ -659,9 +672,13 @@ const EditProfile = ({ navigation }) => {
     postDataWithFormDataWithToken("student/edit-profile", formDataa, userToken)
       .then((res) => {
         setUpdateLoading(false);
-        showToast(res?.message);
+        if (res?.status) {
+          showToast(res?.message);
+          navigation.navigate("Dashboard");
+        } else {
+          showToast(res?.errors?.email);
+        }
         setprofileAllData(profileData?.gender);
-        navigation.navigate("Dashboard");
       })
       .catch((err) => {
         setUpdateLoading(false);
@@ -895,9 +912,9 @@ const EditProfile = ({ navigation }) => {
                     onBlur={validateEmail}
                   />
                 </View>
-                {/* {emailError ? (
+                {emailError ? (
                   <Text style={{ color: "red" }}>{emailError}</Text>
-                ) : null} */}
+                ) : null}
               </View>
               {/* date of birth  */}
 
