@@ -5,6 +5,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Animated,
+  RefreshControl,
 } from "react-native";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { StyleSheet } from "react-native";
@@ -26,6 +27,7 @@ const ApplicationHistory = ({ navigation }) => {
   const [ApplicationHistory, setApplicationHistory] = useState([]);
   const [pageloading, setpageloading] = useState(true);
   const [getdatalength, setgetdatalength] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -36,102 +38,94 @@ const ApplicationHistory = ({ navigation }) => {
   };
   useEffect(() => {
     const params = { page: limit };
- if (limit === 1) {
-  setApplicationHistory([])    
- }
+    if (limit === 1) {
+      setApplicationHistory([]);
+    }
     getRequestWithParamsTokens("master/order-history", userToken, params).then(
       (res) => {
-
         if (res.status) {
           setgetdatalength(res?.data?.total_count);
           console.log(
             "))))))))))))))))))))))))##########################",
             res?.data?.total_count
           );
-         
+
           setApplicationHistory((prev) => [...prev, ...res?.data?.items]);
-          setIsLoading(false); 
+          setIsLoading(false);
           setpageloading(false);
-        }else{
-          Alert.alert("Alert", "Error!!!!")
+        } else {
+          Alert.alert("Alert", "Error!!!!");
         }
-    
       }
     );
   }, [userToken, limit]);
 
-  console.log("shdueud", ApplicationHistory);
-
-
+  const handleRefresh = () => {
+    const params = { page: limit };
+    if (limit === 1) {
+      setApplicationHistory([]);
+    }
+    setRefreshing(true);
+    getRequestWithParamsTokens("master/order-history", userToken, params)
+      .then((res) => {
+        if (res.status) {
+          setgetdatalength(res?.data?.total_count);
+          setApplicationHistory((prev) => [...prev, ...res?.data?.items]);
+        } else {
+          Alert.alert("Alert", "Error!!!!");
+        }
+      })
+      .catch((err) => {})
+      .finally(() => {
+        setRefreshing(false);
+      });
+  };
 
   //skeleton design
-const CardSkeleton = () => {
-  const opacity = useRef(new Animated.Value(0.3)).current;
+  const CardSkeleton = () => {
+    const opacity = useRef(new Animated.Value(0.3)).current;
 
-  useEffect(() => {
+    useEffect(() => {
       Animated.loop(
-          Animated.sequence([
-              Animated.timing(opacity, {
-                  toValue: 1,
-                  duration: 800,
-                  useNativeDriver: true,
-              }),
-              Animated.timing(opacity, {
-                  toValue: 0.3,
-                  duration: 800,
-                  useNativeDriver: true,
-              }),
-              
-          ])
+        Animated.sequence([
+          Animated.timing(opacity, {
+            toValue: 1,
+            duration: 800,
+            useNativeDriver: true,
+          }),
+          Animated.timing(opacity, {
+            toValue: 0.3,
+            duration: 800,
+            useNativeDriver: true,
+          }),
+        ])
       ).start();
-  }, [opacity]);
+    }, [opacity]);
 
-  return (
-    <>
-       <Header
-        title="Application History"
-        navigateTo={() => navigation.goBack("Home")}
-      />
-            <View style={styles.container}>
-          {[...Array(11)].map((_, index) => (
-              <Animated.View key={index} style={[styles.placeholder, { opacity }]} />
-          ))}
-      </View>
-    </>
-
-  );
-};
-  if (pageloading) {
     return (
-      // <View>
-      //   <Header
-      //     title="Application History"
-      //     navigateTo={() => navigation.goBack("Home")}
-      //   />
-      //   <View
-      //     style={{
-      //       justifyContent: "center",
-      //       alignItems: "center",
-      //       height: "90%",
-      //     }}
-      //   >
-      //     <ActivityIndicator
-      //       size="large"
-      //       color="#00367E"
-      //       style={{ justifyContent: "center", alignSelf: "center" }}
-      //     />
-      //   </View>
-      // </View>
-      <CardSkeleton /> 
+      <>
+        <Header
+          title="Application History"
+          navigateTo={() => navigation.goBack("Home")}
+        />
+        <View style={styles.container}>
+          {[...Array(11)].map((_, index) => (
+            <Animated.View
+              key={index}
+              style={[styles.placeholder, { opacity }]}
+            />
+          ))}
+        </View>
+      </>
     );
+  };
+  if (pageloading) {
+    return <CardSkeleton />;
   }
 
   const loadmore = () => {
     setIsLoading(true);
-    console.log("Loadmore is clicked");
     setlimit(limit + 1);
-    console.log(limit);
-    // fetchUserData("master/organization-course", id);
   };
   return (
     <SafeAreaView>
@@ -139,26 +133,45 @@ const CardSkeleton = () => {
         title="Application History"
         navigateTo={() => navigation.goBack("Home")}
       />
-
-      {/* <Header title="Application History" /> */}
-      <ScrollView style={styles.scrollView}>
+      <ScrollView
+        style={styles.scrollView}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+        }
+      >
         <View style={styles.reactangleCardConatainer}>
-        {ApplicationHistory?.length===0 && (
-            <View  style={{width:'100%' ,height:'100%' ,justifyContent:'center' ,alignItems:'center'}}>
-                <Image
-              source={require("../../assets/img/planet.png")}
-              style={styles.img}
-            />
-            <View style={{flexDirection:'row' ,justifyContent:'center' ,alignItems:'center', gap:10}}>
-            <Text style={{fontWeight:'600' ,fontSize:27 ,alignItems:'center'}}>No Record Found</Text>
-            {/* <Image
-              source={require("../../assets/img/sad-face.png")}
-              style={{width:37 ,height:37}}
-            /> */}
+          {ApplicationHistory?.length === 0 && (
+            <View
+              style={{
+                width: "100%",
+                height: "100%",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Image
+                source={require("../../assets/img/planet.png")}
+                style={styles.img}
+              />
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  gap: 10,
+                }}
+              >
+                <Text
+                  style={{
+                    fontWeight: "600",
+                    fontSize: 27,
+                    alignItems: "center",
+                  }}
+                >
+                  No Record Found
+                </Text>
+              </View>
             </View>
-
-            </View>
-          
           )}
           {/* Data from Api  */}
           {ApplicationHistory?.length > 0 &&
@@ -395,7 +408,11 @@ const CardSkeleton = () => {
                 }}
               >
                 {isLoading ? (
-                  <ActivityIndicator size="small" color="grey" style={{alignSelf:"center" ,width:'100%'}} />
+                  <ActivityIndicator
+                    size="small"
+                    color="grey"
+                    style={{ alignSelf: "center", width: "100%" }}
+                  />
                 ) : (
                   <>
                     <Text
@@ -464,22 +481,20 @@ const styles = StyleSheet.create({
     width: "89%",
   },
   container: {
-    backgroundColor: '#F6F6F6',
+    backgroundColor: "#F6F6F6",
     borderRadius: 13,
     padding: 16,
     marginBottom: 16,
-    height:'80%'
-},
-placeholder: {
-    backgroundColor: '#ccc',
-    height: '10%',
+    height: "80%",
+  },
+  placeholder: {
+    backgroundColor: "#ccc",
+    height: "10%",
     borderRadius: 4,
     marginBottom: 8,
-},
-img: {
-  height: 236,
-  width: 236,
-},
+  },
+  img: {
+    height: 236,
+    width: 236,
+  },
 });
-
-

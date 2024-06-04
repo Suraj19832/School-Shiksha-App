@@ -312,16 +312,23 @@ const FreeCollegeList = ({ navigation }) => {
     };
   }
 
-  const whatsappclicked = (whatsappnumber) => {
-    const whatsappUrl = `whatsapp://send?phone=${whatsappnumber}`;
-
-    Linking.openURL(whatsappUrl);
+  const whatsAppClicked = (value) => {
+    const collegeName = value?.organization_name;
+    const courseName = value?.course_name;
+    const courseDuration = value?.course_duration;
+    const courseAmount = value?.course_fees;
+    const imageData = value?.logo;
+    const whatsAppText = `I want to purchase this course !! \nOrganization Name: ${collegeName} \nCourse Name: ${courseName} \nCourse Duration: ${courseDuration} \nCourse Fees: ${courseAmount} \n${imageData}`;
+    const whatsAppUrl = `whatsapp://send?phone=${7908154725}&text=${encodeURIComponent(
+      whatsAppText
+    )}`;
+    Linking.openURL(whatsAppUrl).catch((err) => {
+      console.log(err);
+    });
   };
+
   const loadmore = () => {
-    console.log("Loadmore is clicked");
     setlimit(limit + 10);
-    console.log(limit);
-    // fetchUserData("master/organization-course", id);
   };
 
   const CardSkeleton = () => {
@@ -857,9 +864,7 @@ const FreeCollegeList = ({ navigation }) => {
                         {value?.course_name}
                       </Text>
                     </View>
-                    <TouchableOpacity
-                      onPress={() => whatsappclicked(value?.whatsapp_number)}
-                    >
+                    <TouchableOpacity onPress={() => whatsAppClicked(value)}>
                       <Image
                         source={require("../../assets/icons/whatsapp.png")}
                         style={{ width: 30, height: 30 }}

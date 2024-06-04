@@ -49,50 +49,48 @@ const PaymentHistory = ({ navigation }) => {
     }
     await getRequestWithParamsTokens(url, userToken, params)
       .then((res) => {
-        // console.log("iiohhuh",res.data)
-        // console.log("tytytyytytytytttytyyytytytytytytytyyt", res?.status);
         const order = res.data?.items.map((item, index) => item);
-        //  setorderHistory(order);
         setorderHistory((prev) => [...prev, ...order]);
-        //  (prev) => [...prev, ...res?.data?.items]
         setgetdatalength(res?.data?.total_count);
         setIsLoading(false);
         setpageloading(false);
-        //  console.log("+++++++>>",res.status)
-        //  console.log("+++++++<<",res?.data)
-        //  console.log("+++++++)))",res?.data[0]?.item_description)
-        // console.log("55555",order)
       })
       .catch((error) => {
         console.error("Error posting css", error?.message);
-
-        // setIsLoading(false);
       });
   };
   useEffect(() => {
     getInfoData();
   }, [userToken, limit]);
 
-  // console.log(to)
-
   const handleRefresh = () => {
+    const url = "student/order-details";
+    const params = { page: limit };
+    if (limit === 1) {
+      setorderHistory([]);
+    }
     setRefreshing(true);
-    getInfoData();
-    setRefreshing(false);
+    getRequestWithParamsTokens(url, userToken, params)
+      .then((res) => {
+        const order = res.data?.items.map((item, index) => item);
+        setorderHistory((prev) => [...prev, ...order]);
+        setgetdatalength(res?.data?.total_count);
+      })
+      .catch((error) => {
+        console.error("Error posting css", error?.message);
+      })
+      .finally(() => {
+        setRefreshing(false);
+      });
   };
 
-  console.log("cdcjdoijcodijcoisdjcojscsouhiufhvfdhviuh", orderHistory);
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-
-    // Manually format the date part to "DD.MM.YYYY"
     const day = String(date.getDate()).padStart(2, "0");
     const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-based
     const year = date.getFullYear();
 
     const formattedDate = `${day}.${month}.${year}`;
-
-    // Format the time part to "h:mm AM/PM"
     const options = {
       hour: "numeric",
       minute: "2-digit",
@@ -137,32 +135,12 @@ const PaymentHistory = ({ navigation }) => {
     );
   };
   if (pageloading) {
-    return (
-      // <View>
-      //   <Header
-      //     title="Payment History"
-      //     navigateTo={() => navigation.goBack("Home")}
-      //   />
-      //   <View style={{justifyContent:'center' ,alignItems:'center'  ,height:'90%'}}>
-      //   <ActivityIndicator
-      //     size="large"
-      //     color="#00367E"
-      //     style={{justifyContent:'center',alignSelf:'center'}}
-      //   />
-      //   </View>
-
-      // </View>
-      <CardSkeleton />
-    );
+    return <CardSkeleton />;
   }
   const loadmore = () => {
     setIsLoading(true);
-    console.log("Loadmore is clicked");
     setlimit(limit + 1);
-    console.log(limit);
-    // fetchUserData("master/organization-course", id);
   };
-  // skeleton effect
 
   return (
     <SafeAreaView style={styles.container}>

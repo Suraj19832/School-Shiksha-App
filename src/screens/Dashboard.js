@@ -447,13 +447,12 @@ const Dashboard = ({ navigation }) => {
     }
     return message;
   };
-
-  console.log(
-    profileAllData,
-    "dfjkfdkfoksksdoks;lk[s;lk[###########################################################################"
-  );
- 
-
+  const truncateName = (message, maxLength = 13) => {
+    if (message.length > maxLength) {
+      return message.substring(0, maxLength) + "...";
+    }
+    return message;
+  };
   return (
     <View style={styles.container}>
       {isMenuOpen && (
@@ -557,7 +556,6 @@ const Dashboard = ({ navigation }) => {
                 source={require("../../assets/img/waves.png")}
               />
 
-             
               <View
                 style={{
                   alignItems: "center",
@@ -569,29 +567,28 @@ const Dashboard = ({ navigation }) => {
                 }}
               >
                 <TouchableOpacity onPress={() => navigation.navigate("id")}>
-                {profileAllData === "female" ? (
-                  <Image
-                    style={{
-                      marginBottom: 12,
-                      width: 60,
-                      height: 60,
-                      resizeMode: "cover",
-                    }}
-                    source={require("../../assets/img/human (1).png")}
-                  />
-                ) : (
-                  <Image
-                    style={{
-                      marginBottom: 12,
-                      width: 60,
-                      height: 60,
-                      resizeMode: "cover",
-                    }}
-                    source={require("../../assets/img/man (1).png")}
-                  />
-                )}
+                  {profileAllData === "female" ? (
+                    <Image
+                      style={{
+                        marginBottom: 12,
+                        width: 60,
+                        height: 60,
+                        resizeMode: "cover",
+                      }}
+                      source={require("../../assets/img/human (1).png")}
+                    />
+                  ) : (
+                    <Image
+                      style={{
+                        marginBottom: 12,
+                        width: 60,
+                        height: 60,
+                        resizeMode: "cover",
+                      }}
+                      source={require("../../assets/img/man (1).png")}
+                    />
+                  )}
                 </TouchableOpacity>
-             
 
                 <View style={{ marginBottom: 15 }}>
                   <Text
@@ -602,7 +599,7 @@ const Dashboard = ({ navigation }) => {
                       fontWeight: "700",
                     }}
                   >
-                    {name}
+                    {truncateName(name)}
                   </Text>
                   <Text
                     style={{
@@ -614,10 +611,6 @@ const Dashboard = ({ navigation }) => {
                   >
                     +91 {phone}
                   </Text>
-                  {/* <Image
-                    style={{ width: 82, height: 17, marginTop: 5 }}
-                    source={require("../../assets/img/premium1.png")}
-                  /> */}
                   <View
                     style={{
                       backgroundColor: "#FFAE2B",
@@ -628,7 +621,7 @@ const Dashboard = ({ navigation }) => {
                       justifyContent: "center",
                       flexDirection: "row",
                       gap: 4,
-                      padding:4
+                      padding: 4,
                     }}
                   >
                     <MaterialCommunityIcons
@@ -643,7 +636,7 @@ const Dashboard = ({ navigation }) => {
                         color: "white",
                       }}
                     >
-                      {plan}
+                      {truncateName(plan)}
                     </Text>
                   </View>
                 </View>
