@@ -12,6 +12,7 @@ import {
   Platform,
   Dimensions,
   ActivityIndicator,
+  RefreshControl,
 } from "react-native";
 import DropDownComponent from "../../components/Dropdown";
 import React, { useContext, useEffect, useState } from "react";
@@ -76,6 +77,7 @@ const EditProfile = ({ navigation }) => {
   const [formErrors, setFormErrors] = useState({});
   const [fieldTouched, setFieldTouched] = useState({});
   const [customErrorMessage, setCustomErrorMessage] = useState("");
+  const [refreshing, setRefreshing] = useState(false);
   const validateForm = () => {
     const errors = {};
 
@@ -573,6 +575,21 @@ const EditProfile = ({ navigation }) => {
         });
     }, [userToken])
   );
+
+  const handleRefresh = () => {
+    setRefreshing(true);
+    getrequestwithtoken("student/profile", userToken)
+      .then((res) => {
+        setProfileData(res.data);
+        setId(res.data.user_id);
+      })
+      .catch((err) => {
+        console.log(err, "issue in edit profilefetch");
+      })
+      .finally(() => {
+        setRefreshing(false);
+      });
+  };
   const handleSubmission = () => {
     const {
       name,
@@ -672,13 +689,13 @@ const EditProfile = ({ navigation }) => {
     postDataWithFormDataWithToken("student/edit-profile", formDataa, userToken)
       .then((res) => {
         setUpdateLoading(false);
+        setprofileAllData(profileData?.gender);
         if (res?.status) {
           showToast(res?.message);
           navigation.navigate("Dashboard");
         } else {
           showToast(res?.errors?.email);
         }
-        setprofileAllData(profileData?.gender);
       })
       .catch((err) => {
         setUpdateLoading(false);
@@ -702,7 +719,12 @@ const EditProfile = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <Header title="Edit Profile" navigateTo={navigation.goBack} />
-      <ScrollView style={styles.scrollView}>
+      <ScrollView
+        style={styles.scrollView}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+        }
+      >
         {loading && (
           <ActivityIndicator
             size="small"
