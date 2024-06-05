@@ -89,7 +89,7 @@ const VerifyEmail = ({ navigation }) => {
           />
           <View style={styles.loginImage}>
             <Image
-              source={require("../../assets/img/VerifyEmail_Img.png")}
+              source={require("../../assets/img/otp verification.png")}
               style={styles.img}
             />
           </View>
@@ -162,6 +162,7 @@ const styles = StyleSheet.create({
   },
   loginImage: {
     alignItems: "center",
+    marginVertical: 10,
   },
   img: {
     height: 220,
