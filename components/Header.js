@@ -27,17 +27,16 @@ const Header = ({ navigateTo, title, titleColor }) => {
               style={{ height: 24, width: 24 }}
             />
           </TouchableOpacity>
-          <View style={{width:'89%'}}>
-          <Text
-            style={[
-              styles.topBar_text,
-              { color: titleColor ? titleColor : "rgba(55, 55, 55, 1)" },
-            ]}
-          >
-            {title}
-          </Text>
+          <View style={{ width: "89%" }}>
+            <Text
+              style={[
+                styles.topBar_text,
+                { color: titleColor ? titleColor : "rgba(55, 55, 55, 1)" },
+              ]}
+            >
+              {title}
+            </Text>
           </View>
-        
         </View>
       </View>
     </View>
@@ -61,9 +60,9 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   topBar_text: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "500",
-    lineHeight: 24,
+    lineHeight: 27,
     color: "rgba(55, 55, 55, 1)",
   },
 });

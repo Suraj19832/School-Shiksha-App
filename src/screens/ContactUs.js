@@ -28,19 +28,29 @@ const ContactContainer = (props) => {
           flexDirection: "row",
           justifyContent: "space-between",
           alignItems: "center",
-          marginTop: 15,
+          marginTop: 25,
         }}
       >
         <View>
-          <Text style={{ color: "#00367E", fontSize: 22, fontWeight: "500" }}>
+          <Text
+            style={{
+              color: "#00367E",
+              fontSize: 18,
+              fontWeight: "500",
+              lineHeight: 27,
+              fontFamily: "Poppins",
+            }}
+          >
             {props.contactTitle}
           </Text>
           <Text
             style={{
               color: "#435354",
-              fontSize: 16,
+              fontSize: 14,
               fontWeight: "400",
               paddingVertical: 10,
+              lineHeight: 21,
+              fontFamily: "Poppins",
             }}
           >
             {props.contactMode}
@@ -164,7 +174,13 @@ const ContactUs = ({ navigation }) => {
           <View style={styles.mainContainer}>
             <View>
               <Text
-                style={{ color: "#373737", fontSize: 30, fontWeight: "600" }}
+                style={{
+                  color: "#373737",
+                  fontSize: 30,
+                  fontWeight: "600",
+                  lineHeight: 45,
+                  fontFamily: "Poppins",
+                }}
               >
                 Contact Us
               </Text>
@@ -232,7 +248,7 @@ const styles = StyleSheet.create({
   },
   mainContainer: {
     marginHorizontal: 20,
-    marginVertical: 20,
+    marginVertical: 18,
   },
   icon: {
     backgroundColor: "red",

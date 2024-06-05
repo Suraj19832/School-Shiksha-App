@@ -1940,7 +1940,7 @@ const styles = StyleSheet.create({
     // right: 3,
   },
   loader: {
-    height: Dimensions.get("window").height * 1,
+    height: "90%",
     // width: Dimensions.get("window").width * 0.7,
     justifyContent: "center",
     alignItems: "center",

@@ -281,41 +281,62 @@ const Notification = ({ navigation }) => {
           <View style={styles.innerView}></View>
 
           <View style={{ marginBottom: 20 }}>
-          {notifiData?.length===0 && (
-            <View  style={{width:'100%' ,height:'90%' ,justifyContent:'center' ,alignItems:'center'}}>
+            {notifiData?.length === 0 && (
+              <View
+                style={{
+                  width: "100%",
+                  height: "90%",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
                 <Image
-              source={require("../../assets/img/planet.png")}
-              style={styles.img}
-            />
-            <View style={{flexDirection:'row' ,justifyContent:'center' ,alignItems:'center', gap:10}}>
-            <Text style={{fontWeight:'600' ,fontSize:27 ,alignItems:'center'}}>No Alerts</Text>
-            {/* <Image
+                  source={require("../../assets/img/planet.png")}
+                  style={styles.img}
+                />
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    gap: 10,
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontWeight: "600",
+                      fontSize: 27,
+                      alignItems: "center",
+                    }}
+                  >
+                    No Alerts
+                  </Text>
+                  {/* <Image
               source={require("../../assets/img/sad-face.png")}
               style={{width:37 ,height:37}}
             /> */}
-            </View>
-
-            </View>
-          
-          )}
-            { notifiData?.length!=0 && notifiData?.map((item, index) => {
-              // console.log(item,"????????????")
-              return (
-                <View key={index}>
-                  <NotificationContainer
-                    subjectMsg={item?.subject}
-                    NotificationMsg={item?.message}
-                    msgTime={item?.created_at}
-                    id={item?.id}
-                    is_read={item?.is_read}
-                    iconColor="#C5F2EC"
-                    iconName="SS"
-                  />
                 </View>
-              );
-            })}
+              </View>
+            )}
+            {notifiData?.length != 0 &&
+              notifiData?.map((item, index) => {
+                // console.log(item,"????????????")
+                return (
+                  <View key={index}>
+                    <NotificationContainer
+                      subjectMsg={item?.subject}
+                      NotificationMsg={item?.message}
+                      msgTime={item?.created_at}
+                      id={item?.id}
+                      is_read={item?.is_read}
+                      iconColor="#C5F2EC"
+                      iconName="SS"
+                    />
+                  </View>
+                );
+              })}
           </View>
-          {getdatalength > notifiData?.length && notifiData?.length!=0 && (
+          {getdatalength > notifiData?.length && notifiData?.length != 0 && (
             <TouchableOpacity
               style={{
                 justifyContent: "center",
@@ -374,7 +395,7 @@ export default Notification;
 const styles = StyleSheet.create({
   container: {},
   mainView: {
-    flex: 0,
+    // flex: 0,
     width: "100%",
     height: Dimensions.get("screen").height * 0.9,
     backgroundColor: "#FFFCCE",
@@ -390,7 +411,7 @@ const styles = StyleSheet.create({
     // alignItems:'center'
   },
   loader: {
-    height: Dimensions.get("window").height * 1,
+    height: "95%",
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#FFFCCE",

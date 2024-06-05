@@ -152,7 +152,12 @@ const MembershipPlan = ({ navigation }) => {
 
           <View style={{ justifyContent: "center", paddingVertical: 12 }}>
             <GradientText
-              style={{ fontSize: 30, fontWeight: "700" }}
+              style={{
+                fontSize: 30,
+                fontWeight: "700",
+                lineHeight: 45,
+                fontFamily: "Poppins",
+              }}
               text="Choose your plan"
             />
           </View>
@@ -379,7 +384,7 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   loader: {
-    height: Dimensions.get("window").height * 1,
+    height: "90%",
     // width: Dimensions.get("window").width * 0.7,
     justifyContent: "center",
     alignItems: "center",

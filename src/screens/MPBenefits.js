@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
     height: "auto",
   },
   loader: {
-    height: Dimensions.get("window").height * 1,
+    height: "90%",
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "white",

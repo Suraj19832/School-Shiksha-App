@@ -50,11 +50,7 @@ const Footer = () => {
           source={require("./../assets/icons/refer (1).png")}
           style={[styles.img, selectedTab === "Refer" && styles.selectedIcon]}
         />
-        <Text
-          style={[styles.text,  styles.selectedText]}
-        >
-          Refer
-        </Text>
+        <Text style={[styles.text, styles.selectedText]}>Refer</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.iconContainer}
@@ -64,11 +60,7 @@ const Footer = () => {
           source={require("./../assets/icons/question (1).png")}
           style={[styles.img, selectedTab === "Query" && styles.selectedIcon]}
         />
-        <Text
-          style={[styles.text,  styles.selectedText]}
-        >
-          Query
-        </Text>
+        <Text style={[styles.text, styles.selectedText]}>Query</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.iconContainer}
@@ -78,14 +70,7 @@ const Footer = () => {
           source={require("./../assets/icons/customer-service.png")}
           style={[styles.img, selectedTab === "Contact" && styles.selectedIcon]}
         />
-        <Text
-          style={[
-            styles.text,
-             styles.selectedText,
-          ]}
-        >
-          Contact
-        </Text>
+        <Text style={[styles.text, styles.selectedText]}>Contact</Text>
       </TouchableOpacity>
     </View>
   );
@@ -108,14 +93,14 @@ const styles = StyleSheet.create({
   text: {
     marginTop: 5,
     color: "#03357D",
-    fontSize: 12,
+    fontSize: 13,
     lineHeight: 19.5,
     fontWeight: "500",
   },
   img: {
     height: 24,
     width: 24,
-    tintColor:'#373737'
+    tintColor: "#373737",
   },
   img1: {
     height: 24,
@@ -127,6 +112,8 @@ const styles = StyleSheet.create({
   selectedText: {
     color: "#373737",
     fontWeight: "500",
+    fontSize: 13,
+    lineHeight: 19.5,
   },
   selectedText1: {
     color: "#03357D",
