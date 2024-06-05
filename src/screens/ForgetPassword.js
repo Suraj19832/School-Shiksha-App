@@ -96,7 +96,7 @@ const ForgetPassword = ({ navigation }) => {
           />
           <View style={styles.loginImage}>
             <Image
-              source={require("../../assets/img/forgetPassImg.png")}
+              source={require("../../assets/img/FORGET PASSWORD.png")}
               style={styles.img}
             />
           </View>

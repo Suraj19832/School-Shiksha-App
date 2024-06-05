@@ -110,7 +110,7 @@ const NotificationContainer = (props) => {
               onPress={() => setModalVisible(false)}
               style={styles.closeButton}
             >
-              <Text style={styles.textStyle}>Close Message</Text>
+              <Text style={styles.textStyle}>Close</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -462,9 +462,12 @@ const styles = StyleSheet.create({
   closeButton: {
     backgroundColor: "#2196F3",
     borderRadius: 20,
-    padding: 10,
+    paddingVertical: 8,
+    paddingHorizontal: 4,
     elevation: 2,
-    marginTop: 10,
+    marginTop: 15,
+    width: 100,
+    alignSelf: "center",
   },
   img: {
     height: 236,

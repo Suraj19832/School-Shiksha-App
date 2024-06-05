@@ -77,8 +77,11 @@ const Login_Page = ({ navigation }) => {
         .then((res) => {
           setIsLoading(false);
           setButtonDisabled(false);
+          if (res?.code === 500) {
+            showToast("Server Error");
+          }
           if (res?.status) {
-            showToast(res.message);
+            showToast(res?.message);
             // navigation.navigate("Dashboard");
             setuserToken(res?.data?.access_token);
             AsyncStorage.setItem("userToken", res?.data?.access_token);
@@ -115,7 +118,7 @@ const Login_Page = ({ navigation }) => {
         <View style={styles.main_content}>
           <View style={styles.loginImage}>
             <Image
-              source={require("../../assets/img/loginimg.png")}
+              source={require("../../assets/img/welcome_banner.png")}
               style={styles.img}
             />
           </View>
@@ -260,6 +263,7 @@ const styles = StyleSheet.create({
   img: {
     height: 236,
     width: 236,
+    marginVertical: 10,
   },
   welcome_texts: {
     marginVertical: 4,
