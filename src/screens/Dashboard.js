@@ -874,6 +874,9 @@ const Dashboard = ({ navigation }) => {
             {/* data from api  */}
             <View style={{ paddingBottom: 20 }}>
               {carddata?.map((item, index) => {
+                console.log(index, "}}}}}}}}}}}}}}}}}}}}}}}}}}}}}");
+                const isOthers = item?.short_name === "other";
+                const showButton = isOthers ? item?.count > 3 : item?.count > 2;
                 return (
                   <View key={index}>
                     <TitleDash
@@ -881,6 +884,7 @@ const Dashboard = ({ navigation }) => {
                       primaryColor={colorMap[item?.long_name]}
                       style={{ fontSize: 40 }}
                     />
+
                     <View style={{ alignItems: "center" }}>
                       <View
                         style={{
@@ -889,8 +893,31 @@ const Dashboard = ({ navigation }) => {
                           justifyContent: "center",
                         }}
                       >
-                        {carddata[index]?.services?.map((cd) => {
+                        {item?.short_name !== "other" && (
+                          <TouchableOpacity
+                            style={styles.card}
+                            onPress={() =>
+                              navigation.navigate("careerGuidance")
+                            }
+                          >
+                            <View style={styles.imgContainer}>
+                              <Image
+                                source={require("../../assets/icons/guidance.png")}
+                                style={styles.image}
+                              />
+                            </View>
+                            <Text style={styles.textStyle}>
+                              Career Guidance
+                            </Text>
+                          </TouchableOpacity>
+                        )}
+
+                        {carddata[index]?.services.slice(0, 2)?.map((cd) => {
+                          console.log(cd, ">>>>>>>>>>>>>>>>");
                           const isActive = isServiceActive(cd.id.toString());
+                          var i = 0;
+                          i++;
+
                           return (
                             <>
                               <TouchableOpacity
@@ -932,31 +959,33 @@ const Dashboard = ({ navigation }) => {
                         })}
                       </View>
 
-                      <View style={{ paddingTop: 20 }}>
-                        <TouchableOpacity
-                          style={styles.button}
-                          onPress={() =>
-                            navigation.navigate("mpBenefits", {
-                              sortheading: item?.short_name,
-                              heading: item?.long_name,
-                            })
-                          }
-                        >
-                          <View
-                            style={{
-                              flexDirection: "row",
-                              alignItems: "center",
-                            }}
+                      {showButton && (
+                        <View style={{ paddingTop: 20 }}>
+                          <TouchableOpacity
+                            style={styles.button}
+                            onPress={() =>
+                              navigation.navigate("mpBenefits", {
+                                sortheading: item?.short_name,
+                                heading: item?.long_name,
+                              })
+                            }
                           >
-                            <Text style={styles.text}>Show More</Text>
-                            <MaterialIcons
-                              name="keyboard-arrow-right"
-                              size={21}
-                              color="#435354"
-                            />
-                          </View>
-                        </TouchableOpacity>
-                      </View>
+                            <View
+                              style={{
+                                flexDirection: "row",
+                                alignItems: "center",
+                              }}
+                            >
+                              <Text style={styles.text}>Show More</Text>
+                              <MaterialIcons
+                                name="keyboard-arrow-right"
+                                size={21}
+                                color="#435354"
+                              />
+                            </View>
+                          </TouchableOpacity>
+                        </View>
+                      )}
                     </View>
                   </View>
                 );
@@ -1412,5 +1441,13 @@ const styles = StyleSheet.create({
     width: "100%",
     borderRadius: 4,
     marginBottom: 8,
+  },
+
+  // extr csss
+
+  image: {
+    width: 50,
+    height: 50,
+    marginBottom: 10,
   },
 });
