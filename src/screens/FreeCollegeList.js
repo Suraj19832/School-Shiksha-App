@@ -319,9 +319,9 @@ const FreeCollegeList = ({ navigation }) => {
     const courseAmount = value?.course_fees;
     const imageData = value?.logo;
     const whatsAppText = `I want to purchase this course !! \nOrganization Name: ${collegeName} \nCourse Name: ${courseName} \nCourse Duration: ${courseDuration} \nCourse Fees: ${courseAmount} \n${imageData}`;
-    const whatsAppUrl = `whatsapp://send?phone=${7908154725}&text=${encodeURIComponent(
-      whatsAppText
-    )}`;
+    const whatsAppUrl = `whatsapp://send?phone=${
+      value?.mobile
+    }&text=${encodeURIComponent(whatsAppText)}`;
     Linking.openURL(whatsAppUrl).catch((err) => {
       console.log(err);
     });

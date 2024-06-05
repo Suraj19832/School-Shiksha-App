@@ -885,12 +885,12 @@ const Dashboard = ({ navigation }) => {
                       style={{ fontSize: 40 }}
                     />
 
-                    <View style={{ alignItems: "center" }}>
+                    <View style={{ paddingHorizontal: 4 }}>
                       <View
                         style={{
                           flexDirection: "row",
                           gap: 8,
-                          justifyContent: "center",
+                          // justifyContent: "center",
                         }}
                       >
                         {item?.short_name !== "other" && (
@@ -903,7 +903,7 @@ const Dashboard = ({ navigation }) => {
                             <View style={styles.imgContainer}>
                               <Image
                                 source={require("../../assets/icons/guidance.png")}
-                                style={styles.image}
+                                style={styles.image12}
                               />
                             </View>
                             <Text style={styles.textStyle}>
@@ -960,7 +960,7 @@ const Dashboard = ({ navigation }) => {
                       </View>
 
                       {showButton && (
-                        <View style={{ paddingTop: 20 }}>
+                        <View style={{ paddingTop: 20, alignSelf: "center" }}>
                           <TouchableOpacity
                             style={styles.button}
                             onPress={() =>
@@ -1445,7 +1445,7 @@ const styles = StyleSheet.create({
 
   // extr csss
 
-  image: {
+  image12: {
     width: 50,
     height: 50,
     marginBottom: 10,

@@ -17,6 +17,7 @@ const CareerGuidance = ({ navigation }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [imageData, setImageData] = useState([]);
   const [bannerType, setBannerType] = useState([]);
+  const [data, setData] = useState(null);
 
   const images = imageData;
   const flatListRef = useRef(null);
@@ -81,8 +82,20 @@ const CareerGuidance = ({ navigation }) => {
       });
   }, [bannerType]);
 
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = () => {
+    getdata("master/contact-details")
+      .then((res) => {
+        setData(res?.data);
+      })
+      .catch((err) => {});
+  };
+
   const whatsappclicked = () => {
-    const whatsappUrl = `whatsapp://send?phone=${7908154725}`;
+    const whatsappUrl = `whatsapp://send?phone=${data?.whatsapp_number}`;
     Linking.openURL(whatsappUrl);
   };
   return (
