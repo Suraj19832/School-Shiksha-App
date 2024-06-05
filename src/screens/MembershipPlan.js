@@ -87,6 +87,8 @@ const MembershipPlan = ({ navigation }) => {
             paddingVertical: 15,
             alignItems: "center",
             backgroundColor: "white",
+            borderBottomWidth: 1,
+            borderBottomColor: "rgba(0, 54, 126, 0.4)",
           }}
         >
           <TouchableOpacity onPress={navigation.goBack}>
@@ -143,7 +145,7 @@ const MembershipPlan = ({ navigation }) => {
                 color: "rgba(55, 55, 55, 1)",
               }}
             >
-              Membership Plann
+              Membership Plan
             </Text>
           </View>
           <View style={styles.hairline} />

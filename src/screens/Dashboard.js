@@ -514,7 +514,7 @@ const Dashboard = ({ navigation }) => {
               />
             ) : (
               <Image
-                source={require("../../assets/img/man (1).png")}
+                source={require("../../assets/icons/profile.png")}
                 style={styles.avatarImg}
               />
             )}
@@ -585,7 +585,7 @@ const Dashboard = ({ navigation }) => {
                         height: 60,
                         resizeMode: "cover",
                       }}
-                      source={require("../../assets/img/man (1).png")}
+                      source={require("../../assets/icons/profile.png")}
                     />
                   )}
                 </TouchableOpacity>
@@ -594,9 +594,10 @@ const Dashboard = ({ navigation }) => {
                   <Text
                     style={{
                       color: "white",
-                      paddingBottom: 8,
-                      fontSize: 18,
-                      fontWeight: "700",
+                      paddingBottom: 5,
+                      fontSize: 16,
+                      fontWeight: "500",
+                      lineHeight: 24,
                     }}
                   >
                     {truncateName(name)}
@@ -605,23 +606,27 @@ const Dashboard = ({ navigation }) => {
                     style={{
                       color: "white",
                       paddingBottom: 5,
-                      fontSize: 12,
+                      fontSize: 10,
                       fontWeight: "500",
+                      fontFamily: "Poppins",
+                      lineHeight: 15,
                     }}
                   >
                     +91 {phone}
                   </Text>
-                  <View
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate("membershipPlan")}
                     style={{
                       backgroundColor: "#FFAE2B",
-                      height: 20,
+                      // height: 20,
                       width: "auto",
                       borderRadius: 10,
                       alignItems: "center",
                       justifyContent: "center",
                       flexDirection: "row",
-                      gap: 4,
-                      padding: 4,
+                      gap: 3,
+                      // padding: 4,
+                      paddingVertical: 1,
                     }}
                   >
                     <MaterialCommunityIcons
@@ -634,216 +639,225 @@ const Dashboard = ({ navigation }) => {
                         fontWeight: "500",
                         fontSize: 10,
                         color: "white",
+                        fontFamily: "Poppins",
                       }}
                     >
                       {truncateName(plan)}
                     </Text>
-                  </View>
+                  </TouchableOpacity>
                 </View>
               </View>
             </View>
-            <View
-              style={[
-                { flexDirection: "row", alignItems: "center", gap: 20 },
-                styles.menuItem,
-              ]}
-            >
-              <Image
-                style={{ width: 25, height: 25, tintColor: "#435354" }}
-                source={require("../../assets/img/data-analytics.png")}
-              />
-              <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate("Dashboard", setIsMenuOpen(!isMenuOpen))
-                }
+            <View style={{ marginTop: Dimensions.get("window").height * 0.02 }}>
+              <View
+                style={[
+                  { flexDirection: "row", alignItems: "center", gap: 20 },
+                  styles.menuItem,
+                ]}
               >
-                <Text style={styles.menuText}>Dashboard</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.hairlineMenu} />
-            <View
-              style={[
-                { flexDirection: "row", alignItems: "center", gap: 20 },
-                styles.menuItem,
-              ]}
-            >
-              <Image
-                style={{ width: 25, height: 25, tintColor: "#435354" }}
-                source={require("../../assets/img/user.png")}
-              />
-              <TouchableOpacity
-                onPress={() => navigation.navigate("editProfile")}
+                <Image
+                  style={styles.menuIcon}
+                  source={require("../../assets/img/data-analytics.png")}
+                />
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate("Dashboard", setIsMenuOpen(!isMenuOpen))
+                  }
+                >
+                  <Text style={styles.menuText}>Dashboard</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.hairlineMenu} />
+              <View
+                style={[
+                  { flexDirection: "row", alignItems: "center", gap: 20 },
+                  styles.menuItem,
+                ]}
               >
-                <Text style={styles.menuText}>View Profile</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.hairlineMenu} />
+                <Image
+                  style={styles.menuIcon}
+                  source={require("../../assets/img/user.png")}
+                />
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("editProfile")}
+                >
+                  <Text style={styles.menuText}>View Profile</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.hairlineMenu} />
 
-            <View
-              style={[
-                { flexDirection: "row", alignItems: "center", gap: 20 },
-                styles.menuItem,
-              ]}
-            >
-              <Image
-                style={{ width: 25, height: 25, tintColor: "#435354" }}
-                source={require("../../assets/img/file.png")}
-              />
-              <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate(
-                    "paymentHistory",
-                    setIsMenuOpen(!isMenuOpen)
-                  )
-                }
+              <View
+                style={[
+                  { flexDirection: "row", alignItems: "center", gap: 20 },
+                  styles.menuItem,
+                ]}
               >
-                <Text style={styles.menuText}>Transaction History</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.hairlineMenu} />
-            <View
-              style={[
-                { flexDirection: "row", alignItems: "center", gap: 20 },
-                styles.menuItem,
-              ]}
-            >
-              <Image
-                style={{ width: 25, height: 25, tintColor: "#435354" }}
-                source={require("../../assets/img/writing.png")}
-              />
-              <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate("howToApply", setIsMenuOpen(!isMenuOpen))
-                }
+                <Image
+                  style={styles.menuIcon}
+                  source={require("../../assets/img/file.png")}
+                />
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate(
+                      "paymentHistory",
+                      setIsMenuOpen(!isMenuOpen)
+                    )
+                  }
+                >
+                  <Text style={styles.menuText}>Transaction History</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.hairlineMenu} />
+              <View
+                style={[
+                  { flexDirection: "row", alignItems: "center", gap: 20 },
+                  styles.menuItem,
+                ]}
               >
-                <Text style={styles.menuText}>How to apply</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.hairlineMenu} />
-            <View
-              style={[
-                { flexDirection: "row", alignItems: "center", gap: 20 },
-                styles.menuItem,
-              ]}
-            >
-              <Image
-                style={{ width: 25, height: 25, tintColor: "#435354" }}
-                source={require("../../assets/img/question.png")}
-              />
-              <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate("getInTouch", setIsMenuOpen(!isMenuOpen))
-                }
+                <Image
+                  style={styles.menuIcon}
+                  source={require("../../assets/img/writing.png")}
+                />
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate(
+                      "howToApply",
+                      setIsMenuOpen(!isMenuOpen)
+                    )
+                  }
+                >
+                  <Text style={styles.menuText}>How to apply</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.hairlineMenu} />
+              <View
+                style={[
+                  { flexDirection: "row", alignItems: "center", gap: 20 },
+                  styles.menuItem,
+                ]}
               >
-                <Text style={styles.menuText}>Query</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.hairlineMenu} />
-            <View
-              style={[
-                { flexDirection: "row", alignItems: "center", gap: 20 },
-                styles.menuItem,
-              ]}
-            >
-              <Image
-                style={{ width: 25, height: 25, tintColor: "#435354" }}
-                source={require("../../assets/icons/community.png")}
-              />
-              <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate(
-                    "membershipPlan",
-                    setIsMenuOpen(!isMenuOpen)
-                  )
-                }
+                <Image
+                  style={styles.menuIcon}
+                  source={require("../../assets/img/question.png")}
+                />
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate(
+                      "getInTouch",
+                      setIsMenuOpen(!isMenuOpen)
+                    )
+                  }
+                >
+                  <Text style={styles.menuText}>Query</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.hairlineMenu} />
+              <View
+                style={[
+                  { flexDirection: "row", alignItems: "center", gap: 20 },
+                  styles.menuItem,
+                ]}
               >
-                <Text style={styles.menuText}>Membership Plan</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.hairlineMenu} />
-            <View
-              style={[
-                { flexDirection: "row", alignItems: "center", gap: 20 },
-                styles.menuItem,
-              ]}
-            >
-              <Image
-                style={{ width: 25, height: 25, tintColor: "#435354" }}
-                source={require("../../assets/img/contact-us.png")}
-              />
-              <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate("contactUs", setIsMenuOpen(!isMenuOpen))
-                }
+                <Image
+                  style={styles.menuIcon}
+                  source={require("../../assets/icons/community.png")}
+                />
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate(
+                      "membershipPlan",
+                      setIsMenuOpen(!isMenuOpen)
+                    )
+                  }
+                >
+                  <Text style={styles.menuText}>Membership Plan</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.hairlineMenu} />
+              <View
+                style={[
+                  { flexDirection: "row", alignItems: "center", gap: 20 },
+                  styles.menuItem,
+                ]}
               >
-                <Text style={styles.menuText}>Contact Us</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.hairlineMenu} />
-            <View
-              style={[
-                { flexDirection: "row", alignItems: "center", gap: 20 },
-                styles.menuItem,
-              ]}
-            >
-              <Image
-                style={{ width: 25, height: 25, tintColor: "#435354" }}
-                source={require("../../assets/img/tracking.png")}
-              />
-              <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate(
-                    "applicationHistory",
-                    setIsMenuOpen(!isMenuOpen)
-                  )
-                }
+                <Image
+                  style={styles.menuIcon}
+                  source={require("../../assets/img/contact-us.png")}
+                />
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate("contactUs", setIsMenuOpen(!isMenuOpen))
+                  }
+                >
+                  <Text style={styles.menuText}>Contact Us</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.hairlineMenu} />
+              <View
+                style={[
+                  { flexDirection: "row", alignItems: "center", gap: 20 },
+                  styles.menuItem,
+                ]}
               >
-                <Text style={styles.menuText}>Application History</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.hairlineMenu} />
-            <View
-              style={[
-                { flexDirection: "row", alignItems: "center", gap: 20 },
-                styles.menuItem,
-              ]}
-            >
-              <Image
-                style={{ width: 25, height: 25, tintColor: "#435354" }}
-                source={require("../../assets/icons/reset-password.png")}
-              />
-              <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate(
-                    "resetPassword",
-                    setIsMenuOpen(!isMenuOpen)
-                  )
-                }
+                <Image
+                  style={styles.menuIcon}
+                  source={require("../../assets/img/tracking.png")}
+                />
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate(
+                      "applicationHistory",
+                      setIsMenuOpen(!isMenuOpen)
+                    )
+                  }
+                >
+                  <Text style={styles.menuText}>Application History</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.hairlineMenu} />
+              <View
+                style={[
+                  { flexDirection: "row", alignItems: "center", gap: 20 },
+                  styles.menuItem,
+                ]}
               >
-                <Text style={styles.menuText}>Change Password</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.hairlineMenu} />
-            <View
-              style={[
-                { flexDirection: "row", alignItems: "center", gap: 20 },
-                styles.menuItem,
-              ]}
-            >
-              <Image
-                style={{ width: 25, height: 25, tintColor: "#435354" }}
-                source={require("../../assets/img/logout.png")}
-              />
-              <TouchableOpacity
-                onPress={
-                  // navigation.navigate("Login", setIsMenuOpen(!isMenuOpen))
-                  handlelogout
-                }
+                <Image
+                  style={styles.menuIcon}
+                  source={require("../../assets/icons/reset-password.png")}
+                />
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate(
+                      "resetPassword",
+                      setIsMenuOpen(!isMenuOpen)
+                    )
+                  }
+                >
+                  <Text style={styles.menuText}>Change Password</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.hairlineMenu} />
+              <View
+                style={[
+                  { flexDirection: "row", alignItems: "center", gap: 20 },
+                  styles.menuItem,
+                ]}
               >
-                <Text style={styles.menuText}>Logout</Text>
-              </TouchableOpacity>
+                <Image
+                  style={styles.menuIcon}
+                  source={require("../../assets/img/logout.png")}
+                />
+                <TouchableOpacity
+                  onPress={
+                    // navigation.navigate("Login", setIsMenuOpen(!isMenuOpen))
+                    handlelogout
+                  }
+                >
+                  <Text style={styles.menuText}>Logout</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.hairlineMenu} />
             </View>
-            <View style={styles.hairlineMenu} />
           </View>
         </Animated.View>
       )}
@@ -865,6 +879,7 @@ const Dashboard = ({ navigation }) => {
                     <TitleDash
                       title={item?.long_name}
                       primaryColor={colorMap[item?.long_name]}
+                      style={{ fontSize: 40 }}
                     />
                     <View style={{ alignItems: "center" }}>
                       <View
@@ -881,12 +896,6 @@ const Dashboard = ({ navigation }) => {
                               <TouchableOpacity
                                 style={styles.card}
                                 onPress={() => handleNavigate(cd)}
-                                // onPress={() =>
-                                //   navigation.navigate("freeCollege", {
-                                //     id: cd?.id,
-                                //     heading: cd?.service_name,
-                                //   })
-                                // }
                               >
                                 <View
                                   style={{
@@ -942,7 +951,7 @@ const Dashboard = ({ navigation }) => {
                             <Text style={styles.text}>Show More</Text>
                             <MaterialIcons
                               name="keyboard-arrow-right"
-                              size={22}
+                              size={21}
                               color="#435354"
                             />
                           </View>
@@ -1288,20 +1297,25 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   menuItem: {
-    paddingVertical: Dimensions.get("window").width * 0.035,
-    paddingHorizontal: 20,
-    // borderBottomWidth: 1,
-
+    paddingVertical: Dimensions.get("window").width * 0.04,
+    paddingHorizontal: 25,
     borderBottomColor: "#D9D9D9",
   },
   menuText: {
-    fontSize: 18,
+    fontSize: 14,
     color: "#435354",
-    fontWeight: "500",
+    fontWeight: "700",
+    lineHeight: 21,
+    fontFamily: "Poppins",
+  },
+  menuIcon: {
+    height: 20,
+    width: 20,
+    tintColor: "#435354",
   },
   hairlineMenu: {
     backgroundColor: "#00367E33",
-    height: 1,
+    height: 0.5,
     width: "85%",
     alignSelf: "center",
   },
@@ -1345,7 +1359,9 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "white",
     fontSize: 13,
-    fontWeight: "500",
+    fontWeight: "700",
+    lineHeight: 15,
+    fontFamily: "Poppins",
   },
   lockContainer: {
     position: "absolute",
@@ -1380,6 +1396,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "500",
     lineHeight: 17,
+    fontFamily: "Poppins",
   },
   container12: {
     backgroundColor: "#F6F6F6",

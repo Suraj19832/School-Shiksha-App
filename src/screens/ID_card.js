@@ -14,6 +14,7 @@ const ID_card = ({ navigation }) => {
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
+    setpageloading(true);
     getrequestwithtoken("student/profile", userToken)
       .then((res) => {
         if (res?.status) {
@@ -117,6 +118,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     alignSelf: "center",
+    paddingHorizontal: 10,
   },
   container12: {
     backgroundColor: "#F6F6F6",

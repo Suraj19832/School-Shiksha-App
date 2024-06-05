@@ -474,9 +474,10 @@ const AdmissionForm = ({ navigation }) => {
               if (res?.status) {
                 showToast("Form Submitted Successfully");
                 setIsLoading(false);
+                navigation.navigate("sucessfully");
                 setTimeout(() => {
                   navigation.navigate("Dashboard");
-                }, 500);
+                }, 2000);
               } else {
                 showToast("Internal Server Error");
                 setIsLoading(false);
