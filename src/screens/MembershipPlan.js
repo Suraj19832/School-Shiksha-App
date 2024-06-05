@@ -242,10 +242,11 @@ const MembershipPlan = ({ navigation }) => {
                           )}
                           <Text
                             style={{
-                              fontSize: 25,
-                              fontWeight: "500",
+                              fontSize: 19,
+                              fontWeight: "700",
                               lineHeight: 37.5,
                               color: textColor,
+                              fontFamily: "Poppins",
                             }}
                           >
                             {cards?.plan_name}
@@ -270,7 +271,7 @@ const MembershipPlan = ({ navigation }) => {
                         </Text>
                         <Text
                           style={{
-                            fontSize: 45,
+                            fontSize: 40,
                             fontWeight: "600",
                             lineHeight: 67.5,
                             color: textPrice,
@@ -280,7 +281,7 @@ const MembershipPlan = ({ navigation }) => {
                         </Text>
                         <Text
                           style={{
-                            fontSize: 65,
+                            fontSize: 50,
                             fontWeight: "600",
                             lineHeight: 65.5,
                             color: textPrice,
