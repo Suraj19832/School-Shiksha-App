@@ -1,23 +1,26 @@
 import { View, Text, StyleSheet, Image } from "react-native";
 import React from "react";
 import Header from "./Header";
+import { useRoute } from "@react-navigation/native";
 
 const Succesfully = ({ navigation }) => {
+  const route = useRoute();
+  const {title, message} =  route.params;
   return (
     <View style={styles.container}>
-      {/* <Header title={props.title} /> */}
-      <Header
+      <Header title={title} />
+      {/* <Header
         title={"Successfully Sumitted"}
         navigateTo={() => navigation.navigate("Dashboard")}
-      />
+      /> */}
       <View style={styles.content}>
         <View style={styles.content_child}>
           <Image
             source={require("../assets/icons/9327633fdd30f929e29d8a0b51d92eee.gif")}
             style={styles.image}
           />
-          {/* <Text style={styles.text}>{props.message}</Text> */}
-          <Text style={styles.text}>Form Succesfully Submitted</Text>
+          <Text style={styles.text}>{message}</Text>
+          {/* <Text style={styles.text}>Form Succesfully Submitted</Text> */}
         </View>
       </View>
     </View>

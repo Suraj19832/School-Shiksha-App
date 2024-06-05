@@ -90,6 +90,8 @@ const MembershipPayment = ({ navigation }) => {
   }, [orderId, userToken]);
 
   const checkPaymentStatus = async () => {
+    const title = "Membership Plan Sucessful";
+    const message = "Payment Sucessful"
     try {
       const postData = {
         order_id: orderId,
@@ -105,7 +107,7 @@ const MembershipPayment = ({ navigation }) => {
       if (res?.data?.status === "SUCCESS") {
         setTimerEnded(true);
         showToast("Payment Successful");
-        navigation.navigate("sucessfully");
+        navigation.navigate("sucessfully",{title,message});
         setTimeout(() => {
           navigation.navigate("Dashboard");
         }, 2000);

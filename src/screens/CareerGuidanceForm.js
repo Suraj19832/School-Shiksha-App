@@ -1,3 +1,4 @@
+
 import {
   View,
   Text,
@@ -67,6 +68,8 @@ const CareerGuidanceForm = ({ navigation }) => {
   const [courseName, setCourseName] = useState("");
 
   const handleSubmit = () => {
+    const title ="Career Guidance Form"
+    const message = "Form Submitted Successfully"
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (
@@ -106,7 +109,10 @@ const CareerGuidanceForm = ({ navigation }) => {
         .then((res) => {
           setLoading(false);
           showToast(res?.message);
-          navigation.navigate("Dashboard");
+          navigation.navigate("sucessfully",{title, message})
+          setTimeout(() => {
+            navigation.navigate("Dashboard");
+          }, 2000);
         })
         .catch((err) => {
           setLoading(false);

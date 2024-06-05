@@ -279,6 +279,8 @@ const AdmissionForm = ({ navigation }) => {
     }
   };
   const handleSubmission = () => {
+    const title = "Admission Form";
+    const message = "Form submitted Successfully"
     // setisChckedError(true);
     setIsLoading(true);
     if (
@@ -474,7 +476,7 @@ const AdmissionForm = ({ navigation }) => {
               if (res?.status) {
                 showToast("Form Submitted Successfully");
                 setIsLoading(false);
-                navigation.navigate("sucessfully");
+                navigation.navigate("sucessfully",{title,message});
                 setTimeout(() => {
                   navigation.navigate("Dashboard");
                 }, 2000);
