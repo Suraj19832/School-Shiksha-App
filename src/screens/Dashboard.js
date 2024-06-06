@@ -450,6 +450,7 @@ const Dashboard = ({ navigation }) => {
         setRefreshing(false);
       });
     fetchBanner();
+    fetchUserData();
   };
 
   if (isLoadingpage || isLoadingcard) {
@@ -891,9 +892,9 @@ const Dashboard = ({ navigation }) => {
             {/* data from api  */}
             <View style={{ paddingBottom: 20 }}>
               {carddata?.map((item, index) => {
-                console.log(index, "}}}}}}}}}}}}}}}}}}}}}}}}}}}}}");
                 const isOthers = item?.short_name === "other";
                 const showButton = isOthers ? item?.count > 3 : item?.count > 2;
+
                 return (
                   <View key={index}>
                     <TitleDash
@@ -903,13 +904,7 @@ const Dashboard = ({ navigation }) => {
                     />
 
                     <View style={{ paddingHorizontal: 4 }}>
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          gap: 8,
-                          // justifyContent: "center",
-                        }}
-                      >
+                      <View style={{ flexDirection: "row", gap: 8 }}>
                         {item?.short_name !== "other" && (
                           <TouchableOpacity
                             style={styles.card}
@@ -929,15 +924,13 @@ const Dashboard = ({ navigation }) => {
                           </TouchableOpacity>
                         )}
 
-                        {carddata[index]?.services.slice(0, 2)?.map((cd) => {
-                          console.log(cd, ">>>>>>>>>>>>>>>>");
-                          const isActive = isServiceActive(cd.id.toString());
-                          var i = 0;
-                          i++;
-
-                          return (
-                            <>
+                        {carddata[index]?.services
+                          .slice(0, isOthers ? 3 : 2)
+                          ?.map((cd, cdIndex) => {
+                            const isActive = isServiceActive(cd.id.toString());
+                            return (
                               <TouchableOpacity
+                                key={cd.id}
                                 style={styles.card}
                                 onPress={() => handleNavigate(cd)}
                               >
@@ -950,7 +943,7 @@ const Dashboard = ({ navigation }) => {
                                 >
                                   {!isActive && (
                                     <Image
-                                      source={require("../../assets/img/lock_frame.png")}
+                                      source={require("../../assets/icons/lock.png")}
                                       style={{
                                         height: 20,
                                         width: 20,
@@ -964,16 +957,15 @@ const Dashboard = ({ navigation }) => {
                                       styles.image,
                                       { height: 45, width: 45 },
                                     ]}
-                                    source={{ uri: cd.image }}
+                                    source={{ uri: cd?.image }}
                                   />
                                 </View>
                                 <Text style={styles.textStyle}>
-                                  {truncateMessage(cd.service_name)}
+                                  {truncateMessage(cd?.service_name)}
                                 </Text>
                               </TouchableOpacity>
-                            </>
-                          );
-                        })}
+                            );
+                          })}
                       </View>
 
                       {showButton && (
@@ -1008,6 +1000,7 @@ const Dashboard = ({ navigation }) => {
                 );
               })}
             </View>
+
             {/* end here  */}
           </View>
         </View>

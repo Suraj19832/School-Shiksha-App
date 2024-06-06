@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   topBar_text: {
-    fontSize: 18,
+    fontSize: 17,
     fontWeight: "500",
     lineHeight: 27,
     color: "rgba(55, 55, 55, 1)",

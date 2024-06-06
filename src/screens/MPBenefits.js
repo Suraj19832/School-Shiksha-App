@@ -160,7 +160,7 @@ const MPBenefits = ({ navigation }) => {
                     <View style={{ position: "absolute", top: 10, right: 5 }}>
                       {!isActive && (
                         <Image
-                          source={require("../../assets/img/lock_frame.png")}
+                          source={require("../../assets/icons/lock.png")}
                           style={{
                             height: 20,
                             width: 20,

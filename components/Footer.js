@@ -18,7 +18,7 @@ const Footer = () => {
     if (tabName === "Home") {
       // navigation.navigate("Home");
     } else if (tabName === "Refer") {
-      // navigation.navigate("refer");
+      // navigation.navigate("sucessfully", { title: "heko", message: "jebjj" });
     } else if (tabName === "Query") {
       navigation.navigate("getInTouch");
     } else if (tabName === "Contact") {

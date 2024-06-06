@@ -5,7 +5,7 @@ import { useRoute } from "@react-navigation/native";
 
 const Succesfully = ({ navigation }) => {
   const route = useRoute();
-  const {title, message} =  route.params;
+  const { title, message } = route.params;
   return (
     <View style={styles.container}>
       <Header title={title} />
@@ -16,7 +16,7 @@ const Succesfully = ({ navigation }) => {
       <View style={styles.content}>
         <View style={styles.content_child}>
           <Image
-            source={require("../assets/icons/9327633fdd30f929e29d8a0b51d92eee.gif")}
+            source={require("../assets/icons/success.gif")}
             style={styles.image}
           />
           <Text style={styles.text}>{message}</Text>
