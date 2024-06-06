@@ -320,7 +320,7 @@ const FreeCollegeList = ({ navigation }) => {
     const imageData = value?.logo;
     const whatsAppText = `I want to purchase this course !! \nOrganization Name: ${collegeName} \nCourse Name: ${courseName} \nCourse Duration: ${courseDuration} \nCourse Fees: ${courseAmount} \n${imageData}`;
     const whatsAppUrl = `whatsapp://send?phone=${
-      value?.mobile
+      value?.whatsapp_number
     }&text=${encodeURIComponent(whatsAppText)}`;
     Linking.openURL(whatsAppUrl).catch((err) => {
       console.log(err);

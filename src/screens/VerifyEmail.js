@@ -80,17 +80,17 @@ const VerifyEmail = ({ navigation }) => {
       />
       <ScrollView>
         <View style={styles.main_content}>
-          <FontAwesome5
-            name="arrow-left"
-            size={24}
-            color="rgba(0, 54, 126, 1)"
-            style={styles.arrowleft}
-            onPress={() => navigation.navigate("Login")}
-          />
+          <TouchableOpacity onPress={navigation.goBack}>
+            <Image
+              source={require("../../assets/icons/arrow.png")}
+              style={{ height: 24, width: 24 }}
+            />
+          </TouchableOpacity>
           <View style={styles.loginImage}>
             <Image
               source={require("../../assets/img/otp verification.png")}
               style={styles.img}
+              resizeMode="stretch"
             />
           </View>
 
@@ -162,11 +162,12 @@ const styles = StyleSheet.create({
   },
   loginImage: {
     alignItems: "center",
-    marginVertical: 10,
+    marginBottom: 10,
   },
   img: {
+    marginTop: 10,
     height: 220,
-    width: 220,
+    width: "100%",
   },
   arrowleft: {
     position: "absolute",

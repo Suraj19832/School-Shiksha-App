@@ -120,6 +120,7 @@ const Login_Page = ({ navigation }) => {
             <Image
               source={require("../../assets/img/welcome_banner.png")}
               style={styles.img}
+              resizeMode="stretch"
             />
           </View>
           <View style={styles.welcome_texts}>
@@ -262,7 +263,7 @@ const styles = StyleSheet.create({
   },
   img: {
     height: 236,
-    width: 236,
+    width: "100%",
     marginVertical: 10,
   },
   welcome_texts: {

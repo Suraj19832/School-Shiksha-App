@@ -126,18 +126,20 @@ const VerifyOTP = ({ navigation }) => {
       />
       <ScrollView style={styles.container}>
         <View style={styles.main_content}>
-          <FontAwesome5
-            name="arrow-left"
-            size={24}
-            color="rgba(0, 54, 126, 1)"
-            style={styles.arrowleft}
-            onPress={() => navigation.navigate("VerifyEmail")}
-          />
-          <View style={styles.loginImage}>
-            <Image
-              source={require("../../assets/img/otp verification.png")}
-              style={styles.img}
-            />
+          <View style={{}}>
+            <TouchableOpacity onPress={navigation.goBack}>
+              <Image
+                source={require("../../assets/icons/arrow.png")}
+                style={{ height: 24, width: 24 }}
+              />
+            </TouchableOpacity>
+            <View style={styles.loginImage}>
+              <Image
+                source={require("../../assets/img/otp verification.png")}
+                style={styles.img}
+                resizeMode="stretch"
+              />
+            </View>
           </View>
 
           <View style={styles.welcome_texts}>
@@ -218,9 +220,7 @@ const VerifyOTP = ({ navigation }) => {
 export default VerifyOTP;
 
 const styles = StyleSheet.create({
-  container: {
-    // top: 53,
-  },
+  container: {},
   main_content: {
     marginHorizontal: 20,
     justifyContent: "center",
@@ -234,11 +234,12 @@ const styles = StyleSheet.create({
   },
   loginImage: {
     alignItems: "center",
-    marginVertical: 10,
+    // marginVertical: 10,
   },
   img: {
+    marginTop: 10,
     height: 220,
-    width: 250,
+    width: 320,
   },
   welcome_texts: {
     marginVertical: 10,

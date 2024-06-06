@@ -87,17 +87,17 @@ const ForgetPassword = ({ navigation }) => {
       />
       <ScrollView>
         <View style={styles.main_content}>
-          <FontAwesome5
-            name="arrow-left"
-            size={24}
-            color="rgba(0, 54, 126, 1)"
-            style={styles.arrowleft}
-            onPress={navigation.goBack}
-          />
+          <TouchableOpacity onPress={navigation.goBack}>
+            <Image
+              source={require("../../assets/icons/arrow.png")}
+              style={{ height: 24, width: 24 }}
+            />
+          </TouchableOpacity>
           <View style={styles.loginImage}>
             <Image
               source={require("../../assets/img/FORGET PASSWORD.png")}
               style={styles.img}
+              resizeMode="stretch"
             />
           </View>
           <View style={styles.welcome_texts}>
@@ -212,14 +212,15 @@ const styles = StyleSheet.create({
   },
   loginImage: {
     alignItems: "center",
-    marginTop: 10,
+    // marginTop: 10,
   },
   arrowleft: {
     position: "absolute",
   },
   img: {
+    marginTop: 10,
     height: 219,
-    width: 236,
+    width: "100%",
   },
   welcome_texts: {
     marginTop: 30,

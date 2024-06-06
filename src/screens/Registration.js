@@ -114,7 +114,6 @@ const Registration = ({ navigation }) => {
   const handleRegistration = async () => {
     setLoading(true);
     if (formData.name && formData.mobile) {
-     
     }
     const formsData = new FormData();
     if (
@@ -128,12 +127,7 @@ const Registration = ({ navigation }) => {
       userDetails.date_of_birth &&
       genderData &&
       classid &&
-      planid 
-
-
-
-
-
+      planid
     ) {
       if (isChecked) {
         formsData.append("name", formData.name);
@@ -205,9 +199,8 @@ const Registration = ({ navigation }) => {
     } else {
       console.log("Registration failed: Required fields are missing");
       // Alert.alert("Alert", "Please Fill up All Fields");
-      setLoading(false)
+      setLoading(false);
       showToast("Please fill up all fields");
-      
     }
   };
   // email validation
@@ -257,18 +250,19 @@ const Registration = ({ navigation }) => {
   // };
 
   const validatePassword = () => {
-    const passwordPattern = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{5,}$/;
+    const passwordPattern =
+      /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{5,}$/;
 
     if (!password.trim()) {
-        setPasswordError("Password is required");
+      setPasswordError("Password is required");
     } else if (!passwordPattern.test(password)) {
-        setPasswordError(
-            "Password must contain at least one capital letter, one special character, one number, and be at least 5 characters long"
-        );
+      setPasswordError(
+        "Password must contain at least one capital letter, one special character, one number, and be at least 5 characters long"
+      );
     } else {
-        setPasswordError("");
+      setPasswordError("");
     }
-};
+  };
 
   const handlePasswordChange = (text) => {
     setPassword(text);
@@ -694,17 +688,17 @@ const Registration = ({ navigation }) => {
         />
         <View style={styles.mainView}>
           <View style={styles.innerView}>
-            <FontAwesome5
-              name="arrow-left"
-              size={24}
-              color="rgba(0, 54, 126, 1)"
-              style={styles.arrowleft}
-              onPress={() => navigation.navigate("Login")}
-            />
+            <TouchableOpacity onPress={navigation.goBack}>
+              <Image
+                source={require("../../assets/icons/arrow.png")}
+                style={{ height: 24, width: 24 }}
+              />
+            </TouchableOpacity>
             <View style={styles.ImageView}>
               <Image
                 style={styles.image}
-                source={require("../../assets/img/registration.png")}
+                source={require("../../assets/img/1.png")}
+                resizeMode="stretch"
               />
             </View>
             <View style={{ left: 0 }}>
@@ -2198,10 +2192,12 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    marginBottom: 10,
   },
   image: {
-    height: 192,
-    width: 220,
+    height: 220,
+    width: "100%",
+    marginVertical: 10,
   },
 
   CreateAccountText: {
