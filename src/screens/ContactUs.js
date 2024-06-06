@@ -108,17 +108,17 @@ const ContactUs = ({ navigation }) => {
   };
 
   const handleCall = (phoneNumber) => {
-    const contactUrl = `tel:${data.mobile}`;
+    const contactUrl = `tel:${data?.mobile}`;
     Linking.openURL(contactUrl);
   };
 
   const handleEmail = (email) => {
-    const emailUrl = `mailto:${data.email}`;
+    const emailUrl = `mailto:${data?.email}`;
     Linking.openURL(emailUrl);
   };
 
   const handleWhatsapp = (phoneNumber) => {
-    const whatsappUrl = `whatsapp://send?phone=${data.whatsapp_number}`;
+    const whatsappUrl = `whatsapp://send?phone=${data?.whatsapp_number}`;
     Linking.openURL(whatsappUrl);
   };
 
