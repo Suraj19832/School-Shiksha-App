@@ -299,8 +299,18 @@ const Dashboard = ({ navigation }) => {
     setmyLoading(false);
   };
   const [carddata, setcarddata] = useState([]);
+  const [data, setData] = useState(null);
+  const fetchData = () => {
+    getdata("master/contact-details")
+      .then((res) => {
+        setData(res?.data);
+      })
+      .catch((err) => {});
+  };
+
   useEffect(() => {
     fetchUserData();
+    fetchData();
     getrequestwithtoken("student/profile", userToken).then((res) => {
       if (res?.status) {
         setprofileAllData(res?.data?.gender);
@@ -366,7 +376,7 @@ const Dashboard = ({ navigation }) => {
     "FREE GOVT CERTIFICATE COURSE": "freeGovCertificate",
   };
   const whatsappclicked = () => {
-    const whatsappUrl = `whatsapp://send?phone=9088776656`;
+    const whatsappUrl = `whatsapp://send?phone=${data?.whatsapp_number}`;
     Linking.openURL(whatsappUrl);
   };
 
