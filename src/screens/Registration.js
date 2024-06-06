@@ -697,7 +697,7 @@ const Registration = ({ navigation }) => {
             <View style={styles.ImageView}>
               <Image
                 style={styles.image}
-                source={require("../../assets/img/1.png")}
+                source={require("../../assets/img/asfdasdad.png")}
                 resizeMode="stretch"
               />
             </View>
@@ -2195,7 +2195,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   image: {
-    height: 220,
+    height: 240,
     width: "100%",
     marginVertical: 10,
   },
