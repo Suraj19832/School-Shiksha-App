@@ -58,16 +58,13 @@ const truncateMessage = (message, maxLength = 35) => {
 };
 
 const NotificationContainer = (props) => {
-  // console.log(props.is_read,"kkkkkkkkkkkkkkkkkkk")
   const { userToken } = useContext(AuthContext);
-  // console.log(props,"props checking")
   const imgPath = {
-    // "phone-call": require("../../assets/img/phone-call.png"),
     email: require("../../assets/img/email.png"),
     whatsapp: require("../../assets/img/whatsappIcon.png"),
   };
   const [modalVisible, setModalVisible] = useState(false);
-  const [isRead, setIsRead] = useState(props.is_read);
+  const [isRead, setIsRead] = useState(props?.is_read);
 
   useEffect(() => {
     setIsRead(props?.is_read);

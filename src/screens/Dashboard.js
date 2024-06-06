@@ -46,7 +46,7 @@ const BannerCarousel = ({ bannerData }) => {
   useEffect(() => {
     const intervalId = setInterval(() => {
       setActiveIndex((prevIndex) => {
-        const nextIndex = (prevIndex + 1) % images.length;
+        const nextIndex = (prevIndex + 1) % images?.length;
         if (flatListRef.current) {
           flatListRef.current.scrollToIndex({
             index: nextIndex,
@@ -470,13 +470,13 @@ const Dashboard = ({ navigation }) => {
   // Skeleton End ?
 
   const truncateMessage = (message, maxLength = 25) => {
-    if (message.length > maxLength) {
+    if (message?.length > maxLength) {
       return message.substring(0, maxLength) + "...";
     }
     return message;
   };
   const truncateName = (message, maxLength = 13) => {
-    if (message.length > maxLength) {
+    if (message?.length > maxLength) {
       return message.substring(0, maxLength) + "...";
     }
     return message;

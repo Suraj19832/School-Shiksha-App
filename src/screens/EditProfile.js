@@ -104,26 +104,19 @@ const EditProfile = ({ navigation }) => {
   };
 
   // email validation
-  const validateEmail = () => {
+  const validateEmail = (email) => {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    // console.log(
-    //   emailError,
-    //   "*********************************************************************************"
-    // );
-
-    if (!profileData?.email.trim()) {
+    if (!email.trim()) {
       setEmailError("Email is required");
-    } else if (!emailPattern.test(profileData?.email)) {
+      return false;
+    } else if (!emailPattern.test(email)) {
       setEmailError("Invalid email format");
+      return false;
     } else {
       setEmailError("");
+      return true;
     }
   };
-
-  console.log(
-    emailError,
-    "*********************************************************************************"
-  );
 
   const handleEmailChange = (text) => {
     setEmail(text);
@@ -658,8 +651,8 @@ const EditProfile = ({ navigation }) => {
       showToast("WhatsApp Number must be exactly 10 digits");
       return;
     }
-    if (emailError !== "") {
-      showToast("invalid email");
+    if (!validateEmail(email)) {
+      showToast("Invalid email format");
       return;
     }
 
@@ -931,12 +924,12 @@ const EditProfile = ({ navigation }) => {
                     onChangeText={(text) =>
                       setProfileData({ ...profileData, email: text })
                     }
-                    onBlur={validateEmail}
+                    onBlur={() => validateEmail(profileData.email)}
                   />
                 </View>
-                {emailError ? (
+                {/* {emailError ? (
                   <Text style={{ color: "red" }}>{emailError}</Text>
-                ) : null}
+                ) : null} */}
               </View>
               {/* date of birth  */}
 
