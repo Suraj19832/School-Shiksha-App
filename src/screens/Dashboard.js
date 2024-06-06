@@ -196,6 +196,22 @@ const Dashboard = ({ navigation }) => {
 
   const lastIndex = images?.length - 1;
 
+  const fetchBanner = () => {
+    setRefreshing(true);
+    getrequestwithtoken("master/dashboard-banner", userToken)
+      .then((res) => {
+        setBannerData(res?.data);
+        setRefreshing(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setRefreshing(false);
+      })
+      .finally(() => {
+        setRefreshing(false);
+      });
+  };
+
   const setLoopedActiveIndex = (index) => {
     if (index < 0) {
       setActiveIndex(lastIndex);
@@ -433,6 +449,7 @@ const Dashboard = ({ navigation }) => {
       .finally(() => {
         setRefreshing(false);
       });
+    fetchBanner();
   };
 
   if (isLoadingpage || isLoadingcard) {

@@ -7,39 +7,54 @@ import {
   TouchableOpacity,
   FlatList,
   Linking,
+  RefreshControl,
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Header from "../../components/Header";
 import { getdata, postDataWithFormData } from "../../Helper/Helper";
-const CareerGuidance = ({ navigation }) => {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [imageData, setImageData] = useState([]);
-  const [bannerType, setBannerType] = useState([]);
-  const [data, setData] = useState(null);
 
-  const images = imageData;
+const BannerCarousel = ({ bannerData }) => {
+  const [activeIndex, setActiveIndex] = useState(0);
   const flatListRef = useRef(null);
+  const images = bannerData;
 
   const onViewableItemsChanged = ({ viewableItems }) => {
-    if (viewableItems && viewableItems?.length > 0) {
+    if (viewableItems && viewableItems.length > 0) {
       setActiveIndex(viewableItems[0].index || 0);
     }
   };
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setActiveIndex((prevIndex) => {
+        const nextIndex = (prevIndex + 1) % images.length;
+        if (flatListRef.current) {
+          flatListRef.current.scrollToIndex({
+            index: nextIndex,
+            animated: true,
+          });
+        }
+        return nextIndex;
+      });
+    }, 2000); // 2000ms for 2 seconds
+
+    return () => clearInterval(intervalId);
+  }, [images.length]);
   const renderPagination = () => {
     return (
       <View style={styles.paginationContainer}>
         <View style={styles.pagination}>
-          {images?.map((_, index) => (
-            <View
-              key={index}
-              style={[
-                styles.paginationDot,
-                index === activeIndex && styles.paginationDotActive,
-              ]}
-            />
-          ))}
+          {images?.length > 0 &&
+            images.map((_, index) => (
+              <View
+                key={index}
+                style={[
+                  styles.paginationDot,
+                  index === activeIndex && styles.paginationDotActive,
+                ]}
+              />
+            ))}
         </View>
       </View>
     );
@@ -54,6 +69,28 @@ const CareerGuidance = ({ navigation }) => {
       />
     </View>
   );
+  return (
+    <View style={{ position: "relative" }}>
+      <FlatList
+        ref={flatListRef}
+        data={images}
+        horizontal
+        pagingEnabled
+        showsHorizontalScrollIndicator={false}
+        renderItem={renderItem}
+        keyExtractor={(item, index) => index.toString()}
+        onViewableItemsChanged={onViewableItemsChanged}
+      />
+      {renderPagination()}
+    </View>
+  );
+};
+
+const CareerGuidance = ({ navigation }) => {
+  const [imageData, setImageData] = useState([]);
+  const [bannerType, setBannerType] = useState([]);
+  const [data, setData] = useState(null);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     getdata("master/banner-types")
@@ -94,6 +131,25 @@ const CareerGuidance = ({ navigation }) => {
       .catch((err) => {});
   };
 
+  const handleRefresh = () => {
+    setRefreshing(true);
+    fetchData();
+    const formData = new FormData();
+    bannerType?.forEach((element) => {
+      if (element === "career_guidance") {
+        formData.append("type", element);
+      }
+    });
+    postDataWithFormData("master/career-guidance-banner", formData)
+      .then((res) => {
+        setImageData(res?.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    setRefreshing(false);
+  };
+
   const whatsappclicked = () => {
     const whatsappUrl = `whatsapp://send?phone=${data?.whatsapp_number}`;
     Linking.openURL(whatsappUrl);
@@ -101,20 +157,13 @@ const CareerGuidance = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <Header title="Career Guidance" navigateTo={navigation.goBack} />
-      <ScrollView style={{ backgroundColor: "#FFFCCE", height: "100%" }}>
-        <View style={{ position: "relative" }}>
-          <FlatList
-            ref={flatListRef}
-            data={images}
-            horizontal
-            pagingEnabled
-            showsHorizontalScrollIndicator={false}
-            renderItem={renderItem}
-            keyExtractor={(item, index) => index.toString()}
-            onViewableItemsChanged={onViewableItemsChanged}
-          />
-          {renderPagination()}
-        </View>
+      <ScrollView
+        style={{ backgroundColor: "#FFFCCE", height: "100%" }}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+        }
+      >
+        {imageData?.length > 0 && <BannerCarousel bannerData={imageData} />}
 
         <View style={styles.listContainer}>
           <View style={{ marginTop: 23, marginBottom: 18 }}>

@@ -170,7 +170,7 @@ const Registration = ({ navigation }) => {
             }
             if (res?.message === "Student registration successful") {
               console.log("=================grpgp=gppg", res?.message);
-              showToast("Registration Successfull");
+              showToast("Registration Successful");
               console.log("11111111", res?.status);
               navigation.navigate("Login");
             }
