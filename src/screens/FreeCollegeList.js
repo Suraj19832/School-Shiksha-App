@@ -106,6 +106,63 @@ const BannerCarousel = ({ bannerData }) => {
     </View>
   );
 };
+
+const DetailsCard = ({ extraFields }) => {
+  const renderItem = ({ item }) => (
+    <View
+      key={item.key}
+      style={{
+        flex: 1,
+        flexDirection: "column",
+        margin: 5,
+        width: "48%", // Adjusting the width to fit two items in a row with spacing
+        paddingHorizontal: 8,
+      }}
+    >
+      <Text
+        style={{
+          color: "#01265B",
+          fontWeight: "600",
+          fontSize: 14,
+          alignSelf: "baseline",
+          paddingVertical: 3,
+        }}
+      >
+        {item.key}
+      </Text>
+      <Text
+        style={{
+          color: "#595959",
+          fontWeight: "700",
+          fontSize: 12,
+          alignSelf: "baseline",
+        }}
+      >
+        {item.value}
+      </Text>
+    </View>
+  );
+
+  const data = extraFields
+    ? Object.entries(extraFields).map(([key, value]) => ({ key, value }))
+    : [];
+
+  return (
+    <FlatList
+      contentContainerStyle={{
+        backgroundColor: "#E2FDFF",
+      }}
+      data={data}
+      renderItem={renderItem}
+      keyExtractor={(item, index) => index.toString()}
+      numColumns={2}
+      columnWrapperStyle={{
+        justifyContent: "space-between",
+      }}
+    />
+  );
+};
+
 const FreeCollegeList = ({ navigation }) => {
   const [selectedValue, setSelectedValue] = useState(null);
   const [open, setOpen] = useState(false);
@@ -329,62 +386,6 @@ const FreeCollegeList = ({ navigation }) => {
 
   const loadmore = () => {
     setlimit(limit + 10);
-  };
-
-  const DetailsCard = ({ extraFields }) => {
-    const renderItem = ({ item }) => (
-      <View
-        key={item.key}
-        style={{
-          flex: 1,
-          flexDirection: "column",
-          margin: 5,
-          width: "48%", // Adjusting the width to fit two items in a row with spacing
-          paddingHorizontal: 8,
-        }}
-      >
-        <Text
-          style={{
-            color: "#01265B",
-            fontWeight: "600",
-            fontSize: 14,
-            alignSelf: "baseline",
-            paddingVertical: 3,
-          }}
-        >
-          {item.key}
-        </Text>
-        <Text
-          style={{
-            color: "#595959",
-            fontWeight: "700",
-            fontSize: 12,
-            alignSelf: "baseline",
-          }}
-        >
-          {item.value}
-        </Text>
-      </View>
-    );
-
-    const data = extraFields
-      ? Object.entries(extraFields).map(([key, value]) => ({ key, value }))
-      : [];
-
-    return (
-      <FlatList
-        contentContainerStyle={{
-          backgroundColor: "#E2FDFF",
-        }}
-        data={data}
-        renderItem={renderItem}
-        keyExtractor={(item, index) => index.toString()}
-        numColumns={2}
-        columnWrapperStyle={{
-          justifyContent: "space-between",
-        }}
-      />
-    );
   };
 
   const CardSkeleton = () => {
@@ -806,40 +807,39 @@ const FreeCollegeList = ({ navigation }) => {
             FreeCollegeList?.map((value) => {
               const formatKey = (key) => {
                 return key
-                  .replace(/_/g, ' ')      // Replace underscores with spaces
+                  .replace(/_/g, " ") // Replace underscores with spaces
                   .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize first letter of each word
               };
               const formatAmount = (amount) => {
-                return `${amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} Rs`;
+                return `${amount
+                  .toString()
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")} Rs`;
               };
-              
+
               var requiredFields = JSON.parse(value?.required_field);
               var extraFields = JSON.parse(value?.extra_data);
-              if(value?.course_fees !== null){
-                extraFields ={
-                  [formatKey('course_fee')] :formatAmount(value?.course_fees),
-                  ...extraFields
-                
-                }
+              if (value?.course_fees !== null) {
+                extraFields = {
+                  [formatKey("course_fee")]: formatAmount(value?.course_fees),
+                  ...extraFields,
+                };
               }
 
-              if(value?.last_submission_date !== null){
-                extraFields ={
-                  [formatKey('last_submission_date')] :value?.last_submission_date,
-                  ...extraFields
-                
-                }
+              if (value?.last_submission_date !== null) {
+                extraFields = {
+                  [formatKey("last_submission_date")]:
+                    value?.last_submission_date,
+                  ...extraFields,
+                };
               }
 
-              if(value?.course_duration !== null){
-                extraFields ={
-                  [formatKey('course_duration')] :value?.course_duration,
-                  ...extraFields
-                
-                }
+              if (value?.course_duration !== null) {
+                extraFields = {
+                  [formatKey("course_duration")]: value?.course_duration,
+                  ...extraFields,
+                };
               }
 
-           
               console.log(
                 extraFields,
                 "dweijoefoeruhhohgoughjoiejfpkposdicposdkcpoij:::::::::::::::::::::::::::::"
