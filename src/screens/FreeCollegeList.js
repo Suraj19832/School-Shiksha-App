@@ -804,8 +804,42 @@ const FreeCollegeList = ({ navigation }) => {
           {/* old one  */}
           {FreeCollegeList?.length > 0 &&
             FreeCollegeList?.map((value) => {
+              const formatKey = (key) => {
+                return key
+                  .replace(/_/g, ' ')      // Replace underscores with spaces
+                  .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize first letter of each word
+              };
+              const formatAmount = (amount) => {
+                return `${amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} Rs`;
+              };
+              
               var requiredFields = JSON.parse(value?.required_field);
               var extraFields = JSON.parse(value?.extra_data);
+              if(value?.course_fees !== null){
+                extraFields ={
+                  [formatKey('course_fee')] :formatAmount(value?.course_fees),
+                  ...extraFields
+                
+                }
+              }
+
+              if(value?.last_submission_date !== null){
+                extraFields ={
+                  [formatKey('last_submission_date')] :value?.last_submission_date,
+                  ...extraFields
+                
+                }
+              }
+
+              if(value?.course_duration !== null){
+                extraFields ={
+                  [formatKey('course_duration')] :value?.course_duration,
+                  ...extraFields
+                
+                }
+              }
+
+           
               console.log(
                 extraFields,
                 "dweijoefoeruhhohgoughjoiejfpkposdicposdkcpoij:::::::::::::::::::::::::::::"
