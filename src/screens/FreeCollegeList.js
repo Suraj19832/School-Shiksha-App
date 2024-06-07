@@ -331,6 +331,62 @@ const FreeCollegeList = ({ navigation }) => {
     setlimit(limit + 10);
   };
 
+  const DetailsCard = ({ extraFields }) => {
+    const renderItem = ({ item }) => (
+      <View
+        key={item.key}
+        style={{
+          flex: 1,
+          flexDirection: "column",
+          margin: 5,
+          width: "48%", // Adjusting the width to fit two items in a row with spacing
+          paddingHorizontal: 8,
+        }}
+      >
+        <Text
+          style={{
+            color: "#01265B",
+            fontWeight: "600",
+            fontSize: 14,
+            alignSelf: "baseline",
+            paddingVertical: 3,
+          }}
+        >
+          {item.key}
+        </Text>
+        <Text
+          style={{
+            color: "#595959",
+            fontWeight: "700",
+            fontSize: 12,
+            alignSelf: "baseline",
+          }}
+        >
+          {item.value}
+        </Text>
+      </View>
+    );
+
+    const data = extraFields
+      ? Object.entries(extraFields).map(([key, value]) => ({ key, value }))
+      : [];
+
+    return (
+      <FlatList
+        contentContainerStyle={{
+          backgroundColor: "#E2FDFF",
+        }}
+        data={data}
+        renderItem={renderItem}
+        keyExtractor={(item, index) => index.toString()}
+        numColumns={2}
+        columnWrapperStyle={{
+          justifyContent: "space-between",
+        }}
+      />
+    );
+  };
+
   const CardSkeleton = () => {
     const opacity = useRef(new Animated.Value(0.3)).current;
 
@@ -925,7 +981,7 @@ const FreeCollegeList = ({ navigation }) => {
                   </View>
                 </View> */}
 
-                  {extraFields && (
+                  {/* {extraFields && (
                     <View style={styles.aboutCourse}>
                       {extraFields &&
                         typeof extraFields === "object" &&
@@ -960,7 +1016,9 @@ const FreeCollegeList = ({ navigation }) => {
                           </View>
                         ))}
                     </View>
-                  )}
+                  )} */}
+
+                  <DetailsCard extraFields={extraFields} />
 
                   <View style={styles.cardButtons}>
                     <TouchableOpacity
