@@ -95,7 +95,7 @@ const ForgetPassword = ({ navigation }) => {
           </TouchableOpacity>
           <View style={styles.loginImage}>
             <Image
-              source={require("../../assets/img/FORGET PASSWORD.png")}
+              source={require("../../assets/img/5-Recovered.png")}
               style={styles.img}
               resizeMode="stretch"
             />
@@ -218,8 +218,8 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   img: {
-    marginTop: 10,
-    height: 219,
+    // marginTop: 10,
+    height: 230,
     width: "100%",
   },
   welcome_texts: {
