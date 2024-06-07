@@ -15,7 +15,6 @@ import {
   SimpleLineIcons,
   Fontisto,
   FontAwesome,
-  Feather,
   AntDesign,
 } from "@expo/vector-icons";
 import Header from "../../components/Header";
@@ -29,23 +28,23 @@ const PaidCollegeRegForm = ({ navigation }) => {
   const route = useRoute();
   const { collegeName, courseName } = route.params;
   const [modalVisibleHSMarksheet, setModalVisibleHSMarksheet] = useState(false);
-    // Passport
-    const [capturedImagePassport, setCapturedImagePassport] = useState(null);
-    const [modalVisiblePassport, setModalVisiblePassport] = useState(false);
-    const [fileUriPassPortPhoto, setFileUriPassPortPhoto] = useState(null);
-    const [errorMessagePassPortPhoto, setErrorMessagePassPortPhoto] =
-      useState(null);
-    const [isPickingFilePassPortPhoto, setIsPickingFilePassPortPhoto] =
-      useState(false);
-      const closeModal = () => {
-        setModalVisible(false);
-        setModalVisiblePassport(false);
-        setModalVisibleHSMarksheet(false);
-        setModalVisibleAddharBack(false);
-        setModalVisibleAddharfront(false);
-      };
+  // Passport
+  const [capturedImagePassport, setCapturedImagePassport] = useState(null);
+  const [modalVisiblePassport, setModalVisiblePassport] = useState(false);
+  const [fileUriPassPortPhoto, setFileUriPassPortPhoto] = useState(null);
+  const [errorMessagePassPortPhoto, setErrorMessagePassPortPhoto] =
+    useState(null);
+  const [isPickingFilePassPortPhoto, setIsPickingFilePassPortPhoto] =
+    useState(false);
+  const closeModal = () => {
+    setModalVisible(false);
+    setModalVisiblePassport(false);
+    setModalVisibleHSMarksheet(false);
+    setModalVisibleAddharBack(false);
+    setModalVisibleAddharfront(false);
+  };
 
-      //For PassPort Photo function
+  //For PassPort Photo function
   const pickFilePassPortPhoto = async () => {
     if (isPickingFilePassPortPhoto) {
       console.log("Document picking in progress");
@@ -153,9 +152,8 @@ const PaidCollegeRegForm = ({ navigation }) => {
   };
 
   const [capturedImageHSMarksheet, setCapturedImageHSMarksheet] =
-  useState(null);
-// const [modalVisibleHSMarksheet, setModalVisibleHSMarksheet] = useState(false);
-
+    useState(null);
+  // const [modalVisibleHSMarksheet, setModalVisibleHSMarksheet] = useState(false);
 
   // States For HS Marksheet
   const [fileUriHSMarksheet, setFileUriHSMarksheet] = useState(null);
@@ -163,48 +161,48 @@ const PaidCollegeRegForm = ({ navigation }) => {
   const [isPickingFileHSMarksheet, setIsPickingFileHSMarksheet] =
     useState(false);
 
-    const pickFileHSMarksheet = async () => {
-      if (isPickingFileHSMarksheet) {
-        console.log("Document picking in progress");
-        return;
+  const pickFileHSMarksheet = async () => {
+    if (isPickingFileHSMarksheet) {
+      console.log("Document picking in progress");
+      return;
+    }
+
+    setIsPickingFileHSMarksheet(true);
+    setErrorMessageHSMarksheet(null);
+
+    try {
+      const result = await DocumentPicker.getDocumentAsync({
+        type: "*/*",
+      });
+
+      console.log("File picker result:", result);
+
+      if (
+        !result.canceled &&
+        result.assets &&
+        result.assets.length > 0 &&
+        result.assets[0].uri
+      ) {
+        console.log("File picked:", result.assets[0].uri);
+        setFileUriHSMarksheet(result.assets[0].uri);
+      } else if (result.canceled) {
+        console.log("File picking cancelled");
+      } else {
+        console.log("File picking failed");
+        setErrorMessageHSMarksheet("File picking failed");
       }
-  
-      setIsPickingFileHSMarksheet(true);
-      setErrorMessageHSMarksheet(null);
-  
-      try {
-        const result = await DocumentPicker.getDocumentAsync({
-          type: "*/*",
-        });
-  
-        console.log("File picker result:", result);
-  
-        if (
-          !result.canceled &&
-          result.assets &&
-          result.assets.length > 0 &&
-          result.assets[0].uri
-        ) {
-          console.log("File picked:", result.assets[0].uri);
-          setFileUriHSMarksheet(result.assets[0].uri);
-        } else if (result.canceled) {
-          console.log("File picking cancelled");
-        } else {
-          console.log("File picking failed");
-          setErrorMessageHSMarksheet("File picking failed");
-        }
-      } catch (error) {
-        console.error("Error picking file:", error);
-        setErrorMessageHSMarksheet("Error picking file");
-      } finally {
-        setIsPickingFileHSMarksheet(false);
-      }
-      closeModal();
-    };
-    const deleteImageHSMarksheet = () => {
-      setFileUriHSMarksheet(null);
-      setCapturedImageHSMarksheet(null);
-    };
+    } catch (error) {
+      console.error("Error picking file:", error);
+      setErrorMessageHSMarksheet("Error picking file");
+    } finally {
+      setIsPickingFileHSMarksheet(false);
+    }
+    closeModal();
+  };
+  const deleteImageHSMarksheet = () => {
+    setFileUriHSMarksheet(null);
+    setCapturedImageHSMarksheet(null);
+  };
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
       <Header
@@ -726,9 +724,8 @@ const PaidCollegeRegForm = ({ navigation }) => {
                 </Modal>
               </View>
 
-
               {/* passport  */}
-                  <View>
+              <View>
                 {!capturedImagePassport && !fileUriPassPortPhoto && (
                   <View style={styles.fields_main}>
                     <Text style={styles.inputHeading}>Passport Photo</Text>
