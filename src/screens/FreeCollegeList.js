@@ -818,14 +818,14 @@ const FreeCollegeList = ({ navigation }) => {
 
               var requiredFields = JSON.parse(value?.required_field);
               var extraFields = JSON.parse(value?.extra_data);
-              if (value?.course_fees !== null) {
+              if (value?.course_duration != "0" && value?.course_fees != "0.00") {
                 extraFields = {
                   [formatKey("course_fee")]: formatAmount(value?.course_fees),
                   ...extraFields,
                 };
               }
 
-              if (value?.last_submission_date !== null) {
+              if (value?.course_duration != "0" && value?.last_submission_date != "0000-00-00") {
                 extraFields = {
                   [formatKey("last_submission_date")]:
                     value?.last_submission_date,
@@ -833,7 +833,7 @@ const FreeCollegeList = ({ navigation }) => {
                 };
               }
 
-              if (value?.course_duration !== null) {
+              if (value?.course_duration != "0") {
                 extraFields = {
                   [formatKey("course_duration")]: value?.course_duration,
                   ...extraFields,

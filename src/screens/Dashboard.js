@@ -913,7 +913,7 @@ const Dashboard = ({ navigation }) => {
                       style={{ fontSize: 40 }}
                     />
 
-                    <View style={{ paddingHorizontal: 4 }}>
+                    <View style={{ paddingHorizontal: 6}}>
                       <View style={{ flexDirection: "row", gap: 8 }}>
                         {item?.short_name !== "other" && (
                           <TouchableOpacity
@@ -1379,7 +1379,7 @@ const styles = StyleSheet.create({
   },
   card: {
     backgroundColor: "#03357D",
-    width: 102,
+    width:  Dimensions.get("window").height * 0.1332,
     height: 170,
     borderRadius: 10,
     margin: 5,

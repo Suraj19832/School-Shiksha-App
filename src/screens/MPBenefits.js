@@ -132,6 +132,8 @@ const MPBenefits = ({ navigation }) => {
                 flexDirection: "row",
                 flexWrap: "wrap",
                 gap: 2,
+                // backgroundColor:"red",
+                justifyContent:'space-between'
               }}
             >
               {sortheading !== "other" && (
@@ -205,7 +207,7 @@ const styles = StyleSheet.create({
   },
   card: {
     backgroundColor: "#03357D",
-    width: 102,
+    width: Dimensions.get("window").height * 0.1332,
     height: 170,
     borderRadius: 10,
     margin: 5,
