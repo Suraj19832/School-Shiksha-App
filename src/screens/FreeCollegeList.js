@@ -168,6 +168,7 @@ const FreeCollegeList = ({ navigation }) => {
   const [open, setOpen] = useState(false);
   const [limit, setlimit] = useState(10);
   const [isLoading, setisLoading] = useState(true);
+  const [isLoadingPagenation, setisLoadingPagenation] = useState(false)
   const [isLoadingpage, setisLoadingpage] = useState(true);
   const [isLoadingcard, setisLoadingcard] = useState(true);
   const [isField, setisField] = useState();
@@ -268,6 +269,7 @@ const FreeCollegeList = ({ navigation }) => {
     course_idd = null,
     search_value = null
   ) {
+    setisLoadingPagenation(true)
     console.log(search_value, "********************************");
     try {
       // const endpoint = "master/organization-course";
@@ -294,6 +296,7 @@ const FreeCollegeList = ({ navigation }) => {
           setFreeCollegeList(res?.data);
           setorganizationId(res?.data?.organization_id);
           setisLoadingcard(false);
+          setisLoadingPagenation(false)
         }
 
         // const requiredFields=JSON.parse(res?.data?.required_field)
@@ -1135,7 +1138,7 @@ const FreeCollegeList = ({ navigation }) => {
                       </TouchableOpacity>
                     ) : (
                       <TouchableOpacity
-                        onPress={() => Linking.openURL("https://google.com")}
+                        onPress={() => Linking.openURL(value?.url)}
                       >
                         <LinearGradient
                           colors={["#03357D", "#0569FA"]}
@@ -1931,25 +1934,36 @@ const FreeCollegeList = ({ navigation }) => {
                   alignItems: "center",
                   gap: 4,
                   borderRadius: 8,
-                  height: 32,
+                  height: 42,
+                  width: 120,
                   backgroundColor: "#FFFFFF",
                   marginBottom: 30,
                   paddingHorizontal: 10,
-                  borderWidth: 1, // Specify border width
+                  borderWidth: 1, 
                   borderColor: "#DDDDDD",
                 }}
               >
-                <Text
-                  style={{
-                    color: "#435354",
-                    fontSize: 14,
-                    fontWeight: "500",
-                    lineHeight: 17,
-                  }}
-                >
-                  Load More
-                </Text>
-                <AntDesign name="down" size={20} color="#435354" />
+                  {isLoadingPagenation ? (
+                  <ActivityIndicator
+                    size="small"
+                    color="grey"
+                    style={{ alignSelf: "center" ,width:'100%'}}
+                  />
+                ) : (
+                  <>
+                    <Text
+                      style={{
+                        color: "#435354",
+                        fontSize: 14,
+                        fontWeight: "500",
+                        lineHeight: 17,
+                      }}
+                    >
+                      Load More
+                    </Text>
+                    <AntDesign name="down" size={20} color="#435354" />
+                  </>
+                )}
               </View>
             )}
           </TouchableOpacity>

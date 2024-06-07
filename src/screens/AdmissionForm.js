@@ -1599,9 +1599,9 @@ const AdmissionForm = ({ navigation }) => {
                     onBlur={() => handleInputBlur("address")}
                   />
                 </View>
-                {!formErrors.address &&
-                  !formData.address &&
-                  fieldTouched.address && (
+                {!formErrors.post_office &&
+                  !formData.addrpost_officeess &&
+                  fieldTouched.post_office && (
                     <Text style={{ color: "red" }}>
                       Please enter Your post office{" "}
                     </Text>
@@ -1625,9 +1625,9 @@ const AdmissionForm = ({ navigation }) => {
                     onBlur={() => handleInputBlur("address")}
                   />
                 </View>
-                {!formErrors.address &&
-                  !formData.address &&
-                  fieldTouched.address && (
+                {!formErrors.police_station &&
+                  !formData.police_station &&
+                  fieldTouched.police_station && (
                     <Text style={{ color: "red" }}>
                       Please enter Your police station{" "}
                     </Text>
@@ -1789,9 +1789,9 @@ const AdmissionForm = ({ navigation }) => {
                     onBlur={() => handleInputBlur("address")}
                   />
                 </View>
-                {!formErrors.address &&
-                  !formData.address &&
-                  fieldTouched.address && (
+                {!formErrors.pincode &&
+                  !formData.pincode &&
+                  fieldTouched.pincode && (
                     <Text style={{ color: "red" }}>
                       Please enter Your pincode{" "}
                     </Text>
