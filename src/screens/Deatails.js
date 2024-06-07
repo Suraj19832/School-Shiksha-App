@@ -22,7 +22,7 @@ const BannerCarousel = ({ bannerData }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const flatListRef = useRef(null);
   const images = bannerData;
-
+ 
   const onViewableItemsChanged = ({ viewableItems }) => {
     if (viewableItems && viewableItems.length > 0) {
       setActiveIndex(viewableItems[0].index || 0);
