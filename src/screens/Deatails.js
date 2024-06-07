@@ -268,7 +268,38 @@ const Details = ({ navigation }) => {
   if (isLoadingpage || isLoadingcard) {
     return <CardSkeleton />;
   }
+  const formatKey = (key) => {
+    return key
+      .replace(/_/g, ' ')      
+      .replace(/\b\w/g, (char) => char.toUpperCase()); 
+  };
+  const formatAmount = (amount) => {
+    return `${amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} Rs`;
+  };
+let extraFields = JSON.parse(detailsData?.extra_data);
+if(detailsData?.course_fees !== null){
+  extraFields ={
+    [formatKey('course_fee')] :formatAmount(detailsData?.course_fees),
+    ...extraFields
+  
+  }
+}
 
+if(detailsData?.last_submission_date !== null){
+  extraFields ={
+    [formatKey('last_submission_date')] :detailsData?.last_submission_date,
+    ...extraFields
+  
+  }
+}
+
+if(detailsData?.course_duration !== null){
+  extraFields ={
+    [formatKey('course_duration')] :detailsData?.course_duration,
+    ...extraFields
+  
+  }
+}
   return (
     <SafeAreaView style={styles.container}>
       <Header title={`${heading} LIST`} navigateTo={navigation.goBack} />
@@ -358,7 +389,7 @@ const Details = ({ navigation }) => {
               </Text>
             </View>
 
-            <DetailsCard extraFields={detailsData} />
+            <DetailsCard extraFields={extraFields} />
 
             <View style={{ gap: 20 }}>
               <Text
