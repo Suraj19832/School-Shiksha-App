@@ -10,13 +10,7 @@ import {
   Modal,
 } from "react-native";
 import React, { useState } from "react";
-import {
-  FontAwesome5,
-  SimpleLineIcons,
-  Fontisto,
-  FontAwesome,
-  AntDesign,
-} from "@expo/vector-icons";
+import { FontAwesome5, AntDesign } from "@expo/vector-icons";
 import Header from "../../components/Header";
 import Checkbox from "expo-checkbox";
 import { LinearGradient } from "expo-linear-gradient";
