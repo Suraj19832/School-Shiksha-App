@@ -150,6 +150,62 @@ const Details = ({ navigation }) => {
     Linking.openURL(whatsappUrl);
   };
 
+  const DetailsCard = ({ extraFields }) => {
+    const renderItem = ({ item }) => (
+      <View
+        key={item.key}
+        style={{
+          flex: 1,
+          flexDirection: "column",
+          margin: 5,
+          width: "48%", // Adjusting the width to fit two items in a row with spacing
+          paddingHorizontal: 8,
+        }}
+      >
+        <Text
+          style={{
+            color: "#01265B",
+            fontWeight: "600",
+            fontSize: 14,
+            alignSelf: "baseline",
+            paddingVertical: 3,
+          }}
+        >
+          {item.key}
+        </Text>
+        <Text
+          style={{
+            color: "#595959",
+            fontWeight: "700",
+            fontSize: 12,
+            alignSelf: "baseline",
+          }}
+        >
+          {item.value}
+        </Text>
+      </View>
+    );
+
+    const data = extraFields
+      ? Object.entries(extraFields).map(([key, value]) => ({ key, value }))
+      : [];
+
+    return (
+      <FlatList
+        contentContainerStyle={{
+          backgroundColor: "#E2FDFF",
+        }}
+        data={data}
+        renderItem={renderItem}
+        keyExtractor={(item, index) => index.toString()}
+        numColumns={2}
+        columnWrapperStyle={{
+          justifyContent: "space-between",
+        }}
+      />
+    );
+  };
+
   const handleRefresh = () => {
     console.log("redreeeeeeeeeeeeeeeeeeeeeee");
     setRefreshing(true);
@@ -302,43 +358,8 @@ const Details = ({ navigation }) => {
               </Text>
             </View>
 
-            <View style={styles.aboutCourse}>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Text
-                  style={{ color: "#01265B", fontWeight: "600", fontSize: 14 }}
-                >
-                  Course Duration
-                </Text>
-                <Text
-                  style={{ color: "#01265B", fontWeight: "600", fontSize: 14 }}
-                >
-                  Last Submission Date{" "}
-                </Text>
-              </View>
+            <DetailsCard extraFields={detailsData} />
 
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Text
-                  style={{ color: "#595959", fontWeight: "700", fontSize: 12 }}
-                >
-                  {detailsData.course_duration} Months
-                </Text>
-                <Text
-                  style={{ color: "#595959", fontWeight: "700", fontSize: 12 }}
-                >
-                  22.04.2024
-                </Text>
-              </View>
-            </View>
             <View style={{ gap: 20 }}>
               <Text
                 style={{
