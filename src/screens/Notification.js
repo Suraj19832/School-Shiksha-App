@@ -56,6 +56,12 @@ const truncateMessage = (message, maxLength = 35) => {
   }
   return message;
 };
+const truncateSubject = (message, maxLength = 25) => {
+  if (message?.length > maxLength) {
+    return message?.substring(0, maxLength) + "...";
+  }
+  return message;
+};
 
 const NotificationContainer = (props) => {
   const { userToken } = useContext(AuthContext);
@@ -156,15 +162,16 @@ const NotificationContainer = (props) => {
               <Text
                 style={{ color: "#435354", fontWeight: "500", fontSize: 15 }}
               >
-                {props?.subjectMsg}
+                {truncateSubject(props?.subjectMsg)}
               </Text>
               {isRead == 0 ? (
                 <View
                   style={{
-                    height: 5,
-                    width: 5,
+                    height: 7,
+                    width: 7,
                     backgroundColor: "red",
                     borderRadius: 50,
+                    left: 5,
                   }}
                 ></View>
               ) : (

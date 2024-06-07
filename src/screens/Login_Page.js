@@ -118,7 +118,7 @@ const Login_Page = ({ navigation }) => {
         <View style={styles.main_content}>
           <View style={styles.loginImage}>
             <Image
-              source={require("../../assets/img/welcome_banner.png")}
+              source={require("../../assets/img/3-Recovered.png")}
               style={styles.img}
               resizeMode="stretch"
             />
@@ -252,8 +252,11 @@ export default Login_Page;
 const styles = StyleSheet.create({
   container: {
     // top: 53,
-    marginTop: 10,
+    // marginTop: 10,
     paddingBottom: 500,
+    backgroundColor: "white",
+    height: "100%",
+    paddingTop: 10,
   },
   main_content: {
     marginHorizontal: 20,

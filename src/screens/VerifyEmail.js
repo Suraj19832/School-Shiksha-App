@@ -88,7 +88,7 @@ const VerifyEmail = ({ navigation }) => {
           </TouchableOpacity>
           <View style={styles.loginImage}>
             <Image
-              source={require("../../assets/img/otp verification.png")}
+              source={require("../../assets/img/6-Recovered.png")}
               style={styles.img}
               resizeMode="stretch"
             />
