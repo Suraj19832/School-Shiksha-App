@@ -100,6 +100,7 @@ const Details = ({ navigation }) => {
     Location,
     IncomeCertificateRequired,
     aadharRequired,
+    ServiceName
   } = route.params;
 
   const [bannerData, setBannerData] = useState([]);
@@ -277,28 +278,28 @@ const Details = ({ navigation }) => {
     return `${amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} Rs`;
   };
 let extraFields = JSON.parse(detailsData?.extra_data);
-if(detailsData?.course_fees !== null){
-  extraFields ={
-    [formatKey('course_fee')] :formatAmount(detailsData?.course_fees),
-    ...extraFields
-  
-  }
+
+
+if (detailsData?.course_duration != "0" && detailsData?.course_fees != "0.00") {
+  extraFields = {
+    [formatKey("course_fee")]: formatAmount(detailsData?.course_fees),
+    ...extraFields,
+  };
 }
 
-if(detailsData?.last_submission_date !== null){
-  extraFields ={
-    [formatKey('last_submission_date')] :detailsData?.last_submission_date,
-    ...extraFields
-  
-  }
+if (detailsData?.course_duration != "0" && detailsData?.last_submission_date != "0000-00-00") {
+  extraFields = {
+    [formatKey("last_submission_date")]:
+    detailsData?.last_submission_date,
+    ...extraFields,
+  };
 }
 
-if(detailsData?.course_duration !== null){
-  extraFields ={
-    [formatKey('course_duration')] :detailsData?.course_duration,
-    ...extraFields
-  
-  }
+if (detailsData?.course_duration != "0") {
+  extraFields = {
+    [formatKey("course_duration")]: detailsData?.course_duration,
+    ...extraFields,
+  };
 }
   return (
     <SafeAreaView style={styles.container}>
@@ -369,19 +370,13 @@ if(detailsData?.course_duration !== null){
             </View>
 
             <View style={styles.course}>
-              {heading === "Exam Equiry" ? (
+           
                 <Text
                   style={{ color: "#01265B", fontWeight: "600", fontSize: 14 }}
                 >
-                  Exam Name -
+                  {ServiceName} -
                 </Text>
-              ) : (
-                <Text
-                  style={{ color: "#01265B", fontWeight: "600", fontSize: 14 }}
-                >
-                  Course Name -
-                </Text>
-              )}
+          
               <Text
                 style={{ color: "#595959", fontWeight: "600", fontSize: 14 }}
               >

@@ -202,7 +202,9 @@ const FreeCollegeList = ({ navigation }) => {
   };
 
   const route = useRoute();
-  const { id, heading, searchrequired } = route.params;
+  const { id, heading, searchrequired} = route.params;
+
+  
   // console.log("checking id is comig or not", id)
   const [FreeCollegeList, setFreeCollegeList] = useState([]);
   const [dropdownOption, setdropdownOption] = useState([]);
@@ -918,9 +920,10 @@ const FreeCollegeList = ({ navigation }) => {
                       alignItems: "center",
                     }}
                   >
+                 
                     <View style={styles.course}>
-                      {heading === "Exam Equiry" ? (
-                        <Text
+                      
+                    <Text
                           style={{
                             color: "#01265B",
                             fontWeight: "600",
@@ -928,22 +931,10 @@ const FreeCollegeList = ({ navigation }) => {
                             alignSelf: "center",
                           }}
                         >
-                          Exam Name -
+                         {value?.service_type} -
                         </Text>
-                      ) : (
-                        <Text
-                          style={{
-                            color: "#01265B",
-                            fontWeight: "600",
-                            fontSize: 14,
-                            alignSelf: "center",
-                          }}
-                        >
-                          Course Name -
-                        </Text>
-                      )}
 
-                      <Text
+                        <Text
                         style={{
                           color: "#595959",
                           fontWeight: "600",
@@ -953,6 +944,7 @@ const FreeCollegeList = ({ navigation }) => {
                       >
                         {value?.course_name}
                       </Text>
+
                     </View>
                     <TouchableOpacity onPress={() => whatsAppClicked(value)}>
                       <Image
@@ -1074,6 +1066,7 @@ const FreeCollegeList = ({ navigation }) => {
                             requiredFields?.is_income_required != null
                               ? requiredFields?.is_income_required
                               : "no",
+                              ServiceName:value?.service_type
                         })
                       }
                     >

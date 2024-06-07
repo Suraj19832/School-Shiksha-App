@@ -133,7 +133,7 @@ const MPBenefits = ({ navigation }) => {
                 flexWrap: "wrap",
                 gap: 2,
                 // backgroundColor:"red",
-                justifyContent:'space-between'
+                // justifyContent:'space-between'
               }}
             >
               {sortheading !== "other" && (
