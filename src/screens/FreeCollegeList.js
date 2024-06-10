@@ -22,7 +22,7 @@ import {
   Animated,
   RefreshControl,
   Platform,
-  ToastAndroid
+  ToastAndroid,
 } from "react-native";
 
 import DropDownPicker from "react-native-dropdown-picker";
@@ -397,20 +397,68 @@ const FreeCollegeList = ({ navigation }) => {
     };
   }
 
+  const formatKey = (key) => key.replace(/_/g, " ").toUpperCase();
+  const formatAmount = (amount) => `₹${amount}`;
+  const formatCourseDuration = (duration) => `${duration} months`;
+
   const whatsAppClicked = (value) => {
     const collegeName = value?.organization_name;
     const courseName = value?.course_name;
-    const courseDuration = value?.course_duration;
-    const courseAmount = value?.course_fees;
     const imageData = value?.logo;
-    const whatsAppText = `I want to purchase this course !! \nOrganization Name: ${collegeName} \nCourse Name: ${courseName} \nCourse Duration: ${courseDuration} \nCourse Fees: ${courseAmount} \n${imageData}`;
+
+    let extraFields = JSON.parse(value?.extra_data || "{}");
+
+    if (value?.course_fees !== "0.00") {
+      extraFields = {
+        ...extraFields,
+        [formatKey("course_fee")]: formatAmount(value?.course_fees),
+      };
+    }
+
+    if (value?.last_submission_date !== "0000-00-00") {
+      extraFields = {
+        ...extraFields,
+        [formatKey("last_submission_date")]: value?.last_submission_date,
+      };
+    }
+
+    if (value?.course_duration !== "0") {
+      extraFields = {
+        ...extraFields,
+        [formatKey("course_duration")]: formatCourseDuration(
+          value?.course_duration
+        ),
+      };
+    }
+
+    const extraFieldsText = Object.entries(extraFields)
+      .map(([key, val]) => `${key}: ${val}`)
+      .join("\n");
+
+    const whatsAppText = `I want to purchase this course !! \nOrganization Name: ${collegeName} \nCourse Name: ${courseName} \n${extraFieldsText}\n${imageData}`;
     const whatsAppUrl = `whatsapp://send?phone=${
       value?.whatsapp_number
     }&text=${encodeURIComponent(whatsAppText)}`;
+
     Linking.openURL(whatsAppUrl).catch((err) => {
       console.log(err);
     });
   };
+
+  // const whatsAppClicked = (value) => {
+  //   const collegeName = value?.organization_name;
+  //   const courseName = value?.course_name;
+  //   const courseDuration = value?.course_duration;
+  //   const courseAmount = value?.course_fees;
+  //   const imageData = value?.logo;
+  //   const whatsAppText = `I want to purchase this course !! \nOrganization Name: ${collegeName} \nCourse Name: ${courseName} \nCourse Duration: ${courseDuration} \nCourse Fees: ${courseAmount} \n${imageData}`;
+  //   const whatsAppUrl = `whatsapp://send?phone=${
+  //     value?.whatsapp_number
+  //   }&text=${encodeURIComponent(whatsAppText)}`;
+  //   Linking.openURL(whatsAppUrl).catch((err) => {
+  //     console.log(err);
+  //   });
+  // };
 
   const loadmore = () => {
     setlimit(limit + 10);
@@ -870,7 +918,9 @@ const FreeCollegeList = ({ navigation }) => {
 
               if (value?.course_duration != "0") {
                 extraFields = {
-                  [formatKey("course_duration")]: formatCourseDuration(value?.course_duration),
+                  [formatKey("course_duration")]: formatCourseDuration(
+                    value?.course_duration
+                  ),
                   ...extraFields,
                 };
               }
@@ -881,8 +931,6 @@ const FreeCollegeList = ({ navigation }) => {
                 requiredFields,
                 navigateToExternalLink
               ) => {
-           
-             
                 const postData = {
                   organization_course_id: value?.organization_course_id,
                 };
@@ -894,15 +942,14 @@ const FreeCollegeList = ({ navigation }) => {
                   userToken
                 )
                   .then((res) => {
-                    showToast("wait a second ...")
+                    showToast("wait a second ...");
                     console.log(
                       res?.status,
                       "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
                     );
                     if (res.status) {
                       if (navigateToExternalLink) {
-                        Linking.openURL(value?.url)
-                        
+                        Linking.openURL(value?.url);
                       } else {
                         navigation.navigate("freeAdmissionForm", {
                           collegeName: value?.organization_name,
@@ -919,7 +966,6 @@ const FreeCollegeList = ({ navigation }) => {
                           logo: value?.logo,
                         });
                       }
-                   
                     } else {
                       showToast("something went wrong");
                     }
@@ -1226,13 +1272,15 @@ const FreeCollegeList = ({ navigation }) => {
                     ) : (
                       <TouchableOpacity
                         // onPress={() => Linking.openURL(value?.url)}
-                        onPress={()=> navigateToFreeAdmissionForm(
-                          navigation,
-                          value,
-                          id,
-                          requiredFields,
-                          true
-                        )}
+                        onPress={() =>
+                          navigateToFreeAdmissionForm(
+                            navigation,
+                            value,
+                            id,
+                            requiredFields,
+                            true
+                          )
+                        }
                       >
                         <LinearGradient
                           colors={["#03357D", "#0569FA"]}
