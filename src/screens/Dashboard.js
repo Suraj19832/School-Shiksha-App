@@ -683,15 +683,17 @@ const Dashboard = ({ navigation }) => {
                   styles.menuItem,
                 ]}
               >
-                <Image
-                  style={styles.menuIcon}
-                  source={require("../../assets/img/data-analytics.png")}
-                />
-                <TouchableOpacity
+                  <TouchableOpacity
+                 style={   { flexDirection: "row", alignItems: "center", gap: 20 }}
                   onPress={() =>
                     navigation.navigate("Dashboard", setIsMenuOpen(!isMenuOpen))
                   }
                 >
+                <Image
+                  style={styles.menuIcon}
+                  source={require("../../assets/img/data-analytics.png")}
+                />
+              
                   <Text style={styles.menuText}>Dashboard</Text>
                 </TouchableOpacity>
               </View>
@@ -702,13 +704,15 @@ const Dashboard = ({ navigation }) => {
                   styles.menuItem,
                 ]}
               >
+                   <TouchableOpacity
+                  style={   { flexDirection: "row", alignItems: "center", gap: 20 }}
+                  onPress={() => navigation.navigate("editProfile")}
+                >
                 <Image
                   style={styles.menuIcon}
                   source={require("../../assets/img/user.png")}
                 />
-                <TouchableOpacity
-                  onPress={() => navigation.navigate("editProfile")}
-                >
+             
                   <Text style={styles.menuText}>View Profile</Text>
                 </TouchableOpacity>
               </View>
@@ -720,11 +724,8 @@ const Dashboard = ({ navigation }) => {
                   styles.menuItem,
                 ]}
               >
-                <Image
-                  style={styles.menuIcon}
-                  source={require("../../assets/img/file.png")}
-                />
-                <TouchableOpacity
+                     <TouchableOpacity
+                     style={   { flexDirection: "row", alignItems: "center", gap: 20 }}
                   onPress={() =>
                     navigation.navigate(
                       "paymentHistory",
@@ -732,6 +733,11 @@ const Dashboard = ({ navigation }) => {
                     )
                   }
                 >
+                <Image
+                  style={styles.menuIcon}
+                  source={require("../../assets/img/file.png")}
+                />
+           
                   <Text style={styles.menuText}>Transaction History</Text>
                 </TouchableOpacity>
               </View>
@@ -742,11 +748,8 @@ const Dashboard = ({ navigation }) => {
                   styles.menuItem,
                 ]}
               >
-                <Image
-                  style={styles.menuIcon}
-                  source={require("../../assets/img/writing.png")}
-                />
-                <TouchableOpacity
+                       <TouchableOpacity
+                 style={   { flexDirection: "row", alignItems: "center", gap: 20 }}
                   onPress={() =>
                     navigation.navigate(
                       "howToApply",
@@ -754,6 +757,11 @@ const Dashboard = ({ navigation }) => {
                     )
                   }
                 >
+                <Image
+                  style={styles.menuIcon}
+                  source={require("../../assets/img/writing.png")}
+                />
+         
                   <Text style={styles.menuText}>How to apply</Text>
                 </TouchableOpacity>
               </View>
@@ -764,11 +772,8 @@ const Dashboard = ({ navigation }) => {
                   styles.menuItem,
                 ]}
               >
-                <Image
-                  style={styles.menuIcon}
-                  source={require("../../assets/img/question.png")}
-                />
-                <TouchableOpacity
+                      <TouchableOpacity
+                  style={   { flexDirection: "row", alignItems: "center", gap: 20 }}
                   onPress={() =>
                     navigation.navigate(
                       "getInTouch",
@@ -776,6 +781,11 @@ const Dashboard = ({ navigation }) => {
                     )
                   }
                 >
+                <Image
+                  style={styles.menuIcon}
+                  source={require("../../assets/img/question.png")}
+                />
+          
                   <Text style={styles.menuText}>Query</Text>
                 </TouchableOpacity>
               </View>
@@ -786,11 +796,8 @@ const Dashboard = ({ navigation }) => {
                   styles.menuItem,
                 ]}
               >
-                <Image
-                  style={styles.menuIcon}
-                  source={require("../../assets/icons/community.png")}
-                />
-                <TouchableOpacity
+                  <TouchableOpacity
+                style={   { flexDirection: "row", alignItems: "center", gap: 20 }}
                   onPress={() =>
                     navigation.navigate(
                       "membershipPlan",
@@ -798,6 +805,11 @@ const Dashboard = ({ navigation }) => {
                     )
                   }
                 >
+                <Image
+                  style={styles.menuIcon}
+                  source={require("../../assets/icons/community.png")}
+                />
+              
                   <Text style={styles.menuText}>Membership Plan</Text>
                 </TouchableOpacity>
               </View>
@@ -808,15 +820,17 @@ const Dashboard = ({ navigation }) => {
                   styles.menuItem,
                 ]}
               >
-                <Image
-                  style={styles.menuIcon}
-                  source={require("../../assets/img/contact-us.png")}
-                />
-                <TouchableOpacity
+                       <TouchableOpacity
+                   style={   { flexDirection: "row", alignItems: "center", gap: 20 }}
                   onPress={() =>
                     navigation.navigate("contactUs", setIsMenuOpen(!isMenuOpen))
                   }
                 >
+                <Image
+                  style={styles.menuIcon}
+                  source={require("../../assets/img/contact-us.png")}
+                />
+         
                   <Text style={styles.menuText}>Contact Us</Text>
                 </TouchableOpacity>
               </View>
@@ -827,11 +841,8 @@ const Dashboard = ({ navigation }) => {
                   styles.menuItem,
                 ]}
               >
-                <Image
-                  style={styles.menuIcon}
-                  source={require("../../assets/img/tracking.png")}
-                />
-                <TouchableOpacity
+                      <TouchableOpacity
+                  style={   { flexDirection: "row", alignItems: "center", gap: 20 }}
                   onPress={() =>
                     navigation.navigate(
                       "applicationHistory",
@@ -839,6 +850,11 @@ const Dashboard = ({ navigation }) => {
                     )
                   }
                 >
+                <Image
+                  style={styles.menuIcon}
+                  source={require("../../assets/img/tracking.png")}
+                />
+          
                   <Text style={styles.menuText}>Application History</Text>
                 </TouchableOpacity>
               </View>
@@ -849,11 +865,8 @@ const Dashboard = ({ navigation }) => {
                   styles.menuItem,
                 ]}
               >
-                <Image
-                  style={styles.menuIcon}
-                  source={require("../../assets/icons/reset-password.png")}
-                />
-                <TouchableOpacity
+                 <TouchableOpacity
+                     style={   { flexDirection: "row", alignItems: "center", gap: 20 }}
                   onPress={() =>
                     navigation.navigate(
                       "resetPassword",
@@ -861,6 +874,11 @@ const Dashboard = ({ navigation }) => {
                     )
                   }
                 >
+                <Image
+                  style={styles.menuIcon}
+                  source={require("../../assets/icons/reset-password.png")}
+                />
+               
                   <Text style={styles.menuText}>Change Password</Text>
                 </TouchableOpacity>
               </View>
@@ -871,16 +889,18 @@ const Dashboard = ({ navigation }) => {
                   styles.menuItem,
                 ]}
               >
-                <Image
-                  style={styles.menuIcon}
-                  source={require("../../assets/img/logout.png")}
-                />
-                <TouchableOpacity
+                  <TouchableOpacity
+                   style={   { flexDirection: "row", alignItems: "center", gap: 20 }}
                   onPress={
                     // navigation.navigate("Login", setIsMenuOpen(!isMenuOpen))
                     handlelogout
                   }
                 >
+                <Image
+                  style={styles.menuIcon}
+                  source={require("../../assets/img/logout.png")}
+                />
+              
                   <Text style={styles.menuText}>Logout</Text>
                 </TouchableOpacity>
               </View>
