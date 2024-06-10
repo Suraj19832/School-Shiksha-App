@@ -230,8 +230,9 @@ const Details = ({ navigation }) => {
     url
    
   ) => {
+    
     const postData = {
-      organization_course_id:orgId,
+      organization_course_id:courseid,
     };
     const formDatablock = objectToFormData(postData);
     showToast("wait a second ...")
