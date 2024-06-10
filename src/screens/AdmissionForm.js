@@ -331,7 +331,7 @@ const AdmissionForm = ({ navigation }) => {
             formData.aadhar_number &&
             formData.aadhar_number.trim().length !== 12)
         ) {
-          showToast("Failed!Preview your Deatails");
+          showToast("Failed! Preview your Deatails");
           setIsLoading(false);
         } else {
           if (isChecked === false) {

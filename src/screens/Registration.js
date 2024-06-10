@@ -174,6 +174,7 @@ const Registration = ({ navigation }) => {
               console.log("11111111", res?.status);
               navigation.navigate("Login");
             }
+         
             if (res?.message === "Validation errors") {
               if (
                 !res?.status &&
@@ -190,6 +191,7 @@ const Registration = ({ navigation }) => {
           .catch((err) => {
             setLoading(false);
             console.log(err, "--err");
+            showToast("Internal Server Error");
           });
       }
       if (!isChecked) {
