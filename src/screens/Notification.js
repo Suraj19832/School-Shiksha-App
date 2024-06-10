@@ -160,7 +160,12 @@ const NotificationContainer = (props) => {
               }}
             >
               <Text
-                style={{ color: "#435354", fontWeight: "500", fontSize: 15 }}
+                style={{
+                  color: "#435354",
+                  fontWeight: "500",
+                  fontSize: 15,
+                  width: 250,
+                }}
               >
                 {truncateSubject(props?.subjectMsg)}
               </Text>
@@ -272,19 +277,17 @@ const Notification = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <Header title="Notifications" navigateTo={navigation.goBack} />
-      <ScrollView
-        crollView
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={handleRefreshing}
-          />
-        }
-      >
-        <View style={styles.mainView}>
-          <View style={styles.innerView}></View>
-
-          <View style={{ marginBottom: 20 }}>
+      <View>
+        <ScrollView
+          style={styles.mainView}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={handleRefreshing}
+            />
+          }
+        >
+          <View style={{ marginBottom: 40 }}>
             {notifiData?.length === 0 && (
               <View
                 style={{
@@ -388,8 +391,8 @@ const Notification = ({ navigation }) => {
               </View>
             </TouchableOpacity>
           )}
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </View>
     </SafeAreaView>
   );
 };
@@ -449,7 +452,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 20,
-    width: "80%",
+    // width: "80%",
     alignSelf: "center",
   },
   modalContent: {
@@ -457,6 +460,7 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 20,
     elevation: 5,
+    width: 300,
   },
   textStyle: {
     color: "white",
