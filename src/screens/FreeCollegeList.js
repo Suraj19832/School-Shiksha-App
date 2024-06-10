@@ -1,3 +1,10 @@
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import {
   StyleSheet,
   View,
@@ -14,8 +21,10 @@ import {
   Linking,
   Animated,
   RefreshControl,
+  Platform,
+  ToastAndroid
 } from "react-native";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+
 import DropDownPicker from "react-native-dropdown-picker";
 import {
   FontAwesome,
@@ -32,7 +41,14 @@ import { Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Header from "../../components/Header";
 import { useRoute } from "@react-navigation/native";
-import { GetfetchDataWithParams } from "../../Helper/Helper";
+import { AuthContext } from "../../Utils/context/AuthContext";
+import {
+  GetfetchDataWithParams,
+  objectToFormData,
+  postDataWithFormDataWithToken,
+} from "../../Helper/Helper";
+
+//
 // import { ActivityIndicator } from "react-native-paper";
 // import { FlatList } from "react-native-web";
 
@@ -164,15 +180,23 @@ const DetailsCard = ({ extraFields }) => {
 };
 
 const FreeCollegeList = ({ navigation }) => {
+  const { userToken } = useContext(AuthContext);
   const [selectedValue, setSelectedValue] = useState(null);
   const [open, setOpen] = useState(false);
   const [limit, setlimit] = useState(10);
   const [isLoading, setisLoading] = useState(true);
-  const [isLoadingPagenation, setisLoadingPagenation] = useState(false)
+  const [isLoadingPagenation, setisLoadingPagenation] = useState(false);
   const [isLoadingpage, setisLoadingpage] = useState(true);
   const [isLoadingcard, setisLoadingcard] = useState(true);
   const [isField, setisField] = useState();
   const [refreshing, setRefreshing] = useState(false);
+  const showToast = (message) => {
+    if (Platform.OS === "android") {
+      ToastAndroid.show(message, ToastAndroid.SHORT);
+    } else {
+      alert(message);
+    }
+  };
 
   const items = [
     { label: "Option 1", value: "option1" },
@@ -203,9 +227,8 @@ const FreeCollegeList = ({ navigation }) => {
   };
 
   const route = useRoute();
-  const { id, heading, searchrequired} = route.params;
+  const { id, heading, searchrequired } = route.params;
 
-  
   // console.log("checking id is comig or not", id)
   const [FreeCollegeList, setFreeCollegeList] = useState([]);
   const [dropdownOption, setdropdownOption] = useState([]);
@@ -269,7 +292,7 @@ const FreeCollegeList = ({ navigation }) => {
     course_idd = null,
     search_value = null
   ) {
-    setisLoadingPagenation(true)
+    setisLoadingPagenation(true);
     console.log(search_value, "********************************");
     try {
       // const endpoint = "master/organization-course";
@@ -296,7 +319,7 @@ const FreeCollegeList = ({ navigation }) => {
           setFreeCollegeList(res?.data);
           setorganizationId(res?.data?.organization_id);
           setisLoadingcard(false);
-          setisLoadingPagenation(false)
+          setisLoadingPagenation(false);
         }
 
         // const requiredFields=JSON.parse(res?.data?.required_field)
@@ -820,17 +843,24 @@ const FreeCollegeList = ({ navigation }) => {
                   .toString()
                   .replace(/\B(?=(\d{3})+(?!\d))/g, ",")} Rs`;
               };
-
+              const formatCourseDuration = (duration) => {
+                if (duration == "1") {
+                  return "1 Month";
+                } else if (parseInt(duration) > 1) {
+                  return `${duration} Months`;
+                }
+                return duration;
+              };
               var requiredFields = JSON.parse(value?.required_field);
               var extraFields = JSON.parse(value?.extra_data);
-              if (value?.course_duration != "0" && value?.course_fees != "0.00") {
+              if (value?.course_fees != "0.00") {
                 extraFields = {
                   [formatKey("course_fee")]: formatAmount(value?.course_fees),
                   ...extraFields,
                 };
               }
 
-              if (value?.course_duration != "0" && value?.last_submission_date != "0000-00-00") {
+              if (value?.last_submission_date != "0000-00-00") {
                 extraFields = {
                   [formatKey("last_submission_date")]:
                     value?.last_submission_date,
@@ -840,15 +870,65 @@ const FreeCollegeList = ({ navigation }) => {
 
               if (value?.course_duration != "0") {
                 extraFields = {
-                  [formatKey("course_duration")]: value?.course_duration,
+                  [formatKey("course_duration")]: formatCourseDuration(value?.course_duration),
                   ...extraFields,
                 };
               }
+              const navigateToFreeAdmissionForm = (
+                navigation,
+                value,
+                id,
+                requiredFields,
+                navigateToExternalLink
+              ) => {
+           
+             
+                const postData = {
+                  organization_course_id: value?.organization_id,
+                };
+                const formDatablock = objectToFormData(postData);
 
-              console.log(
-                extraFields,
-                "dweijoefoeruhhohgoughjoiejfpkposdicposdkcpoij:::::::::::::::::::::::::::::"
-              );
+                postDataWithFormDataWithToken(
+                  "/student/external-link-records",
+                  formDatablock,
+                  userToken
+                )
+                  .then((res) => {
+                    showToast("wait a second ...")
+                    console.log(
+                      res?.status,
+                      "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
+                    );
+                    if (res.status) {
+                      if (navigateToExternalLink) {
+                        Linking.openURL(value?.url)
+                        
+                      } else {
+                        navigation.navigate("freeAdmissionForm", {
+                          collegeName: value?.organization_name,
+                          courseName: value?.course_name,
+                          id: id,
+                          aadharRequired:
+                            requiredFields?.is_aadhar_required != null
+                              ? requiredFields?.is_aadhar_required
+                              : "no",
+                          IncomeCertificateRequired:
+                            requiredFields?.is_income_required != null
+                              ? requiredFields?.is_income_required
+                              : "no",
+                          logo: value?.logo,
+                        });
+                      }
+                   
+                    } else {
+                      showToast("something went wrong");
+                    }
+                  })
+                  .catch((error) => {
+                    console.error("Error fetching data:", error);
+                    showToast("Server Issue");
+                  });
+              };
 
               return (
                 <View style={styles.listCart} key={value.id}>
@@ -923,21 +1003,19 @@ const FreeCollegeList = ({ navigation }) => {
                       alignItems: "center",
                     }}
                   >
-                 
                     <View style={styles.course}>
-                      
-                    <Text
-                          style={{
-                            color: "#01265B",
-                            fontWeight: "600",
-                            fontSize: 14,
-                            alignSelf: "center",
-                          }}
-                        >
-                         {value?.service_type} -
-                        </Text>
+                      <Text
+                        style={{
+                          color: "#01265B",
+                          fontWeight: "600",
+                          fontSize: 14,
+                          alignSelf: "center",
+                        }}
+                      >
+                        {value?.service_type} -
+                      </Text>
 
-                        <Text
+                      <Text
                         style={{
                           color: "#595959",
                           fontWeight: "600",
@@ -947,7 +1025,6 @@ const FreeCollegeList = ({ navigation }) => {
                       >
                         {value?.course_name}
                       </Text>
-
                     </View>
                     <TouchableOpacity onPress={() => whatsAppClicked(value)}>
                       <Image
@@ -1069,7 +1146,7 @@ const FreeCollegeList = ({ navigation }) => {
                             requiredFields?.is_income_required != null
                               ? requiredFields?.is_income_required
                               : "no",
-                              ServiceName:value?.service_type
+                          ServiceName: value?.service_type,
                         })
                       }
                     >
@@ -1087,21 +1164,31 @@ const FreeCollegeList = ({ navigation }) => {
                     </TouchableOpacity>
                     {value?.register_through === "internal_form_submit" ? (
                       <TouchableOpacity
+                        // onPress={() =>
+                        //   navigation.navigate("freeAdmissionForm", {
+                        //     collegeName: value?.organization_name,
+                        //     courseName: value?.course_name,
+                        //     id: id,
+                        //     aadharRequired:
+                        //       requiredFields?.is_aadhar_required != null
+                        //         ? requiredFields?.is_aadhar_required
+                        //         : "no",
+                        //     IncomeCertificateRequired:
+                        //       requiredFields?.is_income_required != null
+                        //         ? requiredFields?.is_income_required
+                        //         : "no",
+                        //     logo: value?.logo,
+                        //   })
+                        // }
+
                         onPress={() =>
-                          navigation.navigate("freeAdmissionForm", {
-                            collegeName: value?.organization_name,
-                            courseName: value?.course_name,
-                            id: id,
-                            aadharRequired:
-                              requiredFields?.is_aadhar_required != null
-                                ? requiredFields?.is_aadhar_required
-                                : "no",
-                            IncomeCertificateRequired:
-                              requiredFields?.is_income_required != null
-                                ? requiredFields?.is_income_required
-                                : "no",
-                            logo: value?.logo,
-                          })
+                          navigateToFreeAdmissionForm(
+                            navigation,
+                            value,
+                            id,
+                            requiredFields,
+                            false
+                          )
                         }
                       >
                         <LinearGradient
@@ -1138,7 +1225,14 @@ const FreeCollegeList = ({ navigation }) => {
                       </TouchableOpacity>
                     ) : (
                       <TouchableOpacity
-                        onPress={() => Linking.openURL(value?.url)}
+                        // onPress={() => Linking.openURL(value?.url)}
+                        onPress={()=> navigateToFreeAdmissionForm(
+                          navigation,
+                          value,
+                          id,
+                          requiredFields,
+                          true
+                        )}
                       >
                         <LinearGradient
                           colors={["#03357D", "#0569FA"]}
@@ -1939,15 +2033,15 @@ const FreeCollegeList = ({ navigation }) => {
                   backgroundColor: "#FFFFFF",
                   marginBottom: 30,
                   paddingHorizontal: 10,
-                  borderWidth: 1, 
+                  borderWidth: 1,
                   borderColor: "#DDDDDD",
                 }}
               >
-                  {isLoadingPagenation ? (
+                {isLoadingPagenation ? (
                   <ActivityIndicator
                     size="small"
                     color="grey"
-                    style={{ alignSelf: "center" ,width:'100%'}}
+                    style={{ alignSelf: "center", width: "100%" }}
                   />
                 ) : (
                   <>

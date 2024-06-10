@@ -9,14 +9,17 @@ import {
   Linking,
   Animated,
   RefreshControl,
+  Platform,
+  ToastAndroid,
 } from "react-native";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Header from "../../components/Header";
 import { useRoute } from "@react-navigation/native";
-import { GetfetchDataWithParams } from "../../Helper/Helper";
+import { GetfetchDataWithParams, objectToFormData, postDataWithFormDataWithToken } from "../../Helper/Helper";
 import { Entypo, Feather } from "@expo/vector-icons";
+import { AuthContext } from "../../Utils/context/AuthContext";
 
 const BannerCarousel = ({ bannerData }) => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -90,6 +93,7 @@ const BannerCarousel = ({ bannerData }) => {
 };
 const Details = ({ navigation }) => {
   const route = useRoute();
+  const { userToken } = useContext(AuthContext);
   const {
     collegeName,
     courseName,
@@ -102,7 +106,13 @@ const Details = ({ navigation }) => {
     aadharRequired,
     ServiceName
   } = route.params;
-
+  const showToast = (message) => {
+    if (Platform.OS === "android") {
+      ToastAndroid.show(message, ToastAndroid.SHORT);
+    } else {
+      alert(message);
+    }
+  };
   const [bannerData, setBannerData] = useState([]);
   const [isLoadingpage, setisLoadingpage] = useState(true);
   const [isLoadingcard, setisLoadingcard] = useState(true);
@@ -207,6 +217,55 @@ const Details = ({ navigation }) => {
     );
   };
 
+  const navigateToForm = (
+    navigation,
+    collegeName,
+    courseName,
+    id,
+    IncomeCertificateRequired,
+    aadharRequired,
+    logo,
+    orgId,
+    register_through,
+    url
+   
+  ) => {
+    const postData = {
+      organization_course_id:orgId,
+    };
+    const formDatablock = objectToFormData(postData);
+    showToast("wait a second ...")
+    postDataWithFormDataWithToken(
+      "/student/external-link-records",
+      formDatablock,
+      userToken
+    ).then((res)=>{
+  
+// console.log(res?.status)
+if (res?.status) {
+  if (register_through ==="internal_form_submit") {
+    navigation.navigate("freeAdmissionForm", {
+      collegeName,
+      courseName,
+      id,
+      IncomeCertificateRequired,
+      aadharRequired,
+      logo,
+    });
+  } else {
+    Linking.openURL(url)
+  }
+} else {
+  showToast("something went wrong")
+}
+    })
+    .catch((error) => {
+      console.error("Error fetching data:", error);
+      showToast("Server Issue");
+    });
+ 
+  };
+
   const handleRefresh = () => {
     console.log("redreeeeeeeeeeeeeeeeeeeeeee");
     setRefreshing(true);
@@ -277,17 +336,25 @@ const Details = ({ navigation }) => {
   const formatAmount = (amount) => {
     return `${amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} Rs`;
   };
+  const formatCourseDuration = (duration) => {
+    if (duration == "1") {
+      return "1 Month";
+    } else if (parseInt(duration) > 1) {
+      return `${duration} Months`;
+    }
+    return duration;
+  };
 let extraFields = JSON.parse(detailsData?.extra_data);
 
 
-if (detailsData?.course_duration != "0" && detailsData?.course_fees != "0.00") {
+if (detailsData?.course_fees != "0.00") {
   extraFields = {
     [formatKey("course_fee")]: formatAmount(detailsData?.course_fees),
     ...extraFields,
   };
 }
 
-if (detailsData?.course_duration != "0" && detailsData?.last_submission_date != "0000-00-00") {
+if (detailsData?.last_submission_date != "0000-00-00") {
   extraFields = {
     [formatKey("last_submission_date")]:
     detailsData?.last_submission_date,
@@ -297,7 +364,7 @@ if (detailsData?.course_duration != "0" && detailsData?.last_submission_date != 
 
 if (detailsData?.course_duration != "0") {
   extraFields = {
-    [formatKey("course_duration")]: detailsData?.course_duration,
+    [formatKey("course_duration")]: formatCourseDuration(detailsData?.course_duration),
     ...extraFields,
   };
 }
@@ -445,15 +512,31 @@ if (detailsData?.course_duration != "0") {
                 </View>
               </TouchableOpacity>
               <TouchableOpacity
+                // onPress={() =>
+                //   navigation.navigate("freeAdmissionForm", {
+                //     collegeName,
+                //     courseName,
+                //     id,
+                //     IncomeCertificateRequired,
+                //     aadharRequired,
+                //     logo: detailsData?.logo,
+                //   })
+                // }
                 onPress={() =>
-                  navigation.navigate("freeAdmissionForm", {
+                  navigateToForm(
+                    navigation,
                     collegeName,
                     courseName,
                     id,
                     IncomeCertificateRequired,
                     aadharRequired,
-                    logo: detailsData?.logo,
-                  })
+                    detailsData?.logo,
+                    detailsData?.organization_id,
+                    detailsData?.register_through,
+                    detailsData?.url
+
+
+                  )
                 }
               >
                 <LinearGradient
