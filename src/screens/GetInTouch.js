@@ -72,9 +72,7 @@ const GetInTouch = ({ navigation }) => {
         if (res?.status) {
           showToast("Query Send Successfully");
           setIsLoading(false);
-          setTimeout(() => {
-            navigation.navigate("Dashboard");
-          }, 500);
+          navigation.navigate("Dashboard");
         }
       })
       .catch((error) => {
@@ -205,7 +203,11 @@ const GetInTouch = ({ navigation }) => {
                 />
               </View>
               <View style={styles.borderline}>
-                <TouchableOpacity style={styles.button} onPress={handleSend}>
+                <TouchableOpacity
+                  style={[styles.button, { opacity: isLoading ? 0.5 : 1 }]}
+                  onPress={handleSend}
+                  disabled={isLoading}
+                >
                   {isLoading ? (
                     <ActivityIndicator size="small" color="#ffffff" />
                   ) : (
@@ -261,7 +263,8 @@ const styles = StyleSheet.create({
   borderline: {
     // borderTopWidth: 0.8,
     borderTopColor: "#D9D9D9",
-    paddingTop: 10,
+    // paddingTop: 10,
+    marginTop: 10,
   },
   button: {
     width: 155,
