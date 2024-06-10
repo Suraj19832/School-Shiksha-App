@@ -884,7 +884,7 @@ const FreeCollegeList = ({ navigation }) => {
            
              
                 const postData = {
-                  organization_course_id: value?.organization_id,
+                  organization_course_id: value?.organization_course_id,
                 };
                 const formDatablock = objectToFormData(postData);
 

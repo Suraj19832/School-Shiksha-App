@@ -531,7 +531,7 @@ if (detailsData?.course_duration != "0") {
                     IncomeCertificateRequired,
                     aadharRequired,
                     detailsData?.logo,
-                    detailsData?.organization_id,
+                    detailsData?.organization_course_id,
                     detailsData?.register_through,
                     detailsData?.url
 
