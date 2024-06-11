@@ -230,7 +230,7 @@ const Details = ({ navigation }) => {
     url
    
   ) => {
-    
+    console.log(courseid ,">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
     const postData = {
       organization_course_id:courseid,
     };
@@ -252,6 +252,8 @@ if (res?.status) {
       IncomeCertificateRequired,
       aadharRequired,
       logo,
+      courseid
+
     });
   } else {
     Linking.openURL(url)
@@ -532,7 +534,7 @@ if (detailsData?.course_duration != "0") {
                     IncomeCertificateRequired,
                     aadharRequired,
                     detailsData?.logo,
-                    detailsData?.organization_course_id,
+                   courseid,
                     detailsData?.register_through,
                     detailsData?.url
 

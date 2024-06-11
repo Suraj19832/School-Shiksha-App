@@ -964,6 +964,7 @@ const FreeCollegeList = ({ navigation }) => {
                               ? requiredFields?.is_income_required
                               : "no",
                           logo: value?.logo,
+                          orgID:value?.organization_course_id
                         });
                       }
                     } else {

@@ -35,6 +35,7 @@ import { useRoute } from "@react-navigation/native";
 import {
   getFileData,
   getdata,
+  getrequestwithtoken,
   objectToFormData,
   objectToFormDataMultipleObject,
   objectToFormDatawithnestedObject,
@@ -45,6 +46,7 @@ import {
 import { AuthContext } from "../../Utils/context/AuthContext";
 import { ActivityIndicator } from "react-native";
 const AdmissionForm = ({ navigation }) => {
+  
   // const [pageloading, setpageloading] = useState(true)
   // State for storeing upi link of al the picture
   const [AadharFrontUribyApi, setAadharFrontUribyApi] = useState();
@@ -98,12 +100,16 @@ const AdmissionForm = ({ navigation }) => {
     aadharRequired,
     IncomeCertificateRequired,
     logo,
+    orgID,
+    courseid
   } = route.params;
   console.log(
     "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$",
     id,
     aadharRequired,
-    IncomeCertificateRequired
+    IncomeCertificateRequired,
+    orgID,
+    courseid
   );
 
   // users data
@@ -401,6 +407,7 @@ const AdmissionForm = ({ navigation }) => {
 
             const postData = {
               service_id: id,
+              organization_course_id:orgID ? orgID :courseid,
               // enquiry_details: {
               //   name: formData.name,
               //   Date_of_Birth: userDetails.date_of_birth,
@@ -608,6 +615,58 @@ const AdmissionForm = ({ navigation }) => {
     })();
     getDropdownState();
   }, []);
+  const updateFormData = (field, value) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [field]: value,
+    }));
+  };
+  const updateUserDetails = (field, value) => {
+    setUserDetails((prevDetails) => ({
+      ...prevDetails,
+      [field]: value,
+    }));
+  };
+  useEffect(() => {
+    getrequestwithtoken("student/profile", userToken)
+    .then((res)=>{
+      if (res?.status) {
+        updateFormData('name', res?.data?.name);
+        updateFormData('mobile', res?.data?.mobile);
+        updateFormData('address', res?.data?.address);
+        updateFormData('police_station', res?.data?.police_station);
+        updateFormData('pincode', res?.data?.pincode);
+        updateFormData('whatsapp_number', res?.data?.whatsapp_number);
+        setInputValuegender(res?.data?.gender)
+        setEmail(res?.data?.email)
+        updateUserDetails('date_of_birth' ,res?.data?.date_of_birth)
+
+
+        // name: "",
+        // roll_number: "",
+        // total_number: "",
+        // percentage: "",
+        // fatherName: "",
+        // motherName: "",
+        // mobile: "",
+        // fatherMobile: "",
+        // whatsapp_number: "",
+        // address: "",
+        // police_station: "",
+        // post_office: "",
+        // pincode: "",
+        // aadhar_number: "",
+        // nationality: "",
+        // religion: "",
+        // district_id: "",
+        // password: "",
+        // referral_code: "",
+
+        
+      }
+    })
+  }, [userToken])
+  
 
   const closeModal = () => {
     setModalVisible(false);
