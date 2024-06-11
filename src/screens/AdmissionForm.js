@@ -1303,7 +1303,8 @@ const AdmissionForm = ({ navigation }) => {
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
       <Header
-        title={`${collegeName} College Admission Form`}
+        // title={`${collegeName} College Admission Form`}
+        title={`Application Form`}
         navigateTo={navigation?.goBack}
       />
       <ScrollView>
