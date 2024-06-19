@@ -231,6 +231,7 @@ const FreeCollegeList = ({ navigation }) => {
 
   // console.log("checking id is comig or not", id)
   const [FreeCollegeList, setFreeCollegeList] = useState([]);
+  const [serviceType, setserviceType] = useState();
   const [dropdownOption, setdropdownOption] = useState([]);
   async function fetchDropDown(endpoint, id) {
     try {
@@ -317,6 +318,7 @@ const FreeCollegeList = ({ navigation }) => {
         );
         if (res?.data?.length > 0) {
           setFreeCollegeList(res?.data);
+          setserviceType(res?.data[0]?.service_type);
           setorganizationId(res?.data?.organization_id);
           setisLoadingcard(false);
           setisLoadingPagenation(false);
@@ -560,7 +562,9 @@ const FreeCollegeList = ({ navigation }) => {
                   fontSize: 20,
                 }}
               >
-                Course Name
+                {/* Course Name */}
+
+                {serviceType}
               </Text>
               <View style={styles.inputbox_main_container1}>
                 <TouchableOpacity onPress={toggleDropdownclass}>
@@ -887,9 +891,9 @@ const FreeCollegeList = ({ navigation }) => {
                   .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize first letter of each word
               };
               const formatAmount = (amount) => {
-                return `${amount
+                return `₹ ${amount
                   .toString()
-                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")} Rs`;
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")} `;
               };
               const formatCourseDuration = (duration) => {
                 if (duration == "1") {
@@ -964,7 +968,7 @@ const FreeCollegeList = ({ navigation }) => {
                               ? requiredFields?.is_income_required
                               : "no",
                           logo: value?.logo,
-                          orgID:value?.organization_course_id
+                          orgID: value?.organization_course_id,
                         });
                       }
                     } else {
