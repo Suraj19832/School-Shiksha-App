@@ -383,7 +383,7 @@ const Dashboard = ({ navigation }) => {
   useEffect(() => {
     getrequestwithtoken("student/notifications/count", userToken)
       .then((res) => {
-        console.log(res?.data?.unread_count, "totoal count is her ");
+        console.log(res?.data?.unread_count, "totoal count  ");
         setUnreadMsgCount(res?.data?.unread_count);
       })
       .catch((err) => {

@@ -17,7 +17,11 @@ import { Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Header from "../../components/Header";
 import { useRoute } from "@react-navigation/native";
-import { GetfetchDataWithParams, objectToFormData, postDataWithFormDataWithToken } from "../../Helper/Helper";
+import {
+  GetfetchDataWithParams,
+  objectToFormData,
+  postDataWithFormDataWithToken,
+} from "../../Helper/Helper";
 import { Entypo, Feather } from "@expo/vector-icons";
 import { AuthContext } from "../../Utils/context/AuthContext";
 
@@ -25,7 +29,7 @@ const BannerCarousel = ({ bannerData }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const flatListRef = useRef(null);
   const images = bannerData;
- 
+
   const onViewableItemsChanged = ({ viewableItems }) => {
     if (viewableItems && viewableItems.length > 0) {
       setActiveIndex(viewableItems[0].index || 0);
@@ -104,8 +108,14 @@ const Details = ({ navigation }) => {
     Location,
     IncomeCertificateRequired,
     aadharRequired,
-    ServiceName
+    ServiceName,
   } = route.params;
+
+  function firstWordPicker(name) {
+    const value = name.split(" ");
+    return value[0];
+  }
+
   const showToast = (message) => {
     if (Platform.OS === "android") {
       ToastAndroid.show(message, ToastAndroid.SHORT);
@@ -135,8 +145,8 @@ const Details = ({ navigation }) => {
   }, [organization_Id]);
 
   const [detailsData, setDetailsData] = useState([]);
+  const [callShow, setCallIcon] = useState(false);
   async function fetchUserData(endpoint, id) {
-    console.log("22222222222222222222222222");
     try {
       const params = {
         organization_course_id: id,
@@ -144,7 +154,25 @@ const Details = ({ navigation }) => {
 
       GetfetchDataWithParams(endpoint, params).then((res) => {
         setDetailsData(res?.data);
+        // const special = JSON.parse(res?.data?.required_field);
+        // console.log(
+        //   special,
+        //   "<<<<<<<<<<<<<<<<<99999999999999999999999999999999999999999999999<<<response"
+        // );
         setisLoadingcard(false);
+        if (res?.data?.required_field) {
+          const requiredFieldz = JSON.parse(res?.data?.required_field);
+          const isCallRequired = requiredFieldz.is_call_required;
+
+          if (isCallRequired === "yes") {
+            setCallIcon(true);
+          } else {
+            setCallIcon(false);
+          }
+        } else {
+          setCallIcon(false);
+          console.log("call number is null or undefined");
+        }
       });
     } catch (error) {
       console.error("Error fetching user data:", error);
@@ -228,45 +256,42 @@ const Details = ({ navigation }) => {
     orgId,
     register_through,
     url
-   
   ) => {
-    console.log(courseid ,">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+    console.log(courseid, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
     const postData = {
-      organization_course_id:courseid,
+      organization_course_id: courseid,
     };
     const formDatablock = objectToFormData(postData);
-    showToast("wait a second ...")
+    showToast("wait a second ...");
     postDataWithFormDataWithToken(
       "/student/external-link-records",
       formDatablock,
       userToken
-    ).then((res)=>{
-  
-// console.log(res?.status)
-if (res?.status) {
-  if (register_through ==="internal_form_submit") {
-    navigation.navigate("freeAdmissionForm", {
-      collegeName,
-      courseName,
-      id,
-      IncomeCertificateRequired,
-      aadharRequired,
-      logo,
-      courseid
-
-    });
-  } else {
-    Linking.openURL(url)
-  }
-} else {
-  showToast("something went wrong")
-}
-    })
-    .catch((error) => {
-      console.error("Error fetching data:", error);
-      showToast("Server Issue");
-    });
- 
+    )
+      .then((res) => {
+        // console.log(res?.status)
+        if (res?.status) {
+          if (register_through === "internal_form_submit") {
+            navigation.navigate("freeAdmissionForm", {
+              collegeName,
+              courseName,
+              id,
+              IncomeCertificateRequired,
+              aadharRequired,
+              logo,
+              courseid,
+            });
+          } else {
+            Linking.openURL(url);
+          }
+        } else {
+          showToast("something went wrong");
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+        showToast("Server Issue");
+      });
   };
 
   const handleRefresh = () => {
@@ -333,11 +358,11 @@ if (res?.status) {
   }
   const formatKey = (key) => {
     return key
-      .replace(/_/g, ' ')      
-      .replace(/\b\w/g, (char) => char.toUpperCase()); 
+      .replace(/_/g, " ")
+      .replace(/\b\w/g, (char) => char.toUpperCase());
   };
   const formatAmount = (amount) => {
-    return `${amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} Rs`;
+    return `${amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} Rs`;
   };
   const formatCourseDuration = (duration) => {
     if (duration == "1") {
@@ -347,30 +372,33 @@ if (res?.status) {
     }
     return duration;
   };
-let extraFields = JSON.parse(detailsData?.extra_data);
+  let extraFields = JSON.parse(detailsData?.extra_data);
 
+  console.log(extraFields, ":::::::|||||||||||||||||||||||");
 
-if (detailsData?.course_fees != "0.00") {
-  extraFields = {
-    [formatKey("course_fee")]: formatAmount(detailsData?.course_fees),
-    ...extraFields,
-  };
-}
+  if (detailsData?.course_fees != "0.00") {
+    extraFields = {
+      [formatKey("course_fee")]: formatAmount(detailsData?.course_fees),
+      ...extraFields,
+    };
+  }
 
-if (detailsData?.last_submission_date != "0000-00-00") {
-  extraFields = {
-    [formatKey("last_submission_date")]:
-    detailsData?.last_submission_date,
-    ...extraFields,
-  };
-}
+  if (detailsData?.last_submission_date != "0000-00-00") {
+    extraFields = {
+      [formatKey("last_submission_date")]: detailsData?.last_submission_date,
+      ...extraFields,
+    };
+  }
 
-if (detailsData?.course_duration != "0") {
-  extraFields = {
-    [formatKey("course_duration")]: formatCourseDuration(detailsData?.course_duration),
-    ...extraFields,
-  };
-}
+  if (detailsData?.course_duration != "0") {
+    extraFields = {
+      [formatKey("course_duration")]: formatCourseDuration(
+        detailsData?.course_duration
+      ),
+      ...extraFields,
+    };
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <Header title={`${heading} LIST`} navigateTo={navigation.goBack} />
@@ -440,13 +468,12 @@ if (detailsData?.course_duration != "0") {
             </View>
 
             <View style={styles.course}>
-           
-                <Text
-                  style={{ color: "#01265B", fontWeight: "600", fontSize: 14 }}
-                >
-                  {ServiceName} -
-                </Text>
-          
+              <Text
+                style={{ color: "#01265B", fontWeight: "600", fontSize: 14 }}
+              >
+                {ServiceName} -
+              </Text>
+
               <Text
                 style={{ color: "#595959", fontWeight: "600", fontSize: 14 }}
               >
@@ -465,7 +492,7 @@ if (detailsData?.course_duration != "0") {
                   fontSize: 22,
                 }}
               >
-                Course Description
+                {firstWordPicker(ServiceName)} Description
               </Text>
               <Text
                 style={{
@@ -479,52 +506,47 @@ if (detailsData?.course_duration != "0") {
               </Text>
             </View>
             <View style={styles.cardButtons}>
-              <TouchableOpacity
-                style={{
-                  borderColor: "rgba(5, 105, 250, 1)",
-                  borderWidth: 1,
-                  paddingVertical: 15,
-                  paddingHorizontal: 20,
-                  borderRadius: 30,
-                  bottom: 5,
-                }}
-                onPress={() => whatsappclicked(detailsData?.mobile)}
-              >
-                <View
+              {callShow ? (
+                <TouchableOpacity
                   style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    gap: 5,
+                    borderColor: "rgba(5, 105, 250, 1)",
+                    borderWidth: 1,
+                    paddingVertical: 15,
+                    paddingHorizontal: 20,
+                    borderRadius: 30,
+                    bottom: 5,
                   }}
+                  onPress={() => whatsappclicked(detailsData?.mobile)}
                 >
-                  <Feather
-                    name="phone-call"
-                    size={15}
-                    color="rgba(5, 103, 245, 1)"
-                  />
-                  <Text
+                  <View
                     style={{
-                      fontSize: 14,
-                      fontWeight: "500",
-                      lineHeight: 16.41,
-                      color: "rgba(5, 103, 245, 1)",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      gap: 5,
                     }}
                   >
-                    Call Now
-                  </Text>
-                </View>
-              </TouchableOpacity>
+                    <Feather
+                      name="phone-call"
+                      size={15}
+                      color="rgba(5, 103, 245, 1)"
+                    />
+                    <Text
+                      style={{
+                        fontSize: 14,
+                        fontWeight: "500",
+                        lineHeight: 16.41,
+                        color: "rgba(5, 103, 245, 1)",
+                      }}
+                    >
+                      Call Now
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              ) : (
+                ""
+              )}
+
               <TouchableOpacity
-                // onPress={() =>
-                //   navigation.navigate("freeAdmissionForm", {
-                //     collegeName,
-                //     courseName,
-                //     id,
-                //     IncomeCertificateRequired,
-                //     aadharRequired,
-                //     logo: detailsData?.logo,
-                //   })
-                // }
                 onPress={() =>
                   navigateToForm(
                     navigation,
@@ -534,11 +556,9 @@ if (detailsData?.course_duration != "0") {
                     IncomeCertificateRequired,
                     aadharRequired,
                     detailsData?.logo,
-                   courseid,
+                    courseid,
                     detailsData?.register_through,
                     detailsData?.url
-
-
                   )
                 }
               >
@@ -656,6 +676,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
+    paddingBottom: 10,
   },
   imgStyle: {
     height: 162,
