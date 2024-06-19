@@ -46,7 +46,6 @@ import {
 import { AuthContext } from "../../Utils/context/AuthContext";
 import { ActivityIndicator } from "react-native";
 const AdmissionForm = ({ navigation }) => {
-  
   // const [pageloading, setpageloading] = useState(true)
   // State for storeing upi link of al the picture
   const [AadharFrontUribyApi, setAadharFrontUribyApi] = useState();
@@ -61,15 +60,15 @@ const AdmissionForm = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
   const { userToken } = useContext(AuthContext);
 
-  console.log(userToken, "hdhwedhwtoken in addmission form");
-  console.log("here is the uri come from the api af", AadharFrontUribyApi);
-  console.log("here is the uri come from the api ab", AadharBackUribyApi);
-  // console.log("here is the uri come from the api hsm",HSmarksheetUribyApi)
-  console.log("here is the uri come from the api pp", PassportUribyApi);
-  console.log(
-    "here is the uri come from the api ic",
-    IncomeCertificateUribyApi
-  );
+  // console.log(userToken, "hdhwedhwtoken in addmission form");
+  // console.log("here is the uri come from the api af", AadharFrontUribyApi);
+  // console.log("here is the uri come from the api ab", AadharBackUribyApi);
+  // // console.log("here is the uri come from the api hsm",HSmarksheetUribyApi)
+  // console.log("here is the uri come from the api pp", PassportUribyApi);
+  // console.log(
+  //   "here is the uri come from the api ic",
+  //   IncomeCertificateUribyApi
+  // );
 
   //States for sending the data in for file upload api
   const [aadharFrontForUpload, setaadharFrontForUpload] = useState();
@@ -101,7 +100,11 @@ const AdmissionForm = ({ navigation }) => {
     IncomeCertificateRequired,
     logo,
     orgID,
-    courseid
+    courseid,
+    GuardiansDetailsRequired,
+    PassportPhotoRequired,
+    TermAndConditionRequird,
+    EducationFieldRequired,
   } = route.params;
   console.log(
     "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$",
@@ -109,7 +112,8 @@ const AdmissionForm = ({ navigation }) => {
     aadharRequired,
     IncomeCertificateRequired,
     orgID,
-    courseid
+    courseid,
+    GuardiansDetailsRequired
   );
 
   // users data
@@ -121,6 +125,8 @@ const AdmissionForm = ({ navigation }) => {
     roll_number: "",
     total_number: "",
     percentage: "",
+    hs_percentage: "",
+    grduate_percentage: "",
     fatherName: "",
     motherName: "",
     mobile: "",
@@ -153,7 +159,7 @@ const AdmissionForm = ({ navigation }) => {
   };
   const handleInputBlur = (key) => {
     setFieldTouched({ ...fieldTouched, [key]: true });
-    console.log("first", key);
+    // console.log("first", key);
     validateForm();
   };
   // email
@@ -234,7 +240,7 @@ const AdmissionForm = ({ navigation }) => {
     setstateData(option);
     setDropdownOpenstate(false);
     getDistrictdata(id);
-    console.log(DistrictDataaa, "jdohcusdhcushohod");
+    // console.log(DistrictDataaa, "jdohcusdhcushohod");
   };
   const handleSelectOptiondistrict = (option) => {
     setInputValuedistrict(option);
@@ -286,7 +292,7 @@ const AdmissionForm = ({ navigation }) => {
   };
   const handleSubmission = () => {
     const title = "Admission Form";
-    const message = "Form submitted Successfully"
+    const message = "Form submitted Successfully";
     // setisChckedError(true);
     setIsLoading(true);
     if (
@@ -305,20 +311,28 @@ const AdmissionForm = ({ navigation }) => {
       inputValuedistrict &&
       formData.pincode &&
       formData.whatsapp_number &&
-      formData.fatherName &&
-      formData.fatherMobile &&
-      inputValueoccupation &&
+      // (GuardiansDetailsRequired === "yes" || formData.fatherName) &&
+      // // formData.fatherName &&
+      // (GuardiansDetailsRequired === "yes" || formData.fatherMobile) &&
+      // // formData.fatherMobile &&
+      // (GuardiansDetailsRequired === "yes" || inputValueoccupation) &&
+      // inputValueoccupation &&
+      (GuardiansDetailsRequired === "no" ||
+        (GuardiansDetailsRequired === "yes" &&
+          formData.fatherName &&
+          formData.fatherMobile &&
+          inputValueoccupation)) &&
       (IncomeCertificateRequired === "no" || formData.income) &&
       // formData.income &&
-      inputValueHs &&
-      formData.percentage
+      inputValueHs
+      // formData.percentage
     ) {
       if (
         (aadharRequired === "no" || AadharFrontUribyApi) &&
         // AadharFrontUribyApi &&
         (aadharRequired === "no" || AadharBackUribyApi) &&
         // AadharBackUribyApi &&
-        PassportUribyApi &&
+        (PassportPhotoRequired === "no" || PassportUribyApi) &&
         (IncomeCertificateRequired === "no" || IncomeCertificateUribyApi)
         // IncomeCertificateUribyApi
       ) {
@@ -362,15 +376,14 @@ const AdmissionForm = ({ navigation }) => {
               district: inputValuedistrict,
               pincode: formData.pincode,
               whatsapp_number: formData.whatsapp_number,
-              guardians_name: formData.fatherName,
-              guardian_number: formData.fatherMobile,
-              occupation: inputValueoccupation,
+              // guardians_name: formData.fatherName,
+              // guardian_number: formData.fatherMobile,
+              // occupation: inputValueoccupation,
               // ...(IncomeCertificateRequired === "no" && {
               //   income: formData.income,
               // }),
               // income: formData.income,
               hs_Passout: inputValueHs,
-              percentage: formData.percentage,
             };
 
             if (IncomeCertificateRequired === "yes") {
@@ -379,7 +392,20 @@ const AdmissionForm = ({ navigation }) => {
             if (aadharRequired === "yes") {
               enquiryDetails.aadhar_number = formData.aadhar_number;
             }
-
+            if (formData.percentage) {
+              enquiryDetails.madhyamik_percentage = formData.percentage;
+            }
+            if (formData.hs_percentage) {
+              enquiryDetails.hs_percentage = formData.hs_percentage;
+            }
+            if (formData.grduate_percentage) {
+              enquiryDetails.graduate_percentage = formData.grduate_percentage;
+            }
+            if (GuardiansDetailsRequired === "yes") {
+              enquiryDetails.guardians_name = formData.fatherName;
+              enquiryDetails.guardian_number = formData.fatherMobile;
+              enquiryDetails.occupation = inputValueoccupation;
+            }
             let documents = [];
 
             if (aadharRequired === "yes") {
@@ -392,11 +418,12 @@ const AdmissionForm = ({ navigation }) => {
                 image: AadharBackUribyApi,
               });
             }
-
-            documents.push({
-              title: "PassPort Photo",
-              image: PassportUribyApi,
-            });
+            if (PassportUribyApi === "yes") {
+              documents.push({
+                title: "PassPort Photo",
+                image: PassportUribyApi,
+              });
+            }
 
             if (IncomeCertificateRequired === "yes") {
               documents.push({
@@ -407,7 +434,7 @@ const AdmissionForm = ({ navigation }) => {
 
             const postData = {
               service_id: id,
-              organization_course_id:orgID ? orgID :courseid,
+              organization_course_id: orgID ? orgID : courseid,
               // enquiry_details: {
               //   name: formData.name,
               //   Date_of_Birth: userDetails.date_of_birth,
@@ -463,27 +490,27 @@ const AdmissionForm = ({ navigation }) => {
               // ],
               documents: documents,
             };
-            console.log("wwq______________________________________________");
+            // console.log("wwq______________________________________________");
             const formDatablock = objectToFormDatawithnestedObject(postData);
-            console.log("dskdjcjcjdcdjcjclejiejfpierpifp", formDatablock);
+            // console.log("dskdjcjcjdcdjcjclejiejfpierpifp", formDatablock);
             postDataWithFormDataWithToken(
               "student/form-submit",
               formDatablock,
               userToken
             ).then((res) => {
-              console.log(
-                res?.status,
-                "staus is coming after submiison of form"
-              );
-              console.log(
-                res?.message,
-                "message is coming after submiison of formcvdfvfgghyttttttttttttttttttttttttybrgb"
-              );
-              console.log(res, "++++++++++++++++++++++++++++++++++++++");
+              // console.log(
+              //   res?.status,
+              //   "staus is coming after submiison of form"
+              // );
+              // console.log(
+              //   res?.message,
+              //   "message is coming after submiison of formcvdfvfgghyttttttttttttttttttttttttybrgb"
+              // );
+              // console.log(res, "++++++++++++++++++++++++++++++++++++++");
               if (res?.status) {
                 showToast("Form Submitted Successfully");
                 setIsLoading(false);
-                navigation.navigate("sucessfully",{title,message});
+                navigation.navigate("sucessfully", { title, message });
                 setTimeout(() => {
                   navigation.navigate("Dashboard");
                 }, 2000);
@@ -600,7 +627,7 @@ const AdmissionForm = ({ navigation }) => {
     // Call the getstatedata function with the API URL
     getdata(apiUrl)
       .then((res) => {
-        console.log("Response from API:", res.data);
+        // console.log("Response from API:", res.data);
         setStateDataapi(res?.data);
         // Do something with the response data, e.g., update component state
       })
@@ -628,19 +655,17 @@ const AdmissionForm = ({ navigation }) => {
     }));
   };
   useEffect(() => {
-    getrequestwithtoken("student/profile", userToken)
-    .then((res)=>{
+    getrequestwithtoken("student/profile", userToken).then((res) => {
       if (res?.status) {
-        updateFormData('name', res?.data?.name);
-        updateFormData('mobile', res?.data?.mobile);
-        updateFormData('address', res?.data?.address);
-        updateFormData('police_station', res?.data?.police_station);
-        updateFormData('pincode', res?.data?.pincode);
-        updateFormData('whatsapp_number', res?.data?.whatsapp_number);
-        setInputValuegender(res?.data?.gender)
-        setEmail(res?.data?.email)
-        updateUserDetails('date_of_birth' ,res?.data?.date_of_birth)
-
+        updateFormData("name", res?.data?.name);
+        updateFormData("mobile", res?.data?.mobile);
+        updateFormData("address", res?.data?.address);
+        updateFormData("police_station", res?.data?.police_station);
+        updateFormData("pincode", res?.data?.pincode);
+        updateFormData("whatsapp_number", res?.data?.whatsapp_number);
+        setInputValuegender(res?.data?.gender);
+        setEmail(res?.data?.email);
+        updateUserDetails("date_of_birth", res?.data?.date_of_birth);
 
         // name: "",
         // roll_number: "",
@@ -661,12 +686,9 @@ const AdmissionForm = ({ navigation }) => {
         // district_id: "",
         // password: "",
         // referral_code: "",
-
-        
       }
-    })
-  }, [userToken])
-  
+    });
+  }, [userToken]);
 
   const closeModal = () => {
     setModalVisible(false);
@@ -738,10 +760,10 @@ const AdmissionForm = ({ navigation }) => {
             "https://dev.ehostingguru.com/school-shiksha/upload/index.php",
             formDatablock
           ).then((res) => {
-            console.log(
-              "-----------------res.status in upload----------",
-              res.status
-            );
+            // console.log(
+            //   "-----------------res.status in upload----------",
+            //   res.status
+            // );
             setPassportUribyApi(res?.data?.file_name);
           });
         }
@@ -768,11 +790,11 @@ const AdmissionForm = ({ navigation }) => {
         if (options === "AddharBack") {
           setaadharBackForUpload(imageResult);
           setCapturedImageAddharBack(imageResult.assets[0].uri);
-          console.log("[][][]];", imageResult.assets[0].uri);
+          // console.log("[][][]];", imageResult.assets[0].uri);
           setModalVisibleAddharBack(false);
 
           const newtry = getFileData(imageResult);
-          console.log(newtry, "sdlkfjoijohguihgiuv");
+          // console.log(newtry, "sdlkfjoijohguihgiuv");
           const postData = {
             image: newtry,
           };
@@ -784,20 +806,20 @@ const AdmissionForm = ({ navigation }) => {
             "https://dev.ehostingguru.com/school-shiksha/upload/index.php",
             formDatablock
           ).then((res) => {
-            console.log(
-              "-----------------res.status in upload----------",
-              res.status
-            );
+            // console.log(
+            //   "-----------------res.status in upload----------",
+            //   res.status
+            // );
             setAadharBackUribyApi(res?.data?.file_name);
           });
         }
         if (options === "AddharFront") {
           setaadharFrontForUpload(imageResult);
           setCapturedImageAddharfront(imageResult.assets[0].uri);
-          console.log("[][][]];", imageResult.assets[0].uri);
+          // console.log("[][][]];", imageResult.assets[0].uri);
           setModalVisibleAddharfront(false);
           const newtry = getFileData(imageResult);
-          console.log(newtry, "sdlkfjoijohguihgiuv");
+          // console.log(newtry, "sdlkfjoijohguihgiuv");
           const postData = {
             image: newtry,
           };
@@ -809,11 +831,11 @@ const AdmissionForm = ({ navigation }) => {
             "https://dev.ehostingguru.com/school-shiksha/upload/index.php",
             formDatablock
           ).then((res) => {
-            console.log(
-              "-----------------res.status in upload----------",
-              res.status
-            );
-            console.log(res?.data?.file_name, "kikiukuikmnghnghn");
+            // console.log(
+            //   "-----------------res.status in upload----------",
+            //   res.status
+            // );
+            // console.log(res?.data?.file_name, "kikiukuikmnghnghn");
             setAadharFrontUribyApi(res?.data?.file_name);
             // console.log("here is the uri come from the api af",AadharFrontUribyApi)
           });
@@ -895,7 +917,7 @@ const AdmissionForm = ({ navigation }) => {
         type: "*/*",
       });
 
-      console.log("File picker result:zxcvvfdfdbgb", result);
+      // console.log("File picker result:zxcvvfdfdbgb", result);
       setaadharFrontForUpload(result);
 
       if (
@@ -904,25 +926,25 @@ const AdmissionForm = ({ navigation }) => {
         result.assets.length > 0 &&
         result.assets[0].uri
       ) {
-        console.log("File picked:", result.assets[0].uri);
+        // console.log("File picked:", result.assets[0].uri);
         setFileUri(result.assets[0].uri);
         const newtry = getFileData(result);
-        console.log(newtry, "sdlkfjoijohguihgiuv");
+        // console.log(newtry, "sdlkfjoijohguihgiuv");
         const postData = {
           image: newtry,
         };
-        console.log("++++++++++++++++postData", postData);
+        // console.log("++++++++++++++++postData", postData);
 
-        const formDatablock = objectToFormData(postData);
+        // const formDatablock = objectToFormData(postData);
         // console.log(formDatablock,"djeifjifgh")
         postDataWithFormDataWithBaseUrl(
           "https://dev.ehostingguru.com/school-shiksha/upload/index.php",
           formDatablock
         ).then((res) => {
-          console.log(
-            "-----------------res.status in upload----------",
-            res.status
-          );
+          // console.log(
+          //   "-----------------res.status in upload----------",
+          //   res.status
+          // );
           setAadharFrontUribyApi(res?.data?.file_name);
         });
       } else if (result.cancelled) {
@@ -944,7 +966,7 @@ const AdmissionForm = ({ navigation }) => {
   //For Addhar Back function
   const pickFileAddharBack = async () => {
     if (isPickingFileAddharBack) {
-      console.log("Document picking in progress");
+      // console.log("Document picking in progress");
       return;
     }
 
@@ -956,7 +978,7 @@ const AdmissionForm = ({ navigation }) => {
         type: "*/*",
       });
 
-      console.log("File picker result???????????:", result);
+      // console.log("File picker result???????????:", result);
       setaadharBackForUpload(result);
 
       if (
@@ -965,14 +987,14 @@ const AdmissionForm = ({ navigation }) => {
         result.assets.length > 0 &&
         result.assets[0].uri
       ) {
-        console.log("File picked:", result.assets[0].uri);
+        // console.log("File picked:", result.assets[0].uri);
         setFileUriAddharBack(result.assets[0].uri);
         const newtry = getFileData(result);
-        console.log(newtry, "sdlkfjoijohguihgiuv");
+        // console.log(newtry, "sdlkfjoijohguihgiuv");
         const postData = {
           image: newtry,
         };
-        console.log("++++++++++++++++postData", postData);
+        // console.log("++++++++++++++++postData", postData);
 
         const formDatablock = objectToFormData(postData);
         // console.log(formDatablock,"djeifjifgh")
@@ -1058,7 +1080,7 @@ const AdmissionForm = ({ navigation }) => {
   //For PassPort Photo function
   const pickFilePassPortPhoto = async () => {
     if (isPickingFilePassPortPhoto) {
-      console.log("Document picking in progress");
+      // console.log("Document picking in progress");
       return;
     }
 
@@ -1070,7 +1092,7 @@ const AdmissionForm = ({ navigation }) => {
         type: "*/*",
       });
       setPassportPhotoForUpload(result);
-      console.log("File picker result:", result);
+      // console.log("File picker result:", result);
 
       if (
         !result.canceled &&
@@ -1890,139 +1912,119 @@ const AdmissionForm = ({ navigation }) => {
                     </Text>
                   )}
               </View>
-
-              <View style={styles.headingg}>
-                <Text style={styles.text}>Family Details</Text>
-              </View>
-
-              {/* <View style={styles.fields_main}>
-                <Text style={styles.inputHeading}>Mother's Name</Text>
-                <View style={styles.input_box}>
-                  <Image
-                    source={require("../../assets/icons/female-student.png")}
-                    style={styles.iconImage}
-                  />
-                  <TextInput
-                    style={styles.input}
-                    placeholder="Enter Your Mother's name"
-                    placeholderTextColor={"rgba(166, 166, 166, 1)"}
-                    value={formData.motherName}
-                    onChangeText={(text) =>
-                      handleInputChange("motherName", text)
-                    }
-                    onBlur={() => handleInputBlur("motherName")}
-                  />
-                </View>
-                {!formErrors.motherName &&
-                  !formData.motherName &&
-                  fieldTouched.motherName && (
-                    <Text style={{ color: "red" }}>
-                      Mother name is required
-                    </Text>
-                  )}
-              </View> */}
-              {/* Guardian Name */}
-              <View style={styles.fields_main}>
-                <Text style={styles.inputHeading}>Guardian's Name</Text>
-                <View style={styles.input_box}>
-                  <FontAwesome5
-                    name="user"
-                    size={14}
-                    color="rgba(0, 54, 126, 1)"
-                  />
-                  <TextInput
-                    style={styles.input}
-                    placeholder="Enter your guardian's name"
-                    placeholderTextColor={"rgba(166, 166, 166, 1)"}
-                    value={formData.fatherName}
-                    onChangeText={(text) =>
-                      handleInputChange("fatherName", text)
-                    }
-                    onBlur={() => handleInputBlur("fatherName")}
-                  />
-                </View>
-                {!formErrors.fatherName &&
-                  !formData.fatherName &&
-                  fieldTouched.fatherName && (
-                    <Text style={{ color: "red" }}>
-                      Guardian's name is required
-                    </Text>
-                  )}
-              </View>
-              <View style={styles.fields_main}>
-                <Text style={styles.inputHeading}>
-                  Guardian's Mobile Number
-                </Text>
-                <View style={styles.input_box}>
-                  <Feather
-                    name="phone-call"
-                    size={15}
-                    color="rgba(0, 54, 126, 1)"
-                  />
-                  <TextInput
-                    style={styles.input}
-                    placeholder="Enter guardian mobile number"
-                    keyboardType="numeric"
-                    placeholderTextColor={"rgba(166, 166, 166, 1)"}
-                    value={formData.fatherMobile}
-                    onChangeText={(text) =>
-                      handleInputChangeNumber("fatherMobile", text)
-                    }
-                    onBlur={() => handleInputBlur("fatherMobile")}
-                    maxLength={10}
-                  />
-                </View>
-                {!formErrors.fatherMobile &&
-                  formData.fatherMobile &&
-                  formData.fatherMobile.trim().length !== 10 && (
-                    <Text style={{ color: "red" }}>
-                      Mobile number must be 10 digits
-                    </Text>
-                  )}
-              </View>
-              <View style={styles.fields_main}>
-                <Text style={styles.inputHeading}>Guardian's Occupation</Text>
-                <TouchableOpacity onPress={toggleDropdownoccupation}>
-                  <View style={styles.input_box}>
-                    <Image
-                      source={require("../../assets/icons/businessman.png")}
-                      style={styles.iconImage}
-                    />
-                    <TextInput
-                      style={styles.input}
-                      placeholder="Select"
-                      placeholderTextColor={"rgba(166, 166, 166, 1)"}
-                      value={inputValueoccupation}
-                      onBlur={() =>
-                        handleSelectOptionoccupation(inputValueoccupation)
-                      }
-                      editable={false} // Allow editing only when dropdown is closed
-                    />
-                    <AntDesign
-                      name="caretdown"
-                      style={styles.arrowdown}
-                      size={15}
-                      color="rgba(0, 54, 126, 1)"
-                    />
+              {GuardiansDetailsRequired === "yes" && (
+                <>
+                  <View style={styles.headingg}>
+                    <Text style={styles.text}>Family Details</Text>
                   </View>
-                </TouchableOpacity>
-              </View>
-              {isDropdownOpenoccupation && (
-                <View style={styles.dropdownContainer}>
-                  <TouchableOpacity
-                    style={styles.dropdownOption}
-                    onPress={() => handleSelectOptionoccupation("Business")}
-                  >
-                    <Text>Business</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={styles.dropdownOption}
-                    onPress={() => handleSelectOptionoccupation("Employee")}
-                  >
-                    <Text>Employee</Text>
-                  </TouchableOpacity>
-                </View>
+                  <View style={styles.fields_main}>
+                    <Text style={styles.inputHeading}>Guardian's Name</Text>
+                    <View style={styles.input_box}>
+                      <FontAwesome5
+                        name="user"
+                        size={14}
+                        color="rgba(0, 54, 126, 1)"
+                      />
+                      <TextInput
+                        style={styles.input}
+                        placeholder="Enter your guardian's name"
+                        placeholderTextColor={"rgba(166, 166, 166, 1)"}
+                        value={formData.fatherName}
+                        onChangeText={(text) =>
+                          handleInputChange("fatherName", text)
+                        }
+                        onBlur={() => handleInputBlur("fatherName")}
+                      />
+                    </View>
+                    {!formErrors.fatherName &&
+                      !formData.fatherName &&
+                      fieldTouched.fatherName && (
+                        <Text style={{ color: "red" }}>
+                          Guardian's name is required
+                        </Text>
+                      )}
+                  </View>
+                  <View style={styles.fields_main}>
+                    <Text style={styles.inputHeading}>
+                      Guardian's Mobile Number
+                    </Text>
+                    <View style={styles.input_box}>
+                      <Feather
+                        name="phone-call"
+                        size={15}
+                        color="rgba(0, 54, 126, 1)"
+                      />
+                      <TextInput
+                        style={styles.input}
+                        placeholder="Enter guardian mobile number"
+                        keyboardType="numeric"
+                        placeholderTextColor={"rgba(166, 166, 166, 1)"}
+                        value={formData.fatherMobile}
+                        onChangeText={(text) =>
+                          handleInputChangeNumber("fatherMobile", text)
+                        }
+                        onBlur={() => handleInputBlur("fatherMobile")}
+                        maxLength={10}
+                      />
+                    </View>
+                    {!formErrors.fatherMobile &&
+                      formData.fatherMobile &&
+                      formData.fatherMobile.trim().length !== 10 && (
+                        <Text style={{ color: "red" }}>
+                          Mobile number must be 10 digits
+                        </Text>
+                      )}
+                  </View>
+                  <View style={styles.fields_main}>
+                    <Text style={styles.inputHeading}>
+                      Guardian's Occupation
+                    </Text>
+                    <TouchableOpacity onPress={toggleDropdownoccupation}>
+                      <View style={styles.input_box}>
+                        <Image
+                          source={require("../../assets/icons/businessman.png")}
+                          style={styles.iconImage}
+                        />
+                        <TextInput
+                          style={styles.input}
+                          placeholder="Select"
+                          placeholderTextColor={"rgba(166, 166, 166, 1)"}
+                          value={inputValueoccupation}
+                          onBlur={() =>
+                            handleSelectOptionoccupation(inputValueoccupation)
+                          }
+                          editable={false} // Allow editing only when dropdown is closed
+                        />
+                        <AntDesign
+                          name="caretdown"
+                          style={styles.arrowdown}
+                          size={15}
+                          color="rgba(0, 54, 126, 1)"
+                        />
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+                  {isDropdownOpenoccupation && (
+                    <View style={styles.dropdownContainer}>
+                      <TouchableOpacity
+                        style={styles.dropdownOption}
+                        onPress={() => handleSelectOptionoccupation("Business")}
+                      >
+                        <Text>Business</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={styles.dropdownOption}
+                        onPress={() => handleSelectOptionoccupation("Employee")}
+                      >
+                        <Text>Employee</Text>
+                      </TouchableOpacity>
+                    </View>
+                  )}
+                </>
               )}
+
+              {/* Guardian Name */}
+
               {/* income */}
               {IncomeCertificateRequired === "yes" && (
                 <View style={styles.fields_main}>
@@ -2190,7 +2192,10 @@ const AdmissionForm = ({ navigation }) => {
                   )}
               </View> */}
               <View style={styles.fields_main}>
-                <Text style={styles.inputHeading}>Percentage</Text>
+                <Text style={styles.inputHeading}>
+                  Madhamik Percentage (Optional)
+                </Text>
+
                 <View style={styles.input_box}>
                   <Image
                     source={require("../../assets/icons/discount.png")}
@@ -2212,6 +2217,60 @@ const AdmissionForm = ({ navigation }) => {
                   fieldTouched.percentage && (
                     <Text style={{ color: "red" }}>Percentage is required</Text>
                   )}
+              </View>
+
+              <View style={styles.fields_main}>
+                <Text style={styles.inputHeading}>
+                  HS Percentage (Optional)
+                </Text>
+                <View style={styles.input_box}>
+                  <Image
+                    source={require("../../assets/icons/discount.png")}
+                    style={styles.iconImage}
+                  />
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Percentage"
+                    value={formData.hs_percentage}
+                    onChangeText={(text) =>
+                      handleInputChange("hs_percentage", text)
+                    }
+                    onBlur={() => handleInputBlur("percentage")}
+                    placeholderTextColor={"rgba(166, 166, 166, 1)"}
+                  />
+                </View>
+                {/* {!formErrors.percentage &&
+                  !formData.percentage &&
+                  fieldTouched.percentage && (
+                    <Text style={{ color: "red" }}>Percentage is required</Text>
+                  )} */}
+              </View>
+
+              <View style={styles.fields_main}>
+                <Text style={styles.inputHeading}>
+                  Graduate Percentage (Optional)
+                </Text>
+                <View style={styles.input_box}>
+                  <Image
+                    source={require("../../assets/icons/discount.png")}
+                    style={styles.iconImage}
+                  />
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Percentage"
+                    value={formData.grduate_percentage}
+                    onChangeText={(text) =>
+                      handleInputChange("grduate_percentage", text)
+                    }
+                    onBlur={() => handleInputBlur("grduate_percentage")}
+                    placeholderTextColor={"rgba(166, 166, 166, 1)"}
+                  />
+                </View>
+                {/* {!formErrors.percentage &&
+                  !formData.percentage &&
+                  fieldTouched.percentage && (
+                    <Text style={{ color: "red" }}>Percentage is required</Text>
+                  )} */}
               </View>
               {/* <View style={styles.fields_main}>
                 <Text style={styles.inputHeading}>Total Number</Text>
@@ -2239,9 +2298,12 @@ const AdmissionForm = ({ navigation }) => {
                     </Text>
                   )}
               </View> */}
-              <View style={styles.headingg}>
-                <Text style={styles.text}>Upload Documents</Text>
-              </View>
+              {PassportPhotoRequired === "yes" || IncomeCertificateRequired === "yes" || aadharRequired === "yes" && (
+   <View style={styles.headingg}>
+   <Text style={styles.text}>Upload Documents</Text>
+ </View>
+              )}
+           
               {/* {!fileUri && (
   <View style={styles.fields_main}>
   <Text style={styles.inputHeading}>Aadhar Front</Text>
@@ -2689,151 +2751,153 @@ const AdmissionForm = ({ navigation }) => {
               </View> */}
 
               {/* Passport photo */}
+{PassportPhotoRequired === 'yes' && (
+    <View>
+    {!capturedImagePassport && !fileUriPassPortPhoto && (
+      <View style={styles.fields_main}>
+        <Text style={styles.inputHeading}>Passport Size Photo</Text>
+        <TouchableOpacity
+          style={styles.uploadBox}
+          onPress={() => setModalVisiblePassport(true)}
+        >
+          <View style={styles.uploadItems}>
+            <SimpleLineIcons
+              name="cloud-upload"
+              size={22}
+              color="rgba(166, 166, 166, 1)"
+            />
+            <Text style={styles.uploadtext}>Upload a File</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+    )}
+    {fileUriPassPortPhoto && (
+      <View>
+        <View
+          style={[
+            styles.titleContainer,
+            {
+              justifyContent: "space-between",
+              flexDirection: "row",
+              alignItems: "center",
+            },
+          ]}
+        >
+          <Text style={styles.inputHeading}>
+            PassPort Size Photo
+          </Text>
+          <TouchableOpacity
+            onPress={() => deleteDocuments("passport")}
+          >
+            <AntDesign name="delete" size={20} color="#FF0000" />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.imageContainer}>
+          {PassportUribyApi ? (
+            <Image
+              source={{ uri: fileUriPassPortPhoto }}
+              style={styles.uploadedImage}
+            />
+          ) : (
+            <View
+              style={[
+                styles.uploadedImage,
+                { justifyContent: "center" },
+              ]}
+            >
+              <ActivityIndicator
+                size="medium"
+                color="rgba(0, 54, 126, 1)"
+              />
+            </View>
+          )}
+        </View>
+      </View>
+    )}
 
-              <View>
-                {!capturedImagePassport && !fileUriPassPortPhoto && (
-                  <View style={styles.fields_main}>
-                    <Text style={styles.inputHeading}>Passport Size Photo</Text>
-                    <TouchableOpacity
-                      style={styles.uploadBox}
-                      onPress={() => setModalVisiblePassport(true)}
-                    >
-                      <View style={styles.uploadItems}>
-                        <SimpleLineIcons
-                          name="cloud-upload"
-                          size={22}
-                          color="rgba(166, 166, 166, 1)"
-                        />
-                        <Text style={styles.uploadtext}>Upload a File</Text>
-                      </View>
-                    </TouchableOpacity>
-                  </View>
-                )}
-                {fileUriPassPortPhoto && (
-                  <View>
-                    <View
-                      style={[
-                        styles.titleContainer,
-                        {
-                          justifyContent: "space-between",
-                          flexDirection: "row",
-                          alignItems: "center",
-                        },
-                      ]}
-                    >
-                      <Text style={styles.inputHeading}>
-                        PassPort Size Photo
-                      </Text>
-                      <TouchableOpacity
-                        onPress={() => deleteDocuments("passport")}
-                      >
-                        <AntDesign name="delete" size={20} color="#FF0000" />
-                      </TouchableOpacity>
-                    </View>
-                    <View style={styles.imageContainer}>
-                      {PassportUribyApi ? (
-                        <Image
-                          source={{ uri: fileUriPassPortPhoto }}
-                          style={styles.uploadedImage}
-                        />
-                      ) : (
-                        <View
-                          style={[
-                            styles.uploadedImage,
-                            { justifyContent: "center" },
-                          ]}
-                        >
-                          <ActivityIndicator
-                            size="medium"
-                            color="rgba(0, 54, 126, 1)"
-                          />
-                        </View>
-                      )}
-                    </View>
-                  </View>
-                )}
+    {capturedImagePassport && (
+      <View>
+        <View
+          style={[
+            styles.titleContainer,
+            {
+              justifyContent: "space-between",
+              flexDirection: "row",
+              alignItems: "center",
+            },
+          ]}
+        >
+          <Text style={styles.inputHeading}>
+            Passport Size Photo
+          </Text>
+          <TouchableOpacity onPress={deleteImagePassPortPhoto}>
+            <AntDesign name="delete" size={20} color="#FF0000" />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.imageContainer}>
+          {PassportUribyApi ? (
+            <Image
+              source={{ uri: capturedImagePassport }}
+              style={styles.uploadedImage}
+            />
+          ) : (
+            <View
+              style={[
+                styles.uploadedImage,
+                { justifyContent: "center" },
+              ]}
+            >
+              <ActivityIndicator
+                size="medium"
+                color="rgba(0, 54, 126, 1)"
+              />
+            </View>
+          )}
+        </View>
+      </View>
+    )}
 
-                {capturedImagePassport && (
-                  <View>
-                    <View
-                      style={[
-                        styles.titleContainer,
-                        {
-                          justifyContent: "space-between",
-                          flexDirection: "row",
-                          alignItems: "center",
-                        },
-                      ]}
-                    >
-                      <Text style={styles.inputHeading}>
-                        Passport Size Photo
-                      </Text>
-                      <TouchableOpacity onPress={deleteImagePassPortPhoto}>
-                        <AntDesign name="delete" size={20} color="#FF0000" />
-                      </TouchableOpacity>
-                    </View>
-                    <View style={styles.imageContainer}>
-                      {PassportUribyApi ? (
-                        <Image
-                          source={{ uri: capturedImagePassport }}
-                          style={styles.uploadedImage}
-                        />
-                      ) : (
-                        <View
-                          style={[
-                            styles.uploadedImage,
-                            { justifyContent: "center" },
-                          ]}
-                        >
-                          <ActivityIndicator
-                            size="medium"
-                            color="rgba(0, 54, 126, 1)"
-                          />
-                        </View>
-                      )}
-                    </View>
-                  </View>
-                )}
-
-                {errorMessagePassPortPhoto && (
-                  <Text style={styles.errorMessage}>
-                    {errorMessagePassPortPhoto}
-                  </Text>
-                )}
-                <Modal
-                  animationType="slide"
-                  transparent={true}
-                  visible={modalVisiblePassport}
-                  onRequestClose={closeModal}
-                >
-                  <View style={styles.modalContainer}>
-                    <View style={styles.modalContent}>
-                      <TouchableOpacity
-                        style={styles.modalOption}
-                        onPress={() => {
-                          takePicture("passport");
-                        }}
-                      >
-                        <Text style={styles.modalOptionText}>Take Photo</Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        style={styles.modalOption}
-                        onPress={pickFilePassPortPhoto}
-                      >
-                        <Text style={styles.modalOptionText}>
-                          Choose from Library
-                        </Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        style={styles.modalOption}
-                        onPress={closeModal}
-                      >
-                        <Text style={styles.modalOptionText}>Cancel</Text>
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                </Modal>
-              </View>
+    {errorMessagePassPortPhoto && (
+      <Text style={styles.errorMessage}>
+        {errorMessagePassPortPhoto}
+      </Text>
+    )}
+    <Modal
+      animationType="slide"
+      transparent={true}
+      visible={modalVisiblePassport}
+      onRequestClose={closeModal}
+    >
+      <View style={styles.modalContainer}>
+        <View style={styles.modalContent}>
+          <TouchableOpacity
+            style={styles.modalOption}
+            onPress={() => {
+              takePicture("passport");
+            }}
+          >
+            <Text style={styles.modalOptionText}>Take Photo</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.modalOption}
+            onPress={pickFilePassPortPhoto}
+          >
+            <Text style={styles.modalOptionText}>
+              Choose from Library
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.modalOption}
+            onPress={closeModal}
+          >
+            <Text style={styles.modalOptionText}>Cancel</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </Modal>
+  </View>
+)}
+          
               {/* with modal and upload income */}
               {IncomeCertificateRequired === "yes" && (
                 <View>
@@ -2984,22 +3048,25 @@ const AdmissionForm = ({ navigation }) => {
                   </Modal>
                 </View>
               )}
+              {TermAndConditionRequird === "yes" && (
+                <View style={styles.conditions}>
+                  <Text style={styles.conditiontext}>
+                    1. The annual income of the family should be below 2 lakh
+                    rupees.{"\n"}
+                    {"\n"}2. You have to give exam for this free seat if you
+                    can't pass the exam then you will not get free admission.
+                    {"\n"}
+                    {"\n"}3. After the exam there will be counseling and if you
+                    pass there then you can take admission. Must be accompanied
+                    by a parent.{"\n"}
+                    {"\n"}4. If you don't get the college of your choice or if
+                    we don't have contact with the college, we won't have
+                    anything to do , you have to take the college you get
+                    otherwise you can close the free admission.
+                  </Text>
+                </View>
+              )}
 
-              <View style={styles.conditions}>
-                <Text style={styles.conditiontext}>
-                  1. The annual income of the family should be below 2 lakh
-                  rupees.{"\n"}
-                  {"\n"}2. You have to give exam for this free seat if you can't
-                  pass the exam then you will not get free admission.{"\n"}
-                  {"\n"}3. After the exam there will be counseling and if you
-                  pass there then you can take admission. Must be accompanied by
-                  a parent.{"\n"}
-                  {"\n"}4. If you don't get the college of your choice or if we
-                  don't have contact with the college, we won't have anything to
-                  do , you have to take the college you get otherwise you can
-                  close the free admission.
-                </Text>
-              </View>
               <View style={[styles.condition_box_main, { gap: 6 }]}>
                 <View style={styles.conditions_box}>
                   <Checkbox
