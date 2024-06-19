@@ -1217,6 +1217,24 @@ const FreeCollegeList = ({ navigation }) => {
                             requiredFields?.is_income_required != null
                               ? requiredFields?.is_income_required
                               : "no",
+                              GuardiansDetailsRequired:
+                              requiredFields?.is_guardian_details_required != null
+                                ? requiredFields?.is_guardian_details_required
+                                : "no",
+                            PassportPhotoRequired:
+                              requiredFields?.is_passport_photo_required != null
+                                ? requiredFields?.is_passport_photo_required
+                                : "no",
+                            TermAndConditionRequird:
+                              requiredFields?.is_terms_and_conditions_required !=
+                              null
+                                ? requiredFields?.is_terms_and_conditions_required
+                                : "no",
+                            EducationFieldRequired:
+                              requiredFields?.is_education_qualification_required !=
+                              null
+                                ? requiredFields?.is_education_qualification_required
+                                : "no",
                           ServiceName: value?.service_type,
                         })
                       }

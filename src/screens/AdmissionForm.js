@@ -324,7 +324,8 @@ const AdmissionForm = ({ navigation }) => {
           inputValueoccupation)) &&
       (IncomeCertificateRequired === "no" || formData.income) &&
       // formData.income &&
-      inputValueHs
+      (EducationFieldRequired === "no" || inputValueHs) 
+      
       // formData.percentage
     ) {
       if (
@@ -2076,54 +2077,12 @@ const AdmissionForm = ({ navigation }) => {
                     </Text>
                   )}
               </View> */}
-              <View style={styles.headingg}>
+              {EducationFieldRequired === 'yes' && (
+                <>
+    <View style={styles.headingg}>
                 <Text style={styles.text}>Education Details</Text>
               </View>
-              {/* Last qualification */}
-              {/* <View style={styles.fields_main}>
-                <Text style={styles.inputHeading}>Last Qualification</Text>
-                <TouchableOpacity onPress={toggleDropdownLastQuali}>
-                  <View style={styles.input_box}>
-                    <Image
-                      source={require("../../assets/icons/qualification.png")}
-                      style={styles.iconImage}
-                    />
-                    <TextInput
-                      style={styles.input}
-                      placeholder="Select"
-                      placeholderTextColor={"rgba(166, 166, 166, 1)"}
-                      value={inputValueLastQuali}
-                      onBlur={() =>
-                        handleSelectOptionLastQuali(inputValueLastQuali)
-                      }
-                      editable={false} // Allow editing only when dropdown is closed
-                    />
-                    <AntDesign
-                      name="caretdown"
-                      style={styles.arrowdown}
-                      size={15}
-                      color="rgba(0, 54, 126, 1)"
-                    />
-                  </View>
-                </TouchableOpacity>
-              </View>
-
-              {isDropdownOpenLastQuali && (
-                <View style={styles.dropdownContainer}>
-                  <TouchableOpacity
-                    style={styles.dropdownOption}
-                    onPress={() => handleSelectOptionLastQuali("10")}
-                  >
-                    <Text>10</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={styles.dropdownOption}
-                    onPress={() => handleSelectOptionLastQuali("12")}
-                  >
-                    <Text>12</Text>
-                  </TouchableOpacity>
-                </View>
-              )} */}
+              
 
               <View style={styles.fields_main}>
                 <Text style={styles.inputHeading}>10+2 Pass Out Year</Text>
@@ -2166,31 +2125,7 @@ const AdmissionForm = ({ navigation }) => {
                   </TouchableOpacity>
                 </View>
               )}
-              {/* <View style={styles.fields_main}>
-                <Text style={styles.inputHeading}>H.S Roll Number</Text>
-                <View style={styles.input_box}>
-                  <Image
-                    source={require("../../assets/icons/number-blocks.png")}
-                    style={styles.iconImage}
-                  />
-                  <TextInput
-                    style={styles.input}
-                    placeholder="Roll Number"
-                    value={formData.roll_number}
-                    onChangeText={(text) =>
-                      handleInputChange("roll_number", text)
-                    }
-                    onBlur={() => handleInputBlur("roll_number")}
-                    keyboardType="numeric"
-                    placeholderTextColor={"rgba(166, 166, 166, 1)"}
-                  />
-                </View>
-                {!formErrors.roll_number &&
-                  !formData.roll_number &&
-                  fieldTouched.roll_number && (
-                    <Text style={{ color: "red" }}>Roll is required</Text>
-                  )}
-              </View> */}
+           
               <View style={styles.fields_main}>
                 <Text style={styles.inputHeading}>
                   Madhamik Percentage (Optional)
@@ -2212,11 +2147,7 @@ const AdmissionForm = ({ navigation }) => {
                     placeholderTextColor={"rgba(166, 166, 166, 1)"}
                   />
                 </View>
-                {!formErrors.percentage &&
-                  !formData.percentage &&
-                  fieldTouched.percentage && (
-                    <Text style={{ color: "red" }}>Percentage is required</Text>
-                  )}
+             
               </View>
 
               <View style={styles.fields_main}>
@@ -2239,11 +2170,7 @@ const AdmissionForm = ({ navigation }) => {
                     placeholderTextColor={"rgba(166, 166, 166, 1)"}
                   />
                 </View>
-                {/* {!formErrors.percentage &&
-                  !formData.percentage &&
-                  fieldTouched.percentage && (
-                    <Text style={{ color: "red" }}>Percentage is required</Text>
-                  )} */}
+      
               </View>
 
               <View style={styles.fields_main}>
@@ -2266,12 +2193,11 @@ const AdmissionForm = ({ navigation }) => {
                     placeholderTextColor={"rgba(166, 166, 166, 1)"}
                   />
                 </View>
-                {/* {!formErrors.percentage &&
-                  !formData.percentage &&
-                  fieldTouched.percentage && (
-                    <Text style={{ color: "red" }}>Percentage is required</Text>
-                  )} */}
+         
               </View>
+                </>
+              )}
+          
               {/* <View style={styles.fields_main}>
                 <Text style={styles.inputHeading}>Total Number</Text>
                 <View style={styles.input_box}>

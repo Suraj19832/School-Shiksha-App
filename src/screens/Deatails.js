@@ -109,6 +109,11 @@ const Details = ({ navigation }) => {
     IncomeCertificateRequired,
     aadharRequired,
     ServiceName,
+    GuardiansDetailsRequired,
+    PassportPhotoRequired,
+    TermAndConditionRequird,
+    EducationFieldRequired
+
   } = route.params;
 
   function firstWordPicker(name) {
@@ -555,6 +560,10 @@ const Details = ({ navigation }) => {
                     id,
                     IncomeCertificateRequired,
                     aadharRequired,
+                    TermAndConditionRequird,
+                    EducationFieldRequired,
+                    PassportPhotoRequired,
+                    GuardiansDetailsRequired,
                     detailsData?.logo,
                     courseid,
                     detailsData?.register_through,
