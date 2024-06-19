@@ -1081,6 +1081,12 @@ const FreeCollegeList = ({ navigation }) => {
               var requiredFields = JSON.parse(value?.required_field);
               // console.log("jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj",requiredFields?.is_passport_photo_required)
               var extraFields = JSON.parse(value?.extra_data);
+              if (value?.eligibility != null && value?.eligibility != "") {
+                extraFields = {
+                  [formatKey("eligibility")]: value?.eligibility,
+                  ...extraFields,
+                };
+              }
               if (value?.course_fees != "0.00") {
                 extraFields = {
                   [formatKey("course_fee")]: formatAmount(value?.course_fees),
