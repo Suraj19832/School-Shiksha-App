@@ -211,6 +211,7 @@ const FreeCollegeList = ({ navigation }) => {
     setDropdownOpenclass(!isDropdownOpenclass);
     fetchDropDown("master/courses", id);
   };
+
   const [dropdownvalueid, setdropdownvalueid] = useState();
   const handleSelectOptionclass = (option, courseid) => {
     setSelectedOptionclass(option);
@@ -437,7 +438,7 @@ const FreeCollegeList = ({ navigation }) => {
       .map(([key, val]) => `${key}: ${val}`)
       .join("\n");
 
-    const whatsAppText = `I want to purchase this course !! \nOrganization Name: ${collegeName} \nCourse Name: ${courseName} \n${extraFieldsText}\n${imageData}`;
+    const whatsAppText = `I want to purchase this course !! \nOrganization Name: ${collegeName} \nCourse Name: ${courseName} \n${extraFieldsText}`;
     const whatsAppUrl = `whatsapp://send?phone=${
       value?.whatsapp_number
     }&text=${encodeURIComponent(whatsAppText)}`;
@@ -445,6 +446,19 @@ const FreeCollegeList = ({ navigation }) => {
     Linking.openURL(whatsAppUrl).catch((err) => {
       console.log(err);
     });
+  };
+  const [isDropdownOpenState, setDropdownOpenState] = useState(false);
+  const [isDropdownOpenDistrict, setDropdownOpenDistrict] = useState(false);
+  const [isDropdownOpenBlock, setDropdownOpenBlock] = useState(false);
+
+  const toggleDropdownState = () => {
+    setDropdownOpenState(!isDropdownOpenState);
+  };
+  const toggleDropdownDistrict = () => {
+    setDropdownOpenDistrict(!isDropdownOpenDistrict);
+  };
+  const toggleDropdownBlock = () => {
+    setDropdownOpenBlock(!isDropdownOpenBlock);
   };
 
   // const whatsAppClicked = (value) => {
@@ -562,8 +576,6 @@ const FreeCollegeList = ({ navigation }) => {
                   fontSize: 20,
                 }}
               >
-                {/* Course Name */}
-
                 {serviceType}
               </Text>
               <View style={styles.inputbox_main_container1}>
@@ -635,60 +647,223 @@ const FreeCollegeList = ({ navigation }) => {
                         );
                       })}
                     </ScrollView>
-
-                    {/* <TouchableOpacity
-                      style={styles.dropdownOption}
-                      onPress={() => handleSelectOptionclass("1")}
-                    >
-                      <View
-                        style={{
-                          width: Dimensions.get("window").width * 0.7,
-                          alignItems: "center",
-                        }}
-                      >
-                        <Text>1</Text>
-                      </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={styles.dropdownOption}
-                      onPress={() => handleSelectOptionclass("2")}
-                    >
-                      <View
-                        style={{
-                          width: Dimensions.get("window").width * 0.7,
-                          alignItems: "center",
-                        }}
-                      >
-                        <Text>2</Text>
-                      </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={styles.dropdownOption}
-                      onPress={() => handleSelectOptionclass("3")}
-                    >
-                      <View
-                        style={{
-                          width: Dimensions.get("window").width * 0.7,
-                          alignItems: "center",
-                        }}
-                      >
-                        <Text>3</Text>
-                      </View>
-                    </TouchableOpacity> */}
                   </View>
                 )}
               </View>
-              {/* <Text
-                  style={{
-                    alignSelf: "flex-end",
-                    color: "#0567F5",
-                    fontWeight: "500",
-                    fontSize: 14,
-                    textDecorationLine: "underline",
-                  }}
-                >
-                  Request Course
-                </Text> */}
+            </View>
+            {/* three drop down */}
+
+            <View
+              style={{ flexDirection: "row", justifyContent: "space-between" }}
+            >
+              <View style={{}}>
+                <TouchableOpacity onPress={toggleDropdownDistrict}>
+                  <View
+                    style={[
+                      styles.inputbox_container1,
+                      { backgroundColor: "#FDF1DD" },
+                    ]}
+                  >
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        gap: 4,
+                        alignItems: "center",
+                      }}
+                    >
+                      <TextInput
+                        style={(styles.input1, { color: "black" })}
+                        placeholder="Select"
+                        placeholderTextColor="rgba(166, 166, 166, 1)"
+                        value={inputValueclass}
+                        onChangeText={handleInputChangeclass}
+                        onBlur={() => handleSelectOptionclass(inputValueclass)}
+                        editable={false} // Allow editing only when dropdown is closed
+                      />
+                    </View>
+
+                    <AntDesign name="caretdown" size={16} color="#03357D" />
+                  </View>
+                </TouchableOpacity>
+                {isDropdownOpenState && (
+                  <View
+                    style={[
+                      styles.dropdownContainer,
+                      { height: "auto", overflow: "hidden", zIndex: 1 },
+                    ]}
+                  >
+                    <ScrollView
+                      nestedScrollEnabled={true}
+                      style={{ maxHeight: 100 }}
+                    >
+                      {dropdownOption?.map((option) => {
+                        return (
+                          <TouchableOpacity
+                            style={styles.dropdownOption}
+                            onPress={() =>
+                              handleSelectOptionclass(
+                                option?.course_name,
+                                option?.course_id
+                              )
+                            }
+                          >
+                            <View
+                              style={
+                                {
+                                  // width: Dimensions.get("window").width * 0.7,
+                                  // alignItems: "center",
+                                }
+                              }
+                            >
+                              <Text>{option.course_name}</Text>
+                            </View>
+                          </TouchableOpacity>
+                        );
+                      })}
+                    </ScrollView>
+                  </View>
+                )}
+              </View>
+              <View style={{}}>
+                <TouchableOpacity onPress={toggleDropdownDistrict}>
+                  <View
+                    style={[
+                      styles.inputbox_container1,
+                      { backgroundColor: "#FDF1DD" },
+                    ]}
+                  >
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        gap: 4,
+                        alignItems: "center",
+                      }}
+                    >
+                      <TextInput
+                        style={
+                          (styles.input1, { paddingLeft: 5, color: "black" })
+                        }
+                        placeholder="Select"
+                        placeholderTextColor="rgba(166, 166, 166, 1)"
+                        value={inputValueclass}
+                        onChangeText={handleInputChangeclass}
+                        onBlur={() => handleSelectOptionclass(inputValueclass)}
+                        editable={false} // Allow editing only when dropdown is closed
+                      />
+                    </View>
+
+                    <AntDesign name="caretdown" size={16} color="#03357D" />
+                  </View>
+                </TouchableOpacity>
+                {isDropdownOpenDistrict && (
+                  <View
+                    style={[
+                      styles.dropdownContainer,
+                      { height: "auto", overflow: "hidden", zIndex: 1 },
+                    ]}
+                  >
+                    <ScrollView
+                      nestedScrollEnabled={true}
+                      style={{ maxHeight: 100 }}
+                    >
+                      {dropdownOption?.map((option) => {
+                        return (
+                          <TouchableOpacity
+                            style={styles.dropdownOption}
+                            onPress={() =>
+                              handleSelectOptionclass(
+                                option?.course_name,
+                                option?.course_id
+                              )
+                            }
+                          >
+                            <View
+                              style={
+                                {
+                                  // width: Dimensions.get("window").width * 0.7,
+                                  // alignItems: "center",
+                                }
+                              }
+                            >
+                              <Text>{option.course_name}</Text>
+                            </View>
+                          </TouchableOpacity>
+                        );
+                      })}
+                    </ScrollView>
+                  </View>
+                )}
+              </View>
+              <View style={{}}>
+                <TouchableOpacity onPress={toggleDropdownBlock}>
+                  <View
+                    style={[
+                      styles.inputbox_container1,
+                      { backgroundColor: "#FDF1DD" },
+                    ]}
+                  >
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        gap: 4,
+                        alignItems: "center",
+                      }}
+                    >
+                      <TextInput
+                        style={
+                          (styles.input1, { paddingLeft: 5, color: "black" })
+                        }
+                        placeholder="Select"
+                        placeholderTextColor="rgba(166, 166, 166, 1)"
+                        value={inputValueclass}
+                        onChangeText={handleInputChangeclass}
+                        onBlur={() => handleSelectOptionclass(inputValueclass)}
+                        editable={false} // Allow editing only when dropdown is closed
+                      />
+                    </View>
+
+                    <AntDesign name="caretdown" size={16} color="#03357D" />
+                  </View>
+                </TouchableOpacity>
+                {isDropdownOpenBlock && (
+                  <View
+                    style={[
+                      styles.dropdownContainer,
+                      { height: "auto", overflow: "hidden", zIndex: 1 },
+                    ]}
+                  >
+                    <ScrollView
+                      nestedScrollEnabled={true}
+                      style={{ maxHeight: 100 }}
+                    >
+                      {dropdownOption?.map((option) => {
+                        return (
+                          <TouchableOpacity
+                            style={styles.dropdownOption}
+                            onPress={() =>
+                              handleSelectOptionclass(
+                                option?.course_name,
+                                option?.course_id
+                              )
+                            }
+                          >
+                            <View
+                              style={
+                                {
+                                  // width: Dimensions.get("window").width * 0.7,
+                                  // alignItems: "center",
+                                }
+                              }
+                            >
+                              <Text>{option.course_name}</Text>
+                            </View>
+                          </TouchableOpacity>
+                        );
+                      })}
+                    </ScrollView>
+                  </View>
+                )}
+              </View>
             </View>
 
             {/* <View style={{ gap: 15, alignSelf: 'center' }}>
@@ -1217,24 +1392,24 @@ const FreeCollegeList = ({ navigation }) => {
                             requiredFields?.is_income_required != null
                               ? requiredFields?.is_income_required
                               : "no",
-                              GuardiansDetailsRequired:
-                              requiredFields?.is_guardian_details_required != null
-                                ? requiredFields?.is_guardian_details_required
-                                : "no",
-                            PassportPhotoRequired:
-                              requiredFields?.is_passport_photo_required != null
-                                ? requiredFields?.is_passport_photo_required
-                                : "no",
-                            TermAndConditionRequird:
-                              requiredFields?.is_terms_and_conditions_required !=
-                              null
-                                ? requiredFields?.is_terms_and_conditions_required
-                                : "no",
-                            EducationFieldRequired:
-                              requiredFields?.is_education_qualification_required !=
-                              null
-                                ? requiredFields?.is_education_qualification_required
-                                : "no",
+                          GuardiansDetailsRequired:
+                            requiredFields?.is_guardian_details_required != null
+                              ? requiredFields?.is_guardian_details_required
+                              : "no",
+                          PassportPhotoRequired:
+                            requiredFields?.is_passport_photo_required != null
+                              ? requiredFields?.is_passport_photo_required
+                              : "no",
+                          TermAndConditionRequird:
+                            requiredFields?.is_terms_and_conditions_required !=
+                            null
+                              ? requiredFields?.is_terms_and_conditions_required
+                              : "no",
+                          EducationFieldRequired:
+                            requiredFields?.is_education_qualification_required !=
+                            null
+                              ? requiredFields?.is_education_qualification_required
+                              : "no",
                           ServiceName: value?.service_type,
                         })
                       }
@@ -2218,6 +2393,17 @@ const styles = StyleSheet.create({
     gap: 8,
     height: 43,
   },
+  inputbox_container1: {
+    flexDirection: "row",
+    textAlign: "center",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "rgba(3, 53, 125, 1)",
+    backgroundColor: "white",
+    paddingHorizontal: 15,
+    paddingVertical: 5,
+    borderRadius: 15,
+  },
   inputbox_main_container: {
     gap: 12,
     alignItems: "center",
@@ -2286,6 +2472,9 @@ const styles = StyleSheet.create({
   },
   input: {
     width: "80%",
+  },
+  input1: {
+    width: "25%",
   },
   dropdown: {
     position: "absolute",
