@@ -105,15 +105,11 @@ const AdmissionForm = ({ navigation }) => {
     PassportPhotoRequired,
     TermAndConditionRequird,
     EducationFieldRequired,
+    termsList
   } = route.params;
   console.log(
     "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$",
-    id,
-    aadharRequired,
-    IncomeCertificateRequired,
-    orgID,
-    courseid,
-    GuardiansDetailsRequired
+    termsList
   );
 
   // users data
@@ -2976,7 +2972,7 @@ const AdmissionForm = ({ navigation }) => {
               )}
               {TermAndConditionRequird === "yes" && (
                 <View style={styles.conditions}>
-                  <Text style={styles.conditiontext}>
+                  {/* <Text style={styles.conditiontext}>
                     1. The annual income of the family should be below 2 lakh
                     rupees.{"\n"}
                     {"\n"}2. You have to give exam for this free seat if you
@@ -2989,7 +2985,12 @@ const AdmissionForm = ({ navigation }) => {
                     we don't have contact with the college, we won't have
                     anything to do , you have to take the college you get
                     otherwise you can close the free admission.
-                  </Text>
+                  </Text> */}
+                   {termsList.map((term, index) => (
+        <View key={index} >
+          <Text style={styles.conditiontext}>{term}</Text>
+        </View>
+      ))}
                 </View>
               )}
 
@@ -3159,6 +3160,7 @@ const styles = StyleSheet.create({
     lineHeight: 15.23,
     fontWeight: "400",
     color: "rgba(0, 0, 0, 1)",
+    marginBottom:4
   },
   condition_box_main: {
     marginTop: 30,

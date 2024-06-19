@@ -380,6 +380,12 @@ const Details = ({ navigation }) => {
   let extraFields = JSON.parse(detailsData?.extra_data);
 
   console.log(extraFields, ":::::::|||||||||||||||||||||||");
+  if (detailsData?.eligibility != null && detailsData?.eligibility != "") {
+    extraFields = {
+      [formatKey("eligibility")]: detailsData?.eligibility,
+      ...extraFields,
+    };
+  }
 
   if (detailsData?.course_fees != "0.00") {
     extraFields = {

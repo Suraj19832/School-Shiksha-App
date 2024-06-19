@@ -1079,6 +1079,9 @@ const FreeCollegeList = ({ navigation }) => {
                 return duration;
               };
               var requiredFields = JSON.parse(value?.required_field);
+            
+              const termsList = value?.terms_and_conditions.trim().split('\r\n');
+              // console.log(termsList)
               // console.log("jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj",requiredFields?.is_passport_photo_required)
               var extraFields = JSON.parse(value?.extra_data);
               if (value?.eligibility != null && value?.eligibility != "") {
@@ -1089,7 +1092,7 @@ const FreeCollegeList = ({ navigation }) => {
               }
               if (value?.course_fees != "0.00") {
                 extraFields = {
-                  [formatKey("course_fee")]: formatAmount(value?.course_fees),
+                  [formatKey(value?.fees_type)]: formatAmount(value?.course_fees),
                   ...extraFields,
                 };
               }
@@ -1170,6 +1173,7 @@ const FreeCollegeList = ({ navigation }) => {
 
                           logo: value?.logo,
                           orgID: value?.organization_course_id,
+                          termsList:termsList
                         });
                       }
                     } else {
