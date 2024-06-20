@@ -223,8 +223,8 @@ const FreeCollegeList = ({ navigation }) => {
     setInputValueclass(option);
     setDropdownOpenclass(false);
     setInputValueState("");
-              setInputValueDistrict("");
-              setInputValueBlock("");
+    setInputValueDistrict("");
+    setInputValueBlock("");
     console.log("############################");
     fetchUserAllData("master/organization-course", id, courseid);
     fetchUserData("master/organization-course", id, courseid);
@@ -734,6 +734,13 @@ const FreeCollegeList = ({ navigation }) => {
     setlimit(limit + 10);
   };
 
+  const truncateName = (name) => {
+    if (name.length > 10) {
+      return `${name.substring(0, 10)}...`;
+    }
+    return name;
+  };
+
   const CardSkeleton = () => {
     const opacity = useRef(new Animated.Value(0.3)).current;
 
@@ -918,11 +925,11 @@ const FreeCollegeList = ({ navigation }) => {
                 flexDirection: "row",
                 justifyContent: "space-between",
                 width: "89%",
-                flexWrap: "wrap",
-                gap: 4,
+                // flexWrap: "wrap",
+                // gap: 4,
               }}
             >
-              <View style={{}}>
+              <View style={{ width: "31%" }}>
                 <TouchableOpacity onPress={toggleDropdownState}>
                   <View
                     style={[
@@ -938,10 +945,12 @@ const FreeCollegeList = ({ navigation }) => {
                       }}
                     >
                       <TextInput
-                        style={(styles.input1, { color: "black" })}
+                        style={
+                          (styles.input1, { color: "black", fontSize: 11 })
+                        }
                         placeholder="Select"
                         placeholderTextColor="rgba(166, 166, 166, 1)"
-                        value={inputValueState}
+                        value={truncateName(inputValueState)}
                         onChangeText={handleInputChangecState}
                         onBlur={() =>
                           handleSelectOptionState(setInputValueState)
@@ -957,7 +966,7 @@ const FreeCollegeList = ({ navigation }) => {
                   <View
                     style={[
                       styles.dropdownContainer,
-                      { height: "auto", overflow: "hidden", zIndex: 1 },
+                      { height: "auto", overflow: "hidden", zIndex: 10 },
                     ]}
                   >
                     <ScrollView
@@ -990,8 +999,7 @@ const FreeCollegeList = ({ navigation }) => {
                 )}
               </View>
 
-           
-              <View style={{}}>
+              <View style={{ width: "31%" }}>
                 <TouchableOpacity onPress={toggleDropdownDistrict}>
                   <View
                     style={[
@@ -1008,14 +1016,14 @@ const FreeCollegeList = ({ navigation }) => {
                     >
                       <TextInput
                         style={
-                          (styles.input1, { paddingLeft: 5, color: "black" })
+                          (styles.input1, { color: "black", fontSize: 11 })
                         }
                         placeholder="Select"
                         placeholderTextColor="rgba(166, 166, 166, 1)"
-                        value={inputValueDistrict}
+                        value={truncateName(inputValueDistrict)}
                         onChangeText={handleInputChangeclass}
                         onBlur={() => handleSelectOptionclass(inputValueclass)}
-                        editable={false} 
+                        editable={false}
                       />
                     </View>
 
@@ -1062,8 +1070,8 @@ const FreeCollegeList = ({ navigation }) => {
                   </View>
                 )}
               </View>
-       
-              <View style={{}}>
+
+              <View style={{ width: "31%" }}>
                 <TouchableOpacity onPress={toggleDropdownBlock}>
                   <View
                     style={[
@@ -1080,11 +1088,11 @@ const FreeCollegeList = ({ navigation }) => {
                     >
                       <TextInput
                         style={
-                          (styles.input1, { paddingLeft: 5, color: "black" })
+                          (styles.input1, { color: "black", fontSize: 11 })
                         }
                         placeholder="Select"
                         placeholderTextColor="rgba(166, 166, 166, 1)"
-                        value={inputValueBlock}
+                        value={truncateName(inputValueBlock)}
                         onChangeText={handleInputChangeclass}
                         onBlur={() => handleSelectOptionclass(inputValueclass)}
                         editable={false}
@@ -1135,9 +1143,6 @@ const FreeCollegeList = ({ navigation }) => {
                 )}
               </View>
             </View>
-
-
-            
           </View>
         </View>
 
@@ -1712,9 +1717,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "rgba(3, 53, 125, 1)",
     backgroundColor: "white",
-    paddingHorizontal: 15,
+    paddingHorizontal: 10,
     paddingVertical: 5,
     borderRadius: 15,
+    justifyContent: "space-between",
   },
   inputbox_main_container: {
     gap: 12,
@@ -1815,12 +1821,12 @@ const styles = StyleSheet.create({
     // zIndex:1,
     backgroundColor: "yellow",
     marginTop: 10,
-    width: "88%",
+    width: "100%",
     backgroundColor: "#fff",
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 4,
-    padding: 8,
+    // padding: 8,
     zIndex: 1,
     left: 0,
     alignSelf: "center",
