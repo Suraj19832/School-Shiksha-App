@@ -112,7 +112,8 @@ const Details = ({ navigation }) => {
     GuardiansDetailsRequired,
     PassportPhotoRequired,
     TermAndConditionRequird,
-    EducationFieldRequired
+    EducationFieldRequired,
+    feetype
 
   } = route.params;
 
@@ -367,7 +368,7 @@ const Details = ({ navigation }) => {
       .replace(/\b\w/g, (char) => char.toUpperCase());
   };
   const formatAmount = (amount) => {
-    return `${amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} Rs`;
+    return `₹ ${amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} `;
   };
   const formatCourseDuration = (duration) => {
     if (duration == "1") {
@@ -389,7 +390,7 @@ const Details = ({ navigation }) => {
 
   if (detailsData?.course_fees != "0.00") {
     extraFields = {
-      [formatKey("course_fee")]: formatAmount(detailsData?.course_fees),
+      [formatKey(feetype)]: formatAmount(detailsData?.course_fees),
       ...extraFields,
     };
   }
