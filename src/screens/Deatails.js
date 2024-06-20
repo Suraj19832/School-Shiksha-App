@@ -113,8 +113,7 @@ const Details = ({ navigation }) => {
     PassportPhotoRequired,
     TermAndConditionRequird,
     EducationFieldRequired,
-    feetype
-
+    feetype,
   } = route.params;
 
   function firstWordPicker(name) {
@@ -364,11 +363,11 @@ const Details = ({ navigation }) => {
   }
   const formatKey = (key) => {
     return key
-      .replace(/_/g, " ")
-      .replace(/\b\w/g, (char) => char.toUpperCase());
+      ?.replace(/_/g, " ")
+      ?.replace(/\b\w/g, (char) => char.toUpperCase());
   };
   const formatAmount = (amount) => {
-    return `₹ ${amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} `;
+    return `₹ ${amount.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ",")} `;
   };
   const formatCourseDuration = (duration) => {
     if (duration == "1") {
