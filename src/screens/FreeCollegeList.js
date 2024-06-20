@@ -264,8 +264,24 @@ const FreeCollegeList = ({ navigation }) => {
     endpoint,
     id,
     course_idd = null,
-    search_value = null
+    search_value = null,
+    state_id = null,
+    district_id = null,
+    block_id = null
   ) {
+    console.log(
+      state_id,
+      "dkdkdkdkdkdkdkdk",
+      id,
+      "fifi",
+      endpoint,
+      "slslssl",
+      course_idd,
+      "course id"
+    );
+    // alert(JSON.stringify({course_idd,state_id}))
+    setisLoadingPagenation(true);
+    console.log(search_value, "********************************");
     try {
       // const endpoint = "master/organization-course";
       const params = {
@@ -275,11 +291,20 @@ const FreeCollegeList = ({ navigation }) => {
         service_id: id,
         // course_id:course_idd
       };
-      if (course_idd) {
+      if (course_idd != null) {
         params.course_id = course_idd;
       }
-      if (search_value) {
+      if (search_value != null) {
         params.search_value = search_value;
+      }
+      if (state_id != null) {
+        params.state_id = state_id;
+      }
+      if (block_id != null) {
+        params.block_id = block_id;
+      }
+      if (district_id != null) {
+        params.district_id = district_id;
       }
 
       GetfetchDataWithParams(endpoint, params).then((res) => {
@@ -297,12 +322,20 @@ const FreeCollegeList = ({ navigation }) => {
     id,
     course_idd = null,
     search_value = null,
-    state_id =null,
-    district_id=null,
-    block_id=null
-  
+    state_id = null,
+    district_id = null,
+    block_id = null
   ) {
-    console.log(state_id ,"dkdkdkdkdkdkdkdk" ,id ,"fifi" ,endpoint ,"slslssl" ,course_idd ,"course id" ,)
+    console.log(
+      state_id,
+      "dkdkdkdkdkdkdkdk",
+      id,
+      "fifi",
+      endpoint,
+      "slslssl",
+      course_idd,
+      "course id"
+    );
     // alert(JSON.stringify({course_idd,state_id}))
     setisLoadingPagenation(true);
     console.log(search_value, "********************************");
@@ -322,13 +355,13 @@ const FreeCollegeList = ({ navigation }) => {
         params.search_value = search_value;
       }
       if (state_id != null) {
-        params.state_id =state_id
+        params.state_id = state_id;
       }
       if (block_id != null) {
-        params.block_id =block_id
+        params.block_id = block_id;
       }
       if (district_id != null) {
-        params.district_id =district_id
+        params.district_id = district_id;
       }
 
       GetfetchDataWithParams(endpoint, params).then((res) => {
@@ -336,12 +369,12 @@ const FreeCollegeList = ({ navigation }) => {
           "free college list api hit statusdeqrewrwerwerwewrerwrwerwerwe",
           res.status
         );
-        console.log(res?.data ,"__________________________________________")
-        if (res?.data?.length ==0) {
-          setFreeCollegeList([])
-          setisLoadingPagenation(false)
+        console.log(res?.data, "__________________________________________");
+        if (res?.data?.length == 0) {
+          setFreeCollegeList([]);
+          setisLoadingPagenation(false);
         }
-       
+
         if (res?.data?.length > 0) {
           // console.log(res?.data,"999999999999999999pppppppppppppppppppp")
           setFreeCollegeList(res?.data);
@@ -500,23 +533,57 @@ const FreeCollegeList = ({ navigation }) => {
   const toggleDropdownBlock = () => {
     setDropdownOpenBlock(!isDropdownOpenBlock);
   };
-const [stateID, setstateID] = useState()
+  const [stateID, setstateID] = useState();
   const handleSelectOptionState = (option, courseid) => {
     // setSelectedOptionclass(option);
     setInputValueState(option);
     setDropdownOpenState(false);
     //here checking the condition does course is select or not
     // console.log(dropdownvalueid  ,"skskksksksksks")
-    setstateID(courseid)
-     if (inputValueclass) {
-      fetchUserData("master/organization-course", id, dropdownvalueid, null ,courseid ,null ,null);
-     }else{
-      fetchUserData("master/organization-course", id, null, null ,courseid ,null ,null);
-     }
-  
+    setstateID(courseid);
+
+    if (inputValueclass) {
+      fetchUserAllData(
+        "master/organization-course",
+        id,
+        dropdownvalueid,
+        null,
+        courseid,
+        null,
+        null
+      );
+      fetchUserData(
+        "master/organization-course",
+        id,
+        dropdownvalueid,
+        null,
+        courseid,
+        null,
+        null
+      );
+    } else {
+      fetchUserAllData(
+        "master/organization-course",
+        id,
+        null,
+        null,
+        courseid,
+        null,
+        null
+      );
+      fetchUserData(
+        "master/organization-course",
+        id,
+        null,
+        null,
+        courseid,
+        null,
+        null
+      );
+    }
+
     // fetchUserData("master/organization-course", id, null, text);
     getDistrictdata(courseid);
-
   };
   const getDistrictdata = (id) => {
     const postData = {
@@ -529,56 +596,119 @@ const [stateID, setstateID] = useState()
     // Call the postDataWithFormData function with the API URL and FormData
     postDataWithFormData("master/district", formData)
       .then((res) => {
-        
         setdropdownOptionDistrict(res?.data);
       })
       .catch((error) => {
         console.error("Error posting data:", error);
       });
   };
-  const [districtid, setdistrictid] = useState()
-const handleSelectOptionDistrict =(districtName ,districtId)=>{
-  setInputValueDistrict(districtName)
-  setDropdownOpenDistrict(false)
-  setdistrictid(districtId)
-  if (inputValueclass) {
-    fetchUserData("master/organization-course", id, dropdownvalueid, null ,stateID ,districtId ,null);
-   }else{
-    fetchUserData("master/organization-course", id, null, null ,stateID ,districtId ,null);
-   }
-  Blockdata(districtId)
-
-}
-const handleSelectOptionBlock = (blockname ,blockid)=>{
-  setInputValueBlock(blockname)
-  setDropdownOpenBlock(false)
-  if (inputValueclass) {
-    fetchUserData("master/organization-course", id, dropdownvalueid, null ,stateID ,districtid ,blockid);
-   }else{
-    fetchUserData("master/organization-course", id, null, null ,stateID ,districtid ,blockid);
-   }
-  
-
-}
-
-const Blockdata =(id)=>{
-  const postData = {
-    district_id: id,
+  const [districtid, setdistrictid] = useState();
+  const handleSelectOptionDistrict = (districtName, districtId) => {
+    setInputValueDistrict(districtName);
+    setDropdownOpenDistrict(false);
+    setdistrictid(districtId);
+    if (inputValueclass) {
+      fetchUserAllData(
+        "master/organization-course",
+        id,
+        dropdownvalueid,
+        null,
+        stateID,
+        districtId,
+        null
+      );
+      fetchUserData(
+        "master/organization-course",
+        id,
+        dropdownvalueid,
+        null,
+        stateID,
+        districtId,
+        null
+      );
+    } else {
+      fetchUserAllData(
+        "master/organization-course",
+        id,
+        null,
+        null,
+        stateID,
+        districtId,
+        null
+      );
+      fetchUserData(
+        "master/organization-course",
+        id,
+        null,
+        null,
+        stateID,
+        districtId,
+        null
+      );
+    }
+    Blockdata(districtId);
+  };
+  const handleSelectOptionBlock = (blockname, blockid) => {
+    setInputValueBlock(blockname);
+    setDropdownOpenBlock(false);
+    if (inputValueclass) {
+      fetchUserAllData(
+        "master/organization-course",
+        id,
+        dropdownvalueid,
+        null,
+        stateID,
+        districtid,
+        blockid
+      );
+      fetchUserData(
+        "master/organization-course",
+        id,
+        dropdownvalueid,
+        null,
+        stateID,
+        districtid,
+        blockid
+      );
+    } else {
+      fetchUserAllData(
+        "master/organization-course",
+        id,
+        null,
+        null,
+        stateID,
+        districtid,
+        blockid
+      );
+      fetchUserData(
+        "master/organization-course",
+        id,
+        null,
+        null,
+        stateID,
+        districtid,
+        blockid
+      );
+    }
   };
 
-  // Convert object data to FormData
-  const formData = objectToFormData(postData);
+  const Blockdata = (id) => {
+    const postData = {
+      district_id: id,
+    };
 
-  // Call the postDataWithFormData function with the API URL and FormData
-  postDataWithFormData("master/block", formData)
-    .then((res) => {
-    
-      setdropdownOptionBlock(res?.data);
-    })
-    .catch((error) => {
-      console.error("Error posting data:", error);
-    });
-}
+    // Convert object data to FormData
+    const formData = objectToFormData(postData);
+
+    // Call the postDataWithFormData function with the API URL and FormData
+    postDataWithFormData("master/block", formData)
+      .then((res) => {
+        setdropdownOptionBlock(res?.data);
+      })
+      .catch((error) => {
+        console.error("Error posting data:", error);
+      });
+  };
 
   async function fetchDropDownState(endpoint) {
     try {
@@ -650,6 +780,11 @@ const Blockdata =(id)=>{
             onRefresh={() => {
               setRefreshing(true);
               fetchUserData("master/organization-course", id);
+              setInputValueclass("");
+              setInputValueState("");
+              setInputValueDistrict("");
+              setInputValueBlock("");
+              setinputvlauesearch();
               setRefreshing(false);
             }}
           />
@@ -768,11 +903,16 @@ const Blockdata =(id)=>{
               </View>
             </View>
 
-
             {/* three drop down */}
 
             <View
-              style={{ flexDirection: "row", justifyContent: "space-between" ,width:'89%' ,flexWrap:'wrap' ,gap:4}}
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                width: "89%",
+                flexWrap: "wrap",
+                gap: 4,
+              }}
             >
               <View style={{}}>
                 <TouchableOpacity onPress={toggleDropdownState}>
@@ -885,27 +1025,31 @@ const Blockdata =(id)=>{
                       nestedScrollEnabled={true}
                       style={{ maxHeight: 100 }}
                     >
-                      {dropdownOptionDistrict?.length >0 && dropdownOptionDistrict?.map((option) => {
-                        return (
-                          <TouchableOpacity
-                          style={styles.dropdownOption}
-                          onPress={() =>
-                            handleSelectOptionDistrict(option?.name, option?.id)
-                          }
-                        >
-                          <View
-                            style={{
-                              width: Dimensions.get("window").width * 0.2,
-                              alignItems: "center",
-                            }}
-                          >
-                            <Text style={{ fontSize: 10 }}>
-                              {option.name}
-                            </Text>
-                          </View>
-                        </TouchableOpacity>
-                        );
-                      })}
+                      {dropdownOptionDistrict?.length > 0 &&
+                        dropdownOptionDistrict?.map((option) => {
+                          return (
+                            <TouchableOpacity
+                              style={styles.dropdownOption}
+                              onPress={() =>
+                                handleSelectOptionDistrict(
+                                  option?.name,
+                                  option?.id
+                                )
+                              }
+                            >
+                              <View
+                                style={{
+                                  width: Dimensions.get("window").width * 0.2,
+                                  alignItems: "center",
+                                }}
+                              >
+                                <Text style={{ fontSize: 10 }}>
+                                  {option.name}
+                                </Text>
+                              </View>
+                            </TouchableOpacity>
+                          );
+                        })}
                     </ScrollView>
                   </View>
                 )}
@@ -953,40 +1097,40 @@ const Blockdata =(id)=>{
                       nestedScrollEnabled={true}
                       style={{ maxHeight: 100 }}
                     >
-                      {dropdownOptionBlock?.length > 0 && dropdownOptionBlock?.map((option) => {
-                        return (
-                          <TouchableOpacity
-                          style={styles.dropdownOption}
-                          onPress={() =>
-                            handleSelectOptionBlock(option?.name ,option?.id)
-                          }
-                        >
-                          <View
-                            style={{
-                              width: Dimensions.get("window").width * 0.2,
-                              alignItems: "center",
-                            }}
-                          >
-                            <Text style={{ fontSize: 10 }}>
-                              {option.name}
-                            </Text>
-                          </View>
-                        </TouchableOpacity>
-                        );
-                      })}
+                      {dropdownOptionBlock?.length > 0 &&
+                        dropdownOptionBlock?.map((option) => {
+                          return (
+                            <TouchableOpacity
+                              style={styles.dropdownOption}
+                              onPress={() =>
+                                handleSelectOptionBlock(
+                                  option?.name,
+                                  option?.id
+                                )
+                              }
+                            >
+                              <View
+                                style={{
+                                  width: Dimensions.get("window").width * 0.2,
+                                  alignItems: "center",
+                                }}
+                              >
+                                <Text style={{ fontSize: 10 }}>
+                                  {option.name}
+                                </Text>
+                              </View>
+                            </TouchableOpacity>
+                          );
+                        })}
                     </ScrollView>
                   </View>
                 )}
               </View>
             </View>
-
-          
           </View>
         </View>
 
         <View style={styles.listContainer}>
-      
-
           {/* old one  */}
           {FreeCollegeList?.length > 0 &&
             FreeCollegeList?.map((value) => {
@@ -1193,7 +1337,7 @@ const Blockdata =(id)=>{
                       alignItems: "center",
                     }}
                   >
-                    <View style={[styles.course ,{width:'88%'}]}>
+                    <View style={[styles.course, { width: "88%" }]}>
                       <Text
                         style={{
                           color: "#01265B",
@@ -1223,8 +1367,6 @@ const Blockdata =(id)=>{
                       />
                     </TouchableOpacity>
                   </View>
-
-               
 
                   <DetailsCard extraFields={extraFields} />
 
@@ -1439,55 +1581,52 @@ const Blockdata =(id)=>{
             })}
           {/* end here  */}
 
-    
-
-      
           <TouchableOpacity onPress={loadmore}>
-            {getdatalength > FreeCollegeList?.length || FreeCollegeList?.length ==0 && (
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  gap: 4,
-                  borderRadius: 8,
-                  height: 42,
-                  width: 120,
-                  backgroundColor: "#FFFFFF",
-                  marginBottom: 30,
-                  paddingHorizontal: 10,
-                  borderWidth: 1,
-                  borderColor: "#DDDDDD",
-                }}
-              >
-                {isLoadingPagenation ? (
-                  <ActivityIndicator
-                    size="small"
-                    color="grey"
-                    style={{ alignSelf: "center", width: "100%" }}
-                  />
-                ) : (
-                  <>
-                    <Text
-                      style={{
-                        color: "#435354",
-                        fontSize: 14,
-                        fontWeight: "500",
-                        lineHeight: 17,
-                      }}
-                    >
-                      Load More
-                    </Text>
-                    <AntDesign name="down" size={20} color="#435354" />
-                  </>
-                )}
-              </View>
-            )}
+            {getdatalength > FreeCollegeList?.length &&
+              FreeCollegeList?.length != 0 && (
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    gap: 4,
+                    borderRadius: 8,
+                    height: 42,
+                    width: 120,
+                    backgroundColor: "#FFFFFF",
+                    marginBottom: 30,
+                    paddingHorizontal: 10,
+                    borderWidth: 1,
+                    borderColor: "#DDDDDD",
+                  }}
+                >
+                  {isLoadingPagenation ? (
+                    <ActivityIndicator
+                      size="small"
+                      color="grey"
+                      style={{ alignSelf: "center", width: "100%" }}
+                    />
+                  ) : (
+                    <>
+                      <Text
+                        style={{
+                          color: "#435354",
+                          fontSize: 14,
+                          fontWeight: "500",
+                          lineHeight: 17,
+                        }}
+                      >
+                        Load More
+                      </Text>
+                      <AntDesign name="down" size={20} color="#435354" />
+                    </>
+                  )}
+                </View>
+              )}
           </TouchableOpacity>
-          {FreeCollegeList?.length ==0 && (
-            <View style={{height:250}}>
- <Text style={{fontWeight:"900" }}>No Data Found</Text>
+          {FreeCollegeList?.length == 0 && (
+            <View style={{ height: 250 }}>
+              <Text style={{ fontWeight: "900" }}>No Data Found</Text>
             </View>
-           
           )}
         </View>
       </ScrollView>
