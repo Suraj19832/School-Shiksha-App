@@ -213,6 +213,9 @@ const FreeCollegeList = ({ navigation }) => {
 
   const toggleDropdownclass = () => {
     setDropdownOpenclass(!isDropdownOpenclass);
+    setDropdownOpenDistrict(false);
+    setDropdownOpenState(false);
+    setDropdownOpenBlock(false);
     fetchDropDown("master/courses", id);
   };
 
@@ -528,13 +531,20 @@ const FreeCollegeList = ({ navigation }) => {
 
   const toggleDropdownState = () => {
     setDropdownOpenState(!isDropdownOpenState);
+    setDropdownOpenDistrict(false);
+    setDropdownOpenBlock(false);
     fetchDropDownState("master/state");
   };
   const toggleDropdownDistrict = () => {
     setDropdownOpenDistrict(!isDropdownOpenDistrict);
+    setDropdownOpenState(false);
+
+    setDropdownOpenBlock(false);
   };
   const toggleDropdownBlock = () => {
     setDropdownOpenBlock(!isDropdownOpenBlock);
+    setDropdownOpenDistrict(false);
+    setDropdownOpenState(false);
   };
   const [stateID, setstateID] = useState();
   const handleSelectOptionState = (option, courseid) => {
