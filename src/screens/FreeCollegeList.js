@@ -1280,7 +1280,7 @@ const FreeCollegeList = ({ navigation }) => {
                       alignItems: "center",
                     }}
                   >
-                    <View style={styles.course}>
+                    <View style={[styles.course ,{width:'88%'}]}>
                       <Text
                         style={{
                           color: "#01265B",
