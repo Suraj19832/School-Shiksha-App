@@ -46,6 +46,7 @@ import {
   GetfetchDataWithParams,
   getdata,
   objectToFormData,
+  postDataWithFormData,
   postDataWithFormDataWithToken,
 } from "../../Helper/Helper";
 
@@ -450,11 +451,17 @@ const FreeCollegeList = ({ navigation }) => {
       console.log(err);
     });
   };
+
+  // logic for  three dropdown
   const [isDropdownOpenState, setDropdownOpenState] = useState(false);
   const [isDropdownOpenDistrict, setDropdownOpenDistrict] = useState(false);
   const [isDropdownOpenBlock, setDropdownOpenBlock] = useState(false);
   const [dropdownOptionState, setdropdownOptionState] = useState([]);
   const [inputValueState, setInputValueState] = useState("");
+  const [dropdownOptionDistrict, setdropdownOptionDistrict] = useState([]);
+  const [inputValueDistrict, setInputValueDistrict] = useState("");
+  const [dropdownOptionBlock, setdropdownOptionBlock] = useState([]);
+  const [inputValueBlock, setInputValueBlock] = useState("");
 
   const handleInputChangecState = (text) => {
     inputValueState(text);
@@ -477,12 +484,59 @@ const FreeCollegeList = ({ navigation }) => {
     setdropdownvalueid(courseid);
     setInputValueState(option);
     setDropdownOpenState(false);
-    // console.log("############################");
-    // fetchUserAllData("master/organization-course", id, courseid);
-    // fetchUserData("master/organization-course", id, courseid);
+    getDistrictdata(courseid);
+
+  };
+  const getDistrictdata = (id) => {
+    const postData = {
+      state_id: id,
+    };
+
+    // Convert object data to FormData
+    const formData = objectToFormData(postData);
+
+    // Call the postDataWithFormData function with the API URL and FormData
+    postDataWithFormData("master/district", formData)
+      .then((res) => {
+        
+        setdropdownOptionDistrict(res?.data);
+      })
+      .catch((error) => {
+        console.error("Error posting data:", error);
+      });
+  };
+const handleSelectOptionDistrict =(districtName ,districtId)=>{
+  setInputValueDistrict(districtName)
+  setDropdownOpenDistrict(false)
+  Blockdata(districtId)
+
+}
+const handleSelectOptionBlock = (blockname)=>{
+  setInputValueBlock(blockname)
+  setDropdownOpenBlock(false)
+
+}
+
+const Blockdata =(id)=>{
+  const postData = {
+    district_id: id,
   };
 
-  async function fetchDropDownState(endpoint, id) {
+  // Convert object data to FormData
+  const formData = objectToFormData(postData);
+
+  // Call the postDataWithFormData function with the API URL and FormData
+  postDataWithFormData("master/block", formData)
+    .then((res) => {
+    
+      setdropdownOptionBlock(res?.data);
+    })
+    .catch((error) => {
+      console.error("Error posting data:", error);
+    });
+}
+
+  async function fetchDropDownState(endpoint) {
     try {
       getdata(endpoint).then((res) => {
         console.log("free college dropdown state>>>>>>>>>>>>>>>>>>>>", res);
@@ -669,6 +723,8 @@ const FreeCollegeList = ({ navigation }) => {
                 )}
               </View>
             </View>
+
+
             {/* three drop down */}
 
             <View
@@ -693,7 +749,7 @@ const FreeCollegeList = ({ navigation }) => {
                         style={(styles.input1, { color: "black" })}
                         placeholder="Select"
                         placeholderTextColor="rgba(166, 166, 166, 1)"
-                        value={setInputValueState}
+                        value={inputValueState}
                         onChangeText={handleInputChangecState}
                         onBlur={() =>
                           handleSelectOptionState(setInputValueState)
@@ -741,6 +797,8 @@ const FreeCollegeList = ({ navigation }) => {
                   </View>
                 )}
               </View>
+
+              {/* district  */}
               <View style={{}}>
                 <TouchableOpacity onPress={toggleDropdownDistrict}>
                   <View
@@ -762,7 +820,7 @@ const FreeCollegeList = ({ navigation }) => {
                         }
                         placeholder="Select"
                         placeholderTextColor="rgba(166, 166, 166, 1)"
-                        value={inputValueclass}
+                        value={inputValueDistrict}
                         onChangeText={handleInputChangeclass}
                         onBlur={() => handleSelectOptionclass(inputValueclass)}
                         editable={false} // Allow editing only when dropdown is closed
@@ -783,34 +841,32 @@ const FreeCollegeList = ({ navigation }) => {
                       nestedScrollEnabled={true}
                       style={{ maxHeight: 100 }}
                     >
-                      {dropdownOption?.map((option) => {
+                      {dropdownOptionDistrict?.length >0 && dropdownOptionDistrict?.map((option) => {
                         return (
                           <TouchableOpacity
-                            style={styles.dropdownOption}
-                            onPress={() =>
-                              handleSelectOptionclass(
-                                option?.course_name,
-                                option?.course_id
-                              )
-                            }
+                          style={styles.dropdownOption}
+                          onPress={() =>
+                            handleSelectOptionDistrict(option?.name, option?.id)
+                          }
+                        >
+                          <View
+                            style={{
+                              width: Dimensions.get("window").width * 0.2,
+                              alignItems: "center",
+                            }}
                           >
-                            <View
-                              style={
-                                {
-                                  // width: Dimensions.get("window").width * 0.7,
-                                  // alignItems: "center",
-                                }
-                              }
-                            >
-                              <Text>{option.course_name}</Text>
-                            </View>
-                          </TouchableOpacity>
+                            <Text style={{ fontSize: 10 }}>
+                              {option.name}
+                            </Text>
+                          </View>
+                        </TouchableOpacity>
                         );
                       })}
                     </ScrollView>
                   </View>
                 )}
               </View>
+              {/* Block  */}
               <View style={{}}>
                 <TouchableOpacity onPress={toggleDropdownBlock}>
                   <View
@@ -832,7 +888,7 @@ const FreeCollegeList = ({ navigation }) => {
                         }
                         placeholder="Select"
                         placeholderTextColor="rgba(166, 166, 166, 1)"
-                        value={inputValueclass}
+                        value={inputValueBlock}
                         onChangeText={handleInputChangeclass}
                         onBlur={() => handleSelectOptionclass(inputValueclass)}
                         editable={false} // Allow editing only when dropdown is closed
@@ -853,28 +909,25 @@ const FreeCollegeList = ({ navigation }) => {
                       nestedScrollEnabled={true}
                       style={{ maxHeight: 100 }}
                     >
-                      {dropdownOption?.map((option) => {
+                      {dropdownOptionBlock?.length > 0 && dropdownOptionBlock?.map((option) => {
                         return (
                           <TouchableOpacity
-                            style={styles.dropdownOption}
-                            onPress={() =>
-                              handleSelectOptionclass(
-                                option?.course_name,
-                                option?.course_id
-                              )
-                            }
+                          style={styles.dropdownOption}
+                          onPress={() =>
+                            handleSelectOptionBlock(option?.name)
+                          }
+                        >
+                          <View
+                            style={{
+                              width: Dimensions.get("window").width * 0.2,
+                              alignItems: "center",
+                            }}
                           >
-                            <View
-                              style={
-                                {
-                                  // width: Dimensions.get("window").width * 0.7,
-                                  // alignItems: "center",
-                                }
-                              }
-                            >
-                              <Text>{option.course_name}</Text>
-                            </View>
-                          </TouchableOpacity>
+                            <Text style={{ fontSize: 10 }}>
+                              {option.name}
+                            </Text>
+                          </View>
+                        </TouchableOpacity>
                         );
                       })}
                     </ScrollView>
