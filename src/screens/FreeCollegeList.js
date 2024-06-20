@@ -965,7 +965,7 @@ const FreeCollegeList = ({ navigation }) => {
                 {isDropdownOpenState && (
                   <View
                     style={[
-                      styles.dropdownContainer,
+                      styles.dropdownContainer1,
                       { height: "auto", overflow: "hidden", zIndex: 10 },
                     ]}
                   >
@@ -1033,7 +1033,7 @@ const FreeCollegeList = ({ navigation }) => {
                 {isDropdownOpenDistrict && (
                   <View
                     style={[
-                      styles.dropdownContainer,
+                      styles.dropdownContainer1,
                       { height: "auto", overflow: "hidden", zIndex: 1 },
                     ]}
                   >
@@ -1105,7 +1105,7 @@ const FreeCollegeList = ({ navigation }) => {
                 {isDropdownOpenBlock && (
                   <View
                     style={[
-                      styles.dropdownContainer,
+                      styles.dropdownContainer1,
                       { height: "auto", overflow: "hidden", zIndex: 1 },
                     ]}
                   >
@@ -1815,6 +1815,24 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   dropdownContainer: {
+    position: "absolute",
+    top: "100%",
+    left: 0,
+    // zIndex:1,
+    backgroundColor: "yellow",
+    marginTop: 10,
+    width: "88%",
+    backgroundColor: "#fff",
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 4,
+    // padding: 8,
+    zIndex: 1,
+    left: 0,
+    alignSelf: "center",
+    // justifyContent:'center'
+  },
+  dropdownContainer1: {
     position: "absolute",
     top: "100%",
     left: 0,
