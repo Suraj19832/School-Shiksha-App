@@ -883,7 +883,7 @@ const FreeCollegeList = ({ navigation }) => {
                   <View
                     style={[
                       styles.dropdownContainer,
-                      { height: "auto", overflow: "hidden", zIndex: 1 },
+                      { height: "auto", overflow: "hidden", zIndex: 20 },
                     ]}
                   >
                     <ScrollView
