@@ -298,10 +298,11 @@ const FreeCollegeList = ({ navigation }) => {
     course_idd = null,
     search_value = null,
     state_id =null,
-    block_id=null,
-    district_id=null
+    district_id=null,
+    block_id=null
+  
   ) {
-    console.log(state_id ,"dkdkdkdkdkdkdkdk" ,id ,"fifi" ,endpoint ,"slslssl" ,course_idd ,"course id")
+    console.log(state_id ,"dkdkdkdkdkdkdkdk" ,id ,"fifi" ,endpoint ,"slslssl" ,course_idd ,"course id" ,)
     // alert(JSON.stringify({course_idd,state_id}))
     setisLoadingPagenation(true);
     console.log(search_value, "********************************");
@@ -499,13 +500,14 @@ const FreeCollegeList = ({ navigation }) => {
   const toggleDropdownBlock = () => {
     setDropdownOpenBlock(!isDropdownOpenBlock);
   };
-
+const [stateID, setstateID] = useState()
   const handleSelectOptionState = (option, courseid) => {
     // setSelectedOptionclass(option);
     setInputValueState(option);
     setDropdownOpenState(false);
     //here checking the condition does course is select or not
-    console.log(dropdownvalueid  ,"skskksksksksks")
+    // console.log(dropdownvalueid  ,"skskksksksksks")
+    setstateID(courseid)
      if (inputValueclass) {
       fetchUserData("master/organization-course", id, dropdownvalueid, null ,courseid ,null ,null);
      }else{
@@ -534,15 +536,28 @@ const FreeCollegeList = ({ navigation }) => {
         console.error("Error posting data:", error);
       });
   };
+  const [districtid, setdistrictid] = useState()
 const handleSelectOptionDistrict =(districtName ,districtId)=>{
   setInputValueDistrict(districtName)
   setDropdownOpenDistrict(false)
+  setdistrictid(districtId)
+  if (inputValueclass) {
+    fetchUserData("master/organization-course", id, dropdownvalueid, null ,stateID ,districtId ,null);
+   }else{
+    fetchUserData("master/organization-course", id, null, null ,stateID ,districtId ,null);
+   }
   Blockdata(districtId)
 
 }
-const handleSelectOptionBlock = (blockname)=>{
+const handleSelectOptionBlock = (blockname ,blockid)=>{
   setInputValueBlock(blockname)
   setDropdownOpenBlock(false)
+  if (inputValueclass) {
+    fetchUserData("master/organization-course", id, dropdownvalueid, null ,stateID ,districtid ,blockid);
+   }else{
+    fetchUserData("master/organization-course", id, null, null ,stateID ,districtid ,blockid);
+   }
+  
 
 }
 
@@ -943,7 +958,7 @@ const Blockdata =(id)=>{
                           <TouchableOpacity
                           style={styles.dropdownOption}
                           onPress={() =>
-                            handleSelectOptionBlock(option?.name)
+                            handleSelectOptionBlock(option?.name ,option?.id)
                           }
                         >
                           <View
