@@ -225,12 +225,79 @@ const FreeCollegeList = ({ navigation }) => {
     setdropdownvalueid(courseid);
     setInputValueclass(option);
     setDropdownOpenclass(false);
-    setInputValueState("");
-    setInputValueDistrict("");
-    setInputValueBlock("");
+
+
+
+    if (inputValueState ) {
+      fetchUserAllData(
+        "master/organization-course",
+        id,
+        courseid,
+        null,
+        stateID,
+        null,
+        null
+      );
+      fetchUserData(
+        "master/organization-course",
+        id,
+        courseid,
+        null,
+        null,
+        null,
+        null
+      );
+    }
+    if (inputValueState && inputValueDistrict ) {
+      fetchUserAllData(
+        "master/organization-course",
+        id,
+        courseid,
+        null,
+        stateID,
+        districtid,
+        
+      );
+      fetchUserData(
+        "master/organization-course",
+        id,
+        courseid,
+        null,
+        stateID,
+        districtid,
+        null)
+    }
+    if (inputValueState && inputValueDistrict && inputValueBlock) {
+      fetchUserAllData(
+        "master/organization-course",
+        id,
+        courseid,
+        null,
+        stateID,
+        districtid,
+        blockId
+        
+      );
+      fetchUserData(
+        "master/organization-course",
+        id,
+        courseid,
+        null,
+        stateID,
+        districtid,
+        blockId)
+    }
+    // setInputValueState("");
+    // setInputValueDistrict("");
+    // setInputValueBlock("");
     console.log("############################");
-    fetchUserAllData("master/organization-course", id, courseid);
-    fetchUserData("master/organization-course", id, courseid);
+    if (!inputValueState && !inputValueDistrict && !inputValueBlock) {
+      fetchUserAllData("master/organization-course", id, courseid);
+   fetchUserData("master/organization-course", id, courseid);
+    }
+
+    // fetchUserAllData("master/organization-course", id, courseid);
+    // fetchUserData("master/organization-course", id, courseid);
   };
   const handleInputChangeclass = (text) => {
     setInputValueclass(text);
@@ -666,7 +733,9 @@ const FreeCollegeList = ({ navigation }) => {
     }
     Blockdata(districtId);
   };
+  const [blockId, setblockId] = useState()
   const handleSelectOptionBlock = (blockname, blockid) => {
+    setblockId(blockid)
     setInputValueBlock(blockname);
     setDropdownOpenBlock(false);
     if (inputValueclass) {
