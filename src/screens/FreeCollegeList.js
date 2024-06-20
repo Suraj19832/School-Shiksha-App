@@ -44,6 +44,7 @@ import { useRoute } from "@react-navigation/native";
 import { AuthContext } from "../../Utils/context/AuthContext";
 import {
   GetfetchDataWithParams,
+  getdata,
   objectToFormData,
   postDataWithFormDataWithToken,
 } from "../../Helper/Helper";
@@ -190,6 +191,7 @@ const FreeCollegeList = ({ navigation }) => {
   const [isLoadingcard, setisLoadingcard] = useState(true);
   const [isField, setisField] = useState();
   const [refreshing, setRefreshing] = useState(false);
+
   const showToast = (message) => {
     if (Platform.OS === "android") {
       ToastAndroid.show(message, ToastAndroid.SHORT);
@@ -207,6 +209,7 @@ const FreeCollegeList = ({ navigation }) => {
   const [selectedOptionclass, setSelectedOptionclass] = useState(null);
   const [inputValueclass, setInputValueclass] = useState("");
   const [getdatalength, setgetdatalength] = useState([]);
+
   const toggleDropdownclass = () => {
     setDropdownOpenclass(!isDropdownOpenclass);
     fetchDropDown("master/courses", id);
@@ -400,7 +403,7 @@ const FreeCollegeList = ({ navigation }) => {
     };
   }
 
-  const formatKey = (key) => key.replace(/_/g, " ").toUpperCase();
+  const formatKey = (key) => key?.replace(/_/g, " ").toUpperCase();
   const formatAmount = (amount) => `₹${amount}`;
   const formatCourseDuration = (duration) => `${duration} months`;
 
@@ -450,9 +453,17 @@ const FreeCollegeList = ({ navigation }) => {
   const [isDropdownOpenState, setDropdownOpenState] = useState(false);
   const [isDropdownOpenDistrict, setDropdownOpenDistrict] = useState(false);
   const [isDropdownOpenBlock, setDropdownOpenBlock] = useState(false);
+  const [dropdownOptionState, setdropdownOptionState] = useState([]);
+  const [inputValueState, setInputValueState] = useState("");
+
+  const handleInputChangecState = (text) => {
+    inputValueState(text);
+    setDropdownOpenState(null); // Clear selected option when user edits input
+  };
 
   const toggleDropdownState = () => {
     setDropdownOpenState(!isDropdownOpenState);
+    fetchDropDownState("master/state");
   };
   const toggleDropdownDistrict = () => {
     setDropdownOpenDistrict(!isDropdownOpenDistrict);
@@ -461,20 +472,27 @@ const FreeCollegeList = ({ navigation }) => {
     setDropdownOpenBlock(!isDropdownOpenBlock);
   };
 
-  // const whatsAppClicked = (value) => {
-  //   const collegeName = value?.organization_name;
-  //   const courseName = value?.course_name;
-  //   const courseDuration = value?.course_duration;
-  //   const courseAmount = value?.course_fees;
-  //   const imageData = value?.logo;
-  //   const whatsAppText = `I want to purchase this course !! \nOrganization Name: ${collegeName} \nCourse Name: ${courseName} \nCourse Duration: ${courseDuration} \nCourse Fees: ${courseAmount} \n${imageData}`;
-  //   const whatsAppUrl = `whatsapp://send?phone=${
-  //     value?.whatsapp_number
-  //   }&text=${encodeURIComponent(whatsAppText)}`;
-  //   Linking.openURL(whatsAppUrl).catch((err) => {
-  //     console.log(err);
-  //   });
-  // };
+  const handleSelectOptionState = (option, courseid) => {
+    // setSelectedOptionclass(option);
+    setdropdownvalueid(courseid);
+    setInputValueState(option);
+    setDropdownOpenState(false);
+    // console.log("############################");
+    // fetchUserAllData("master/organization-course", id, courseid);
+    // fetchUserData("master/organization-course", id, courseid);
+  };
+
+  async function fetchDropDownState(endpoint, id) {
+    try {
+      getdata(endpoint).then((res) => {
+        console.log("free college dropdown state>>>>>>>>>>>>>>>>>>>>", res);
+        setdropdownOptionState(res?.data);
+        // setisLoading(false);
+      });
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  }
 
   const loadmore = () => {
     setlimit(limit + 10);
@@ -657,7 +675,7 @@ const FreeCollegeList = ({ navigation }) => {
               style={{ flexDirection: "row", justifyContent: "space-between" }}
             >
               <View style={{}}>
-                <TouchableOpacity onPress={toggleDropdownDistrict}>
+                <TouchableOpacity onPress={toggleDropdownState}>
                   <View
                     style={[
                       styles.inputbox_container1,
@@ -675,9 +693,11 @@ const FreeCollegeList = ({ navigation }) => {
                         style={(styles.input1, { color: "black" })}
                         placeholder="Select"
                         placeholderTextColor="rgba(166, 166, 166, 1)"
-                        value={inputValueclass}
-                        onChangeText={handleInputChangeclass}
-                        onBlur={() => handleSelectOptionclass(inputValueclass)}
+                        value={setInputValueState}
+                        onChangeText={handleInputChangecState}
+                        onBlur={() =>
+                          handleSelectOptionState(setInputValueState)
+                        }
                         editable={false} // Allow editing only when dropdown is closed
                       />
                     </View>
@@ -696,26 +716,23 @@ const FreeCollegeList = ({ navigation }) => {
                       nestedScrollEnabled={true}
                       style={{ maxHeight: 100 }}
                     >
-                      {dropdownOption?.map((option) => {
+                      {dropdownOptionState?.map((option) => {
                         return (
                           <TouchableOpacity
                             style={styles.dropdownOption}
                             onPress={() =>
-                              handleSelectOptionclass(
-                                option?.course_name,
-                                option?.course_id
-                              )
+                              handleSelectOptionState(option?.name, option?.id)
                             }
                           >
                             <View
-                              style={
-                                {
-                                  // width: Dimensions.get("window").width * 0.7,
-                                  // alignItems: "center",
-                                }
-                              }
+                              style={{
+                                width: Dimensions.get("window").width * 0.2,
+                                alignItems: "center",
+                              }}
                             >
-                              <Text>{option.course_name}</Text>
+                              <Text style={{ fontSize: 10 }}>
+                                {option.name}
+                              </Text>
                             </View>
                           </TouchableOpacity>
                         );
@@ -1062,13 +1079,13 @@ const FreeCollegeList = ({ navigation }) => {
             FreeCollegeList?.map((value) => {
               const formatKey = (key) => {
                 return key
-                  .replace(/_/g, " ") // Replace underscores with spaces
-                  .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize first letter of each word
+                  ?.replace(/_/g, " ")
+                  ?.replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize first letter of each word
               };
               const formatAmount = (amount) => {
                 return `₹ ${amount
                   .toString()
-                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")} `;
+                  ?.replace(/\B(?=(\d{3})+(?!\d))/g, ",")} `;
               };
               const formatCourseDuration = (duration) => {
                 if (duration == "1") {
@@ -1079,8 +1096,10 @@ const FreeCollegeList = ({ navigation }) => {
                 return duration;
               };
               var requiredFields = JSON.parse(value?.required_field);
-            
-              const termsList = value?.terms_and_conditions.trim().split('\r\n');
+
+              const termsList = value?.terms_and_conditions
+                ?.trim()
+                ?.split("\r\n");
               // console.log(termsList)
               // console.log("jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj",requiredFields?.is_passport_photo_required)
               var extraFields = JSON.parse(value?.extra_data);
@@ -1092,7 +1111,9 @@ const FreeCollegeList = ({ navigation }) => {
               }
               if (value?.course_fees != "0.00") {
                 extraFields = {
-                  [formatKey(value?.fees_type)]: formatAmount(value?.course_fees),
+                  [formatKey(value?.fees_type)]: formatAmount(
+                    value?.course_fees
+                  ),
                   ...extraFields,
                 };
               }
@@ -1173,7 +1194,7 @@ const FreeCollegeList = ({ navigation }) => {
 
                           logo: value?.logo,
                           orgID: value?.organization_course_id,
-                          termsList:termsList
+                          termsList: termsList,
                         });
                       }
                     } else {
