@@ -1408,6 +1408,7 @@ const FreeCollegeList = ({ navigation }) => {
                           heading: heading,
                           organization_Id: value?.organization_id,
                           Location: requiredFields?.is_location_required,
+                          feetype:value?.fees_type,
                           aadharRequired:
                             requiredFields?.is_aadhar_required != null
                               ? requiredFields?.is_aadhar_required

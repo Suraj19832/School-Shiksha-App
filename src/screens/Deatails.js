@@ -113,8 +113,9 @@ const Details = ({ navigation }) => {
     PassportPhotoRequired,
     TermAndConditionRequird,
     EducationFieldRequired,
-    feetype,
+    feetype
   } = route.params;
+  console.log(feetype ,":::::")
 
   function firstWordPicker(name) {
     const value = name.split(" ");
