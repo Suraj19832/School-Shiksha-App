@@ -222,6 +222,9 @@ const FreeCollegeList = ({ navigation }) => {
     setdropdownvalueid(courseid);
     setInputValueclass(option);
     setDropdownOpenclass(false);
+    setInputValueState("");
+              setInputValueDistrict("");
+              setInputValueBlock("");
     console.log("############################");
     fetchUserAllData("master/organization-course", id, courseid);
     fetchUserData("master/organization-course", id, courseid);
@@ -537,6 +540,10 @@ const FreeCollegeList = ({ navigation }) => {
   const handleSelectOptionState = (option, courseid) => {
     // setSelectedOptionclass(option);
     setInputValueState(option);
+
+    setInputValueDistrict("");
+    setInputValueBlock("");
+
     setDropdownOpenState(false);
     //here checking the condition does course is select or not
     // console.log(dropdownvalueid  ,"skskksksksksks")
@@ -606,6 +613,7 @@ const FreeCollegeList = ({ navigation }) => {
   const handleSelectOptionDistrict = (districtName, districtId) => {
     setInputValueDistrict(districtName);
     setDropdownOpenDistrict(false);
+    setInputValueBlock("");
     setdistrictid(districtId);
     if (inputValueclass) {
       fetchUserAllData(
@@ -938,7 +946,7 @@ const FreeCollegeList = ({ navigation }) => {
                         onBlur={() =>
                           handleSelectOptionState(setInputValueState)
                         }
-                        editable={false} // Allow editing only when dropdown is closed
+                        editable={false}
                       />
                     </View>
 
@@ -982,7 +990,7 @@ const FreeCollegeList = ({ navigation }) => {
                 )}
               </View>
 
-              {/* district  */}
+           
               <View style={{}}>
                 <TouchableOpacity onPress={toggleDropdownDistrict}>
                   <View
@@ -1007,7 +1015,7 @@ const FreeCollegeList = ({ navigation }) => {
                         value={inputValueDistrict}
                         onChangeText={handleInputChangeclass}
                         onBlur={() => handleSelectOptionclass(inputValueclass)}
-                        editable={false} // Allow editing only when dropdown is closed
+                        editable={false} 
                       />
                     </View>
 
@@ -1054,7 +1062,7 @@ const FreeCollegeList = ({ navigation }) => {
                   </View>
                 )}
               </View>
-              {/* Block  */}
+       
               <View style={{}}>
                 <TouchableOpacity onPress={toggleDropdownBlock}>
                   <View
@@ -1079,7 +1087,7 @@ const FreeCollegeList = ({ navigation }) => {
                         value={inputValueBlock}
                         onChangeText={handleInputChangeclass}
                         onBlur={() => handleSelectOptionclass(inputValueclass)}
-                        editable={false} // Allow editing only when dropdown is closed
+                        editable={false}
                       />
                     </View>
 
@@ -1127,6 +1135,9 @@ const FreeCollegeList = ({ navigation }) => {
                 )}
               </View>
             </View>
+
+
+            
           </View>
         </View>
 
