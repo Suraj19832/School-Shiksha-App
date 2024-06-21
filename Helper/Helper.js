@@ -242,7 +242,7 @@ export const objectToFormDatawithnestedObject = (obj) => {
 
   return formData;
 };
-
+//this function will take the result when pic any image from library or picture and return the url which is send in post data as api call for image
 export const getFileData = (obj = {}) => {
   let uri = obj?.assets ? obj?.assets[0]?.uri : obj?.uri;
 

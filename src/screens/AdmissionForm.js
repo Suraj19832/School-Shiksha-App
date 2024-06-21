@@ -53,6 +53,7 @@ const AdmissionForm = ({ navigation }) => {
   const [HSmarksheetUribyApi, setHSmarksheetUribyApi] = useState();
   const [PassportUribyApi, setPassportUribyApi] = useState();
   const [IncomeCertificateUribyApi, setIncomeCertificateUribyApi] = useState();
+  const [CVUribyApi, setCVUribyApi] = useState();
   const [DistrictDataaa, setDistrictData] = useState();
   const [stateInfo, setStateInfo] = useState();
 
@@ -69,6 +70,7 @@ const AdmissionForm = ({ navigation }) => {
   //   "here is the uri come from the api ic",
   //   IncomeCertificateUribyApi
   // );
+  console.log(CVUribyApi ,"%5555555555555555555555555555")
 
   //States for sending the data in for file upload api
   const [aadharFrontForUpload, setaadharFrontForUpload] = useState();
@@ -594,6 +596,15 @@ const AdmissionForm = ({ navigation }) => {
   const [isPickingFileIncomeCertificate, setIsPickingFileIncomeCertificate] =
     useState(false);
 
+
+    // state for cv upload 
+    const [isPickingFileCV, setIsPickingFileCV] =
+    useState(false);
+    const [fileUriCV, setFileUriCV] =
+    useState(null);
+  const [errorMessageCV, setErrorMessageCV] =
+    useState(null);
+
   // Passport
   const [capturedImagePassport, setCapturedImagePassport] = useState(null);
   const [modalVisiblePassport, setModalVisiblePassport] = useState(false);
@@ -615,6 +626,7 @@ const AdmissionForm = ({ navigation }) => {
   // Add camera functionaly for income certifucate
   const [hasPermission, setHasPermission] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisibleCV, setModalVisibleCV] = useState(false);
   const [capturedImage, setCapturedImage] = useState(null);
   const cameraRef = useRef(null);
   const [stateDataapi, setStateDataapi] = useState();
@@ -693,6 +705,7 @@ const AdmissionForm = ({ navigation }) => {
     setModalVisibleHSMarksheet(false);
     setModalVisibleAddharBack(false);
     setModalVisibleAddharfront(false);
+    setModalVisibleCV(false)
   };
 
   const takePicture = async (options) => {
@@ -1202,6 +1215,67 @@ const AdmissionForm = ({ navigation }) => {
     closeModal();
   };
 
+
+  //For cv upload function
+  const pickFileCV = async () => {
+    if (isPickingFileCV) {
+      console.log("Document picking in progress");
+      return;
+    }
+
+    setIsPickingFileCV(true);
+    setErrorMessageCV(null);
+
+    try {
+      const result = await DocumentPicker.getDocumentAsync({
+        type: "*/*",
+      });
+      // setIncomeCertificateForUpload(result);
+      // console.log("File picker result:", result);
+
+      if (
+        !result.canceled &&
+        result.assets &&
+        result.assets.length > 0 &&
+        result.assets[0].uri
+      ) {
+        console.log("File picked:", result.assets[0].uri);
+        setFileUriCV(result.assets[0].uri);
+        const newtry = getFileData(result);
+        console.log(newtry, "sdlkfjoijohguihgiuv");
+        const postData = {
+          image: newtry,
+        };
+        console.log("++++++++++++++++postData", postData);
+
+        const formDatablock = objectToFormData(postData);
+        // console.log(formDatablock,"djeifjifgh")
+        postDataWithFormDataWithBaseUrl(
+          "https://dev.ehostingguru.com/school-shiksha/upload/index.php",
+          formDatablock
+        ).then((res) => {
+          console.log(
+            "-----------------res.status in upload----------",
+            res.status
+          );
+          setCVUribyApi(res?.data?.file_name);
+        });
+      } else if (result.canceled) {
+        console.log("File picking cancelled");
+      } else {
+        console.log("File picking failed");
+        setErrorMessageCV("File picking failed");
+      }
+    } catch (error) {
+      console.error("Error picking file:", error);
+      setErrorMessageCV("Error picking file");
+    } finally {
+      setIsPickingFileCV(false);
+    }
+    closeModal();
+  };
+  //for cv upload function end
+
   //Delete function for addhar front
   const deleteImage = () => {
     setFileUri(null);
@@ -1232,6 +1306,12 @@ const AdmissionForm = ({ navigation }) => {
     setFileUriIncomeCertificate(null);
     setCapturedImage(null);
     setIncomeCertificateUribyApi();
+  };
+
+  const deleteImageCV = () => {
+    setFileUriCV(null);
+    // setCapturedImage(null);
+    setCVUribyApi();
   };
 
   //   const [statedata ,setStateData] =useState()
@@ -1318,6 +1398,9 @@ const AdmissionForm = ({ navigation }) => {
       return message?.substring(0, maxLength) + "...";
     }
     return message;
+  };
+  const getFileNameCV = (filePath) => {
+    return filePath.split('/').pop();
   };
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
@@ -2970,6 +3053,170 @@ const AdmissionForm = ({ navigation }) => {
                   </Modal>
                 </View>
               )}
+
+
+              {/* job cv  */}
+
+            
+                <View>
+                  {!fileUriCV && (
+                    <View style={styles.fields_main}>
+                      <Text style={styles.inputHeading}>
+                        Upload CV
+                      </Text>
+                      <TouchableOpacity
+                        style={styles.uploadBox}
+                        onPress={pickFileCV}
+                      >
+                        <View style={styles.uploadItems}>
+                          <SimpleLineIcons
+                            name="cloud-upload"
+                            size={22}
+                            color="rgba(166, 166, 166, 1)"
+                          />
+                          <Text style={styles.uploadtext}>browse File</Text>
+                        </View>
+                      </TouchableOpacity>
+                    </View>
+                  )}
+                  {fileUriCV && (
+                    <View>
+                      <View
+                        style={[
+                          styles.titleContainer,
+                          {
+                            justifyContent: "space-between",
+                            flexDirection: "row",
+                            alignItems: "center",
+                          },
+                        ]}
+                      >
+                        <Text style={styles.inputHeading}>
+                          Upload CV
+                        </Text>
+                        <TouchableOpacity
+                          onPress={deleteImageCV}
+                        >
+                          <AntDesign name="delete" size={20} color="#FF0000" />
+                        </TouchableOpacity>
+                      </View>
+                      <View style={styles.imageContainer}>
+                        {CVUribyApi ? (
+                          // <Image
+                          //   source={{ uri: fileUriIncomeCertificate }}
+                          //   style={styles.uploadedImage}
+                          // />
+                          <>
+                                            <Image
+        source={require('../../assets/img/pdf.png')}
+        style={styles.uploadedImage}
+      />
+      <Text>{getFileNameCV(fileUriCV)}</Text>
+                          </>
+        
+                        ) : (
+                          <View
+                            style={[
+                              styles.uploadedImage,
+                              { justifyContent: "center" },
+                            ]}
+                          >
+                            <ActivityIndicator
+                              size="medium"
+                              color="rgba(0, 54, 126, 1)"
+                            />
+                          </View>
+                        )}
+                      </View>
+                    </View>
+                  )}
+                  {/* {capturedImage && (
+                    <View>
+                      <View
+                        style={[
+                          styles.titleContainer,
+                          {
+                            justifyContent: "space-between",
+                            flexDirection: "row",
+                            alignItems: "center",
+                          },
+                        ]}
+                      >
+                        <Text style={styles.inputHeading}>
+                          Upload CV
+                        </Text>
+                        <TouchableOpacity
+                          onPress={deleteImageIncomeCertificate}
+                        >
+                          <AntDesign name="delete" size={20} color="#FF0000" />
+                        </TouchableOpacity>
+                      </View>
+                      <View style={styles.imageContainer}>
+                        {IncomeCertificateUribyApi ? (
+                          <Image
+                            source={{ uri: capturedImage }}
+                            style={styles.uploadedImage}
+                          />
+                        ) : (
+                          <View
+                            style={[
+                              styles.uploadedImage,
+                              { justifyContent: "center" },
+                            ]}
+                          >
+                            <ActivityIndicator
+                              size="medium"
+                              color="rgba(0, 54, 126, 1)"
+                            />
+                          </View>
+                        )}
+                      </View>
+                    </View>
+                  )} */}
+
+                  {errorMessageIncomeCertificate && (
+                    <Text style={styles.errorMessage}>
+                      {errorMessageIncomeCertificate}
+                    </Text>
+                  )}
+                  {/* <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={modalVisibleCV}
+                    onRequestClose={closeModal}
+                  >
+                    <View style={styles.modalContainer}>
+                      <View style={styles.modalContent}>
+                        <TouchableOpacity
+                          style={styles.modalOption}
+                          onPress={() => {
+                            takePicture("income");
+                          }}
+                        >
+                          <Text style={styles.modalOptionText}>Take Photo</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          style={styles.modalOption}
+                          onPress={pickFileCV}
+                        >
+                          <Text style={styles.modalOptionText}>
+                            Choose from Library
+                          </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          style={styles.modalOption}
+                          onPress={closeModal}
+                        >
+                          <Text style={styles.modalOptionText}>Cancel</Text>
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                  </Modal> */}
+                </View>
+            
+
+{/* job cv end  */}
+
               {TermAndConditionRequird === "yes" && (
                 <View style={styles.conditions}>
                   {/* <Text style={styles.conditiontext}>
