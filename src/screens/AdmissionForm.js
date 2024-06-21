@@ -113,7 +113,20 @@ const AdmissionForm = ({ navigation }) => {
   } = route.params;
   console.log(
     "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$",
-    termsList
+    collegeName,
+    courseName,
+    id,
+    aadharRequired,
+    IncomeCertificateRequired,
+    logo,
+    orgID,
+    courseid,
+    GuardiansDetailsRequired,
+    PassportPhotoRequired,
+    TermAndConditionRequird,
+    EducationFieldRequired,
+    termsList,"teran ",
+    ServiceName
   );
 
   // users data

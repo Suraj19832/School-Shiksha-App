@@ -1,4 +1,4 @@
-const APP_ENV = "uat"; // dev, test , uat
+const APP_ENV = "dev"; // dev, test , uat
 
 export default {
   API_BASE_URL_V1: getAppBaseUrl(APP_ENV),

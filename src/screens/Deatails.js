@@ -113,9 +113,10 @@ const Details = ({ navigation }) => {
     PassportPhotoRequired,
     TermAndConditionRequird,
     EducationFieldRequired,
-    feetype
+    feetype,
+    termsList
   } = route.params;
-  console.log(feetype ,":::::")
+  console.log(termsList ,":::::")
 
   function firstWordPicker(name) {
     const value = name.split(" ");
@@ -281,7 +282,8 @@ const Details = ({ navigation }) => {
       .then((res) => {
         console.log(res?.status)
         if (res?.status) {
-          console.log(register_through ,"MM")
+          console.log(termsList ,"MMWWWWWWWWWWWWWWWWWWWMMMMMMMMMMMMMMMMMMMMMM")
+
           if (register_through === "internal_form_submit") {
             console.log("inside the function ")
             navigation.navigate("freeAdmissionForm", {
@@ -290,9 +292,14 @@ const Details = ({ navigation }) => {
               id,
               IncomeCertificateRequired,
               aadharRequired,
+              TermAndConditionRequird,
+              EducationFieldRequired,
+              PassportPhotoRequired,
+              GuardiansDetailsRequired,
               logo,
               courseid,
-              ServiceName
+              ServiceName,
+              termsList
             });
           } else {
             Linking.openURL(url);

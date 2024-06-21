@@ -1523,6 +1523,7 @@ const FreeCollegeList = ({ navigation }) => {
                               ? requiredFields?.is_education_qualification_required
                               : "no",
                           ServiceName: value?.service_type,
+                          termsList:termsList
                         })
                       }
                     >
