@@ -339,12 +339,17 @@ const Dashboard = ({ navigation }) => {
 
   const handleNavigate = (item) => {
     const requiredFields = JSON.parse(item?.required_field);
+    console.log(
+      requiredFields,
+      "OOOOOOOOOOOOOOOOOOYYYYYYYYYYYYYYYYYYYYYYYWWWWWWWWWWWW"
+    );
     const isActive = isServiceActive(item.id);
     if (isActive) {
       navigation.navigate("freeCollege", {
         id: item.id,
         heading: item.service_name,
         searchrequired: requiredFields?.is_search_required,
+        locationRequired: requiredFields?.is_location_required,
       });
     } else {
       navigation.navigate("membershipPlan");
@@ -1017,6 +1022,10 @@ const Dashboard = ({ navigation }) => {
                         {carddata[index]?.services
                           .slice(0, isOthers ? 3 : 2)
                           ?.map((cd, cdIndex) => {
+                            console.log(
+                              cd,
+                              ">>>>>>>>>>MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM"
+                            );
                             const isActive = isServiceActive(cd.id.toString());
                             return (
                               <TouchableOpacity

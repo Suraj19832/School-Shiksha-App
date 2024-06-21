@@ -303,7 +303,7 @@ const FreeCollegeList = ({ navigation }) => {
   };
 
   const route = useRoute();
-  const { id, heading, searchrequired } = route.params;
+  const { id, heading, searchrequired, locationRequired } = route.params;
 
   // console.log("checking id is comig or not", id)
   const [FreeCollegeList, setFreeCollegeList] = useState([]);
@@ -1003,140 +1003,67 @@ const FreeCollegeList = ({ navigation }) => {
 
               {/* three drop down */}
 
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  width: "89%",
-                  alignSelf: "center",
-                  // flexWrap: "wrap",
-                  // gap: 4,
-                }}
-              >
-                <View style={{ width: "31%" }}>
-                  <TouchableOpacity onPress={toggleDropdownState}>
-                    <View
-                      style={[
-                        styles.inputbox_container1,
-                        { backgroundColor: "#FDF1DD" },
-                      ]}
-                    >
+              {locationRequired === "yes" && (
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    width: "89%",
+                    alignSelf: "center",
+                    // flexWrap: "wrap",
+                    // gap: 4,
+                  }}
+                >
+                  <View style={{ width: "31%" }}>
+                    <TouchableOpacity onPress={toggleDropdownState}>
                       <View
-                        style={{
-                          flexDirection: "row",
-                          gap: 4,
-                          alignItems: "center",
-                        }}
+                        style={[
+                          styles.inputbox_container1,
+                          { backgroundColor: "#FDF1DD" },
+                        ]}
                       >
-                        <TextInput
-                          style={
-                            (styles.input1, { color: "black", fontSize: 11 })
-                          }
-                          placeholder="Select"
-                          placeholderTextColor="rgba(166, 166, 166, 1)"
-                          value={truncateName(inputValueState)}
-                          onChangeText={handleInputChangecState}
-                          onBlur={() =>
-                            handleSelectOptionState(setInputValueState)
-                          }
-                          editable={false}
-                        />
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            gap: 4,
+                            alignItems: "center",
+                          }}
+                        >
+                          <TextInput
+                            style={
+                              (styles.input1, { color: "black", fontSize: 11 })
+                            }
+                            placeholder="Select"
+                            placeholderTextColor="rgba(166, 166, 166, 1)"
+                            value={truncateName(inputValueState)}
+                            onChangeText={handleInputChangecState}
+                            onBlur={() =>
+                              handleSelectOptionState(setInputValueState)
+                            }
+                            editable={false}
+                          />
+                        </View>
+
+                        <AntDesign name="caretdown" size={16} color="#03357D" />
                       </View>
-
-                      <AntDesign name="caretdown" size={16} color="#03357D" />
-                    </View>
-                  </TouchableOpacity>
-                  {isDropdownOpenState && (
-                    <View
-                      style={[
-                        styles.dropdownContainer1,
-                        { height: "auto", overflow: "hidden", zIndex: 10 },
-                      ]}
-                    >
-                      <ScrollView
-                        nestedScrollEnabled={true}
-                        style={{ maxHeight: 100 }}
-                      >
-                        {dropdownOptionState?.map((option) => {
-                          return (
-                            <TouchableOpacity
-                              style={styles.dropdownOption}
-                              onPress={() =>
-                                handleSelectOptionState(
-                                  option?.name,
-                                  option?.id
-                                )
-                              }
-                            >
-                              <View
-                                style={{
-                                  width: Dimensions.get("window").width * 0.2,
-                                  alignItems: "center",
-                                }}
-                              >
-                                <Text style={{ fontSize: 10 }}>
-                                  {option.name}
-                                </Text>
-                              </View>
-                            </TouchableOpacity>
-                          );
-                        })}
-                      </ScrollView>
-                    </View>
-                  )}
-                </View>
-
-                <View style={{ width: "31%" }}>
-                  <TouchableOpacity onPress={toggleDropdownDistrict}>
-                    <View
-                      style={[
-                        styles.inputbox_container1,
-                        { backgroundColor: "#FDF1DD" },
-                      ]}
-                    >
+                    </TouchableOpacity>
+                    {isDropdownOpenState && (
                       <View
-                        style={{
-                          flexDirection: "row",
-                          gap: 4,
-                          alignItems: "center",
-                        }}
+                        style={[
+                          styles.dropdownContainer1,
+                          { height: "auto", overflow: "hidden", zIndex: 10 },
+                        ]}
                       >
-                        <TextInput
-                          style={
-                            (styles.input1, { color: "black", fontSize: 11 })
-                          }
-                          placeholder="Select"
-                          placeholderTextColor="rgba(166, 166, 166, 1)"
-                          value={truncateName(inputValueDistrict)}
-                          onChangeText={handleInputChangeclass}
-                          onBlur={() =>
-                            handleSelectOptionclass(inputValueclass)
-                          }
-                          editable={false}
-                        />
-                      </View>
-
-                      <AntDesign name="caretdown" size={16} color="#03357D" />
-                    </View>
-                  </TouchableOpacity>
-                  {isDropdownOpenDistrict && (
-                    <View
-                      style={[
-                        styles.dropdownContainer1,
-                        { height: "auto", overflow: "hidden", zIndex: 1 },
-                      ]}
-                    >
-                      <ScrollView
-                        nestedScrollEnabled={true}
-                        style={{ maxHeight: 100 }}
-                      >
-                        {dropdownOptionDistrict?.length > 0 &&
-                          dropdownOptionDistrict?.map((option) => {
+                        <ScrollView
+                          nestedScrollEnabled={true}
+                          style={{ maxHeight: 100 }}
+                        >
+                          {dropdownOptionState?.map((option) => {
                             return (
                               <TouchableOpacity
                                 style={styles.dropdownOption}
                                 onPress={() =>
-                                  handleSelectOptionDistrict(
+                                  handleSelectOptionState(
                                     option?.name,
                                     option?.id
                                   )
@@ -1155,85 +1082,162 @@ const FreeCollegeList = ({ navigation }) => {
                               </TouchableOpacity>
                             );
                           })}
-                      </ScrollView>
-                    </View>
-                  )}
-                </View>
-
-                <View style={{ width: "31%" }}>
-                  <TouchableOpacity onPress={toggleDropdownBlock}>
-                    <View
-                      style={[
-                        styles.inputbox_container1,
-                        { backgroundColor: "#FDF1DD" },
-                      ]}
-                    >
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          gap: 4,
-                          alignItems: "center",
-                        }}
-                      >
-                        <TextInput
-                          style={
-                            (styles.input1, { color: "black", fontSize: 11 })
-                          }
-                          placeholder="Select"
-                          placeholderTextColor="rgba(166, 166, 166, 1)"
-                          value={truncateName(inputValueBlock)}
-                          onChangeText={handleInputChangeclass}
-                          onBlur={() =>
-                            handleSelectOptionclass(inputValueclass)
-                          }
-                          editable={false}
-                        />
+                        </ScrollView>
                       </View>
+                    )}
+                  </View>
 
-                      <AntDesign name="caretdown" size={16} color="#03357D" />
-                    </View>
-                  </TouchableOpacity>
-                  {isDropdownOpenBlock && (
-                    <View
-                      style={[
-                        styles.dropdownContainer1,
-                        { height: "auto", overflow: "hidden", zIndex: 1 },
-                      ]}
-                    >
-                      <ScrollView
-                        nestedScrollEnabled={true}
-                        style={{ maxHeight: 100 }}
+                  <View style={{ width: "31%" }}>
+                    <TouchableOpacity onPress={toggleDropdownDistrict}>
+                      <View
+                        style={[
+                          styles.inputbox_container1,
+                          { backgroundColor: "#FDF1DD" },
+                        ]}
                       >
-                        {dropdownOptionBlock?.length > 0 &&
-                          dropdownOptionBlock?.map((option) => {
-                            return (
-                              <TouchableOpacity
-                                style={styles.dropdownOption}
-                                onPress={() =>
-                                  handleSelectOptionBlock(
-                                    option?.name,
-                                    option?.id
-                                  )
-                                }
-                              >
-                                <View
-                                  style={{
-                                    width: Dimensions.get("window").width * 0.2,
-                                    alignItems: "center",
-                                  }}
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            gap: 4,
+                            alignItems: "center",
+                          }}
+                        >
+                          <TextInput
+                            style={
+                              (styles.input1, { color: "black", fontSize: 11 })
+                            }
+                            placeholder="Select"
+                            placeholderTextColor="rgba(166, 166, 166, 1)"
+                            value={truncateName(inputValueDistrict)}
+                            onChangeText={handleInputChangeclass}
+                            onBlur={() =>
+                              handleSelectOptionclass(inputValueclass)
+                            }
+                            editable={false}
+                          />
+                        </View>
+
+                        <AntDesign name="caretdown" size={16} color="#03357D" />
+                      </View>
+                    </TouchableOpacity>
+                    {isDropdownOpenDistrict && (
+                      <View
+                        style={[
+                          styles.dropdownContainer1,
+                          { height: "auto", overflow: "hidden", zIndex: 1 },
+                        ]}
+                      >
+                        <ScrollView
+                          nestedScrollEnabled={true}
+                          style={{ maxHeight: 100 }}
+                        >
+                          {dropdownOptionDistrict?.length > 0 &&
+                            dropdownOptionDistrict?.map((option) => {
+                              return (
+                                <TouchableOpacity
+                                  style={styles.dropdownOption}
+                                  onPress={() =>
+                                    handleSelectOptionDistrict(
+                                      option?.name,
+                                      option?.id
+                                    )
+                                  }
                                 >
-                                  <Text style={{ fontSize: 10 }}>
-                                    {option.name}
-                                  </Text>
-                                </View>
-                              </TouchableOpacity>
-                            );
-                          })}
-                      </ScrollView>
-                    </View>
-                  )}
+                                  <View
+                                    style={{
+                                      width:
+                                        Dimensions.get("window").width * 0.2,
+                                      alignItems: "center",
+                                    }}
+                                  >
+                                    <Text style={{ fontSize: 10 }}>
+                                      {option.name}
+                                    </Text>
+                                  </View>
+                                </TouchableOpacity>
+                              );
+                            })}
+                        </ScrollView>
+                      </View>
+                    )}
+                  </View>
+
+                  <View style={{ width: "31%" }}>
+                    <TouchableOpacity onPress={toggleDropdownBlock}>
+                      <View
+                        style={[
+                          styles.inputbox_container1,
+                          { backgroundColor: "#FDF1DD" },
+                        ]}
+                      >
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            gap: 4,
+                            alignItems: "center",
+                          }}
+                        >
+                          <TextInput
+                            style={
+                              (styles.input1, { color: "black", fontSize: 11 })
+                            }
+                            placeholder="Select"
+                            placeholderTextColor="rgba(166, 166, 166, 1)"
+                            value={truncateName(inputValueBlock)}
+                            onChangeText={handleInputChangeclass}
+                            onBlur={() =>
+                              handleSelectOptionclass(inputValueclass)
+                            }
+                            editable={false}
+                          />
+                        </View>
+
+                        <AntDesign name="caretdown" size={16} color="#03357D" />
+                      </View>
+                    </TouchableOpacity>
+                    {isDropdownOpenBlock && (
+                      <View
+                        style={[
+                          styles.dropdownContainer1,
+                          { height: "auto", overflow: "hidden", zIndex: 1 },
+                        ]}
+                      >
+                        <ScrollView
+                          nestedScrollEnabled={true}
+                          style={{ maxHeight: 100 }}
+                        >
+                          {dropdownOptionBlock?.length > 0 &&
+                            dropdownOptionBlock?.map((option) => {
+                              return (
+                                <TouchableOpacity
+                                  style={styles.dropdownOption}
+                                  onPress={() =>
+                                    handleSelectOptionBlock(
+                                      option?.name,
+                                      option?.id
+                                    )
+                                  }
+                                >
+                                  <View
+                                    style={{
+                                      width:
+                                        Dimensions.get("window").width * 0.2,
+                                      alignItems: "center",
+                                    }}
+                                  >
+                                    <Text style={{ fontSize: 10 }}>
+                                      {option.name}
+                                    </Text>
+                                  </View>
+                                </TouchableOpacity>
+                              );
+                            })}
+                        </ScrollView>
+                      </View>
+                    )}
+                  </View>
                 </View>
-              </View>
+              )}
             </View>
           </View>
         </View>
