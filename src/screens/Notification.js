@@ -144,7 +144,12 @@ const NotificationContainer = (props) => {
           }}
         >
           <View style={[styles.icon, { backgroundColor: props?.iconColor }]}>
-            <Text>{props?.iconName}</Text>
+            <View style={{}}>
+              <Image
+                source={props.iconName}
+                style={{ height: 60, width: 60 }}
+              />
+            </View>
           </View>
 
           <View style={{ position: "relative" }}>
@@ -287,7 +292,7 @@ const Notification = ({ navigation }) => {
             />
           }
         >
-          <View style={{ marginBottom: 40 }}>
+          <View style={{ marginBottom: 20 }}>
             {notifiData?.length === 0 && (
               <View
                 style={{
@@ -337,7 +342,8 @@ const Notification = ({ navigation }) => {
                       id={item?.id}
                       is_read={item?.is_read}
                       iconColor="#C5F2EC"
-                      iconName="SS"
+                      // iconName="SS"
+                      iconName={require("../../assets/icon.png")}
                     />
                   </View>
                 );
@@ -361,7 +367,7 @@ const Notification = ({ navigation }) => {
                   height: 42,
                   width: 120,
                   backgroundColor: "#FFFFFF",
-                  marginBottom: 30,
+                  marginBottom: 50,
                   paddingHorizontal: 10,
                   borderWidth: 1, // Specify border width
                   borderColor: "#DDDDDD",
