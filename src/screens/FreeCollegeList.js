@@ -1364,6 +1364,7 @@ const FreeCollegeList = ({ navigation }) => {
                           logo: value?.logo,
                           orgID: value?.organization_course_id,
                           termsList: termsList,
+                          ServiceName :value?.service_type
                         });
                       }
                     } else {

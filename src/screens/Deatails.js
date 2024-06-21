@@ -258,6 +258,10 @@ const Details = ({ navigation }) => {
     id,
     IncomeCertificateRequired,
     aadharRequired,
+    TermAndConditionRequird,
+    EducationFieldRequired,
+    PassportPhotoRequired,
+    GuardiansDetailsRequired,
     logo,
     orgId,
     register_through,
@@ -275,9 +279,11 @@ const Details = ({ navigation }) => {
       userToken
     )
       .then((res) => {
-        // console.log(res?.status)
+        console.log(res?.status)
         if (res?.status) {
+          console.log(register_through ,"MM")
           if (register_through === "internal_form_submit") {
+            console.log("inside the function ")
             navigation.navigate("freeAdmissionForm", {
               collegeName,
               courseName,
@@ -286,6 +292,7 @@ const Details = ({ navigation }) => {
               aadharRequired,
               logo,
               courseid,
+              ServiceName
             });
           } else {
             Linking.openURL(url);
