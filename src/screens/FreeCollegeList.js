@@ -182,6 +182,7 @@ const DetailsCard = ({ extraFields }) => {
 };
 
 const FreeCollegeList = ({ navigation }) => {
+  const [buttonDisabled, setButtonDisabled] = useState(false);
   const { userToken } = useContext(AuthContext);
   const [selectedValue, setSelectedValue] = useState(null);
   const [open, setOpen] = useState(false);
@@ -1329,6 +1330,7 @@ const FreeCollegeList = ({ navigation }) => {
                     if (res.status) {
                       if (navigateToExternalLink) {
                         Linking.openURL(value?.url);
+                        setButtonDisabled(false)
                       } else {
                         navigation.navigate("freeAdmissionForm", {
                           collegeName: value?.organization_name,
@@ -1366,14 +1368,17 @@ const FreeCollegeList = ({ navigation }) => {
                           termsList: termsList,
                           ServiceName :value?.service_type
                         });
+                        setButtonDisabled(false)
                       }
                     } else {
                       showToast("something went wrong");
+                      setButtonDisabled(false)
                     }
                   })
                   .catch((error) => {
                     console.error("Error fetching data:", error);
                     showToast("Server Issue");
+                    setButtonDisabled(false)
                   });
               };
 
@@ -1541,6 +1546,7 @@ const FreeCollegeList = ({ navigation }) => {
                     </TouchableOpacity>
                     {value?.register_through === "internal_form_submit" ? (
                       <TouchableOpacity
+                      disabled={buttonDisabled}
                         // onPress={() =>
                         //   navigation.navigate("freeAdmissionForm", {
                         //     collegeName: value?.organization_name,
@@ -1558,7 +1564,8 @@ const FreeCollegeList = ({ navigation }) => {
                         //   })
                         // }
 
-                        onPress={() =>
+                        onPress={() =>{
+                          setButtonDisabled(true);
                           navigateToFreeAdmissionForm(
                             navigation,
                             value,
@@ -1566,6 +1573,8 @@ const FreeCollegeList = ({ navigation }) => {
                             requiredFields,
                             false
                           )
+                        }
+                        
                         }
                       >
                         <LinearGradient

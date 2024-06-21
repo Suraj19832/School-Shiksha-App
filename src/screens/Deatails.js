@@ -96,6 +96,7 @@ const BannerCarousel = ({ bannerData }) => {
   );
 };
 const Details = ({ navigation }) => {
+  const [buttonDisabled, setButtonDisabled] = useState(false);
   const route = useRoute();
   const { userToken } = useContext(AuthContext);
   const {
@@ -235,6 +236,7 @@ const Details = ({ navigation }) => {
     const data = extraFields
       ? Object.entries(extraFields).map(([key, value]) => ({ key, value }))
       : [];
+     
 
     return (
       <FlatList
@@ -301,16 +303,20 @@ const Details = ({ navigation }) => {
               ServiceName,
               termsList
             });
+            setButtonDisabled(false)
           } else {
             Linking.openURL(url);
+            setButtonDisabled(false)
           }
         } else {
           showToast("something went wrong");
+          setButtonDisabled(false)
         }
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
         showToast("Server Issue");
+        setButtonDisabled(false)
       });
   };
 
@@ -573,7 +579,12 @@ const Details = ({ navigation }) => {
               )}
 
               <TouchableOpacity
-                onPress={() =>
+               disabled={buttonDisabled}
+
+                onPress={() => {
+
+             
+                  setButtonDisabled(true)
                   navigateToForm(
                     navigation,
                     collegeName,
@@ -590,6 +601,7 @@ const Details = ({ navigation }) => {
                     detailsData?.register_through,
                     detailsData?.url
                   )
+                }
                 }
               >
                 <LinearGradient

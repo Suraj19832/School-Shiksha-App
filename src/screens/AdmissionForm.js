@@ -57,6 +57,7 @@ const AdmissionForm = ({ navigation }) => {
   const [DistrictDataaa, setDistrictData] = useState();
   const [stateInfo, setStateInfo] = useState();
   const [pdfName, setpdfName] = useState()
+  const [buttonDisabled, setButtonDisabled] = useState(false);
 
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -304,6 +305,7 @@ const AdmissionForm = ({ navigation }) => {
     }
   };
   const handleSubmission = () => {
+    setButtonDisabled(true);
     const title = "Admission Form";
     const message = "Form submitted Successfully";
     // setisChckedError(true);
@@ -532,27 +534,33 @@ const AdmissionForm = ({ navigation }) => {
               // console.log(res, "++++++++++++++++++++++++++++++++++++++");
               if (res?.status) {
                 showToast("Form Submitted Successfully");
+
                 setIsLoading(false);
                 navigation.navigate("sucessfully", { title, message });
+                setButtonDisabled(false);
                 setTimeout(() => {
                   navigation.navigate("Dashboard");
                 }, 2000);
               } else {
                 showToast("Internal Server Error");
+                setButtonDisabled(false);
                 setIsLoading(false);
               }
             });
           } else {
             setIsLoading(false);
+            setButtonDisabled(false);
           }
         }
       } else {
         showToast("Please Upload all Picture");
         setIsLoading(false);
+        setButtonDisabled(false);
       }
     } else {
       showToast("Fill up all the fields");
       setIsLoading(false);
+      setButtonDisabled(false);
     }
   };
   const validateForm = () => {
@@ -3259,7 +3267,7 @@ const AdmissionForm = ({ navigation }) => {
               </View>
 
               <View style={styles.submitButton}>
-                <TouchableOpacity onPress={handleSubmission}>
+                <TouchableOpacity  disabled={buttonDisabled} onPress={handleSubmission}>
                   <LinearGradient
                     colors={["rgba(3, 53, 125, 1)", "rgba(5, 105, 250, 1)"]}
                     start={{ x: 0, y: 0.5 }}
