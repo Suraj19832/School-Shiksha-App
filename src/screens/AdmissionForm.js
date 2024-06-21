@@ -56,6 +56,7 @@ const AdmissionForm = ({ navigation }) => {
   const [CVUribyApi, setCVUribyApi] = useState();
   const [DistrictDataaa, setDistrictData] = useState();
   const [stateInfo, setStateInfo] = useState();
+  const [pdfName, setpdfName] = useState()
 
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -107,7 +108,8 @@ const AdmissionForm = ({ navigation }) => {
     PassportPhotoRequired,
     TermAndConditionRequird,
     EducationFieldRequired,
-    termsList
+    termsList,
+    ServiceName
   } = route.params;
   console.log(
     "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$",
@@ -1231,7 +1233,7 @@ const AdmissionForm = ({ navigation }) => {
         type: "*/*",
       });
       // setIncomeCertificateForUpload(result);
-      // console.log("File picker result:", result);
+      console.log("File picker result:", result);
 
       if (
         !result.canceled &&
@@ -1239,6 +1241,7 @@ const AdmissionForm = ({ navigation }) => {
         result.assets.length > 0 &&
         result.assets[0].uri
       ) {
+        setpdfName(result.assets[0].name)
         console.log("File picked:", result.assets[0].uri);
         setFileUriCV(result.assets[0].uri);
         const newtry = getFileData(result);
@@ -3057,8 +3060,8 @@ const AdmissionForm = ({ navigation }) => {
 
               {/* job cv  */}
 
-            
-                <View>
+             { ServiceName == "Job Name"  && (
+              <View>
                   {!fileUriCV && (
                     <View style={styles.fields_main}>
                       <Text style={styles.inputHeading}>
@@ -3111,7 +3114,7 @@ const AdmissionForm = ({ navigation }) => {
         source={require('../../assets/img/pdf.png')}
         style={styles.uploadedImage}
       />
-      <Text>{getFileNameCV(fileUriCV)}</Text>
+      <Text>{pdfName}</Text>
                           </>
         
                         ) : (
@@ -3179,41 +3182,11 @@ const AdmissionForm = ({ navigation }) => {
                       {errorMessageIncomeCertificate}
                     </Text>
                   )}
-                  {/* <Modal
-                    animationType="slide"
-                    transparent={true}
-                    visible={modalVisibleCV}
-                    onRequestClose={closeModal}
-                  >
-                    <View style={styles.modalContainer}>
-                      <View style={styles.modalContent}>
-                        <TouchableOpacity
-                          style={styles.modalOption}
-                          onPress={() => {
-                            takePicture("income");
-                          }}
-                        >
-                          <Text style={styles.modalOptionText}>Take Photo</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                          style={styles.modalOption}
-                          onPress={pickFileCV}
-                        >
-                          <Text style={styles.modalOptionText}>
-                            Choose from Library
-                          </Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                          style={styles.modalOption}
-                          onPress={closeModal}
-                        >
-                          <Text style={styles.modalOptionText}>Cancel</Text>
-                        </TouchableOpacity>
-                      </View>
-                    </View>
-                  </Modal> */}
+                
                 </View>
             
+             )}
+                
 
 {/* job cv end  */}
 
