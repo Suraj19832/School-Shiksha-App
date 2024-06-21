@@ -384,9 +384,12 @@ const AdmissionForm = ({ navigation }) => {
               //   income: formData.income,
               // }),
               // income: formData.income,
-              hs_Passout: inputValueHs,
+              // hs_Passout: inputValueHs,
             };
-
+          
+            if (  EducationFieldRequired === "yes" ) {
+              enquiryDetails.hs_Passout =inputValueHs
+            }
             if (IncomeCertificateRequired === "yes") {
               enquiryDetails.income = formData.income;
             }
@@ -423,6 +426,12 @@ const AdmissionForm = ({ navigation }) => {
               documents.push({
                 title: "PassPort Photo",
                 image: PassportUribyApi,
+              });
+            }
+            if (ServiceName == "Job Name" ) {
+              documents.push({
+                title: "CV",
+                image: CVUribyApi,
               });
             }
 
