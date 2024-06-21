@@ -56,7 +56,7 @@ const AdmissionForm = ({ navigation }) => {
   const [CVUribyApi, setCVUribyApi] = useState();
   const [DistrictDataaa, setDistrictData] = useState();
   const [stateInfo, setStateInfo] = useState();
-  const [pdfName, setpdfName] = useState()
+  const [pdfName, setpdfName] = useState();
   const [buttonDisabled, setButtonDisabled] = useState(false);
 
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
@@ -72,7 +72,7 @@ const AdmissionForm = ({ navigation }) => {
   //   "here is the uri come from the api ic",
   //   IncomeCertificateUribyApi
   // );
-  console.log(CVUribyApi ,"%5555555555555555555555555555")
+  console.log(CVUribyApi, "%5555555555555555555555555555");
 
   //States for sending the data in for file upload api
   const [aadharFrontForUpload, setaadharFrontForUpload] = useState();
@@ -110,7 +110,7 @@ const AdmissionForm = ({ navigation }) => {
     TermAndConditionRequird,
     EducationFieldRequired,
     termsList,
-    ServiceName
+    ServiceName,
   } = route.params;
   console.log(
     "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$",
@@ -126,7 +126,8 @@ const AdmissionForm = ({ navigation }) => {
     PassportPhotoRequired,
     TermAndConditionRequird,
     EducationFieldRequired,
-    termsList,"teran ",
+    termsList,
+    "teran ",
     ServiceName
   );
 
@@ -339,8 +340,8 @@ const AdmissionForm = ({ navigation }) => {
           inputValueoccupation)) &&
       (IncomeCertificateRequired === "no" || formData.income) &&
       // formData.income &&
-      (EducationFieldRequired === "no" || inputValueHs) 
-      
+      (EducationFieldRequired === "no" || inputValueHs)
+
       // formData.percentage
     ) {
       if (
@@ -401,9 +402,9 @@ const AdmissionForm = ({ navigation }) => {
               // income: formData.income,
               // hs_Passout: inputValueHs,
             };
-          
-            if (  EducationFieldRequired === "yes" ) {
-              enquiryDetails.hs_Passout =inputValueHs
+
+            if (EducationFieldRequired === "yes") {
+              enquiryDetails.hs_Passout = inputValueHs;
             }
             if (IncomeCertificateRequired === "yes") {
               enquiryDetails.income = formData.income;
@@ -443,7 +444,7 @@ const AdmissionForm = ({ navigation }) => {
                 image: PassportUribyApi,
               });
             }
-            if (ServiceName == "Job Name" ) {
+            if (ServiceName == "Job Name") {
               documents.push({
                 title: "CV",
                 image: CVUribyApi,
@@ -628,14 +629,10 @@ const AdmissionForm = ({ navigation }) => {
   const [isPickingFileIncomeCertificate, setIsPickingFileIncomeCertificate] =
     useState(false);
 
-
-    // state for cv upload 
-    const [isPickingFileCV, setIsPickingFileCV] =
-    useState(false);
-    const [fileUriCV, setFileUriCV] =
-    useState(null);
-  const [errorMessageCV, setErrorMessageCV] =
-    useState(null);
+  // state for cv upload
+  const [isPickingFileCV, setIsPickingFileCV] = useState(false);
+  const [fileUriCV, setFileUriCV] = useState(null);
+  const [errorMessageCV, setErrorMessageCV] = useState(null);
 
   // Passport
   const [capturedImagePassport, setCapturedImagePassport] = useState(null);
@@ -737,7 +734,7 @@ const AdmissionForm = ({ navigation }) => {
     setModalVisibleHSMarksheet(false);
     setModalVisibleAddharBack(false);
     setModalVisibleAddharfront(false);
-    setModalVisibleCV(false)
+    setModalVisibleCV(false);
   };
 
   const takePicture = async (options) => {
@@ -1247,7 +1244,6 @@ const AdmissionForm = ({ navigation }) => {
     closeModal();
   };
 
-
   //For cv upload function
   const pickFileCV = async () => {
     if (isPickingFileCV) {
@@ -1271,7 +1267,7 @@ const AdmissionForm = ({ navigation }) => {
         result.assets.length > 0 &&
         result.assets[0].uri
       ) {
-        setpdfName(result.assets[0].name)
+        setpdfName(result.assets[0].name);
         console.log("File picked:", result.assets[0].uri);
         setFileUriCV(result.assets[0].uri);
         const newtry = getFileData(result);
@@ -1433,7 +1429,7 @@ const AdmissionForm = ({ navigation }) => {
     return message;
   };
   const getFileNameCV = (filePath) => {
-    return filePath.split('/').pop();
+    return filePath.split("/").pop();
   };
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
@@ -2189,127 +2185,123 @@ const AdmissionForm = ({ navigation }) => {
                     </Text>
                   )}
               </View> */}
-              {EducationFieldRequired === 'yes' && (
+              {EducationFieldRequired === "yes" && (
                 <>
-    <View style={styles.headingg}>
-                <Text style={styles.text}>Education Details</Text>
-              </View>
-              
-
-              <View style={styles.fields_main}>
-                <Text style={styles.inputHeading}>10+2 Pass Out Year</Text>
-                <TouchableOpacity onPress={toggleDropdownHs}>
-                  <View style={styles.input_box}>
-                    <Image
-                      source={require("../../assets/icons/school.png")}
-                      style={styles.iconImage}
-                    />
-                    <TextInput
-                      style={styles.input}
-                      placeholder="Select"
-                      placeholderTextColor={"rgba(166, 166, 166, 1)"}
-                      value={inputValueHs}
-                      onBlur={() => handleSelectOptionHs(inputValueHs)}
-                      editable={false} // Allow editing only when dropdown is closed
-                    />
-                    <AntDesign
-                      name="caretdown"
-                      style={styles.arrowdown}
-                      size={15}
-                      color="rgba(0, 54, 126, 1)"
-                    />
+                  <View style={styles.headingg}>
+                    <Text style={styles.text}>Education Details</Text>
                   </View>
-                </TouchableOpacity>
-              </View>
-              {isDropdownOpenHs && (
-                <View style={styles.dropdownContainer}>
-                  <TouchableOpacity
-                    style={styles.dropdownOption}
-                    onPress={() => handleSelectOptionHs("2024")}
-                  >
-                    <Text>2024</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={styles.dropdownOption}
-                    onPress={() => handleSelectOptionHs("2025")}
-                  >
-                    <Text>2025</Text>
-                  </TouchableOpacity>
-                </View>
-              )}
-           
-              <View style={styles.fields_main}>
-                <Text style={styles.inputHeading}>
-                  Madhamik Percentage (Optional)
-                </Text>
 
-                <View style={styles.input_box}>
-                  <Image
-                    source={require("../../assets/icons/discount.png")}
-                    style={styles.iconImage}
-                  />
-                  <TextInput
-                    style={styles.input}
-                    placeholder="Percentage"
-                    value={formData.percentage}
-                    onChangeText={(text) =>
-                      handleInputChange("percentage", text)
-                    }
-                    onBlur={() => handleInputBlur("percentage")}
-                    placeholderTextColor={"rgba(166, 166, 166, 1)"}
-                  />
-                </View>
-             
-              </View>
+                  <View style={styles.fields_main}>
+                    <Text style={styles.inputHeading}>10+2 Pass Out Year</Text>
+                    <TouchableOpacity onPress={toggleDropdownHs}>
+                      <View style={styles.input_box}>
+                        <Image
+                          source={require("../../assets/icons/school.png")}
+                          style={styles.iconImage}
+                        />
+                        <TextInput
+                          style={styles.input}
+                          placeholder="Select"
+                          placeholderTextColor={"rgba(166, 166, 166, 1)"}
+                          value={inputValueHs}
+                          onBlur={() => handleSelectOptionHs(inputValueHs)}
+                          editable={false} // Allow editing only when dropdown is closed
+                        />
+                        <AntDesign
+                          name="caretdown"
+                          style={styles.arrowdown}
+                          size={15}
+                          color="rgba(0, 54, 126, 1)"
+                        />
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+                  {isDropdownOpenHs && (
+                    <View style={styles.dropdownContainer}>
+                      <TouchableOpacity
+                        style={styles.dropdownOption}
+                        onPress={() => handleSelectOptionHs("2024")}
+                      >
+                        <Text>2024</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={styles.dropdownOption}
+                        onPress={() => handleSelectOptionHs("2025")}
+                      >
+                        <Text>2025</Text>
+                      </TouchableOpacity>
+                    </View>
+                  )}
 
-              <View style={styles.fields_main}>
-                <Text style={styles.inputHeading}>
-                  HS Percentage (Optional)
-                </Text>
-                <View style={styles.input_box}>
-                  <Image
-                    source={require("../../assets/icons/discount.png")}
-                    style={styles.iconImage}
-                  />
-                  <TextInput
-                    style={styles.input}
-                    placeholder="Percentage"
-                    value={formData.hs_percentage}
-                    onChangeText={(text) =>
-                      handleInputChange("hs_percentage", text)
-                    }
-                    onBlur={() => handleInputBlur("percentage")}
-                    placeholderTextColor={"rgba(166, 166, 166, 1)"}
-                  />
-                </View>
-      
-              </View>
+                  <View style={styles.fields_main}>
+                    <Text style={styles.inputHeading}>
+                      Madhamik Percentage (Optional)
+                    </Text>
 
-              <View style={styles.fields_main}>
-                <Text style={styles.inputHeading}>
-                  Graduate Percentage (Optional)
-                </Text>
-                <View style={styles.input_box}>
-                  <Image
-                    source={require("../../assets/icons/discount.png")}
-                    style={styles.iconImage}
-                  />
-                  <TextInput
-                    style={styles.input}
-                    placeholder="Percentage"
-                    value={formData.grduate_percentage}
-                    onChangeText={(text) =>
-                      handleInputChange("grduate_percentage", text)
-                    }
-                    onBlur={() => handleInputBlur("grduate_percentage")}
-                    placeholderTextColor={"rgba(166, 166, 166, 1)"}
-                  />
-                </View>
-         
-              </View>
+                    <View style={styles.input_box}>
+                      <Image
+                        source={require("../../assets/icons/discount.png")}
+                        style={styles.iconImage}
+                      />
+                      <TextInput
+                        style={styles.input}
+                        placeholder="Percentage"
+                        value={formData.percentage}
+                        onChangeText={(text) =>
+                          handleInputChange("percentage", text)
+                        }
+                        onBlur={() => handleInputBlur("percentage")}
+                        placeholderTextColor={"rgba(166, 166, 166, 1)"}
+                      />
+                    </View>
+                  </View>
+
+                  <View style={styles.fields_main}>
+                    <Text style={styles.inputHeading}>
+                      HS Percentage (Optional)
+                    </Text>
+                    <View style={styles.input_box}>
+                      <Image
+                        source={require("../../assets/icons/discount.png")}
+                        style={styles.iconImage}
+                      />
+                      <TextInput
+                        style={styles.input}
+                        placeholder="Percentage"
+                        value={formData.hs_percentage}
+                        onChangeText={(text) =>
+                          handleInputChange("hs_percentage", text)
+                        }
+                        onBlur={() => handleInputBlur("percentage")}
+                        placeholderTextColor={"rgba(166, 166, 166, 1)"}
+                      />
+                    </View>
+                  </View>
+
+                  <View style={styles.fields_main}>
+                    <Text style={styles.inputHeading}>
+                      Graduate Percentage (Optional)
+                    </Text>
+                    <View style={styles.input_box}>
+                      <Image
+                        source={require("../../assets/icons/discount.png")}
+                        style={styles.iconImage}
+                      />
+                      <TextInput
+                        style={styles.input}
+                        placeholder="Percentage"
+                        value={formData.grduate_percentage}
+                        onChangeText={(text) =>
+                          handleInputChange("grduate_percentage", text)
+                        }
+                        onBlur={() => handleInputBlur("grduate_percentage")}
+                        placeholderTextColor={"rgba(166, 166, 166, 1)"}
+                      />
+                    </View>
+                  </View>
                 </>
               )}
-          
+
               {/* <View style={styles.fields_main}>
                 <Text style={styles.inputHeading}>Total Number</Text>
                 <View style={styles.input_box}>
@@ -2336,12 +2328,14 @@ const AdmissionForm = ({ navigation }) => {
                     </Text>
                   )}
               </View> */}
-              {PassportPhotoRequired === "yes" || IncomeCertificateRequired === "yes" || aadharRequired === "yes" && (
-   <View style={styles.headingg}>
-   <Text style={styles.text}>Upload Documents</Text>
- </View>
-              )}
-           
+              {PassportPhotoRequired === "yes" ||
+                IncomeCertificateRequired === "yes" ||
+                (aadharRequired === "yes" && (
+                  <View style={styles.headingg}>
+                    <Text style={styles.text}>Upload Documents</Text>
+                  </View>
+                ))}
+
               {/* {!fileUri && (
   <View style={styles.fields_main}>
   <Text style={styles.inputHeading}>Aadhar Front</Text>
@@ -2789,153 +2783,155 @@ const AdmissionForm = ({ navigation }) => {
               </View> */}
 
               {/* Passport photo */}
-{PassportPhotoRequired === 'yes' && (
-    <View>
-    {!capturedImagePassport && !fileUriPassPortPhoto && (
-      <View style={styles.fields_main}>
-        <Text style={styles.inputHeading}>Passport Size Photo</Text>
-        <TouchableOpacity
-          style={styles.uploadBox}
-          onPress={() => setModalVisiblePassport(true)}
-        >
-          <View style={styles.uploadItems}>
-            <SimpleLineIcons
-              name="cloud-upload"
-              size={22}
-              color="rgba(166, 166, 166, 1)"
-            />
-            <Text style={styles.uploadtext}>Upload a File</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
-    )}
-    {fileUriPassPortPhoto && (
-      <View>
-        <View
-          style={[
-            styles.titleContainer,
-            {
-              justifyContent: "space-between",
-              flexDirection: "row",
-              alignItems: "center",
-            },
-          ]}
-        >
-          <Text style={styles.inputHeading}>
-            PassPort Size Photo
-          </Text>
-          <TouchableOpacity
-            onPress={() => deleteDocuments("passport")}
-          >
-            <AntDesign name="delete" size={20} color="#FF0000" />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.imageContainer}>
-          {PassportUribyApi ? (
-            <Image
-              source={{ uri: fileUriPassPortPhoto }}
-              style={styles.uploadedImage}
-            />
-          ) : (
-            <View
-              style={[
-                styles.uploadedImage,
-                { justifyContent: "center" },
-              ]}
-            >
-              <ActivityIndicator
-                size="medium"
-                color="rgba(0, 54, 126, 1)"
-              />
-            </View>
-          )}
-        </View>
-      </View>
-    )}
+              {PassportPhotoRequired === "yes" && (
+                <View>
+                  {!capturedImagePassport && !fileUriPassPortPhoto && (
+                    <View style={styles.fields_main}>
+                      <Text style={styles.inputHeading}>
+                        Passport Size Photo
+                      </Text>
+                      <TouchableOpacity
+                        style={styles.uploadBox}
+                        onPress={() => setModalVisiblePassport(true)}
+                      >
+                        <View style={styles.uploadItems}>
+                          <SimpleLineIcons
+                            name="cloud-upload"
+                            size={22}
+                            color="rgba(166, 166, 166, 1)"
+                          />
+                          <Text style={styles.uploadtext}>Upload a File</Text>
+                        </View>
+                      </TouchableOpacity>
+                    </View>
+                  )}
+                  {fileUriPassPortPhoto && (
+                    <View>
+                      <View
+                        style={[
+                          styles.titleContainer,
+                          {
+                            justifyContent: "space-between",
+                            flexDirection: "row",
+                            alignItems: "center",
+                          },
+                        ]}
+                      >
+                        <Text style={styles.inputHeading}>
+                          PassPort Size Photo
+                        </Text>
+                        <TouchableOpacity
+                          onPress={() => deleteDocuments("passport")}
+                        >
+                          <AntDesign name="delete" size={20} color="#FF0000" />
+                        </TouchableOpacity>
+                      </View>
+                      <View style={styles.imageContainer}>
+                        {PassportUribyApi ? (
+                          <Image
+                            source={{ uri: fileUriPassPortPhoto }}
+                            style={styles.uploadedImage}
+                          />
+                        ) : (
+                          <View
+                            style={[
+                              styles.uploadedImage,
+                              { justifyContent: "center" },
+                            ]}
+                          >
+                            <ActivityIndicator
+                              size="medium"
+                              color="rgba(0, 54, 126, 1)"
+                            />
+                          </View>
+                        )}
+                      </View>
+                    </View>
+                  )}
 
-    {capturedImagePassport && (
-      <View>
-        <View
-          style={[
-            styles.titleContainer,
-            {
-              justifyContent: "space-between",
-              flexDirection: "row",
-              alignItems: "center",
-            },
-          ]}
-        >
-          <Text style={styles.inputHeading}>
-            Passport Size Photo
-          </Text>
-          <TouchableOpacity onPress={deleteImagePassPortPhoto}>
-            <AntDesign name="delete" size={20} color="#FF0000" />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.imageContainer}>
-          {PassportUribyApi ? (
-            <Image
-              source={{ uri: capturedImagePassport }}
-              style={styles.uploadedImage}
-            />
-          ) : (
-            <View
-              style={[
-                styles.uploadedImage,
-                { justifyContent: "center" },
-              ]}
-            >
-              <ActivityIndicator
-                size="medium"
-                color="rgba(0, 54, 126, 1)"
-              />
-            </View>
-          )}
-        </View>
-      </View>
-    )}
+                  {capturedImagePassport && (
+                    <View>
+                      <View
+                        style={[
+                          styles.titleContainer,
+                          {
+                            justifyContent: "space-between",
+                            flexDirection: "row",
+                            alignItems: "center",
+                          },
+                        ]}
+                      >
+                        <Text style={styles.inputHeading}>
+                          Passport Size Photo
+                        </Text>
+                        <TouchableOpacity onPress={deleteImagePassPortPhoto}>
+                          <AntDesign name="delete" size={20} color="#FF0000" />
+                        </TouchableOpacity>
+                      </View>
+                      <View style={styles.imageContainer}>
+                        {PassportUribyApi ? (
+                          <Image
+                            source={{ uri: capturedImagePassport }}
+                            style={styles.uploadedImage}
+                          />
+                        ) : (
+                          <View
+                            style={[
+                              styles.uploadedImage,
+                              { justifyContent: "center" },
+                            ]}
+                          >
+                            <ActivityIndicator
+                              size="medium"
+                              color="rgba(0, 54, 126, 1)"
+                            />
+                          </View>
+                        )}
+                      </View>
+                    </View>
+                  )}
 
-    {errorMessagePassPortPhoto && (
-      <Text style={styles.errorMessage}>
-        {errorMessagePassPortPhoto}
-      </Text>
-    )}
-    <Modal
-      animationType="slide"
-      transparent={true}
-      visible={modalVisiblePassport}
-      onRequestClose={closeModal}
-    >
-      <View style={styles.modalContainer}>
-        <View style={styles.modalContent}>
-          <TouchableOpacity
-            style={styles.modalOption}
-            onPress={() => {
-              takePicture("passport");
-            }}
-          >
-            <Text style={styles.modalOptionText}>Take Photo</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.modalOption}
-            onPress={pickFilePassPortPhoto}
-          >
-            <Text style={styles.modalOptionText}>
-              Choose from Library
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.modalOption}
-            onPress={closeModal}
-          >
-            <Text style={styles.modalOptionText}>Cancel</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </Modal>
-  </View>
-)}
-          
+                  {errorMessagePassPortPhoto && (
+                    <Text style={styles.errorMessage}>
+                      {errorMessagePassPortPhoto}
+                    </Text>
+                  )}
+                  <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={modalVisiblePassport}
+                    onRequestClose={closeModal}
+                  >
+                    <View style={styles.modalContainer}>
+                      <View style={styles.modalContent}>
+                        <TouchableOpacity
+                          style={styles.modalOption}
+                          onPress={() => {
+                            takePicture("passport");
+                          }}
+                        >
+                          <Text style={styles.modalOptionText}>Take Photo</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          style={styles.modalOption}
+                          onPress={pickFilePassPortPhoto}
+                        >
+                          <Text style={styles.modalOptionText}>
+                            Choose from Library
+                          </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          style={styles.modalOption}
+                          onPress={closeModal}
+                        >
+                          <Text style={styles.modalOptionText}>Cancel</Text>
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                  </Modal>
+                </View>
+              )}
+
               {/* with modal and upload income */}
               {IncomeCertificateRequired === "yes" && (
                 <View>
@@ -3087,16 +3083,13 @@ const AdmissionForm = ({ navigation }) => {
                 </View>
               )}
 
-
               {/* job cv  */}
 
-             { ServiceName == "Job Name"  && (
-              <View>
+              {ServiceName == "Job Name" && (
+                <View>
                   {!fileUriCV && (
                     <View style={styles.fields_main}>
-                      <Text style={styles.inputHeading}>
-                        Upload CV
-                      </Text>
+                      <Text style={styles.inputHeading}>Upload CV</Text>
                       <TouchableOpacity
                         style={styles.uploadBox}
                         onPress={pickFileCV}
@@ -3124,12 +3117,8 @@ const AdmissionForm = ({ navigation }) => {
                           },
                         ]}
                       >
-                        <Text style={styles.inputHeading}>
-                          Upload CV
-                        </Text>
-                        <TouchableOpacity
-                          onPress={deleteImageCV}
-                        >
+                        <Text style={styles.inputHeading}>Upload CV</Text>
+                        <TouchableOpacity onPress={deleteImageCV}>
                           <AntDesign name="delete" size={20} color="#FF0000" />
                         </TouchableOpacity>
                       </View>
@@ -3140,13 +3129,12 @@ const AdmissionForm = ({ navigation }) => {
                           //   style={styles.uploadedImage}
                           // />
                           <>
-                                            <Image
-        source={require('../../assets/img/pdf.png')}
-        style={styles.uploadedImage}
-      />
-      <Text>{pdfName}</Text>
+                            <Image
+                              source={require("../../assets/img/pdf.png")}
+                              style={styles.uploadedImage}
+                            />
+                            <Text>{pdfName}</Text>
                           </>
-        
                         ) : (
                           <View
                             style={[
@@ -3212,13 +3200,10 @@ const AdmissionForm = ({ navigation }) => {
                       {errorMessageIncomeCertificate}
                     </Text>
                   )}
-                
                 </View>
-            
-             )}
-                
+              )}
 
-{/* job cv end  */}
+              {/* job cv end  */}
 
               {TermAndConditionRequird === "yes" && (
                 <View style={styles.conditions}>
@@ -3236,11 +3221,11 @@ const AdmissionForm = ({ navigation }) => {
                     anything to do , you have to take the college you get
                     otherwise you can close the free admission.
                   </Text> */}
-                   {termsList.map((term, index) => (
-        <View key={index} >
-          <Text style={styles.conditiontext}>{term}</Text>
-        </View>
-      ))}
+                  {termsList.map((term, index) => (
+                    <View key={index}>
+                      <Text style={styles.conditiontext}>{term}</Text>
+                    </View>
+                  ))}
                 </View>
               )}
 
@@ -3267,7 +3252,11 @@ const AdmissionForm = ({ navigation }) => {
               </View>
 
               <View style={styles.submitButton}>
-                <TouchableOpacity  disabled={buttonDisabled} onPress={handleSubmission}>
+                <TouchableOpacity
+                  disabled={buttonDisabled}
+                  onPress={handleSubmission}
+                  style={{ opacity: buttonDisabled ? 0.5 : 1 }}
+                >
                   <LinearGradient
                     colors={["rgba(3, 53, 125, 1)", "rgba(5, 105, 250, 1)"]}
                     start={{ x: 0, y: 0.5 }}
@@ -3410,7 +3399,7 @@ const styles = StyleSheet.create({
     lineHeight: 15.23,
     fontWeight: "400",
     color: "rgba(0, 0, 0, 1)",
-    marginBottom:4
+    marginBottom: 4,
   },
   condition_box_main: {
     marginTop: 30,
