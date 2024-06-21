@@ -873,6 +873,7 @@ const FreeCollegeList = ({ navigation }) => {
             refreshing={refreshing}
             onRefresh={() => {
               setRefreshing(true);
+              fetchUserAllData("master/organization-course", id)
               fetchUserData("master/organization-course", id);
               setInputValueclass("");
               setInputValueState("");
