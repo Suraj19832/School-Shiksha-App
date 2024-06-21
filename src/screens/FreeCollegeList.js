@@ -890,7 +890,7 @@ const FreeCollegeList = ({ navigation }) => {
               <Text
                 style={{
                   color: "#00367E",
-                  fontWeight: "600",
+                  fontWeight: "700",
                   fontSize: 20,
                   alignSelf: "center",
                 }}
