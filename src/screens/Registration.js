@@ -174,7 +174,7 @@ const Registration = ({ navigation }) => {
               console.log("11111111", res?.status);
               navigation.navigate("Login");
             }
-         
+
             if (res?.message === "Validation errors") {
               if (
                 !res?.status &&
@@ -1454,19 +1454,24 @@ const Registration = ({ navigation }) => {
                 {/* Dropdown menu */}
                 {isDropdownOpenstate && (
                   <View style={styles.dropdownContainer}>
-                    {stateData.map((state, index) => {
-                      return (
-                        <TouchableOpacity
-                          key={index}
-                          style={styles.dropdownOption}
-                          onPress={() =>
-                            handleSelectOptionstate(state.name, state.id)
-                          }
-                        >
-                          <Text>{state.name}</Text>
-                        </TouchableOpacity>
-                      );
-                    })}
+                    <ScrollView
+                      nestedScrollEnabled={true}
+                      style={{ maxHeight: 100 }}
+                    >
+                      {stateData.map((state, index) => {
+                        return (
+                          <TouchableOpacity
+                            key={index}
+                            style={styles.dropdownOption}
+                            onPress={() =>
+                              handleSelectOptionstate(state?.name, state?.id)
+                            }
+                          >
+                            <Text>{state?.name}</Text>
+                          </TouchableOpacity>
+                        );
+                      })}
+                    </ScrollView>
 
                     {/* Add more options as needed */}
                   </View>
@@ -1626,19 +1631,24 @@ const Registration = ({ navigation }) => {
                 {/* Dropdown menu */}
                 {isDropdownOpen && (
                   <View style={styles.dropdownContainer}>
-                    {districtData.map((district, index) => {
-                      return (
-                        <TouchableOpacity
-                          style={styles.dropdownOption}
-                          key={index}
-                          onPress={() =>
-                            handleSelectOption(district?.name, district?.id)
-                          }
-                        >
-                          <Text>{district?.name}</Text>
-                        </TouchableOpacity>
-                      );
-                    })}
+                    <ScrollView
+                      nestedScrollEnabled={true}
+                      style={{ maxHeight: 100 }}
+                    >
+                      {districtData.map((district, index) => {
+                        return (
+                          <TouchableOpacity
+                            style={styles.dropdownOption}
+                            key={index}
+                            onPress={() =>
+                              handleSelectOption(district?.name, district?.id)
+                            }
+                          >
+                            <Text>{district?.name}</Text>
+                          </TouchableOpacity>
+                        );
+                      })}
+                    </ScrollView>
 
                     {/* Add more options as needed */}
                   </View>
@@ -1887,17 +1897,25 @@ const Registration = ({ navigation }) => {
 
                 {isDropdownOpenplan && (
                   <View style={styles.dropdownContainer}>
-                    {plan.map((option, index) => (
-                      <TouchableOpacity
-                        key={index}
-                        style={styles.dropdownOption}
-                        onPress={() =>
-                          handleSelectOptionplan(option?.plan_name, option?.id)
-                        }
-                      >
-                        <Text>{option?.plan_name}</Text>
-                      </TouchableOpacity>
-                    ))}
+                    <ScrollView
+                      nestedScrollEnabled={true}
+                      style={{ maxHeight: 100 }}
+                    >
+                      {plan.map((option, index) => (
+                        <TouchableOpacity
+                          key={index}
+                          style={styles.dropdownOption}
+                          onPress={() =>
+                            handleSelectOptionplan(
+                              option?.plan_name,
+                              option?.id
+                            )
+                          }
+                        >
+                          <Text>{option?.plan_name}</Text>
+                        </TouchableOpacity>
+                      ))}
+                    </ScrollView>
                   </View>
                 )}
               </View>
