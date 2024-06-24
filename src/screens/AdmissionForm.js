@@ -1882,16 +1882,21 @@ const AdmissionForm = ({ navigation }) => {
 
               {isDropdownOpenstate && (
                 <View style={styles.dropdownContainer}>
-                  {stateDataapi.map((item) => (
-                    <TouchableOpacity
-                      style={styles.dropdownOption}
-                      onPress={() =>
-                        handleSelectOptionstate(item.name, item.id)
-                      }
-                    >
-                      <Text>{item.name}</Text>
-                    </TouchableOpacity>
-                  ))}
+                  <ScrollView
+                    nestedScrollEnabled={true}
+                    style={{ maxHeight: 100 }}
+                  >
+                    {stateDataapi.map((item) => (
+                      <TouchableOpacity
+                        style={styles.dropdownOption}
+                        onPress={() =>
+                          handleSelectOptionstate(item.name, item.id)
+                        }
+                      >
+                        <Text>{item.name}</Text>
+                      </TouchableOpacity>
+                    ))}
+                  </ScrollView>
                   {/* <TouchableOpacity
                     style={styles.dropdownOption}
                     onPress={() => handleSelectOptionstate("1")}
@@ -1939,15 +1944,20 @@ const AdmissionForm = ({ navigation }) => {
 
               {isDropdownOpendistrict && (
                 <View style={styles.dropdownContainer}>
-                  {DistrictDataaa?.length > 0 &&
-                    DistrictDataaa?.map((item) => (
-                      <TouchableOpacity
-                        style={styles.dropdownOption}
-                        onPress={() => handleSelectOptiondistrict(item.name)}
-                      >
-                        <Text>{item.name}</Text>
-                      </TouchableOpacity>
-                    ))}
+                  <ScrollView
+                    nestedScrollEnabled={true}
+                    style={{ maxHeight: 100 }}
+                  >
+                    {DistrictDataaa?.length > 0 &&
+                      DistrictDataaa?.map((item) => (
+                        <TouchableOpacity
+                          style={styles.dropdownOption}
+                          onPress={() => handleSelectOptiondistrict(item.name)}
+                        >
+                          <Text>{item.name}</Text>
+                        </TouchableOpacity>
+                      ))}
+                  </ScrollView>
                   {/* <TouchableOpacity
                     style={styles.dropdownOption}
                     onPress={() => handleSelectOptionstate("1")}

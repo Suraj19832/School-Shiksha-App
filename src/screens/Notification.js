@@ -108,7 +108,9 @@ const NotificationContainer = (props) => {
             >
               {props?.subjectMsg}
             </Text>
-            <Text style={{ color: "#435354" }}>{props?.NotificationMsg}</Text>
+            <ScrollView nestedScrollEnabled={true} style={{ maxHeight: 150 }}>
+              <Text style={{ color: "#435354" }}>{props?.NotificationMsg}</Text>
+            </ScrollView>
             <TouchableOpacity
               onPress={() => setModalVisible(false)}
               style={styles.closeButton}
@@ -321,7 +323,7 @@ const Notification = ({ navigation }) => {
                       alignItems: "center",
                     }}
                   >
-                    No Alerts
+                    No Notifications
                   </Text>
                   {/* <Image
               source={require("../../assets/img/sad-face.png")}
