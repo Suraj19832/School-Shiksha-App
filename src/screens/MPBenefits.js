@@ -85,7 +85,7 @@ const MPBenefits = ({ navigation }) => {
     handleFetch();
     setRefreshing(false);
   };
-  const truncateMessage = (message, maxLength = 25) => {
+  const truncateMessage = (message, maxLength = 15) => {
     if (message.length > maxLength) {
       return message.substring(0, maxLength) + "...";
     }
@@ -219,17 +219,20 @@ const styles = StyleSheet.create({
   },
   imgContainer: {
     backgroundColor: "white",
-    width: 80,
-    height: 80,
-    borderRadius: 40,
+    borderWidth: 2,
+    borderColor: "white",
     marginBottom: 10,
     justifyContent: "center",
     alignItems: "center",
+    borderRadius: 50,
   },
+  imgContainer1: {},
+
+  image1: {},
   image: {
-    width: 50,
-    height: 50,
-    marginBottom: 10,
+    width: 71,
+    height: 71,
+    borderRadius: 50,
   },
   textStyle: {
     textAlign: "center",

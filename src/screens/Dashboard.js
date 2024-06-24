@@ -494,7 +494,7 @@ const Dashboard = ({ navigation }) => {
 
   // Skeleton End ?
 
-  const truncateMessage = (message, maxLength = 25) => {
+  const truncateMessage = (message, maxLength = 15) => {
     if (message?.length > maxLength) {
       return message.substring(0, maxLength) + "...";
     }
@@ -1052,10 +1052,7 @@ const Dashboard = ({ navigation }) => {
                                 </View>
                                 <View style={styles.imgContainer}>
                                   <Image
-                                    style={[
-                                      styles.image,
-                                      { height: 45, width: 45 },
-                                    ]}
+                                    style={styles.image12}
                                     source={{ uri: cd?.image }}
                                   />
                                 </View>
@@ -1480,17 +1477,22 @@ const styles = StyleSheet.create({
   },
   imgContainer: {
     backgroundColor: "white",
-    width: 80,
-    height: 80,
-    borderRadius: 40,
+    borderWidth: 2,
+    borderColor: "white",
     marginBottom: 10,
     justifyContent: "center",
     alignItems: "center",
+    borderRadius: 50,
+  },
+  image12: {
+    width: 70,
+    height: 70,
+    borderRadius: 50,
   },
   image: {
     width: 360,
     height: 190,
-    marginBottom: 10,
+    // marginBottom: 10,
     borderRadius: 10,
   },
   textStyle: {
@@ -1553,10 +1555,4 @@ const styles = StyleSheet.create({
   },
 
   // extr csss
-
-  image12: {
-    width: 50,
-    height: 50,
-    marginBottom: 10,
-  },
 });

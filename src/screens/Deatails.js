@@ -115,9 +115,9 @@ const Details = ({ navigation }) => {
     TermAndConditionRequird,
     EducationFieldRequired,
     feetype,
-    termsList
+    termsList,
   } = route.params;
-  console.log(termsList ,":::::")
+  console.log(termsList, ":::::");
 
   function firstWordPicker(name) {
     const value = name.split(" ");
@@ -137,7 +137,6 @@ const Details = ({ navigation }) => {
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
-    console.log("1111111111111111111111");
     const params = {
       organization_id: organization_Id,
     };
@@ -236,7 +235,6 @@ const Details = ({ navigation }) => {
     const data = extraFields
       ? Object.entries(extraFields).map(([key, value]) => ({ key, value }))
       : [];
-     
 
     return (
       <FlatList
@@ -282,12 +280,12 @@ const Details = ({ navigation }) => {
       userToken
     )
       .then((res) => {
-        console.log(res?.status)
+        console.log(res?.status);
         if (res?.status) {
-          console.log(termsList ,"MMWWWWWWWWWWWWWWWWWWWMMMMMMMMMMMMMMMMMMMMMM")
+          console.log(termsList, "MMWWWWWWWWWWWWWWWWWWWMMMMMMMMMMMMMMMMMMMMMM");
 
           if (register_through === "internal_form_submit") {
-            console.log("inside the function ")
+            console.log("inside the function ");
             navigation.navigate("freeAdmissionForm", {
               collegeName,
               courseName,
@@ -301,22 +299,22 @@ const Details = ({ navigation }) => {
               logo,
               courseid,
               ServiceName,
-              termsList
+              termsList,
             });
-            setButtonDisabled(false)
+            setButtonDisabled(false);
           } else {
             Linking.openURL(url);
-            setButtonDisabled(false)
+            setButtonDisabled(false);
           }
         } else {
           showToast("something went wrong");
-          setButtonDisabled(false)
+          setButtonDisabled(false);
         }
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
         showToast("Server Issue");
-        setButtonDisabled(false)
+        setButtonDisabled(false);
       });
   };
 
@@ -579,12 +577,9 @@ const Details = ({ navigation }) => {
               )}
 
               <TouchableOpacity
-               disabled={buttonDisabled}
-
+                disabled={buttonDisabled}
                 onPress={() => {
-
-             
-                  setButtonDisabled(true)
+                  setButtonDisabled(true);
                   navigateToForm(
                     navigation,
                     collegeName,
@@ -600,9 +595,8 @@ const Details = ({ navigation }) => {
                     courseid,
                     detailsData?.register_through,
                     detailsData?.url
-                  )
-                }
-                }
+                  );
+                }}
               >
                 <LinearGradient
                   colors={["#03357D", "#0569FA"]}
