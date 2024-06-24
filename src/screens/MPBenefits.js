@@ -141,10 +141,10 @@ const MPBenefits = ({ navigation }) => {
                   style={styles.card}
                   onPress={() => navigation.navigate("careerGuidance")}
                 >
-                  <View style={styles.imgContainer}>
+                  <View style={styles.imgContainer1}>
                     <Image
                       source={require("../../assets/icons/guidance.png")}
-                      style={styles.image}
+                      style={styles.image1}
                     />
                   </View>
                   <Text style={styles.textStyle}>Career Guidance</Text>
@@ -226,9 +226,22 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 50,
   },
-  imgContainer1: {},
+  imgContainer1: {
+    height: 72,
+    width: 72,
+    backgroundColor: "white",
+    borderRadius: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 10,
+    borderWidth: 2,
+    borderColor: "white",
+  },
 
-  image1: {},
+  image1: {
+    height: 55,
+    width: 55,
+  },
   image: {
     width: 71,
     height: 71,

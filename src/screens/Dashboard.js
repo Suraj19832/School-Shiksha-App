@@ -1007,10 +1007,10 @@ const Dashboard = ({ navigation }) => {
                               navigation.navigate("careerGuidance")
                             }
                           >
-                            <View style={styles.imgContainer}>
+                            <View style={styles.imgContainer1}>
                               <Image
                                 source={require("../../assets/icons/guidance.png")}
-                                style={styles.image12}
+                                style={styles.image1}
                               />
                             </View>
                             <Text style={styles.textStyle}>
@@ -1494,6 +1494,22 @@ const styles = StyleSheet.create({
     height: 190,
     // marginBottom: 10,
     borderRadius: 10,
+  },
+  imgContainer1: {
+    height: 72,
+    width: 72,
+    backgroundColor: "white",
+    borderRadius: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 10,
+    borderWidth: 2,
+    borderColor: "white",
+  },
+
+  image1: {
+    height: 55,
+    width: 55,
   },
   textStyle: {
     textAlign: "center",
