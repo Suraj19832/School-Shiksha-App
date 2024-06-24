@@ -998,8 +998,14 @@ const Dashboard = ({ navigation }) => {
                       style={{ fontSize: 40 }}
                     />
 
-                    <View style={{ paddingHorizontal: 6 }}>
-                      <View style={{ flexDirection: "row", gap: 8 }}>
+                    <View style={{ marginHorizontal: 8 }}>
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          gap: 5,
+                          justifyContent: "space-around",
+                        }}
+                      >
                         {item?.short_name !== "other" && (
                           <TouchableOpacity
                             style={styles.card}
@@ -1465,7 +1471,7 @@ const styles = StyleSheet.create({
   },
   card: {
     backgroundColor: "#03357D",
-    width: Dimensions.get("window").height * 0.1332,
+    width: Dimensions.get("window").width * 0.28,
     height: 170,
     borderRadius: 10,
     margin: 5,
