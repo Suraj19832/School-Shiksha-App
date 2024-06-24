@@ -123,7 +123,7 @@ const MPBenefits = ({ navigation }) => {
           <View
             style={{
               marginTop: 15,
-              marginHorizontal: 8,
+              marginHorizontal: 10,
               marginBottom: 60,
             }}
           >
@@ -133,7 +133,8 @@ const MPBenefits = ({ navigation }) => {
                 flexWrap: "wrap",
                 gap: 2,
                 // backgroundColor: "red",
-                justifyContent: "space-around",
+                // justifyContent: "space-around",
+                // alignSelf: "flex-start",
               }}
             >
               {sortheading !== "other" && (

@@ -1003,7 +1003,7 @@ const Dashboard = ({ navigation }) => {
                         style={{
                           flexDirection: "row",
                           gap: 5,
-                          justifyContent: "space-around",
+                          // justifyContent: "space-around",
                         }}
                       >
                         {item?.short_name !== "other" && (
