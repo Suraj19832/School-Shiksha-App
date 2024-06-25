@@ -11,12 +11,15 @@ import {
   RefreshControl,
   Platform,
   ToastAndroid,
+  useWindowDimensions,
 } from "react-native";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { Image } from "react-native";
+import HTML from "react-native-render-html";
 import { LinearGradient } from "expo-linear-gradient";
 import Header from "../../components/Header";
 import { useRoute } from "@react-navigation/native";
+
 import {
   GetfetchDataWithParams,
   objectToFormData,
@@ -95,10 +98,12 @@ const BannerCarousel = ({ bannerData }) => {
     </View>
   );
 };
+
 const Details = ({ navigation }) => {
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const route = useRoute();
   const { userToken } = useContext(AuthContext);
+  const { width } = useWindowDimensions();
   const {
     collegeName,
     courseName,
@@ -513,7 +518,7 @@ const Details = ({ navigation }) => {
 
             <DetailsCard extraFields={extraFields} />
 
-            <View style={{ gap: 20 }}>
+            <View style={{ gap: 5 }}>
               <Text
                 style={{
                   paddingHorizontal: 20,
@@ -524,16 +529,13 @@ const Details = ({ navigation }) => {
               >
                 {firstWordPicker(ServiceName)} Description
               </Text>
-              <Text
-                style={{
-                  paddingHorizontal: 20,
-                  color: "#373737",
-                  fontWeight: "400",
-                  fontSize: 14,
-                }}
-              >
-                {detailsData.course_details}
-              </Text>
+              <View style={{ paddingHorizontal: 14 }}>
+                <HTML
+                  source={{ html: detailsData?.course_details }}
+                  contentWidth={width}
+                  tagsStyles={{}}
+                />
+              </View>
             </View>
             <View style={styles.cardButtons}>
               {callShow ? (
