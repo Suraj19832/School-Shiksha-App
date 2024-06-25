@@ -137,7 +137,7 @@ const MPBenefits = ({ navigation }) => {
                 // alignSelf: "flex-start",
               }}
             >
-              {sortheading !== "other" && (
+              {sortheading !== "graduate" && (
                 <TouchableOpacity
                   style={styles.card}
                   onPress={() => navigation.navigate("careerGuidance")}

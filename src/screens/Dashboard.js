@@ -357,10 +357,10 @@ const Dashboard = ({ navigation }) => {
   };
 
   const colorMap = {
-    "Secondary Pass Student's Benefits": "#C83000",
-    "H.S Pass Student's Benefits": "#004F3C",
-    "Graduate Pass Student's Benefits": "#951F1F",
-    "Others Benefits": "#60317D",
+    mp: "#C83000",
+    hs: "#004F3C",
+    graduate: "#951F1F",
+    other: "#60317D",
   };
   async function fetchUserData() {
     try {
@@ -987,14 +987,15 @@ const Dashboard = ({ navigation }) => {
             {/* data from api  */}
             <View style={{ paddingBottom: 20 }}>
               {carddata?.map((item, index) => {
-                const isOthers = item?.short_name === "other";
+                console.log(item, "::::::::::::::::::::::::::::::::::::::");
+                const isOthers = item?.short_name === "graduate";
                 const showButton = isOthers ? item?.count > 3 : item?.count > 2;
 
                 return (
                   <View key={index}>
                     <TitleDash
                       title={item?.long_name}
-                      primaryColor={colorMap[item?.long_name]}
+                      primaryColor={colorMap[item?.short_name]}
                       style={{ fontSize: 40 }}
                     />
 
@@ -1006,7 +1007,7 @@ const Dashboard = ({ navigation }) => {
                           // justifyContent: "space-around",
                         }}
                       >
-                        {item?.short_name !== "other" && (
+                        {item?.short_name !== "graduate" && (
                           <TouchableOpacity
                             style={styles.card}
                             onPress={() =>
