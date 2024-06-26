@@ -2,7 +2,8 @@ import Configs from "../Configss/Configs";
 import * as mime from "react-native-mime-types";
 
 export async function sendPostData(endpoint, formData) {
-  const url = `${Configs.API_BASE_URL_V1}/${endpoint}`;
+  const url = `${Configs.API_BASE_URL_V1}${endpoint}`;
+  console.log(url, "chek uri registration");
   let response = await fetch(url, {
     method: "POST",
     headers: {
@@ -120,7 +121,10 @@ export const postDataWithFormDataWithBaseUrl = async (baseurl, formData) => {
     // if (!response.ok) {
     //   throw new Error("Failed to post data");
     // }
-    console.log(response ,"djoidjeiodjeoifjorhfjkerhoehgogothgoujgiegierjgpejgerjglehrnblhij")
+    console.log(
+      response,
+      "djoidjeiodjeoifjorhfjkerhoehgogothgoujgiegierjgpejgerjglehrnblhij"
+    );
     const data = await response.json();
     console.log(data, "IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII");
     return data;
@@ -140,7 +144,7 @@ export const GetfetchDataWithParams = async (endpoint, params) => {
 
   // Construct full URL with endpoint and query string
   const url = `${Configs.API_BASE_URL_V1}/${endpoint}?${queryString}`;
-  console.log("????????????????????????????????????????????????????????",url)
+  console.log("????????????????????????????????????????????????????????", url);
   try {
     // Fetch data using GET method
     const response = await fetch(url, {

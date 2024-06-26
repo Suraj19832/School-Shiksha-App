@@ -72,7 +72,6 @@ const Registration = ({ navigation }) => {
     district_id: "",
     password: "",
   });
-  // console.log(formData.fatherName)
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
   const [formValid, setFormValid] = useState(false);
@@ -150,28 +149,17 @@ const Registration = ({ navigation }) => {
         formsData.append("class_id", classid);
         formsData.append("plan_id", planid);
         formsData.append("referral_code", refercode);
-        console.log("6565655", formsData);
-        await sendPostData("/register", formsData)
+        await sendPostData("register", formsData)
           .then((res) => {
             setLoading(false);
-            console.log(
-              "-0-0-0-0-0-0-0-0-0-0-0-0-0-00-0-0--0-0-0-0-0-00-0-",
-              res
-            );
             if (res?.message === "Success") {
               updateUpiLink(res?.data?.upi_link);
-              console.log(
-                "djdjdddddddddddddd-----------------------=============-=",
-                res?.data?.order_id
-              );
               updateOrderid(res?.data?.order_id);
 
               navigation.navigate("QR_Screen");
             }
             if (res?.message === "Student registration successful") {
-              console.log("=================grpgp=gppg", res?.message);
               showToast("Registration Successful");
-              console.log("11111111", res?.status);
               navigation.navigate("Login");
             }
 
@@ -190,7 +178,7 @@ const Registration = ({ navigation }) => {
           })
           .catch((err) => {
             setLoading(false);
-            console.log(err, "--err");
+            console.log(err);
             showToast("Internal Server Error");
           });
       }
@@ -199,7 +187,6 @@ const Registration = ({ navigation }) => {
         setLoading(false);
       }
     } else {
-      console.log("Registration failed: Required fields are missing");
       // Alert.alert("Alert", "Please Fill up All Fields");
       setLoading(false);
       showToast("Please fill up all fields");
@@ -397,7 +384,6 @@ const Registration = ({ navigation }) => {
     setDistrictId();
     setDropdownOpenstate(false);
   };
-  console.log("[][]", stateInfo);
   const handleInputChangedistrict = (text) => {
     setInputValue(text);
     setSelectedOption(null); // Clear selected option when user edits input
@@ -528,7 +514,6 @@ const Registration = ({ navigation }) => {
     setInputValueplan(option);
     setDropdownOpenplan(false);
     setplanid(plannnid);
-    console.log("uiyuiyiyuiuyiuykkhjkhjkkjkjk", planid);
   };
 
   const handleInputChangeplan = (text) => {
@@ -537,8 +522,6 @@ const Registration = ({ navigation }) => {
   };
   const handleInputChangerefer = (text) => {
     setrefercode(text);
-    console.log(refercode);
-    // setDropdownOpenplan(null); // Clear selected option when user edits input
   };
   const toggleDropdownblock = () => {
     setDropdownOpenblock(!isDropdownOpenblock);
@@ -573,7 +556,6 @@ const Registration = ({ navigation }) => {
     // Call the getstatedata function with the API URL
     getdata(apiUrl)
       .then((res) => {
-        // console.log('Response from API:', res.data);
         setStateData(res?.data);
         // Do something with the response data, e.g., update component state
       })
@@ -581,8 +563,6 @@ const Registration = ({ navigation }) => {
         console.error("Error fetching data:", error);
       });
   }, []);
-
-  console.log("00", stateData);
   useEffect(() => {
     // Define the object data you want to convert to FormData and send
     const postData = {
@@ -595,7 +575,6 @@ const Registration = ({ navigation }) => {
     // Call the postDataWithFormData function with the API URL and FormData
     postDataWithFormData("master/district", formData)
       .then((res) => {
-        console.log("Response from API for district:", res?.data);
         setDistrictData(res?.data);
         // Do something with the response data, if needed
       })
@@ -617,7 +596,6 @@ const Registration = ({ navigation }) => {
     // Call the postDataWithFormData function with the API URL and FormData
     postDataWithFormData("master/block", formDatablock)
       .then((res) => {
-        console.log("Response from API for block:", res?.data);
         setBlockData(res?.data);
         // Do something with the response data, if needed
       })
@@ -635,10 +613,8 @@ const Registration = ({ navigation }) => {
     // Call the getstatedata function with the API URL
     getdata(apiUrl)
       .then((res) => {
-        console.log("Response from API:", res?.message);
         const planNames = res.data.map((item) => item);
         setplan(planNames);
-        // console.log("Plan Names:", planNames);
       })
       .catch((error) => {
         console.error("Error fetching data in registration:", error);
@@ -648,8 +624,6 @@ const Registration = ({ navigation }) => {
   const colorScheme = useColorScheme();
   const statusBarColor = colorScheme === "dark" ? "black" : "white";
 
-  // console.log("----------------------------------------------------------------------------------------")
-  // get data for class
   const [classname, setclassname] = useState("");
   useEffect(() => {
     // Define the URL you want to fetch data from
@@ -658,7 +632,6 @@ const Registration = ({ navigation }) => {
     // Call the getstatedata function with the API URL
     getdata(apiUrl)
       .then((res) => {
-        // console.log("Response from API of classs ----------------------------->:", res?.data );
         const classeshere = res.data.map((item) => item);
 
         setclassname(classeshere);
@@ -668,15 +641,10 @@ const Registration = ({ navigation }) => {
       });
   }, []);
 
-  // console.log("88", blockdata);
-
-  console.log("789", formData);
   const handlecheckbox = () => {
     setChecked(!isChecked);
-    // setshowcheckboxrror(isChecked)
   };
   const handlecheckboxerror = () => {
-    // setChecked(!isChecked)
     setshowcheckboxrror(isChecked);
   };
 
@@ -1141,7 +1109,7 @@ const Registration = ({ navigation }) => {
           </View>
         </TouchableOpacity> */}
 
-                      {classname.map((option, index) => (
+                      {classname?.map((option, index) => (
                         <TouchableOpacity
                           key={index}
                           style={styles.dropdownOption}
