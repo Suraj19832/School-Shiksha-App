@@ -569,7 +569,7 @@ const FreeCollegeList = ({ navigation }) => {
       .map(([key, val]) => `${key}: ${val}`)
       .join("\n");
 
-    const whatsAppText = `I want to purchase this course !! \nOrganization Name: ${collegeName} \nCourse Name: ${courseName} \n${extraFieldsText}`;
+    const whatsAppText = `I am interested for this course !! \nOrganization Name: ${collegeName} \nCourse Name: ${courseName} \n${extraFieldsText}`;
     const whatsAppUrl = `whatsapp://send?phone=${
       value?.whatsapp_number
     }&text=${encodeURIComponent(whatsAppText)}`;
@@ -1330,7 +1330,7 @@ const FreeCollegeList = ({ navigation }) => {
                     if (res.status) {
                       if (navigateToExternalLink) {
                         Linking.openURL(value?.url);
-                        setButtonDisabled(false)
+                        setButtonDisabled(false);
                       } else {
                         navigation.navigate("freeAdmissionForm", {
                           collegeName: value?.organization_name,
@@ -1366,19 +1366,19 @@ const FreeCollegeList = ({ navigation }) => {
                           logo: value?.logo,
                           orgID: value?.organization_course_id,
                           termsList: termsList,
-                          ServiceName :value?.service_type
+                          ServiceName: value?.service_type,
                         });
-                        setButtonDisabled(false)
+                        setButtonDisabled(false);
                       }
                     } else {
                       showToast("something went wrong");
-                      setButtonDisabled(false)
+                      setButtonDisabled(false);
                     }
                   })
                   .catch((error) => {
                     console.error("Error fetching data:", error);
                     showToast("Server Issue");
-                    setButtonDisabled(false)
+                    setButtonDisabled(false);
                   });
               };
 
@@ -1528,7 +1528,7 @@ const FreeCollegeList = ({ navigation }) => {
                               ? requiredFields?.is_education_qualification_required
                               : "no",
                           ServiceName: value?.service_type,
-                          termsList:termsList
+                          termsList: termsList,
                         })
                       }
                     >
@@ -1546,7 +1546,7 @@ const FreeCollegeList = ({ navigation }) => {
                     </TouchableOpacity>
                     {value?.register_through === "internal_form_submit" ? (
                       <TouchableOpacity
-                      disabled={buttonDisabled}
+                        disabled={buttonDisabled}
                         // onPress={() =>
                         //   navigation.navigate("freeAdmissionForm", {
                         //     collegeName: value?.organization_name,
@@ -1564,7 +1564,7 @@ const FreeCollegeList = ({ navigation }) => {
                         //   })
                         // }
 
-                        onPress={() =>{
+                        onPress={() => {
                           setButtonDisabled(true);
                           navigateToFreeAdmissionForm(
                             navigation,
@@ -1572,10 +1572,8 @@ const FreeCollegeList = ({ navigation }) => {
                             id,
                             requiredFields,
                             false
-                          )
-                        }
-                        
-                        }
+                          );
+                        }}
                       >
                         <LinearGradient
                           colors={["#03357D", "#0569FA"]}
