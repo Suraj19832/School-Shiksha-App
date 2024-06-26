@@ -494,7 +494,7 @@ const Dashboard = ({ navigation }) => {
 
   // Skeleton End ?
 
-  const truncateMessage = (message, maxLength = 15) => {
+  const truncateMessage = (message, maxLength = 24) => {
     if (message?.length > maxLength) {
       return message.substring(0, maxLength) + "...";
     }
