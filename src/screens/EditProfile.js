@@ -1025,42 +1025,41 @@ const EditProfile = ({ navigation }) => {
                 </View>
 
                 {isDropdownOpenclass && (
-                  <ScrollView
-                    scrollEnabled={true}
-                    nestedScrollEnabled={true}
-                    style={{
-                      maxHeight: 150,
-                      borderWidth: 1,
-                      borderColor: "#ccc",
-                      borderRadius: 4,
-                    }}
-                  >
-                    {classData?.map((values, index) => {
-                      return (
-                        <TouchableOpacity
-                          key={index}
-                          style={styles.dropdownOption}
-                          onPress={() => {
-                            setProfileData({
-                              ...profileData,
-                              class_name: values.name,
-                              class_id: values.id,
-                            });
-                            toggleDropdownclass(); // Close the dropdown after selection
-                          }}
-                        >
-                          <View
-                            style={{
-                              width: Dimensions.get("window").width * 0.7,
-                              alignItems: "center",
+                  <View style={styles.dropdownContainer}>
+                    <ScrollView
+                      scrollEnabled={true}
+                      nestedScrollEnabled={true}
+                      style={{
+                        maxHeight: 100,
+                      }}
+                    >
+                      {classData?.map((values, index) => {
+                        return (
+                          <TouchableOpacity
+                            key={index}
+                            style={styles.dropdownOption}
+                            onPress={() => {
+                              setProfileData({
+                                ...profileData,
+                                class_name: values.name,
+                                class_id: values.id,
+                              });
+                              toggleDropdownclass(); // Close the dropdown after selection
                             }}
                           >
-                            <Text>{values.name}</Text>
-                          </View>
-                        </TouchableOpacity>
-                      );
-                    })}
-                  </ScrollView>
+                            <View
+                              style={{
+                                width: Dimensions.get("window").width * 0.7,
+                                alignItems: "center",
+                              }}
+                            >
+                              <Text>{values.name}</Text>
+                            </View>
+                          </TouchableOpacity>
+                        );
+                      })}
+                    </ScrollView>
+                  </View>
                 )}
               </View>
 
@@ -1311,25 +1310,30 @@ const EditProfile = ({ navigation }) => {
                 {/* Dropdown menu */}
                 {isDropdownOpenstate && (
                   <View style={styles.dropdownContainer}>
-                    {stateData?.length > 0 &&
-                      stateData?.map((state, index) => {
-                        return (
-                          <TouchableOpacity
-                            key={index}
-                            style={styles.dropdownOption}
-                            onPress={() => {
-                              setProfileData({
-                                ...profileData,
-                                state_name: state.name,
-                                state_id: state.id,
-                              });
-                              handleSelectOptionstate(state.name, state.id); // Close the dropdown after selection
-                            }}
-                          >
-                            <Text>{state.name}</Text>
-                          </TouchableOpacity>
-                        );
-                      })}
+                    <ScrollView
+                      nestedScrollEnabled={true}
+                      style={{ maxHeight: 100 }}
+                    >
+                      {stateData?.length > 0 &&
+                        stateData?.map((state, index) => {
+                          return (
+                            <TouchableOpacity
+                              key={index}
+                              style={styles.dropdownOption}
+                              onPress={() => {
+                                setProfileData({
+                                  ...profileData,
+                                  state_name: state.name,
+                                  state_id: state.id,
+                                });
+                                handleSelectOptionstate(state.name, state.id); // Close the dropdown after selection
+                              }}
+                            >
+                              <Text>{state.name}</Text>
+                            </TouchableOpacity>
+                          );
+                        })}
+                    </ScrollView>
                   </View>
                 )}
               </View>
@@ -1388,24 +1392,29 @@ const EditProfile = ({ navigation }) => {
                 {/* Dropdown menu */}
                 {isDropdownOpen && (
                   <View style={styles.dropdownContainer}>
-                    {districtData.map((district, index) => {
-                      return (
-                        <TouchableOpacity
-                          style={styles.dropdownOption}
-                          key={index}
-                          onPress={() => {
-                            setProfileData({
-                              ...profileData,
-                              district_name: district?.name,
-                              district_id: district?.id,
-                            });
-                            toggleDropdownpolice(); // Close the dropdown after selection
-                          }}
-                        >
-                          <Text>{district?.name}</Text>
-                        </TouchableOpacity>
-                      );
-                    })}
+                    <ScrollView
+                      nestedScrollEnabled={true}
+                      style={{ maxHeight: 100 }}
+                    >
+                      {districtData.map((district, index) => {
+                        return (
+                          <TouchableOpacity
+                            style={styles.dropdownOption}
+                            key={index}
+                            onPress={() => {
+                              setProfileData({
+                                ...profileData,
+                                district_name: district?.name,
+                                district_id: district?.id,
+                              });
+                              toggleDropdownpolice(); // Close the dropdown after selection
+                            }}
+                          >
+                            <Text>{district?.name}</Text>
+                          </TouchableOpacity>
+                        );
+                      })}
+                    </ScrollView>
                     {/* Add more options as needed */}
                   </View>
                 )}
